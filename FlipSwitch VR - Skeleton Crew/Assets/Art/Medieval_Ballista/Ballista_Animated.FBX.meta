@@ -1,0 +1,342 @@
+fileFormatVersion: 2
+guid: feca53821afe1e34c807ba1f889368a8
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: balista_bone_03
+    100002: balista_bone_10
+    100004: balista_bone_BOW
+    100006: balista_bone_HorizontalTurn
+    100008: balista_bone_ROOT
+    100010: balista_bone_STRING
+    100012: balista_bone_Triger
+    100014: balista_bone_VerticalTurn
+    100016: Ballista_Animated
+    100018: //RootNode
+    100020: Ballista_bolt_01
+    100022: Bone01
+    100024: Bone02
+    100026: connectBone01
+    100028: connectBone02
+    100030: connectBone03
+    400000: balista_bone_03
+    400002: balista_bone_10
+    400004: balista_bone_BOW
+    400006: balista_bone_HorizontalTurn
+    400008: balista_bone_ROOT
+    400010: balista_bone_STRING
+    400012: balista_bone_Triger
+    400014: balista_bone_VerticalTurn
+    400016: //RootNode
+    400018: Ballista_Animated
+    400020: Ballista_bolt_01
+    400022: Bone01
+    400024: Bone02
+    400026: connectBone01
+    400028: connectBone02
+    400030: connectBone03
+    2300000: Ballista_bolt_01
+    3300000: Ballista_bolt_01
+    4300000: Ballista_Animated
+    4300002: Ballista_bolt_01
+    7400000: Ballista_idle
+    7400002: Ballista_loading
+    7400004: Ballista_Loaded
+    7400006: Ballista_shot
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: Ballista_Animated
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Ballista_idle
+      takeName: Ballista_04
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 1
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: balista_bone_ROOT
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/balista_bone_03
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone01
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone01/balista_bone_Triger
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone01/balista_bone_Triger/Bone01
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone02
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone02/balista_bone_10
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone02/balista_bone_10/Bone02
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone03
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone03/balista_bone_BOW
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone03/balista_bone_BOW/balista_bone_STRING
+        weight: 1
+      - path: Ballista_Animated
+        weight: 1
+      - path: Ballista_bolt_01
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Ballista_loading
+      takeName: Ballista_04
+      firstFrame: 1
+      lastFrame: 45
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: balista_bone_ROOT
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/balista_bone_03
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone01
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone01/balista_bone_Triger
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone01/balista_bone_Triger/Bone01
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone02
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone02/balista_bone_10
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone02/balista_bone_10/Bone02
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone03
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone03/balista_bone_BOW
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone03/balista_bone_BOW/balista_bone_STRING
+        weight: 1
+      - path: Ballista_Animated
+        weight: 1
+      - path: Ballista_bolt_01
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Ballista_Loaded
+      takeName: Ballista_04
+      firstFrame: 45
+      lastFrame: 46
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 1
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: balista_bone_ROOT
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/balista_bone_03
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone01
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone01/balista_bone_Triger
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone01/balista_bone_Triger/Bone01
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone02
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone02/balista_bone_10
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone02/balista_bone_10/Bone02
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone03
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone03/balista_bone_BOW
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone03/balista_bone_BOW/balista_bone_STRING
+        weight: 1
+      - path: Ballista_Animated
+        weight: 1
+      - path: Ballista_bolt_01
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Ballista_shot
+      takeName: Ballista_04
+      firstFrame: 46
+      lastFrame: 65
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: balista_bone_ROOT
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/balista_bone_03
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone01
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone01/balista_bone_Triger
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone01/balista_bone_Triger/Bone01
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone02
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone02/balista_bone_10
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone02/balista_bone_10/Bone02
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone03
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone03/balista_bone_BOW
+        weight: 1
+      - path: balista_bone_ROOT/balista_bone_HorizontalTurn/balista_bone_VerticalTurn/connectBone03/balista_bone_BOW/balista_bone_STRING
+        weight: 1
+      - path: Ballista_Animated
+        weight: 1
+      - path: Ballista_bolt_01
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

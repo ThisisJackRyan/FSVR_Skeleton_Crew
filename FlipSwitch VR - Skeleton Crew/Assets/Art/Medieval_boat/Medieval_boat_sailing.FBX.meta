@@ -1,0 +1,164 @@
+fileFormatVersion: 2
+guid: 04e53bcbf8099df419f664c4713c1960
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: boat_barrel
+    100002: boat_barrel01
+    100004: boat_paddle_02
+    100006: boat_paddle_11
+    100008: boat_paddle_12
+    100010: boat_paddle_13
+    100012: boat_paddle_14
+    100014: boat_paddle_15
+    100016: boat_paddle_16
+    100018: boat_paddle_17
+    100020: boat_wheel
+    100022: medieval_boat
+    100024: //RootNode
+    400000: boat_barrel
+    400002: boat_barrel01
+    400004: boat_paddle_02
+    400006: boat_paddle_11
+    400008: boat_paddle_12
+    400010: boat_paddle_13
+    400012: boat_paddle_14
+    400014: boat_paddle_15
+    400016: boat_paddle_16
+    400018: boat_paddle_17
+    400020: boat_wheel
+    400022: medieval_boat
+    400024: //RootNode
+    2300000: boat_barrel
+    2300002: boat_barrel01
+    2300004: boat_paddle_02
+    2300006: boat_paddle_11
+    2300008: boat_paddle_12
+    2300010: boat_paddle_13
+    2300012: boat_paddle_14
+    2300014: boat_paddle_15
+    2300016: boat_paddle_16
+    2300018: boat_paddle_17
+    2300020: boat_wheel
+    2300022: medieval_boat
+    3300000: boat_barrel
+    3300002: boat_barrel01
+    3300004: boat_paddle_02
+    3300006: boat_paddle_11
+    3300008: boat_paddle_12
+    3300010: boat_paddle_13
+    3300012: boat_paddle_14
+    3300014: boat_paddle_15
+    3300016: boat_paddle_16
+    3300018: boat_paddle_17
+    3300020: boat_wheel
+    3300022: medieval_boat
+    4300000: medieval_boat
+    4300002: boat_barrel
+    4300004: boat_wheel
+    4300006: boat_barrel01
+    4300008: boat_paddle_02
+    4300010: boat_paddle_11
+    4300012: boat_paddle_12
+    4300014: boat_paddle_13
+    4300016: boat_paddle_14
+    4300018: boat_paddle_15
+    4300020: boat_paddle_16
+    4300022: boat_paddle_17
+    11100000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: boat
+    second: {fileID: 2100000, guid: 3b14d5f5d6131fc4ab2e932cf67a6dbb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rope
+    second: {fileID: 2100000, guid: c411ed847115ae04aa67128566fe83e4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: sail
+    second: {fileID: 2100000, guid: 70692c23353a1f845b4d48f662adccb2, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

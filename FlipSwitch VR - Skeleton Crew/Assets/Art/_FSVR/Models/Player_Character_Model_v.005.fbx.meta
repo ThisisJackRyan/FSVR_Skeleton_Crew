@@ -1,0 +1,535 @@
+fileFormatVersion: 2
+guid: ea59a760af14d4a47acf6dc387206d38
+timeCreated: 1524158416
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Bip01
+    100002: Bip01 back_right_Wmount
+    100004: Bip01 back_shield_mount
+    100006: Bip01 Head
+    100008: Bip01 L Calf
+    100010: Bip01 L Clavicle
+    100012: Bip01 L Finger0
+    100014: Bip01 L Finger01
+    100016: Bip01 L Finger02
+    100018: Bip01 L Finger1
+    100020: Bip01 L Finger11
+    100022: Bip01 L Finger12
+    100024: Bip01 L Foot
+    100026: Bip01 L Forearm
+    100028: Bip01 L Hand
+    100030: Bip01 L Thigh
+    100032: Bip01 L Toe0
+    100034: Bip01 L UpperArm
+    100036: Bip01 Neck
+    100038: Bip01 Neck1
+    100040: Bip01 Pelvis
+    100042: Bip01 R Calf
+    100044: Bip01 R Clavicle
+    100046: Bip01 R Finger0
+    100048: Bip01 R Finger01
+    100050: Bip01 R Finger02
+    100052: Bip01 R Finger1
+    100054: Bip01 R Finger11
+    100056: Bip01 R Finger12
+    100058: Bip01 R Foot
+    100060: Bip01 R Forearm
+    100062: Bip01 R Hand
+    100064: Bip01 R Thigh
+    100066: Bip01 R Toe0
+    100068: Bip01 R UpperArm
+    100070: Bip01 Rhand_Weapon
+    100072: Bip01 Spine
+    100074: Bip01 Spine1
+    100076: Bip01 Spine2
+    100078: Hair
+    100080: High_Poly_Player_Left_Arm
+    100082: High_Poly_Player_Right_Arm
+    100084: Low_Poly_Player_Left_Arm
+    100086: Low_Poly_Player_Right_Arm
+    100088: //RootNode
+    100090: SH_Boots_A
+    100092: SH_Boots_B
+    100094: SH_boots_C
+    100096: SH_Boots_D
+    100098: SH_Boots_E
+    100100: SH_Boots_F
+    100102: SH_Boots_G
+    100104: SH_CHest_Armor_A
+    100106: SH_CHest_Armor_B
+    100108: SH_Chest_C
+    100110: SH_Chest_D
+    100112: SH_Chest_E
+    100114: SH_Chest_F
+    100116: SH_Chest_G
+    100118: SH_Gloves_A
+    100120: SH_Gloves_B
+    100122: SH_Gloves_C
+    100124: SH_Gloves_D
+    100126: SH_Gloves_E
+    100128: SH_Gloves_F
+    100130: SH_Gloves_G
+    100132: SH_Helemet_D
+    100134: SH_Helmet_A
+    100136: SH_Helmet_B
+    100138: SH_Helmet_C
+    100140: SH_Helmet_E
+    100142: SH_Helmet_F
+    100144: SH_Helmet_G
+    100146: SH_Leg_Armor_A
+    100148: SH_Leg_Armor_B
+    100150: SH_LegArmor_C
+    100152: SH_LegsArmor_D
+    100154: SH_LegsArmor_E
+    100156: SH_LegsArmor_F
+    100158: SH_LegsArmor_G
+    100160: SH_Shield_A02
+    100162: SH_Shield_A2
+    100164: SH_Shield_B
+    100166: SH_Shield_B02
+    100168: SH_Shield_C02
+    100170: SH_Shield_C2
+    100172: SH_Shield_D01
+    100174: SH_Shield_D02
+    100176: SH_Shield_E01
+    100178: SH_Shield_E02
+    100180: SH_Shield_F02
+    100182: SH_Shield_F2
+    100184: SH_Shield_G02
+    100186: SH_Shield_G2
+    100188: SH_Shoulders_A
+    100190: SH_Shoulders_B
+    100192: SH_Shoulders_C
+    100194: SH_Shoulders_D
+    100196: SH_Shoulders_E
+    100198: SH_Shoulders_F
+    100200: SH_Shoulders_G
+    100202: SH_Sword_A
+    100204: SH_Sword_A01
+    100206: SH_Sword_B2
+    100208: SH_Sword_B_01
+    100210: SH_Sword_C2
+    100212: SH_Sword_C_01
+    100214: SH_Sword_D01
+    100216: SH_Sword_D2
+    100218: SH_Sword_E01
+    100220: SH_Sword_E2
+    100222: SH_Sword_F01
+    100224: SH_Sword_F2
+    100226: SH_Sword_G01
+    100228: SH_Sword_G2
+    100230: skeleton_footman
+    100232: locator1
+    400000: Bip01
+    400002: Bip01 back_right_Wmount
+    400004: Bip01 back_shield_mount
+    400006: Bip01 Head
+    400008: Bip01 L Calf
+    400010: Bip01 L Clavicle
+    400012: Bip01 L Finger0
+    400014: Bip01 L Finger01
+    400016: Bip01 L Finger02
+    400018: Bip01 L Finger1
+    400020: Bip01 L Finger11
+    400022: Bip01 L Finger12
+    400024: Bip01 L Foot
+    400026: Bip01 L Forearm
+    400028: Bip01 L Hand
+    400030: Bip01 L Thigh
+    400032: Bip01 L Toe0
+    400034: Bip01 L UpperArm
+    400036: Bip01 Neck
+    400038: Bip01 Neck1
+    400040: Bip01 Pelvis
+    400042: Bip01 R Calf
+    400044: Bip01 R Clavicle
+    400046: Bip01 R Finger0
+    400048: Bip01 R Finger01
+    400050: Bip01 R Finger02
+    400052: Bip01 R Finger1
+    400054: Bip01 R Finger11
+    400056: Bip01 R Finger12
+    400058: Bip01 R Foot
+    400060: Bip01 R Forearm
+    400062: Bip01 R Hand
+    400064: Bip01 R Thigh
+    400066: Bip01 R Toe0
+    400068: Bip01 R UpperArm
+    400070: Bip01 Rhand_Weapon
+    400072: Bip01 Spine
+    400074: Bip01 Spine1
+    400076: Bip01 Spine2
+    400078: Hair
+    400080: High_Poly_Player_Left_Arm
+    400082: High_Poly_Player_Right_Arm
+    400084: Low_Poly_Player_Left_Arm
+    400086: Low_Poly_Player_Right_Arm
+    400088: //RootNode
+    400090: SH_Boots_A
+    400092: SH_Boots_B
+    400094: SH_boots_C
+    400096: SH_Boots_D
+    400098: SH_Boots_E
+    400100: SH_Boots_F
+    400102: SH_Boots_G
+    400104: SH_CHest_Armor_A
+    400106: SH_CHest_Armor_B
+    400108: SH_Chest_C
+    400110: SH_Chest_D
+    400112: SH_Chest_E
+    400114: SH_Chest_F
+    400116: SH_Chest_G
+    400118: SH_Gloves_A
+    400120: SH_Gloves_B
+    400122: SH_Gloves_C
+    400124: SH_Gloves_D
+    400126: SH_Gloves_E
+    400128: SH_Gloves_F
+    400130: SH_Gloves_G
+    400132: SH_Helemet_D
+    400134: SH_Helmet_A
+    400136: SH_Helmet_B
+    400138: SH_Helmet_C
+    400140: SH_Helmet_E
+    400142: SH_Helmet_F
+    400144: SH_Helmet_G
+    400146: SH_Leg_Armor_A
+    400148: SH_Leg_Armor_B
+    400150: SH_LegArmor_C
+    400152: SH_LegsArmor_D
+    400154: SH_LegsArmor_E
+    400156: SH_LegsArmor_F
+    400158: SH_LegsArmor_G
+    400160: SH_Shield_A02
+    400162: SH_Shield_A2
+    400164: SH_Shield_B
+    400166: SH_Shield_B02
+    400168: SH_Shield_C02
+    400170: SH_Shield_C2
+    400172: SH_Shield_D01
+    400174: SH_Shield_D02
+    400176: SH_Shield_E01
+    400178: SH_Shield_E02
+    400180: SH_Shield_F02
+    400182: SH_Shield_F2
+    400184: SH_Shield_G02
+    400186: SH_Shield_G2
+    400188: SH_Shoulders_A
+    400190: SH_Shoulders_B
+    400192: SH_Shoulders_C
+    400194: SH_Shoulders_D
+    400196: SH_Shoulders_E
+    400198: SH_Shoulders_F
+    400200: SH_Shoulders_G
+    400202: SH_Sword_A
+    400204: SH_Sword_A01
+    400206: SH_Sword_B2
+    400208: SH_Sword_B_01
+    400210: SH_Sword_C2
+    400212: SH_Sword_C_01
+    400214: SH_Sword_D01
+    400216: SH_Sword_D2
+    400218: SH_Sword_E01
+    400220: SH_Sword_E2
+    400222: SH_Sword_F01
+    400224: SH_Sword_F2
+    400226: SH_Sword_G01
+    400228: SH_Sword_G2
+    400230: skeleton_footman
+    400232: locator1
+    2100000: SH_Helmet_G2
+    2100002: SH_Helmet_F2
+    2100004: SH_Helmet_E2
+    2100006: Helmet_B1
+    2100008: Helmet_A1
+    2100010: SH_Chest_F2
+    2100012: SH_Chest_E2
+    2100014: Chest_A1
+    2100016: Chest_B1
+    2100018: SH_Sword_G1
+    2100020: SH_Sword_F1
+    2100022: SH_Sword_E1
+    2100024: SH_Sword_D1
+    2100026: SH_Sword_C1
+    2100028: SH_Sword_B1
+    2100030: SH_Sword__A1
+    2100032: SH_Shield_F1
+    2100034: SH_Shield_G1
+    2100036: SH_Shield_E1
+    2100038: SH_Shield_D1
+    2100040: SH_Shield_C1
+    2100042: SH_Shield__B1
+    2100044: SH_Shield_A1
+    2100046: skeleton_body
+    2100048: hair1
+    2100050: Shoulders_A1
+    2100052: Gloves_A1
+    2100054: Legs_A1
+    2100056: Boots_A1
+    2100058: Gloves_B1
+    2100060: Boots_B1
+    2100062: Legs_B1
+    2100064: Shoulders_B1
+    2100066: Legs_C1
+    2100068: Shoulders_C1
+    2100070: Chest_C1
+    2100072: Mail_C1
+    2100074: Boots_C1
+    2100076: Gloves_C1
+    2100078: Helmet_C1
+    2100080: SH_Helmet_D1
+    2100082: Mail_D1
+    2100084: SH_Chest_D
+    2100086: SH_Boots_D
+    2100088: SH_LegsArmor_D
+    2100090: SH_Gloves_D
+    2100092: SH_Shouldrers_D1
+    2100094: SH_Shouldrers_E1
+    2100096: SH_Boots_E
+    2100098: SH_Gloves_E
+    2100100: SH_LegsArmor_E
+    2100102: SH_Shoulders_F
+    2100104: SH_LegsArmor_F
+    2100106: SH_Boots_F
+    2100108: SH_Gloves_F
+    2100110: SH_Chest_G
+    2100112: SH_LegsArmor_G
+    2100114: SH_Boots_G
+    2100116: SH_Gloves_G
+    2100118: SH_Shoulders_G
+    2300000: SH_CHest_Armor_A
+    3300000: SH_CHest_Armor_A
+    4300000: SH_Helmet_G
+    4300002: SH_Helmet_F
+    4300004: SH_Helmet_E
+    4300006: SH_Helmet_B
+    4300008: SH_Helmet_A
+    4300010: SH_Chest_F
+    4300012: SH_Chest_E
+    4300014: SH_CHest_Armor_A
+    4300016: SH_CHest_Armor_B
+    4300018: SH_Sword_G01
+    4300020: SH_Sword_F01
+    4300022: SH_Sword_E01
+    4300024: SH_Sword_D01
+    4300026: SH_Sword_C_01
+    4300028: SH_Sword_B_01
+    4300030: SH_Sword_A01
+    4300032: SH_Sword_G2
+    4300034: SH_Sword_F2
+    4300036: SH_Sword_E2
+    4300038: SH_Sword_D2
+    4300040: SH_Sword_C2
+    4300042: SH_Sword_B2
+    4300044: SH_Sword_A
+    4300046: SH_Shield_F2
+    4300048: SH_Shield_G2
+    4300050: SH_Shield_E01
+    4300052: SH_Shield_D01
+    4300054: SH_Shield_C2
+    4300056: SH_Shield_B
+    4300058: SH_Shield_A2
+    4300060: SH_Shield_G02
+    4300062: SH_Shield_F02
+    4300064: SH_Shield_E02
+    4300066: SH_Shield_D02
+    4300068: SH_Shield_B02
+    4300070: SH_Shield_A02
+    4300072: SH_Shield_C02
+    4300074: skeleton_footman
+    4300076: Hair
+    4300078: SH_Shoulders_A
+    4300080: SH_Gloves_A
+    4300082: SH_Leg_Armor_A
+    4300084: SH_Boots_A
+    4300086: SH_Gloves_B
+    4300088: SH_Boots_B
+    4300090: SH_Leg_Armor_B
+    4300092: SH_Shoulders_B
+    4300094: SH_LegArmor_C
+    4300096: SH_Shoulders_C
+    4300098: SH_Chest_C
+    4300100: SH_boots_C
+    4300102: SH_Gloves_C
+    4300104: SH_Helmet_C
+    4300106: SH_Helemet_D
+    4300108: SH_Chest_D
+    4300110: SH_Boots_D
+    4300112: SH_LegsArmor_D
+    4300114: SH_Gloves_D
+    4300116: SH_Shoulders_D
+    4300118: SH_Shoulders_E
+    4300120: SH_Boots_E
+    4300122: SH_Gloves_E
+    4300124: SH_LegsArmor_E
+    4300126: SH_Shoulders_F
+    4300128: SH_LegsArmor_F
+    4300130: SH_Boots_F
+    4300132: SH_Gloves_F
+    4300134: SH_Chest_G
+    4300136: SH_LegsArmor_G
+    4300138: SH_Boots_G
+    4300140: SH_Gloves_G
+    4300142: SH_Shoulders_G
+    4300144: Low_Poly_Player_Right_Arm
+    4300146: Low_Poly_Player_Left_Arm
+    4300148: High_Poly_Player_Right_Arm
+    4300150: High_Poly_Player_Left_Arm
+    9500000: //RootNode
+    13700000: Hair
+    13700002: High_Poly_Player_Left_Arm
+    13700004: High_Poly_Player_Right_Arm
+    13700006: Low_Poly_Player_Left_Arm
+    13700008: Low_Poly_Player_Right_Arm
+    13700010: SH_Boots_A
+    13700012: SH_Boots_B
+    13700014: SH_boots_C
+    13700016: SH_Boots_D
+    13700018: SH_Boots_E
+    13700020: SH_Boots_F
+    13700022: SH_Boots_G
+    13700024: SH_CHest_Armor_B
+    13700026: SH_Chest_C
+    13700028: SH_Chest_D
+    13700030: SH_Chest_E
+    13700032: SH_Chest_F
+    13700034: SH_Chest_G
+    13700036: SH_Gloves_A
+    13700038: SH_Gloves_B
+    13700040: SH_Gloves_C
+    13700042: SH_Gloves_D
+    13700044: SH_Gloves_E
+    13700046: SH_Gloves_F
+    13700048: SH_Gloves_G
+    13700050: SH_Helemet_D
+    13700052: SH_Helmet_A
+    13700054: SH_Helmet_B
+    13700056: SH_Helmet_C
+    13700058: SH_Helmet_E
+    13700060: SH_Helmet_F
+    13700062: SH_Helmet_G
+    13700064: SH_Leg_Armor_A
+    13700066: SH_Leg_Armor_B
+    13700068: SH_LegArmor_C
+    13700070: SH_LegsArmor_D
+    13700072: SH_LegsArmor_E
+    13700074: SH_LegsArmor_F
+    13700076: SH_LegsArmor_G
+    13700078: SH_Shield_A02
+    13700080: SH_Shield_A2
+    13700082: SH_Shield_B
+    13700084: SH_Shield_B02
+    13700086: SH_Shield_C02
+    13700088: SH_Shield_C2
+    13700090: SH_Shield_D01
+    13700092: SH_Shield_D02
+    13700094: SH_Shield_E01
+    13700096: SH_Shield_E02
+    13700098: SH_Shield_F02
+    13700100: SH_Shield_F2
+    13700102: SH_Shield_G02
+    13700104: SH_Shield_G2
+    13700106: SH_Shoulders_A
+    13700108: SH_Shoulders_B
+    13700110: SH_Shoulders_C
+    13700112: SH_Shoulders_D
+    13700114: SH_Shoulders_E
+    13700116: SH_Shoulders_F
+    13700118: SH_Shoulders_G
+    13700120: SH_Sword_A
+    13700122: SH_Sword_A01
+    13700124: SH_Sword_B2
+    13700126: SH_Sword_B_01
+    13700128: SH_Sword_C2
+    13700130: SH_Sword_C_01
+    13700132: SH_Sword_D01
+    13700134: SH_Sword_D2
+    13700136: SH_Sword_E01
+    13700138: SH_Sword_E2
+    13700140: SH_Sword_F01
+    13700142: SH_Sword_F2
+    13700144: SH_Sword_G01
+    13700146: SH_Sword_G2
+    13700148: skeleton_footman
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.009
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

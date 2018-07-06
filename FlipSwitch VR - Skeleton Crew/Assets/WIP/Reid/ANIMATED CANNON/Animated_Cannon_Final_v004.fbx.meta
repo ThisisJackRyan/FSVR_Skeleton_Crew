@@ -1,0 +1,300 @@
+fileFormatVersion: 2
+guid: 7fe778db903831f4188d3f4b1e09929b
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Broken_Barrel
+    100004: Cannon_Barrel_Back
+    100006: Cannon_Barrel_Broken
+    100008: Cannon_Barrel_Front
+    100010: Cannon_Metal_Rod
+    100012: Cannon_MetalSide_R_Screw_1
+    100014: Cannon_MetalSide_R_Screw_2
+    100016: Cannon_MetalSide_R_Screw_3
+    100018: Cannon_MetalSide_R_Screw_4
+    100020: Cannon_MetalSide_R_Screw_5
+    100022: Cannon_MetalSide_R_Screw_6
+    100024: Cannon_Middle_Wood_Support1
+    100026: Cannon_Wheel_LB
+    100028: Cannon_Wheel_LF
+    100030: Cannon_Wheel_RB
+    100032: Cannon_Wheel_RF
+    100034: Cannon_WoodSide_L
+    100036: Cannon_WoodSide_R
+    100038: Cannon_WoodSide_R_Screw_1
+    100040: Cannon_WoodSide_R_Screw_2
+    100042: Cannon_WoodSide_R_Screw_3
+    100044: Cannon_WoodSide_R_Screw_4
+    100046: Cannon_WoodSide_R_Screw_5
+    100048: Cannon_WoodSide_R_Screw_6
+    100050: Left_Side
+    100052: Middle_Wood_Broken_L
+    100054: Middle_Wood_Broken_L_Front
+    100056: Middle_Wood_Broken_R
+    100058: Middle_Wood_Broken_R_Front
+    100060: Right_Side
+    400000: //RootNode
+    400002: Broken_Barrel
+    400004: Cannon_Barrel_Back
+    400006: Cannon_Barrel_Broken
+    400008: Cannon_Barrel_Front
+    400010: Cannon_Metal_Rod
+    400012: Cannon_MetalSide_R_Screw_1
+    400014: Cannon_MetalSide_R_Screw_2
+    400016: Cannon_MetalSide_R_Screw_3
+    400018: Cannon_MetalSide_R_Screw_4
+    400020: Cannon_MetalSide_R_Screw_5
+    400022: Cannon_MetalSide_R_Screw_6
+    400024: Cannon_Middle_Wood_Support1
+    400026: Cannon_Wheel_LB
+    400028: Cannon_Wheel_LF
+    400030: Cannon_Wheel_RB
+    400032: Cannon_Wheel_RF
+    400034: Cannon_WoodSide_L
+    400036: Cannon_WoodSide_R
+    400038: Cannon_WoodSide_R_Screw_1
+    400040: Cannon_WoodSide_R_Screw_2
+    400042: Cannon_WoodSide_R_Screw_3
+    400044: Cannon_WoodSide_R_Screw_4
+    400046: Cannon_WoodSide_R_Screw_5
+    400048: Cannon_WoodSide_R_Screw_6
+    400050: Left_Side
+    400052: Middle_Wood_Broken_L
+    400054: Middle_Wood_Broken_L_Front
+    400056: Middle_Wood_Broken_R
+    400058: Middle_Wood_Broken_R_Front
+    400060: Right_Side
+    2100000: Broken_Cannon_Wood
+    2100002: Broken_Cannon_Metal
+    2300000: Cannon_Barrel_Back
+    2300002: Cannon_Barrel_Broken
+    2300004: Cannon_Barrel_Front
+    2300006: Cannon_Metal_Rod
+    2300008: Cannon_MetalSide_R_Screw_1
+    2300010: Cannon_MetalSide_R_Screw_2
+    2300012: Cannon_MetalSide_R_Screw_3
+    2300014: Cannon_MetalSide_R_Screw_4
+    2300016: Cannon_MetalSide_R_Screw_5
+    2300018: Cannon_MetalSide_R_Screw_6
+    2300020: Cannon_Middle_Wood_Support1
+    2300022: Cannon_Wheel_LB
+    2300024: Cannon_Wheel_LF
+    2300026: Cannon_Wheel_RB
+    2300028: Cannon_Wheel_RF
+    2300030: Cannon_WoodSide_L
+    2300032: Cannon_WoodSide_R
+    2300034: Cannon_WoodSide_R_Screw_1
+    2300036: Cannon_WoodSide_R_Screw_2
+    2300038: Cannon_WoodSide_R_Screw_3
+    2300040: Cannon_WoodSide_R_Screw_4
+    2300042: Cannon_WoodSide_R_Screw_5
+    2300044: Cannon_WoodSide_R_Screw_6
+    2300046: Middle_Wood_Broken_L
+    2300048: Middle_Wood_Broken_L_Front
+    2300050: Middle_Wood_Broken_R
+    2300052: Middle_Wood_Broken_R_Front
+    3300000: Cannon_Barrel_Back
+    3300002: Cannon_Barrel_Broken
+    3300004: Cannon_Barrel_Front
+    3300006: Cannon_Metal_Rod
+    3300008: Cannon_MetalSide_R_Screw_1
+    3300010: Cannon_MetalSide_R_Screw_2
+    3300012: Cannon_MetalSide_R_Screw_3
+    3300014: Cannon_MetalSide_R_Screw_4
+    3300016: Cannon_MetalSide_R_Screw_5
+    3300018: Cannon_MetalSide_R_Screw_6
+    3300020: Cannon_Middle_Wood_Support1
+    3300022: Cannon_Wheel_LB
+    3300024: Cannon_Wheel_LF
+    3300026: Cannon_Wheel_RB
+    3300028: Cannon_Wheel_RF
+    3300030: Cannon_WoodSide_L
+    3300032: Cannon_WoodSide_R
+    3300034: Cannon_WoodSide_R_Screw_1
+    3300036: Cannon_WoodSide_R_Screw_2
+    3300038: Cannon_WoodSide_R_Screw_3
+    3300040: Cannon_WoodSide_R_Screw_4
+    3300042: Cannon_WoodSide_R_Screw_5
+    3300044: Cannon_WoodSide_R_Screw_6
+    3300046: Middle_Wood_Broken_L
+    3300048: Middle_Wood_Broken_L_Front
+    3300050: Middle_Wood_Broken_R
+    3300052: Middle_Wood_Broken_R_Front
+    4300000: Middle_Wood_Broken_L_Front
+    4300002: Middle_Wood_Broken_R_Front
+    4300004: Cannon_Middle_Wood_Support1
+    4300006: Cannon_Metal_Rod
+    4300008: Middle_Wood_Broken_R
+    4300010: Middle_Wood_Broken_L
+    4300012: Cannon_Wheel_LF
+    4300014: Cannon_Wheel_RF
+    4300016: Cannon_Wheel_RB
+    4300018: Cannon_Wheel_LB
+    4300020: Cannon_Barrel_Back
+    4300022: Cannon_Barrel_Broken
+    4300024: Cannon_Barrel_Front
+    4300026: Cannon_WoodSide_R
+    4300028: Cannon_WoodSide_R_Screw_3
+    4300030: Cannon_WoodSide_R_Screw_2
+    4300032: Cannon_WoodSide_R_Screw_1
+    4300034: Cannon_MetalSide_R_Screw_3
+    4300036: Cannon_MetalSide_R_Screw_2
+    4300038: Cannon_MetalSide_R_Screw_1
+    4300040: Cannon_WoodSide_L
+    4300042: Cannon_MetalSide_R_Screw_4
+    4300044: Cannon_WoodSide_R_Screw_6
+    4300046: Cannon_WoodSide_R_Screw_5
+    4300048: Cannon_WoodSide_R_Screw_4
+    4300050: Cannon_MetalSide_R_Screw_6
+    4300052: Cannon_MetalSide_R_Screw_5
+    7400000: Take 001
+    7400002: Take 001 (1)
+    9500000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Broken_Cannon_Metal
+    second: {fileID: 2100000, guid: 313eb2ff6359cad42ac928b6e91b4aed, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Broken_Cannon_Wood
+    second: {fileID: 2100000, guid: 0f5592450150a78439c9399a9e9ed5f3, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 305
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Take 001 (1)
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 305
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

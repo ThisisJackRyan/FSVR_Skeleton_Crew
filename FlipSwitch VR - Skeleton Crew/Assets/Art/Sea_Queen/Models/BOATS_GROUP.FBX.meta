@@ -1,0 +1,148 @@
+fileFormatVersion: 2
+guid: e5acabcd966bad044bf762d69e474f2b
+labels:
+- Ship
+- Doat
+- Pirates
+- Sea
+- Medieval
+- Vehicle
+- Vessel
+- Adventure
+- Army
+- Battle
+- Fight
+- Soldier
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: boat_barrel05
+    100002: boat_barrel06
+    100004: boat_barrel07
+    100006: boat_paddle_07
+    100008: boat_paddle_08
+    100010: boat_paddle_09
+    100012: boat_paddle_11
+    100014: boat_paddle_12
+    100016: boat_paddle_14
+    100018: boat_wheel02
+    100020: boat_wheel03
+    100022: //RootNode
+    100024: medieval_boat02
+    100026: medieval_boat03
+    400000: boat_barrel05
+    400002: boat_barrel06
+    400004: boat_barrel07
+    400006: boat_paddle_07
+    400008: boat_paddle_08
+    400010: boat_paddle_09
+    400012: boat_paddle_11
+    400014: boat_paddle_12
+    400016: boat_paddle_14
+    400018: boat_wheel02
+    400020: boat_wheel03
+    400022: //RootNode
+    400024: medieval_boat02
+    400026: medieval_boat03
+    2300000: boat_barrel05
+    2300002: boat_barrel06
+    2300004: boat_barrel07
+    2300006: boat_paddle_07
+    2300008: boat_paddle_08
+    2300010: boat_paddle_09
+    2300012: boat_paddle_11
+    2300014: boat_paddle_12
+    2300016: boat_paddle_14
+    2300018: boat_wheel02
+    2300020: boat_wheel03
+    2300022: medieval_boat02
+    2300024: medieval_boat03
+    3300000: boat_barrel05
+    3300002: boat_barrel06
+    3300004: boat_barrel07
+    3300006: boat_paddle_07
+    3300008: boat_paddle_08
+    3300010: boat_paddle_09
+    3300012: boat_paddle_11
+    3300014: boat_paddle_12
+    3300016: boat_paddle_14
+    3300018: boat_wheel02
+    3300020: boat_wheel03
+    3300022: medieval_boat02
+    3300024: medieval_boat03
+    4300000: medieval_boat02
+    4300002: boat_wheel02
+    4300004: boat_barrel05
+    4300006: boat_paddle_07
+    4300008: boat_paddle_08
+    4300010: boat_paddle_09
+    4300012: boat_barrel06
+    4300014: boat_paddle_11
+    4300016: boat_paddle_12
+    4300018: boat_paddle_14
+    4300020: medieval_boat03
+    4300022: boat_barrel07
+    4300024: boat_wheel03
+    11100000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

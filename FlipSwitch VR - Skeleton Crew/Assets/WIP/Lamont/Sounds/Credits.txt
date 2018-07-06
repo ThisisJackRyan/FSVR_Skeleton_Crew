@@ -1,0 +1,97 @@
+Alienbomb Cannon.round
+	-Author: Alienbomb
+	-CC0 License
+	-https://freesound.org/people/alienbomb/sounds/39067/
+
+Opensystem Explosion 
+	-Author: Opensystem
+	-CC0 License
+	-https://freesound.org/people/opensystem/sounds/333692/
+	
+Fennelliott Musket
+	-Author: Fennelliott
+	-CC0 License
+	-https://freesound.org/people/fennelliott/sounds/347647/
+	
+Knife Sound Pack
+	-lmbubec
+	-CC0
+	-https://freesound.org/people/lmbubec/packs/7460/
+	
+swosh-22.flac
+	-qubodup
+	-cc0
+	-https://freesound.org/people/qubodup/sounds/60009/
+	
+swing.mp3
+	-orangesheepdog
+	-cc0
+	-https://freesound.org/people/orangesheepdog/sounds/367182/
+	
+Swosh Sword Swing
+	-qubodup
+	-cc0
+	-https://freesound.org/people/qubodup/sounds/59992/
+	
+Vocal Ambience
+	-AlonnaAllen
+	-cc0
+	-https://freesound.org/people/AlonnaAllen/sounds/345695/
+	
+Magical Hit
+	-SailorErick
+	-cc0
+	-https://freesound.org/people/SailorErick/sounds/430769/
+	
+Falling Bones.wav
+	-spookymodem
+	-cc0
+	-https://freesound.org/people/spookymodem/sounds/202091/
+	
+rattling bones.wav
+	-spookymodem
+	-cc0
+	-https://freesound.org/people/spookymodem/sounds/202102/
+	
+Sparkler.aif
+	-Ned Bouhalassa
+	-cc0
+	-https://freesound.org/people/Ned%20Bouhalassa/sounds/8320/
+	
+campfire.wav
+	-dystronaya
+	-cc0
+	-https://freesound.org/people/dystronaya/sounds/324089/
+	
+Walking On A Wooden Floor
+	-ralphwhitehead
+	-cc0
+	-https://freesound.org/people/ralphwhitehead/sounds/331450/
+
+revolver_holster_01.wav
+	-Fewes
+	-cc0
+	-https://freesound.org/people/Fewes/sounds/233737/
+	
+---------------------------------------------------------------------------------------------------------	
+Draw Bow and Fire Sound -> Snd_BowDraw and Snd_BowFire
+	-Mike Koenig 
+	-Attribution 3.0
+	-Editted
+	-http://soundbible.com/2106-Draw-Bow-and-Fire.html
+	
+attack-hits.mp3 -> Snd_ArmorHit
+	-jphilipp
+	-Attribution 3.0
+	-Editted
+	-https://freesound.org/people/JPhilipp/sounds/119061/
+	
+tolling-bell_daniel-simion.wav -> Snd_Bell
+	-Daniel Simion 
+	-Attribution 3.0
+	-Editted
+	-http://soundbible.com/2206-Tolling-Bell.html
+	
+--------------------------------------------------------------------------------------------------------
+"Let's Play with Free Sound Effects" 
+http://taira-komori.jpn.org/freesounden.html 
