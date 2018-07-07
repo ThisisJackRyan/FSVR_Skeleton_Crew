@@ -6,13 +6,14 @@ using UnityEngine.Networking;
 public class GrabWeapon : NetworkBehaviour {
 
 	public Transform rightHand, leftHand;
+    public GameObject rightHolster, leftHolster;
 	public float radius = 0.1f;
 
 	private bool leftHandIsGrabbing = false;
 	private bool rightHandIsGrabbing = false;
 	private WeaponInteraction weaponInteraction;
-	GameObject leftWeaponBeingHeld;
-	GameObject rightWeaponBeingHeld;
+	private GameObject leftWeapon;
+    private GameObject rightWeapon;
 
 	// Use this for initialization
 	void Start() {
@@ -51,30 +52,55 @@ public class GrabWeapon : NetworkBehaviour {
 			else
 				HandleDropping( "left" );
 		}
+    }
 
-		RpcToggleHand(side);
-	}
+    [ClientRpc]
+    private void RpcHolster(string side, GameObject holster)
+    {
+        if (isServer)
+            return;
 
-	[ClientRpc]
-	private void RpcToggleHand(string side) {
-		if ( isServer )
-			return;
+        if (side.Equals("left")) {
 
-		print( gameObject.name + ": toggling the hand on " + side + " side" );
-		if ( side.Equals( "right" ) ) {
-			rightHandIsGrabbing = !rightHandIsGrabbing;
-			if ( rightHandIsGrabbing )
-				HandleGrabbing( "right" );
-			else
-				HandleDropping( "right" );
-		} else {
-			leftHandIsGrabbing = !leftHandIsGrabbing;
-			if ( leftHandIsGrabbing )
-				HandleGrabbing( "left" );
-			else
-				HandleDropping( "left" );
-		}
-	}
+            leftWeapon.GetComponent<Weapon>().TurnOffFire();
+            leftWeapon.GetComponent<ObjectPositionLock>().posPoint = holster.gameObject;
+            leftWeapon.GetComponent<ObjectPositionLock>().posOffset = leftWeapon.GetComponent<Weapon>().data.holsteredPosition;
+            leftWeapon.GetComponent<ObjectPositionLock>().rotOffset = leftWeapon.GetComponent<Weapon>().data.holsteredRotation;
+            leftWeapon.GetComponent<Rigidbody>().isKinematic = true;
+        } else {
+
+            rightWeapon.GetComponent<Weapon>().TurnOffFire();
+            rightWeapon.GetComponent<ObjectPositionLock>().posPoint = holster.gameObject;
+            rightWeapon.GetComponent<ObjectPositionLock>().posOffset = rightWeapon.GetComponent<Weapon>().data.holsteredPosition;
+            rightWeapon.GetComponent<ObjectPositionLock>().rotOffset = rightWeapon.GetComponent<Weapon>().data.holsteredRotation;
+            rightWeapon.GetComponent<Rigidbody>().isKinematic = true;
+        }        
+
+        weaponInteraction.UnassignWeapon(side);
+    }
+
+    [ClientRpc]
+    private void RpcDropWeapon(string side)
+    {
+        if (isServer)
+            return;
+
+        if (side.Equals("left")) {
+
+            leftWeapon.GetComponent<Weapon>().TurnOffFire();
+            leftWeapon.GetComponent<ObjectPositionLock>().posPoint = null;
+            leftWeapon.GetComponent<Rigidbody>().isKinematic = false;
+            leftWeapon = null;
+            weaponInteraction.UnassignWeapon(side);
+        } else {
+
+            rightWeapon.GetComponent<Weapon>().TurnOffFire();
+            rightWeapon.GetComponent<ObjectPositionLock>().posPoint = null;
+            rightWeapon.GetComponent<Rigidbody>().isKinematic = false;
+            rightWeapon = null;
+            weaponInteraction.UnassignWeapon(side);
+        }
+    }
 
 	void HandleDropping(string side)
 	{
@@ -87,28 +113,26 @@ public class GrabWeapon : NetworkBehaviour {
 
 				for ( int i = 0; i < hits.Length; i++ ) {
 
-					if ( !leftWeaponBeingHeld ) {
+					if ( !leftHandIsGrabbing ) {
 						return;
 					} else {
-						//something in hand, handle holster/drop
-						//has kids
 
 						needsToDrop = true;
-						leftWeaponBeingHeld.GetComponent<Weapon>().TurnOffFire();
+						leftWeapon.GetComponent<Weapon>().TurnOffFire();
 
 						if ( hits[i].transform.tag == "Holster" ) {
-							var temp = leftWeaponBeingHeld;
-                            
-							temp.GetComponent<ObjectPositionLock>().posPoint = hits[i].transform.gameObject;
-							temp.GetComponent<ObjectPositionLock>().posOffset = temp.transform.GetComponent<Weapon>().data.holsteredPosition;
-							temp.GetComponent<ObjectPositionLock>().rotOffset = temp.transform.GetComponent<Weapon>().data.holsteredRotation;
-							temp.transform.GetComponent<Rigidbody>().isKinematic = true;
-							print( gameObject.name + ": holstering " + leftWeaponBeingHeld.name + " on the left side" );
-							leftWeaponBeingHeld = null;
-							needsToDrop = false;
-							
 
-							weaponInteraction.UnassignWeapon( side );
+                            leftWeapon.GetComponent<ObjectPositionLock>().posPoint = hits[i].transform.gameObject;
+                            leftWeapon.GetComponent<ObjectPositionLock>().posOffset = leftWeapon.GetComponent<Weapon>().data.holsteredPosition;
+                            leftWeapon.GetComponent<ObjectPositionLock>().rotOffset = leftWeapon.GetComponent<Weapon>().data.holsteredRotation;
+                            leftWeapon.GetComponent<Rigidbody>().isKinematic = true;
+							print( gameObject.name + ": holstering " + leftWeapon.name + " on the left side" );
+                            leftWeapon = null;
+							needsToDrop = false;
+
+                            weaponInteraction.UnassignWeapon( side );
+
+                            RpcHolster(side, hits[i].transform.gameObject);
 							return;
 						}
 
@@ -118,14 +142,16 @@ public class GrabWeapon : NetworkBehaviour {
 
 			}
 
-			if ( needsToDrop && leftWeaponBeingHeld ) {
+			if ( needsToDrop && leftHandIsGrabbing ) {
 
-				print( gameObject.name + ": dropping left hand weapon: " + leftWeaponBeingHeld.name );
-
-				leftWeaponBeingHeld.GetComponent<ObjectPositionLock>().posPoint = null;
-				leftWeaponBeingHeld.GetComponent<Rigidbody>().isKinematic = false;
-				leftWeaponBeingHeld = null;
+				print( gameObject.name + ": dropping left hand weapon: " + leftWeapon.name );
+                leftWeapon.GetComponent<Weapon>().TurnOffFire();
+                leftWeapon.GetComponent<ObjectPositionLock>().posPoint = null;
+                leftWeapon.GetComponent<Rigidbody>().isKinematic = false;
+                leftWeapon = null;
 				weaponInteraction.UnassignWeapon( side );
+
+                RpcDropWeapon(side);
 			}
 			
 		} else {
@@ -137,29 +163,28 @@ public class GrabWeapon : NetworkBehaviour {
 
 				for ( int i = 0; i < hits.Length; i++ ) {
 
-					if ( !rightWeaponBeingHeld ) {
+					if ( !rightHandIsGrabbing ) {
 						return;
 					} else {
 
 						needsToDrop = true;
-						rightWeaponBeingHeld.GetComponent<Weapon>().TurnOffFire();
+						rightWeapon.GetComponent<Weapon>().TurnOffFire();
 
 						if ( hits[i].transform.tag == "Holster" ) {
-							//var temp = hand.GetChild( 0 );
-							var temp = rightWeaponBeingHeld;
 
-							//temp.transform.SetParent( hits[i].transform );
-							temp.GetComponent<ObjectPositionLock>().posPoint = hits[i].transform.gameObject;
-							temp.GetComponent<ObjectPositionLock>().posOffset = temp.transform.GetComponent<Weapon>().data.holsteredPosition;
-							temp.GetComponent<ObjectPositionLock>().rotOffset = temp.transform.GetComponent<Weapon>().data.holsteredRotation;
-							temp.transform.GetComponent<Rigidbody>().isKinematic = true;
+                            rightWeapon.GetComponent<ObjectPositionLock>().posPoint = hits[i].transform.gameObject;
+                            rightWeapon.GetComponent<ObjectPositionLock>().posOffset = rightWeapon.GetComponent<Weapon>().data.holsteredPosition;
+                            rightWeapon.GetComponent<ObjectPositionLock>().rotOffset = rightWeapon.GetComponent<Weapon>().data.holsteredRotation;
+                            rightWeapon.GetComponent<Rigidbody>().isKinematic = true;
 
-							print( gameObject.name + ": holstering " + rightWeaponBeingHeld.name + " on the right side" );
-							rightWeaponBeingHeld = null;
+							print( gameObject.name + ": holstering " + rightWeapon.name + " on the right side" );
+                            rightWeapon = null;
 							needsToDrop = false;
 
 
 							weaponInteraction.UnassignWeapon( side );
+
+                            RpcHolster(side, rightWeapon);
 							return;
 						}
 
@@ -169,38 +194,25 @@ public class GrabWeapon : NetworkBehaviour {
 
 			}
 
-			if ( needsToDrop && rightWeaponBeingHeld ) {
+			if ( needsToDrop && rightHandIsGrabbing ) {
 
-				print( gameObject.name + ": dropping right hand weapon: " + rightWeaponBeingHeld.name );
+				print( gameObject.name + ": dropping right hand weapon: " + rightWeapon.name );
+                rightWeapon.GetComponent<Weapon>().TurnOffFire();
+                rightWeapon.GetComponent<ObjectPositionLock>().posPoint = null;
+                rightWeapon.GetComponent<Rigidbody>().isKinematic = false;
 
-				rightWeaponBeingHeld.GetComponent<ObjectPositionLock>().posPoint = null;
-				rightWeaponBeingHeld.GetComponent<Rigidbody>().isKinematic = false;
-		
-				rightWeaponBeingHeld = null;
+                rightWeapon = null;
 				weaponInteraction.UnassignWeapon( side );
-			}
-		}
 
-	   
+                RpcDropWeapon(side);
+			}
+		}	   
 	}
 
 
 	void HandleGrabbing(string side)
 	{
-		Transform hand;
-		SteamVR_Controller.Device con;
-		if (side.Equals("left"))
-		{
-			hand = leftHand;
-			if(isLocalPlayer)
-				con = Controller.LeftController;
-		}
-		else
-		{
-			hand = rightHand;
-			if(isLocalPlayer)
-				con = Controller.RightController;
-		}
+		Transform hand = side.Equals("left") ? leftHand : rightHand;
 
 		RaycastHit[] hits = Physics.SphereCastAll(hand.position, radius, transform.forward);
 
@@ -214,28 +226,55 @@ public class GrabWeapon : NetworkBehaviour {
 					GameObject temp;
 
 					if ( side.Equals( "left" ) ) {
-						temp = leftWeaponBeingHeld = hits[i].transform.gameObject;
-						print(gameObject.name + ": setting left hand weapon being held to " + hits[i].transform.gameObject.name );
+						temp = leftWeapon = hits[i].transform.gameObject;
+						print(gameObject.name + ": setting left hand weapon being held to " + temp.name );
 					} else {
-						temp = rightWeaponBeingHeld = hits[i].transform.gameObject;
-						print( gameObject.name + ": setting right hand weapon being held to " + hits[i].transform.gameObject.name );
+						temp = rightWeapon = hits[i].transform.gameObject;
+						print( gameObject.name + ": setting right hand weapon being held to " + temp.name );
 					}
-					
-					hits[i].transform.GetComponent<ObjectPositionLock>().posPoint = hand.gameObject;
-					hits[i].transform.GetComponent<ObjectPositionLock>().posOffset = hits[i].transform.GetComponent<Weapon>().data.heldPosition;
-					hits[i].transform.GetComponent<ObjectPositionLock>().rotOffset = hits[i].transform.GetComponent<Weapon>().data.heldRotation;
 
-					hits[i].transform.GetComponent<Rigidbody>().isKinematic = true;
+                    temp.GetComponent<ObjectPositionLock>().posPoint = hand.gameObject;
+                    temp.GetComponent<ObjectPositionLock>().posOffset = temp.GetComponent<Weapon>().data.heldPosition;
+                    temp.GetComponent<ObjectPositionLock>().rotOffset = temp.GetComponent<Weapon>().data.heldRotation;
+
+					temp.GetComponent<Rigidbody>().isKinematic = true;
 
 					weaponInteraction.AssignWeapon( side, temp );
+                    RpcGrabWeapon(side, temp);
 					return;
-				} else {
-					print( gameObject.name + ": didn't hit a weapon. hit " + hits[i].transform.name + " instead." );
-				}
-
+				} 
 			}
 		}
 	}
+
+    [ClientRpc]
+    private void RpcGrabWeapon(string side, GameObject weapon) {
+
+        if (isServer)
+            return;
+
+        Transform hand;
+        if (side.Equals("left"))
+        {
+            leftWeapon = weapon;
+            hand = leftHand;
+            print(gameObject.name + ": setting left hand weapon being held to " + weapon.name);
+        }
+        else
+        {
+            rightWeapon = weapon;
+            hand = rightHand;
+            print(gameObject.name + ": setting right hand weapon being held to " + weapon.name);
+        }
+
+        weapon.GetComponent<ObjectPositionLock>().posPoint = hand.gameObject;
+        weapon.GetComponent<ObjectPositionLock>().posOffset = weapon.GetComponent<Weapon>().data.heldPosition;
+        weapon.GetComponent<ObjectPositionLock>().rotOffset = weapon.GetComponent<Weapon>().data.heldRotation;
+
+        weapon.GetComponent<Rigidbody>().isKinematic = true;
+
+        weaponInteraction.AssignWeapon(side, weapon);
+    }
 
 	private void OnDrawGizmosSelected() {
 		Gizmos.DrawSphere( rightHand.transform.position, radius );
