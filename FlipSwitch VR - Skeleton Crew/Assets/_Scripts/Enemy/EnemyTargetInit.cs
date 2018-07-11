@@ -14,7 +14,7 @@ public class EnemyTargetInit : MonoBehaviour {
 	public TargetType targetType;
 
 	private void OnEnable() {
-		if(VariableHolder.instance != null ) {
+		if(VariableHolder.instance != null) {
 			if ( targetType == TargetType.Cannon && !VariableHolder.instance.cannons.Contains( gameObject ) ) {
 				VariableHolder.instance.cannons.Add( gameObject );
 			} else if ( targetType == TargetType.Mast && !VariableHolder.instance.mastTargets.Contains( gameObject ) ) {
@@ -34,10 +34,10 @@ public class EnemyTargetInit : MonoBehaviour {
 			} else if ( targetType == TargetType.Ratmen) {
                 GetComponent<Ratman>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
 			} else if ( targetType == TargetType.Player) {
-				if ( !transform.parent.GetComponent<PlayerSetup>().isServer ) {
-					return;
+				if ( transform.parent.GetComponent<PlayerSetup>().isServer ) {
+
+					GetComponentInParent<ScriptSyncPlayer>().ChangeHealth( other.GetComponentInParent<Enemy>().weapon.damage );
 				}
-				GetComponentInParent<ScriptSyncPlayer>().ChangeHealth( other.GetComponentInParent<Enemy>().weapon.damage );
 			}
 		}
 	}
