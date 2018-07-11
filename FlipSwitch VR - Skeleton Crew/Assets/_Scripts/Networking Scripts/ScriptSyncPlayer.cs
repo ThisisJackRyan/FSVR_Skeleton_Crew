@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class ScriptSyncPlayer : NetworkBehaviour {
 
-    [SyncVar(hook = "OnHealthChange")] int health = 100;
+    [SyncVar(hook = "OnHealthChange" )] int health = 100;
 
     private void OnHealthChange(int n)
     {

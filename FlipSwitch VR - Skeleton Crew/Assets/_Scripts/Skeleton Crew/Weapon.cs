@@ -12,12 +12,20 @@ public class Weapon : NetworkBehaviour {
 	public Transform projectileSpawnPos;	
 	public Transform fire;
 	public CannonInteraction owningPlayerCannonScript;
+	public Outline myOutline;
 
-	private void Start() {
+    public bool isBeingHeldByPlayer = false;
+    public bool isBeingHeldByHolster = false;
+
+
+    private void Start() {
 		if(fire != null ) {
 			print("called");
 			fire.gameObject.SetActive( false );
 		}
+
+		myOutline = GetComponent<Outline>();
+		myOutline.enabled = false;
 	}
 
 	public void SpawnBullet() {
