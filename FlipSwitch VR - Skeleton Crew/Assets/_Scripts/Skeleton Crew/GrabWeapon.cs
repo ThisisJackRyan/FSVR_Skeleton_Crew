@@ -15,20 +15,6 @@ public class GrabWeapon : NetworkBehaviour {
 
 	#region syncVar
 
-	[SyncVar(hook = "LeftPickupWeapon")] private bool leftHandNeedsToPickUpWeapon = true;
-
-	private void LeftPickupWeapon(bool n) {
-		leftHandNeedsToPickUpWeapon = n;
-		Debug.LogError(n + " is left pickup on sync");
-	}
-
-	[SyncVar(hook = "RightPickupWeapon")] private bool rightHandNeedsToPickUpWeapon = true;
-
-	private void RightPickupWeapon(bool n) {
-		rightHandNeedsToPickUpWeapon = n;
-		Debug.LogError(n + " is left pickup on sync");
-	}
-
 	#endregion
 
 	// Use this for initialization
@@ -36,79 +22,51 @@ public class GrabWeapon : NetworkBehaviour {
 		weaponInteraction = GetComponent<WeaponInteraction>();
 	}
 
-	void FixedUpdate() {
+	void Update() {
 		if (!isLocalPlayer) {
 			return;
 		}
 
-		if (Controller.RightController.GetPressDown(Controller.Grip)) {
-			CmdDropIfHolding("right");
-			//run highlight logic here
-		}
-
-		if (Controller.LeftController.GetPressDown(Controller.Grip)) {
-			CmdDropIfHolding("left");
-			//run highlight logic here
-		}
-
-		if (rightHandNeedsToPickUpWeapon) {
-			if (Controller.RightController.GetPress(Controller.Grip)) {
+        if (rightWeaponGameObj)
+        {
+            if (Controller.RightController.GetPressDown(Controller.Grip))
+            {
+                CmdDropIfHolding("right");
+                //run highlight logic here
+            }
+        } else {
+		    if (Controller.RightController.GetPress(Controller.Grip)) {
 				//run highlight logic here
 				CmdFindAndHighlightNearestWeapon("right", gameObject);
 			}
-		}
 
-		if (leftHandNeedsToPickUpWeapon) {
-			if (Controller.LeftController.GetPress(Controller.Grip)) {
+            if (Controller.RightController.GetPressUp(Controller.Grip))
+            {
+                CmdGrabIfHighlighted("right");
+                //run highlight logic here
+            }
+        }
+
+        if (leftWeaponGameObj) {
+            if (Controller.LeftController.GetPressDown(Controller.Grip))
+            {
+                CmdDropIfHolding("left");
+                //run highlight logic here
+            }
+        } else {
+		    if (Controller.LeftController.GetPress(Controller.Grip)) {
 				//run highlight logic here
 				CmdFindAndHighlightNearestWeapon("left", gameObject);
 			}
-		}
-
-
-		if (Controller.RightController.GetPressUp(Controller.Grip)) {
-			CmdGrabIfHighlighted("right");
-			//run highlight logic here
-		}
-
-		if (Controller.LeftController.GetPressUp(Controller.Grip)) {
+            if (Controller.LeftController.GetPressUp(Controller.Grip)) {
 			CmdGrabIfHighlighted("left");
 			//run highlight logic here
+		    }
 		}
+        
 	}
 
-	[Command]
-	private void CmdGrabIfHighlighted(string side) {
-		Transform hand = side.Equals("left") ? leftHand : rightHand;
-		GameObject temp;
-
-		if (side.Equals("left")) {
-			temp = leftWeaponGameObj = leftHighlightedWeaponObj;
-			if (leftHighlightedWeaponObj) {
-				leftHighlightedWeaponObj.GetComponent<Outline>().enabled = false;
-				leftHighlightedWeaponObj = null;
-			}
-		}
-		else {
-			temp = rightWeaponGameObj = rightHighlightedWeaponObj;
-			if (rightHighlightedWeaponObj) {
-				rightHighlightedWeaponObj.GetComponent<Outline>().enabled = false;
-				rightHighlightedWeaponObj = null;
-			}
-		}
-
-		if (temp) {
-			temp.GetComponent<ObjectPositionLock>().posPoint = hand.gameObject;
-			temp.GetComponent<ObjectPositionLock>().posOffset = temp.GetComponent<Weapon>().data.heldPosition;
-			temp.GetComponent<ObjectPositionLock>().rotOffset = temp.GetComponent<Weapon>().data.heldRotation;
-
-			temp.GetComponent<Rigidbody>().isKinematic = true;
-
-			weaponInteraction.AssignWeapon(side, temp);
-			RpcGrabWeapon(side, temp);
-		}
-	}
-
+    #region Commands
 	[Command]
 	private void CmdFindAndHighlightNearestWeapon(string side, GameObject player) {
 		Transform hand = side.Equals("left") ? leftHand : rightHand;
@@ -121,6 +79,10 @@ public class GrabWeapon : NetworkBehaviour {
 			//print("hits > 0 with " + hits.Length);
 			for (int i = 0; i < hits.Length; i++) {
 				if (hits[i].transform.tag == "Weapon") {
+                    if (hits[i].transform.GetComponent<Weapon>().isBeingHeldByPlayer){
+                        continue;
+                    }
+
 					hitWeapon = true;
 					if (!closest) {
 						closest = hits[i].transform.gameObject;
@@ -137,10 +99,10 @@ public class GrabWeapon : NetworkBehaviour {
 		}
 
 		if (closest) {
-			if (Mathf.Abs(Vector3.Distance(closest.transform.position, hand.position)) >= (radius * 3) ||
-			    hitWeapon == false) {
-				print("TOO FAR");
+			if (Mathf.Abs(Vector3.Distance(closest.transform.position, hand.position)) >= radius  || hitWeapon == false) {
+				print("no weapon in range");
 				closest = null;
+
 				if (side.Equals("left")) {
 					leftHighlightedWeaponObj = null;
 				}
@@ -149,8 +111,7 @@ public class GrabWeapon : NetworkBehaviour {
 				}
 
 				RpcUnhighlightWeapon(side, player);
-			}
-			else {
+			} else {
 				if (side.Equals("left")) {
 					leftHighlightedWeaponObj = closest;
 				}
@@ -163,7 +124,78 @@ public class GrabWeapon : NetworkBehaviour {
 		}
 	}
 
-	[ClientRpc]
+    [Command]
+	private void CmdGrabIfHighlighted(string side) {
+		Transform hand = side.Equals("left") ? leftHand : rightHand;
+		GameObject temp = null;
+
+		if (side.Equals("left")) {
+			if (leftHighlightedWeaponObj) {
+			    temp = leftWeaponGameObj = leftHighlightedWeaponObj;
+				leftHighlightedWeaponObj.GetComponent<Outline>().enabled = false;
+				leftHighlightedWeaponObj = null;
+			}
+		}
+		else {
+			if (rightHighlightedWeaponObj) {
+			    temp = rightWeaponGameObj = rightHighlightedWeaponObj;
+				rightHighlightedWeaponObj.GetComponent<Outline>().enabled = false;
+				rightHighlightedWeaponObj = null;
+			}
+		}
+
+		if (temp != null) {
+            //keep?
+            if (Mathf.Abs(Vector3.Distance(temp.transform.position, hand.position)) >= radius) {
+                RpcUnhighlightWeapon(side, gameObject);
+
+                if (side.Equals("left")) {
+                    leftWeaponGameObj = null;
+                }
+                else
+                {
+                    rightWeaponGameObj = null;
+                }
+                return;
+            }
+
+			temp.GetComponent<ObjectPositionLock>().posPoint = hand.gameObject;
+			temp.GetComponent<ObjectPositionLock>().posOffset = temp.GetComponent<Weapon>().data.heldPosition;
+			temp.GetComponent<ObjectPositionLock>().rotOffset = temp.GetComponent<Weapon>().data.heldRotation;
+            temp.GetComponent<Weapon>().isBeingHeldByPlayer = true;
+
+			temp.GetComponent<Rigidbody>().isKinematic = true;
+
+			weaponInteraction.AssignWeapon(side, temp);
+			RpcGrabWeapon(side, temp);
+		}
+	}
+
+	[Command]
+	private void CmdDropIfHolding(string side) {
+		if (side.Equals("right")) {
+			print("calls handle dropping right in cmd " + rightWeaponGameObj);
+
+			if (rightWeaponGameObj != null) {
+                print("right weapon exist, drop it");
+				HandleDropping("right");
+			}
+		} else {
+			print("calls handle dropping left in cmd " + leftWeaponGameObj);
+
+			if (leftWeaponGameObj != null) {
+                print("left weapon exist, drop it");
+
+                HandleDropping("left");
+			}
+		}
+	}
+
+    #endregion
+
+    #region RPC
+
+    [ClientRpc]
 	private void RpcUnhighlightWeapon(string side, GameObject player) {
 		if (isServer)
 			return;
@@ -210,32 +242,6 @@ public class GrabWeapon : NetworkBehaviour {
 		}
 	}
 
-	[Command]
-	private void CmdDropIfHolding(string side) {
-		if (side.Equals("right")) {
-			print("calls handle dropping right in cmd " + rightWeaponGameObj);
-
-			if (rightWeaponGameObj != null) {
-				rightHandNeedsToPickUpWeapon = false;
-				HandleDropping("right");
-			}
-			else {
-				rightHandNeedsToPickUpWeapon = true;
-			}
-		}
-		else {
-			print("calls handle dropping left in cmd " + leftWeaponGameObj);
-
-			if (leftWeaponGameObj != null) {
-				HandleDropping("left");
-				leftHandNeedsToPickUpWeapon = false;
-			}
-			else {
-				leftHandNeedsToPickUpWeapon = true;
-			}
-		}
-	}
-
 	[ClientRpc]
 	private void RpcHolster(string side, GameObject holster) {
 		if (isServer)
@@ -246,10 +252,8 @@ public class GrabWeapon : NetworkBehaviour {
 		if (side.Equals("left")) {
 			leftWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
 			leftWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = holster.gameObject;
-			leftWeaponGameObj.GetComponent<ObjectPositionLock>().posOffset =
-				leftWeaponGameObj.GetComponent<Weapon>().data.holsteredPosition;
-			leftWeaponGameObj.GetComponent<ObjectPositionLock>().rotOffset =
-				leftWeaponGameObj.GetComponent<Weapon>().data.holsteredRotation;
+			leftWeaponGameObj.GetComponent<ObjectPositionLock>().posOffset = leftWeaponGameObj.GetComponent<Weapon>().data.holsteredPosition;
+			leftWeaponGameObj.GetComponent<ObjectPositionLock>().rotOffset = leftWeaponGameObj.GetComponent<Weapon>().data.holsteredRotation;
 			leftWeaponGameObj.GetComponent<Rigidbody>().isKinematic = true;
 		}
 		else {
@@ -274,21 +278,60 @@ public class GrabWeapon : NetworkBehaviour {
 
 		if (side.Equals("left")) {
 			leftWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
-			leftWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = null;
+            leftWeaponGameObj.GetComponent<Weapon>().isBeingHeldByPlayer = false;
+            leftWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = null;
 			leftWeaponGameObj.GetComponent<Rigidbody>().isKinematic = false;
 			leftWeaponGameObj = null;
 			weaponInteraction.UnassignWeapon(side);
 		}
 		else {
 			rightWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
-			rightWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = null;
+            rightWeaponGameObj.GetComponent<Weapon>().isBeingHeldByPlayer = false;
+            rightWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = null;
 			rightWeaponGameObj.GetComponent<Rigidbody>().isKinematic = false;
 			rightWeaponGameObj = null;
 			weaponInteraction.UnassignWeapon(side);
 		}
 	}
 
-	void HandleDropping(string side) {
+	[ClientRpc]
+	private void RpcGrabWeapon(string side, GameObject weapon) {
+		if (isServer) {
+			return;
+		}
+
+		Transform hand;
+		if (side.Equals("left")) {
+			leftWeaponGameObj = weapon;
+			hand = leftHand;
+			print(gameObject.name + ": setting left hand weapon being held to " + weapon.name);
+
+			leftHighlightedWeaponObj.GetComponent<Outline>().enabled = false;
+			leftHighlightedWeaponObj = null;
+		}
+		else {
+			rightWeaponGameObj = weapon;
+			hand = rightHand;
+			print(gameObject.name + ": setting right hand weapon being held to " + weapon.name);
+
+			rightHighlightedWeaponObj.GetComponent<Outline>().enabled = false;
+			rightHighlightedWeaponObj = null;
+		}
+
+		weapon.GetComponent<ObjectPositionLock>().posPoint = hand.gameObject;
+		weapon.GetComponent<ObjectPositionLock>().posOffset = weapon.GetComponent<Weapon>().data.heldPosition;
+		weapon.GetComponent<ObjectPositionLock>().rotOffset = weapon.GetComponent<Weapon>().data.heldRotation;
+        weapon.GetComponent<Weapon>().isBeingHeldByPlayer = true;
+
+
+        weapon.GetComponent<Rigidbody>().isKinematic = true;
+
+		weaponInteraction.AssignWeapon(side, weapon);
+	}
+
+    #endregion
+
+    void HandleDropping(string side) {
 		Debug.LogWarning("drop called for " + side);
 
 		if (side.Equals("left")) {
@@ -306,10 +349,8 @@ public class GrabWeapon : NetworkBehaviour {
 					if (hits[i].transform.tag == "Holster") {
 						print("finds holster left on server");
 						leftWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = hits[i].transform.gameObject;
-						leftWeaponGameObj.GetComponent<ObjectPositionLock>().posOffset =
-							leftWeaponGameObj.GetComponent<Weapon>().data.holsteredPosition;
-						leftWeaponGameObj.GetComponent<ObjectPositionLock>().rotOffset =
-							leftWeaponGameObj.GetComponent<Weapon>().data.holsteredRotation;
+						leftWeaponGameObj.GetComponent<ObjectPositionLock>().posOffset = leftWeaponGameObj.GetComponent<Weapon>().data.holsteredPosition;
+						leftWeaponGameObj.GetComponent<ObjectPositionLock>().rotOffset = leftWeaponGameObj.GetComponent<Weapon>().data.holsteredRotation;
 						leftWeaponGameObj.GetComponent<Rigidbody>().isKinematic = true;
 						print(gameObject.name + ": holstering " + leftWeaponGameObj.name + " on the left side");
 						leftWeaponGameObj = null;
@@ -325,11 +366,13 @@ public class GrabWeapon : NetworkBehaviour {
 			}
 
 
-			if (needsToDrop && !leftHandNeedsToPickUpWeapon) {
+			if (needsToDrop && leftWeaponGameObj) {
 				print("gets to drop weapon left on server");
 				print(gameObject.name + ": dropping left hand weapon: " + leftWeaponGameObj.name);
 				leftWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
-				leftWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = null;
+                leftWeaponGameObj.GetComponent<Weapon>().isBeingHeldByPlayer = false;
+
+                leftWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = null;
 				leftWeaponGameObj.GetComponent<Rigidbody>().isKinematic = false;
 				leftWeaponGameObj = null;
 				weaponInteraction.UnassignWeapon(side);
@@ -370,10 +413,11 @@ public class GrabWeapon : NetworkBehaviour {
 				}
 			}
 
-			if (needsToDrop && !rightHandNeedsToPickUpWeapon) {
+			if (needsToDrop && rightWeaponGameObj) {
 				print(gameObject.name + ": dropping right hand weapon: " + rightWeaponGameObj.name);
 				rightWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
-				rightWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = null;
+                rightWeaponGameObj.GetComponent<Weapon>().isBeingHeldByPlayer = false;
+                rightWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = null;
 				rightWeaponGameObj.GetComponent<Rigidbody>().isKinematic = false;
 
 				rightWeaponGameObj = null;
@@ -382,39 +426,6 @@ public class GrabWeapon : NetworkBehaviour {
 				RpcDropWeapon(side);
 			}
 		}
-	}
-
-	[ClientRpc]
-	private void RpcGrabWeapon(string side, GameObject weapon) {
-		if (isServer) {
-			return;
-		}
-
-		Transform hand;
-		if (side.Equals("left")) {
-			leftWeaponGameObj = weapon;
-			hand = leftHand;
-			print(gameObject.name + ": setting left hand weapon being held to " + weapon.name);
-
-			leftHighlightedWeaponObj.GetComponent<Outline>().enabled = false;
-			leftHighlightedWeaponObj = null;
-		}
-		else {
-			rightWeaponGameObj = weapon;
-			hand = rightHand;
-			print(gameObject.name + ": setting right hand weapon being held to " + weapon.name);
-
-			rightHighlightedWeaponObj.GetComponent<Outline>().enabled = false;
-			rightHighlightedWeaponObj = null;
-		}
-
-		weapon.GetComponent<ObjectPositionLock>().posPoint = hand.gameObject;
-		weapon.GetComponent<ObjectPositionLock>().posOffset = weapon.GetComponent<Weapon>().data.heldPosition;
-		weapon.GetComponent<ObjectPositionLock>().rotOffset = weapon.GetComponent<Weapon>().data.heldRotation;
-
-		weapon.GetComponent<Rigidbody>().isKinematic = true;
-
-		weaponInteraction.AssignWeapon(side, weapon);
 	}
 
 	private void OnDrawGizmosSelected() {
