@@ -10,6 +10,7 @@ public class HealthDisplay : MonoBehaviour {
 	public DamagedObject dmgObj;
 	public Enemy enemy;
 	public Player player;
+    public Ratman rat;
 
 	// Use this for initialization
 	void Start() {}
@@ -27,5 +28,9 @@ public class HealthDisplay : MonoBehaviour {
 		if (player) {
 			text.text = player.health.ToString();
 		}
-	}
+
+        if (rat) {
+            text.text = rat.health.ToString();
+        }
+    }
 }
