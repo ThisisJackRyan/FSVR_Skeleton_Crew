@@ -15,8 +15,7 @@ public class Weapon : NetworkBehaviour {
 	public Outline myOutline;
 
     public bool isBeingHeldByPlayer = false;
-    public bool isBeingHeldByHolster = false;
-
+    public GameObject playerWhoHolstered = null;
 
     private void Start() {
 		if(fire != null ) {
