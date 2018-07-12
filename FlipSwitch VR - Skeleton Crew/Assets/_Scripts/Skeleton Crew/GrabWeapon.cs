@@ -79,7 +79,7 @@ public class GrabWeapon : NetworkBehaviour {
                         continue;
                     }
 
-                    if (hits[i].transform.GetComponent<Weapon>().playerWhoHolstered != player) {
+                    if (hits[i].transform.GetComponent<Weapon>().playerWhoHolstered != player && hits[i].transform.GetComponent<Weapon>().playerWhoHolstered != null) {
                             continue;                        
                     }
 
@@ -240,6 +240,12 @@ public class GrabWeapon : NetworkBehaviour {
                 }
 
                 weaponToHighlight.GetComponent<Weapon>().myOutline.enabled = true;
+                rightHighlightedWeaponObj = weaponToHighlight;
+            }
+        } else if(player == gameObject) {
+            if (side.Equals("left")) {
+                leftHighlightedWeaponObj = weaponToHighlight;
+            } else {
                 rightHighlightedWeaponObj = weaponToHighlight;
             }
         }
