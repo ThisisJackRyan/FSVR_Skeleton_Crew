@@ -9,12 +9,14 @@ public class PlayerSetup : NetworkBehaviour {
     public MonoBehaviour[] componetsToDisable;
     public GameObject[] objectsToDisable;
 
+    public SteamVR_TrackedObject leftFoot, rightFoot, hip;
+
 
     [SyncVar( hook = "OnPlayerNumChange")] int playerNum = 0;
 
 	public override void OnStartLocalPlayer() {
 		base.OnStartLocalPlayer();
-
+               
 		GhostFreeRoamCamera go = GameObject.FindObjectOfType<GhostFreeRoamCamera>();
 		go.GetComponent<Camera>().enabled = false;
 		go.enabled = false;
@@ -26,7 +28,9 @@ public class PlayerSetup : NetworkBehaviour {
 			CmdSetPlayerNum(int.Parse( NetworkHelper.GetLocalIPAddress().Substring( NetworkHelper.GetLocalIPAddress().Length - 1 ) ) );
 			gameObject.name = "Player " + playerNum;
 
-			SteamVR_Fade.Start( Color.black, 0 );
+            SetTrackerIDs();
+
+            SteamVR_Fade.Start( Color.black, 0 );
 			StartCoroutine("FadeIn");
 
 		} else {
@@ -74,6 +78,12 @@ public class PlayerSetup : NetworkBehaviour {
 		SteamVR_Fade.Start( Color.clear, 1 );
 	}
 
+
+    void SetTrackerIDs() {
+        leftFoot.index = TrackerIds.leftFootId;
+        rightFoot.index = TrackerIds.rightFootId;
+        hip.index = TrackerIds.hipId;
+    }
 
 	[Command]
     private void CmdSetPlayerNum(int n)

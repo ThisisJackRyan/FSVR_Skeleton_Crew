@@ -10,6 +10,8 @@ public class ConnectWithPress : MonoBehaviour {
 
     public ViveRoleSetter left, right;
 
+    public TrackerIdSetter[] setters;
+
     // Use this for initialization
     void OnEnable() {
         //if (NetworkHelper.GetLocalIPAddress().Equals(NetworkHelper.hostIpAddress))
@@ -28,11 +30,12 @@ public class ConnectWithPress : MonoBehaviour {
         }
 
         if (canInput) {
-
-
             if (Controller.RightController.GetPressDown(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger)) {
-                StartCoroutine("FadeAndLoad");
+                foreach (var item in setters) {
+                    item.SetTrackerId();
+                }
 
+                StartCoroutine("FadeAndLoad");
             }
         }
     }
