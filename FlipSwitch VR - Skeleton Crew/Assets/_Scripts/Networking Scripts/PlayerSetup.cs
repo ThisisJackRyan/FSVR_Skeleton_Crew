@@ -31,7 +31,6 @@ public class PlayerSetup : NetworkBehaviour {
             SetTrackerIDs();
 
             SteamVR_Fade.Start( Color.black, 0 );
-			StartCoroutine("FadeIn");
 
 		} else {
 			OnPlayerNumChange( playerNum );
@@ -51,23 +50,21 @@ public class PlayerSetup : NetworkBehaviour {
 			print( "adding " + obj.name + " to the player dictionary" );
 			ExitLobbyPlayerTrigger.playerDict.Add( obj, false );
 		}
-
-		GetComponent<VRIKCalibrateOnStart>().CalibratePlayer();
-
-		var iks = FindObjectsOfType<VRIKCalibrateOnStart>();
-		print(iks.Length);
-		foreach (var item in iks) {
-			print(item.calibrated + " calibrated " + name);
-			item.CalibratePlayer();
-		}
-
+        
 		if ( NumberOfPlayerHolder.instance.numberOfPlayers == VariableHolder.instance.players.Count ) {
 			print( "all players joined" );
-			//var iks = FindObjectsOfType<VRIKCalibrateOnStart>();
-			//foreach ( var item in iks ) {
-			//	item.CalibratePlayer();
-			//}
-			FindObjectOfType<CaptainDialogueLobby>().enabled = true;
+
+            GetComponent<VRIKCalibrateOnStart>().CalibratePlayer();
+
+            var iks = FindObjectsOfType<VRIKCalibrateOnStart>();
+            print(iks.Length);
+            foreach (var item in iks) {
+                print(item.calibrated + " calibrated " + name);
+                item.CalibratePlayer();
+            }
+
+            FindObjectOfType<CaptainDialogueLobby>().enabled = true;
+            StartCoroutine("FadeIn");
 		}
 
 	}
@@ -77,8 +74,7 @@ public class PlayerSetup : NetworkBehaviour {
 		yield return new WaitForSecondsRealtime(1f);
 		SteamVR_Fade.Start( Color.clear, 1 );
 	}
-
-
+    
     void SetTrackerIDs() {
         leftFoot.index = TrackerIds.leftFootId;
         rightFoot.index = TrackerIds.rightFootId;
