@@ -73,7 +73,53 @@ revolver_holster_01.wav
 	-cc0
 	-https://freesound.org/people/Fewes/sounds/233737/
 	
+door-creak01.flac
+	-Aiyumi
+	-cc0
+	-https://freesound.org/people/Aiyumi/sounds/244424/
+	
+rubber hammer
+	-13FPanská_Tolar_David
+	-cc0
+	-https://freesound.org/people/13FPansk%C3%A1_Tolar_David/sounds/378698/
+
+sail raising.wav
+	-cabro
+	-cc0
+	-https://freesound.org/people/cabro/sounds/265621/
+
+	
 ---------------------------------------------------------------------------------------------------------	
+34091__dangerbabe__drum -> Snd_WarDrum1
+	-dangerbabe
+	-Attribution 3.0
+	-Editted
+	-https://freesound.org/people/dangerbabe/sounds/34091/
+
+Door, Wooden, Close, A (H6 MS).wav
+	-InspectorJ
+	-Attribution 3.0
+	-Editted
+	-https://freesound.org/people/InspectorJ/sounds/411789/
+
+Cloth Flapping -> Snd_SailWind
+	-Huggy13ear
+	-Attribution 3.0
+	-Editted
+	-https://freesound.org/people/Huggy13ear/sounds/138973/
+
+Large Chain Sounds -> Snd_Chains(N)
+	-Mike Koenig 
+	-Attribution 3.0
+	-Editted
+	-http://soundbible.com/1101-Large-Chains.html
+	
+Wind Sound -> Snd_SailWind
+	-Mark DiAngelo
+	-Attribution 3.0
+	-Editted
+	-http://soundbible.com/1810-Wind.html
+
 Draw Bow and Fire Sound -> Snd_BowDraw and Snd_BowFire
 	-Mike Koenig 
 	-Attribution 3.0
@@ -91,6 +137,24 @@ tolling-bell_daniel-simion.wav -> Snd_Bell
 	-Attribution 3.0
 	-Editted
 	-http://soundbible.com/2206-Tolling-Bell.html
+	
+church bell chime sound -> snd_bells
+	-Daniel Simion 
+	-Attribution 3.0
+	-Editted
+	-http://soundbible.com/2171-Church-Bell-Chime.html
+
+Fire Burning Sound -> Snd_DragonBreathingFire
+	-JaBa
+	-Attribution 3.0
+	-Editted
+	-http://soundbible.com/1902-Fire-Burning.html
+	
+Dragon Sounds
+	-Shaking_97
+	-Attribution 3.0
+	-Editted
+	-https://freesound.org/people/Slaking_97/packs/18685/
 	
 --------------------------------------------------------------------------------------------------------
 "Let's Play with Free Sound Effects" 
