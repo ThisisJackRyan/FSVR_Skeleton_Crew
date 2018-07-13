@@ -67,7 +67,7 @@ public class GrabWeapon : NetworkBehaviour {
     private void CmdFindAndHighlightNearestWeapon(string side, GameObject player) {
         Transform hand = side.Equals("left") ? leftHand : rightHand;
 
-        RaycastHit[] hits = Physics.SphereCastAll(hand.position, radius, hand.forward);
+        Collider[] hits = Physics.OverlapSphere(hand.position, radius);
         GameObject closest = null;
         bool hitWeapon = false;
 
@@ -75,11 +75,11 @@ public class GrabWeapon : NetworkBehaviour {
             ////print("hits > 0 with " + hits.Length);
             for (int i = 0; i < hits.Length; i++) {
                 if (hits[i].transform.tag == "Weapon") {
-                    if (hits[i].transform.GetComponent<Weapon>().isBeingHeldByPlayer) {
+                    if (hits[i].transform.GetComponentInParent<Weapon>().isBeingHeldByPlayer) {
                         continue;
                     }
 
-                    if (hits[i].transform.GetComponent<Weapon>().playerWhoHolstered != player && hits[i].transform.GetComponent<Weapon>().playerWhoHolstered != null) {
+                    if (hits[i].transform.GetComponentInParent<Weapon>().playerWhoHolstered != player && hits[i].transform.GetComponent<Weapon>().playerWhoHolstered != null) {
                             continue;                        
                     }
 
@@ -111,9 +111,9 @@ public class GrabWeapon : NetworkBehaviour {
                 RpcUnhighlightWeapon(side, player);
             } else {
                 if (side.Equals("left")) {
-                    leftHighlightedWeaponObj = closest;
+                    leftHighlightedWeaponObj = closest.transform.root.gameObject;
                 } else if (side.Equals("right")) {
-                    rightHighlightedWeaponObj = closest;
+                    rightHighlightedWeaponObj = closest.transform.root.gameObject;
                 }
 
                 RpcHighlightWeapon(side, closest, player);
@@ -372,7 +372,7 @@ public class GrabWeapon : NetworkBehaviour {
         Debug.LogWarning("drop called for " + side);
 
         if (side.Equals("left")) {
-            RaycastHit[] hits = Physics.SphereCastAll(leftHand.position, radius, transform.forward);
+            Collider[] hits = Physics.OverlapSphere(leftHand.position, radius);
 
             bool needsToDrop = false;
 
@@ -455,7 +455,7 @@ public class GrabWeapon : NetworkBehaviour {
                 RpcDropWeapon(side);
             }
         } else {
-            RaycastHit[] hits = Physics.SphereCastAll(rightHand.position, radius, transform.forward);
+            Collider[] hits = Physics.OverlapSphere(rightHand.position, radius);
 
             bool needsToDrop = false;
 
