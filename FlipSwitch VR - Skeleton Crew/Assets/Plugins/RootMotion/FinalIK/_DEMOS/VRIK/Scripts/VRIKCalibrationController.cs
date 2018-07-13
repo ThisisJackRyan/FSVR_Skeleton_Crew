@@ -28,7 +28,7 @@ namespace RootMotion.Demos
         [ContextMenu("Calibrate")]
         public void Calibrate() {
 			VRIKCalibrator.Calibrate(ik, settings, headTracker, bodyTracker, leftHandTracker, rightHandTracker, leftFootTracker, rightFootTracker);
-            Debug.LogError("calibrate has been called on " + gameObject.GetHashCode());
+
         }
     }
 }

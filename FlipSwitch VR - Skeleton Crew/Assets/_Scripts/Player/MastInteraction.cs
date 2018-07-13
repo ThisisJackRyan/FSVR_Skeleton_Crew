@@ -16,10 +16,6 @@ public class MastInteraction : NetworkBehaviour {
 	public GameObject gp;
 	public GameObject hp;
 	public GameObject rp;
-	#region Privates
-
-
-	#endregion
 
 	//internal GameObject selected;
 
@@ -33,7 +29,7 @@ public class MastInteraction : NetworkBehaviour {
 		if ( !isLocalPlayer )
 			return;
 
-		if(emptyLeftHand && Controller.LeftController.GetPressDown( Controller.Trigger ) ) {
+		if(emptyLeftHand && Controller.LeftController.GetPressDown( Controller.Grip ) ) {
 			RaycastHit[] hits = Physics.SphereCastAll( leftHand.position, radius, leftHand.forward );
 			for ( int i = 0; i < hits.Length; i++ ) {
 				if ( hits[i].transform.tag == "MastRope" ) {
@@ -51,7 +47,7 @@ public class MastInteraction : NetworkBehaviour {
 			}
 		}
 
-		if(emptyRightHand && Controller.RightController.GetPressDown( Controller.Trigger ) ) {
+		if(emptyRightHand && Controller.RightController.GetPressDown( Controller.Grip ) ) {
 			RaycastHit[] hits = Physics.SphereCastAll( rightHand.position, radius, rightHand.forward );
 			for ( int i = 0; i < hits.Length; i++ ) {
 				if ( hits[i].transform.tag == "MastRope" ) {
@@ -69,12 +65,12 @@ public class MastInteraction : NetworkBehaviour {
 			}
 		}
 
-		if(gp != null && hp != null && leftHandInteracting && Controller.LeftController.GetPressUp( Controller.Trigger )) {
+		if(gp != null && hp != null && leftHandInteracting && Controller.LeftController.GetPressUp( Controller.Grip )) {
 			CleanupPoints();
 			//leftHandInteracting = false;
 		}
 
-		if ( gp != null && hp != null && rightHandInteracting && Controller.RightController.GetPressUp( Controller.Trigger )) {
+		if ( gp != null && hp != null && rightHandInteracting && Controller.RightController.GetPressUp( Controller.Grip )) {
 			CleanupPoints();
 			//rightHandInteracting = false;
 		}

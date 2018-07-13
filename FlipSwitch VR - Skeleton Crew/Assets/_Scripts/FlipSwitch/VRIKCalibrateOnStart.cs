@@ -37,7 +37,7 @@ public class VRIKCalibrateOnStart : NetworkBehaviour {
 		calibrated = true;
         yield return new WaitForSecondsRealtime(1);
         mine.Calibrate();
-        print("calibrated locally");
+
     }
 
     [Command]

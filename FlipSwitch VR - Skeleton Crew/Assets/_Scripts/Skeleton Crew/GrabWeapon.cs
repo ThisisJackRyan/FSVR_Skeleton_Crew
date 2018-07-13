@@ -72,7 +72,7 @@ public class GrabWeapon : NetworkBehaviour {
         bool hitWeapon = false;
 
         if (hits.Length > 0) {
-            //print("hits > 0 with " + hits.Length);
+            ////print("hits > 0 with " + hits.Length);
             for (int i = 0; i < hits.Length; i++) {
                 if (hits[i].transform.tag == "Weapon") {
                     if (hits[i].transform.GetComponent<Weapon>().isBeingHeldByPlayer) {
@@ -89,7 +89,7 @@ public class GrabWeapon : NetworkBehaviour {
                     } else {
                         if (Mathf.Abs(Vector3.Distance(hand.position, hits[i].transform.position)) <
                             Mathf.Abs(Vector3.Distance(hand.position, closest.transform.position))) {
-                            //print("wjbwefkjgb");
+                            ////print("wjbwefkjgb");
                             closest = hits[i].transform.gameObject;
                         }
                     }
@@ -99,7 +99,7 @@ public class GrabWeapon : NetworkBehaviour {
 
         if (closest) {
             if (Mathf.Abs(Vector3.Distance(closest.transform.position, hand.position)) >= radius || hitWeapon == false) {
-                print("no weapon in range");
+                //print("no weapon in range");
                 closest = null;
 
                 if (side.Equals("left")) {
@@ -163,10 +163,10 @@ public class GrabWeapon : NetworkBehaviour {
             temp.GetComponent<Rigidbody>().isKinematic = true;
 
             if (temp == weaponInRightHolster) {
-                print("found weapon in right holster");
+                //print("found weapon in right holster");
                 weaponInRightHolster = null;
             } else if (temp == weaponInLeftHolster) {
-                print("found weapon in left holster");
+                //print("found weapon in left holster");
 
                 weaponInLeftHolster = null;
             }
@@ -179,17 +179,17 @@ public class GrabWeapon : NetworkBehaviour {
     [Command]
     private void CmdDropIfHolding(string side, GameObject player) {
         if (side.Equals("right")) {
-            print("calls handle dropping right in cmd " + rightWeaponGameObj);
+            //print("calls handle dropping right in cmd " + rightWeaponGameObj);
 
             if (rightWeaponGameObj != null) {
-                print("right weapon exist, drop it");
+                //print("right weapon exist, drop it");
                 HandleDropping("right", player);
             }
         } else {
-            print("calls handle dropping left in cmd " + leftWeaponGameObj);
+            //print("calls handle dropping left in cmd " + leftWeaponGameObj);
 
             if (leftWeaponGameObj != null) {
-                print("left weapon exist, drop it");
+                //print("left weapon exist, drop it");
 
                 HandleDropping("left", player);
             }
@@ -261,14 +261,14 @@ public class GrabWeapon : NetworkBehaviour {
         if (side.Equals("left")) {
             leftWeaponGameObj = weapon;
             hand = leftHand;
-            print(gameObject.name + ": setting left hand weapon being held to " + weapon.name);
+            ////print(gameObject.name + ": setting left hand weapon being held to " + weapon.name);
 
             leftHighlightedWeaponObj.GetComponent<Outline>().enabled = false;
             leftHighlightedWeaponObj = null;
         } else {
             rightWeaponGameObj = weapon;
             hand = rightHand;
-            print(gameObject.name + ": setting right hand weapon being held to " + weapon.name);
+            ////print(gameObject.name + ": setting right hand weapon being held to " + weapon.name);
 
             rightHighlightedWeaponObj.GetComponent<Outline>().enabled = false;
             rightHighlightedWeaponObj = null;
@@ -291,7 +291,7 @@ public class GrabWeapon : NetworkBehaviour {
         if (isServer)
             return;
 
-        print("rpc drop weapon called on client");
+        //print("rpc drop weapon called on client");
 
         if (side.Equals("left")) {
             leftWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
@@ -319,12 +319,12 @@ public class GrabWeapon : NetworkBehaviour {
         if (isServer)
             return;
 
-        print("rpc holster called on client");
+        //print("rpc holster called on client");
 
         GameObject holster = (holsterLeft) ? leftHolster : rightHolster;
 
         if (side.Equals("left")) {
-            print("rpc side is left and the weapon is " + leftWeaponGameObj);
+            //print("rpc side is left and the weapon is " + leftWeaponGameObj);
             leftWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
             leftWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = holster;
             leftWeaponGameObj.GetComponent<ObjectPositionLock>().posOffset = leftWeaponGameObj.GetComponent<Weapon>().data.holsteredPosition;
@@ -332,16 +332,16 @@ public class GrabWeapon : NetworkBehaviour {
             leftWeaponGameObj.GetComponent<Rigidbody>().isKinematic = true;
 
             if (holster == rightHolster) {
-                print("rpc side is left with right holster");
+                //print("rpc side is left with right holster");
                 weaponInRightHolster = leftWeaponGameObj;
             } else if (holster == leftHolster) {
-                print("rpc side is left with left holster");
+                //print("rpc side is left with left holster");
                 weaponInLeftHolster = leftWeaponGameObj;
             }
 
             leftWeaponGameObj = null;
         } else {
-            print("rpc side is right and the weapon is " + rightWeaponGameObj);
+            //print("rpc side is right and the weapon is " + rightWeaponGameObj);
 
             rightWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
             rightWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = holster;
@@ -349,14 +349,14 @@ public class GrabWeapon : NetworkBehaviour {
             rightWeaponGameObj.GetComponent<ObjectPositionLock>().rotOffset = rightWeaponGameObj.GetComponent<Weapon>().data.holsteredRotation;
             rightWeaponGameObj.GetComponent<Rigidbody>().isKinematic = true;
 
-            print("holster is " + holster.name);
-            print("right holster is " + rightHolster.name);
+            //print("holster is " + holster.name);
+            //print("right holster is " + rightHolster.name);
 
             if (holster == rightHolster) {
-                print("rpc side is right with right holster");
+                //print("rpc side is right with right holster");
                 weaponInRightHolster = rightWeaponGameObj;
             } else if (holster == leftHolster) {
-                print("rpc side is right with left holster");
+                //print("rpc side is right with left holster");
                 weaponInLeftHolster = rightWeaponGameObj;
             }
 
@@ -384,13 +384,13 @@ public class GrabWeapon : NetworkBehaviour {
                     leftWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
 
                     if (hits[i].transform == rightHolster.transform) {
-                        print("left found right holster");
+                        //print("left found right holster");
                         //check if right holster has a weapon
                         if (weaponInRightHolster) {
-                            print("right holster not empty");
+                            //print("right holster not empty");
                             continue; //breaks out and continues loop. should drop if didnt find another holster
                         }
-                        print("right holster IS empty, holster weapon");
+                        //print("right holster IS empty, holster weapon");
 
                         //holster should be empty
                         leftWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = hits[i].transform.gameObject;
@@ -400,7 +400,7 @@ public class GrabWeapon : NetworkBehaviour {
                         leftWeaponGameObj.GetComponent<Weapon>().isBeingHeldByPlayer = false;
                         leftWeaponGameObj.GetComponent<Weapon>().playerWhoHolstered = player;
 
-                        print(gameObject.name + ": holstering " + leftWeaponGameObj.name + " in the right holster using left hand");
+                        //print(gameObject.name + ": holstering " + leftWeaponGameObj.name + " in the right holster using left hand");
                         weaponInRightHolster = leftWeaponGameObj;
                         leftWeaponGameObj = null;
 
@@ -409,14 +409,14 @@ public class GrabWeapon : NetworkBehaviour {
                         return;
 
                     } else if (hits[i].transform == leftHolster.transform) {
-                        print("left found left holster");
+                        //print("left found left holster");
                         //check if right holster has a weapon
                         if (weaponInLeftHolster) {
-                            print("left holster not empty");
+                            //print("left holster not empty");
                             continue; //breaks out and continues loop. should drop if didnt find another holster
                         }
 
-                        print("left holster IS empty, holster weapon");
+                        //print("left holster IS empty, holster weapon");
 
                         //holster should be empty
                         leftWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = hits[i].transform.gameObject;
@@ -426,7 +426,7 @@ public class GrabWeapon : NetworkBehaviour {
                         leftWeaponGameObj.GetComponent<Weapon>().isBeingHeldByPlayer = false;
                         leftWeaponGameObj.GetComponent<Weapon>().playerWhoHolstered = player;
 
-                        print(gameObject.name + ": holstering " + leftWeaponGameObj.name + " in the left holster using left hand");
+                        //print(gameObject.name + ": holstering " + leftWeaponGameObj.name + " in the left holster using left hand");
                         weaponInLeftHolster = leftWeaponGameObj;
                         leftWeaponGameObj = null;
 
@@ -440,8 +440,8 @@ public class GrabWeapon : NetworkBehaviour {
             }
 
             if (needsToDrop && leftWeaponGameObj) {
-                print("gets to drop weapon left on server");
-                print(gameObject.name + ": dropping left hand weapon: " + leftWeaponGameObj.name);
+                //print("gets to drop weapon left on server");
+                //print(gameObject.name + ": dropping left hand weapon: " + leftWeaponGameObj.name);
                 leftWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
                 leftWeaponGameObj.GetComponent<Weapon>().isBeingHeldByPlayer = false;
                 leftWeaponGameObj.GetComponent<Weapon>().playerWhoHolstered = null;
@@ -466,13 +466,13 @@ public class GrabWeapon : NetworkBehaviour {
                     rightWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
 
                     if (hits[i].transform == rightHolster.transform) {
-                        print("right found right holster");
+                        //print("right found right holster");
                         //check if right holster has a weapon
                         if (weaponInRightHolster) {
-                            print("right holster not empty");
+                            //print("right holster not empty");
                             continue; //breaks out and continues loop. should drop if didnt find another holster
                         }
-                        print("right holster IS empty, holster weapon");
+                        //print("right holster IS empty, holster weapon");
 
                         //holster should be empty
                         rightWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = hits[i].transform.gameObject;
@@ -482,7 +482,7 @@ public class GrabWeapon : NetworkBehaviour {
                         rightWeaponGameObj.GetComponent<Weapon>().isBeingHeldByPlayer = false;
                         rightWeaponGameObj.GetComponent<Weapon>().playerWhoHolstered = player;
                         
-                        print(gameObject.name + ": holstering " + rightWeaponGameObj.name + " in the right holster using right hand");
+                        //print(gameObject.name + ": holstering " + rightWeaponGameObj.name + " in the right holster using right hand");
                         weaponInRightHolster = rightWeaponGameObj;
                         rightWeaponGameObj = null;
 
@@ -491,14 +491,14 @@ public class GrabWeapon : NetworkBehaviour {
                         return;
 
                     } else if (hits[i].transform == leftHolster.transform) {
-                        print("right found left holster");
+                        //print("right found left holster");
                         //check if right holster has a weapon
                         if (weaponInLeftHolster) {
-                            print("left holster not empty");
+                            //print("left holster not empty");
                             continue; //breaks out and continues loop. should drop if didnt find another holster
                         }
 
-                        print("left holster IS empty, holster weapon");
+                        //print("left holster IS empty, holster weapon");
 
                         //holster should be empty
                         rightWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = hits[i].transform.gameObject;
@@ -508,7 +508,7 @@ public class GrabWeapon : NetworkBehaviour {
                         rightWeaponGameObj.GetComponent<Weapon>().isBeingHeldByPlayer = false;
                         rightWeaponGameObj.GetComponent<Weapon>().playerWhoHolstered = player;
                         
-                        print(gameObject.name + ": holstering " + rightWeaponGameObj.name + " in the left holster using left hand");
+                        //print(gameObject.name + ": holstering " + rightWeaponGameObj.name + " in the left holster using left hand");
                         weaponInLeftHolster = rightWeaponGameObj;
                         rightWeaponGameObj = null;
 
@@ -520,7 +520,7 @@ public class GrabWeapon : NetworkBehaviour {
             }
 
             if (needsToDrop && rightWeaponGameObj) {
-                print(gameObject.name + ": dropping right hand weapon: " + rightWeaponGameObj.name);
+                //print(gameObject.name + ": dropping right hand weapon: " + rightWeaponGameObj.name);
                 rightWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
                 rightWeaponGameObj.GetComponent<Weapon>().isBeingHeldByPlayer = false;
                 rightWeaponGameObj.GetComponent<Weapon>().playerWhoHolstered = null;

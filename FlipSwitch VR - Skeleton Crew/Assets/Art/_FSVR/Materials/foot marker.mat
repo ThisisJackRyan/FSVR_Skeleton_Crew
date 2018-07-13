@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: MAT_offline_wall
-  m_Shader: {fileID: 4800000, guid: 9e9f91441a2f9e046a588efe5b089830, type: 3}
+  m_Name: foot marker
+  m_Shader: {fileID: 10760, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,12 +19,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8bbecbed1422adc499d2d361431bc269, type: 3}
+        m_Texture: {fileID: 2800000, guid: 34b6538b4fd8a7146a141b636efcee8f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _ColorMask: 15
-    - _Cutoff: 0.5
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -32,4 +31,4 @@ Material:
     - _StencilWriteMask: 255
     - _UseUIAlphaClip: 0
     m_Colors:
-    - _Color: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
