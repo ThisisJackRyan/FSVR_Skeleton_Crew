@@ -42,6 +42,9 @@ ModelImporter:
     100072: Middle_Wood_Broken_R_Front
     100074: Right_Side
     100076: Wick
+    100078: Gear_Big_Final10
+    100080: Gear_Big_Final11
+    100082: Gear_Big_Final12
     400000: //RootNode
     400002: Broken_Barrel
     400004: Cannon_Barrel_Back
@@ -81,6 +84,9 @@ ModelImporter:
     400072: Middle_Wood_Broken_R_Front
     400074: Right_Side
     400076: Wick
+    400078: Gear_Big_Final10
+    400080: Gear_Big_Final11
+    400082: Gear_Big_Final12
     2100000: Broken_Cannon_Wood
     2100002: Broken_Cannon_Metal
     2100004: Gear
@@ -120,6 +126,9 @@ ModelImporter:
     2300064: Middle_Wood_Broken_R
     2300066: Middle_Wood_Broken_R_Front
     2300068: Wick
+    2300070: Gear_Big_Final10
+    2300072: Gear_Big_Final11
+    2300074: Gear_Big_Final12
     3300000: Cannon_Barrel_Back
     3300002: Cannon_Barrel_Broken
     3300004: Cannon_Barrel_Front
@@ -155,6 +164,9 @@ ModelImporter:
     3300064: Middle_Wood_Broken_R
     3300066: Middle_Wood_Broken_R_Front
     3300068: Wick
+    3300070: Gear_Big_Final10
+    3300072: Gear_Big_Final11
+    3300074: Gear_Big_Final12
     4300000: Middle_Wood_Broken_L_Front
     4300002: Middle_Wood_Broken_R_Front
     4300004: Cannon_Middle_Wood_Support1
@@ -190,6 +202,9 @@ ModelImporter:
     4300064: Metal_spoke
     4300066: Gear_Big_Final3
     4300068: Metal_spoke
+    4300070: Gear_Big_Final10
+    4300072: Gear_Big_Final11
+    4300074: Gear_Big_Final12
   externalObjects:
   - first:
       type: UnityEngine:Material
