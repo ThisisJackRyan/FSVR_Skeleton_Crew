@@ -12,13 +12,13 @@ public class SCProjectile : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter(Collider other) {
-		print("projectile triggered by : " + other.gameObject.name);
+		//print("projectile triggered by : " + other.gameObject.name);
 		if (other.gameObject.tag == "Weapon" || other.gameObject.tag == "Cannon") {
 			return;
 		}
 
         if (other.tag == "Untagged") {
-            print("Hit untagged");
+            //print("Hit untagged");
         }
 
 		KillProjectile();

@@ -33,16 +33,24 @@ public class EnemyTargetInit : MonoBehaviour {
     private void RemoveFromList() {
         switch (targetType) {
             case TargetType.Mast:
-                VariableHolder.instance.mastTargets.Remove(gameObject);
+                if (VariableHolder.instance.mastTargets.Contains(gameObject)) {
+                    VariableHolder.instance.mastTargets.Remove(gameObject);
+                }
                 break;
             case TargetType.Cannon:
-                VariableHolder.instance.cannons.Remove(gameObject);
+                if (VariableHolder.instance.cannons.Contains(gameObject)) {
+                    VariableHolder.instance.cannons.Remove(gameObject);
+                }
                 break;
             case TargetType.Ratmen:
-                VariableHolder.instance.ratmen.Remove(gameObject);
+                if (VariableHolder.instance.ratmen.Contains(gameObject)) {
+                    VariableHolder.instance.ratmen.Remove(gameObject);
+                }
                 break;
             case TargetType.Player:
-                VariableHolder.instance.players.Remove(gameObject);
+                if (VariableHolder.instance.players.Contains(gameObject)) {
+                    VariableHolder.instance.players.Remove(gameObject);
+                }
                 break;
             default:
                 Debug.LogError(targetType + " is not a valid type. Sent by " + gameObject.name);
@@ -59,9 +67,7 @@ public class EnemyTargetInit : MonoBehaviour {
                 }
             } else if (targetType == TargetType.Ratmen) {
                 int hp = GetComponentInParent<Ratman>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
-                if (hp <= 0) {
-                    RemoveFromList();
-                }
+
             } else if (targetType == TargetType.Player) {
                 if (transform.parent.GetComponent<PlayerSetup>().isServer) {
 
@@ -73,4 +79,9 @@ public class EnemyTargetInit : MonoBehaviour {
             }
         }
     }
+
+    private void OnDisable() {
+        RemoveFromList();
+    }
+
 }

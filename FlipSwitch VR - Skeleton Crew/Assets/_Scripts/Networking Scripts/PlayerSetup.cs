@@ -47,12 +47,12 @@ public class PlayerSetup : NetworkBehaviour {
         }
 
 		foreach ( GameObject obj in objectsToAddToDict ) {
-			print( "adding " + obj.name + " to the player dictionary" );
+			//print( "adding " + obj.name + " to the player dictionary" );
 			ExitLobbyPlayerTrigger.playerDict.Add( obj, false );
 		}
         
 		if ( NumberOfPlayerHolder.instance.numberOfPlayers == VariableHolder.instance.players.Count ) {
-			print( "all players joined" );
+			//print( "all players joined" );
 
             GetComponent<VRIKCalibrateOnStart>().CalibratePlayer();
 

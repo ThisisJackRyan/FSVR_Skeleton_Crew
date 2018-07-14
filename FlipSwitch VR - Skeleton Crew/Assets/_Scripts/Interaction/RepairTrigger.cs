@@ -8,11 +8,6 @@ public class RepairTrigger : MonoBehaviour {
 
 	float timer = 0;
 	bool active = false;
-	Vector3 startingPos;
-
-	private void Start() {
-		startingPos = transform.position;
-	}
 
 	private void OnTriggerStay( Collider other ) {
 		if (other.gameObject.GetComponentInParent<MastInteraction>() && active) {
