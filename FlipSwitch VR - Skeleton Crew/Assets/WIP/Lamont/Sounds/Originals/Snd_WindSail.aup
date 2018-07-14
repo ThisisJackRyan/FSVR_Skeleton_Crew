@@ -1,0 +1,241 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="Snd_WindSail_data" version="1.3.0" audacityversion="2.1.3" sel0="0.0000000000" sel1="0.0000000000" vpos="0" h="0.0000000000" zoom="6.6849602587" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags/>
+	<wavetrack name="Wind-Mark_DiAngelo-1940285615" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="0.501187" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="5231340">
+				<waveblock start="0">
+					<simpleblockfile filename="e00006d9.au" len="193760" min="-0.100769" max="0.106934" rms="0.019057"/>
+				</waveblock>
+				<waveblock start="193760">
+					<pcmaliasblockfile summaryfile="e00004e6.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="262144" aliaslen="262144" aliaschannel="0" min="-0.119843" max="0.10907" rms="0.021662"/>
+				</waveblock>
+				<waveblock start="455904">
+					<pcmaliasblockfile summaryfile="e000025e.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="524288" aliaslen="262144" aliaschannel="0" min="-0.418518" max="0.412903" rms="0.050577"/>
+				</waveblock>
+				<waveblock start="718048">
+					<pcmaliasblockfile summaryfile="e0000955.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="786432" aliaslen="262144" aliaschannel="0" min="-0.328979" max="0.286926" rms="0.04346"/>
+				</waveblock>
+				<waveblock start="980192">
+					<pcmaliasblockfile summaryfile="e0000b06.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="1048576" aliaslen="262144" aliaschannel="0" min="-0.233002" max="0.242096" rms="0.028876"/>
+				</waveblock>
+				<waveblock start="1242336">
+					<pcmaliasblockfile summaryfile="e0000755.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="1310720" aliaslen="262144" aliaschannel="0" min="-0.189575" max="0.216248" rms="0.032778"/>
+				</waveblock>
+				<waveblock start="1504480">
+					<pcmaliasblockfile summaryfile="e0000c28.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="1572864" aliaslen="262144" aliaschannel="0" min="-0.239899" max="0.227448" rms="0.033949"/>
+				</waveblock>
+				<waveblock start="1766624">
+					<pcmaliasblockfile summaryfile="e00000c1.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="1835008" aliaslen="262144" aliaschannel="0" min="-0.233948" max="0.200928" rms="0.035838"/>
+				</waveblock>
+				<waveblock start="2028768">
+					<pcmaliasblockfile summaryfile="e0000602.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="2097152" aliaslen="262144" aliaschannel="0" min="-0.152252" max="0.129974" rms="0.031141"/>
+				</waveblock>
+				<waveblock start="2290912">
+					<pcmaliasblockfile summaryfile="e00003f0.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="2359296" aliaslen="262144" aliaschannel="0" min="-0.319672" max="0.274139" rms="0.035713"/>
+				</waveblock>
+				<waveblock start="2553056">
+					<pcmaliasblockfile summaryfile="e0000775.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="2621440" aliaslen="262144" aliaschannel="0" min="-0.247894" max="0.213837" rms="0.034932"/>
+				</waveblock>
+				<waveblock start="2815200">
+					<pcmaliasblockfile summaryfile="e000033e.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="2883584" aliaslen="262144" aliaschannel="0" min="-0.191437" max="0.174133" rms="0.033962"/>
+				</waveblock>
+				<waveblock start="3077344">
+					<pcmaliasblockfile summaryfile="e00005d1.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="3145728" aliaslen="262144" aliaschannel="0" min="-0.230774" max="0.203979" rms="0.032579"/>
+				</waveblock>
+				<waveblock start="3339488">
+					<pcmaliasblockfile summaryfile="e0000f3d.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="3407872" aliaslen="262144" aliaschannel="0" min="-0.295502" max="0.274506" rms="0.038618"/>
+				</waveblock>
+				<waveblock start="3601632">
+					<pcmaliasblockfile summaryfile="e0000c8f.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="3670016" aliaslen="262144" aliaschannel="0" min="-0.21286" max="0.204773" rms="0.027649"/>
+				</waveblock>
+				<waveblock start="3863776">
+					<pcmaliasblockfile summaryfile="e000080d.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="3932160" aliaslen="262144" aliaschannel="0" min="-0.210205" max="0.216461" rms="0.040358"/>
+				</waveblock>
+				<waveblock start="4125920">
+					<pcmaliasblockfile summaryfile="e0000d65.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="4194304" aliaslen="262144" aliaschannel="0" min="-0.241943" max="0.256989" rms="0.036841"/>
+				</waveblock>
+				<waveblock start="4388064">
+					<pcmaliasblockfile summaryfile="e00006b7.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="4456448" aliaslen="262144" aliaschannel="0" min="-0.236969" max="0.213623" rms="0.035622"/>
+				</waveblock>
+				<waveblock start="4650208">
+					<pcmaliasblockfile summaryfile="e0000b70.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="4718592" aliaslen="262144" aliaschannel="0" min="-0.230743" max="0.203857" rms="0.036114"/>
+				</waveblock>
+				<waveblock start="4912352">
+					<simpleblockfile filename="e0000766.au" len="159494" min="-0.150238" max="0.124207" rms="0.030012"/>
+				</waveblock>
+				<waveblock start="5071846">
+					<simpleblockfile filename="e0000343.au" len="159494" min="-0.115326" max="0.10788" rms="0.023252"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Wind-Mark_DiAngelo-1940285615" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="0.501187" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="5231340">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000725.au" len="193760" min="-0.118683" max="0.115387" rms="0.016709"/>
+				</waveblock>
+				<waveblock start="193760">
+					<pcmaliasblockfile summaryfile="e000045f.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="262144" aliaslen="262144" aliaschannel="1" min="-0.098877" max="0.106934" rms="0.019605"/>
+				</waveblock>
+				<waveblock start="455904">
+					<pcmaliasblockfile summaryfile="e0000d0b.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="524288" aliaslen="262144" aliaschannel="1" min="-0.244904" max="0.287537" rms="0.042274"/>
+				</waveblock>
+				<waveblock start="718048">
+					<pcmaliasblockfile summaryfile="e000089f.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="786432" aliaslen="262144" aliaschannel="1" min="-0.633728" max="0.562988" rms="0.077205"/>
+				</waveblock>
+				<waveblock start="980192">
+					<pcmaliasblockfile summaryfile="e00004c6.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="1048576" aliaslen="262144" aliaschannel="1" min="-0.474121" max="0.459381" rms="0.054547"/>
+				</waveblock>
+				<waveblock start="1242336">
+					<pcmaliasblockfile summaryfile="e000002f.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="1310720" aliaslen="262144" aliaschannel="1" min="-0.364319" max="0.364746" rms="0.050283"/>
+				</waveblock>
+				<waveblock start="1504480">
+					<pcmaliasblockfile summaryfile="e000044c.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="1572864" aliaslen="262144" aliaschannel="1" min="-0.153351" max="0.126984" rms="0.022442"/>
+				</waveblock>
+				<waveblock start="1766624">
+					<pcmaliasblockfile summaryfile="e0000995.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="1835008" aliaslen="262144" aliaschannel="1" min="-0.1763" max="0.161987" rms="0.030472"/>
+				</waveblock>
+				<waveblock start="2028768">
+					<pcmaliasblockfile summaryfile="e0000f89.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="2097152" aliaslen="262144" aliaschannel="1" min="-0.262604" max="0.20694" rms="0.034529"/>
+				</waveblock>
+				<waveblock start="2290912">
+					<pcmaliasblockfile summaryfile="e000037c.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="2359296" aliaslen="262144" aliaschannel="1" min="-0.136261" max="0.131714" rms="0.024085"/>
+				</waveblock>
+				<waveblock start="2553056">
+					<pcmaliasblockfile summaryfile="e000011d.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="2621440" aliaslen="262144" aliaschannel="1" min="-0.092926" max="0.096405" rms="0.017706"/>
+				</waveblock>
+				<waveblock start="2815200">
+					<pcmaliasblockfile summaryfile="e0000824.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="2883584" aliaslen="262144" aliaschannel="1" min="-0.18927" max="0.175812" rms="0.028598"/>
+				</waveblock>
+				<waveblock start="3077344">
+					<pcmaliasblockfile summaryfile="e00004f3.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="3145728" aliaslen="262144" aliaschannel="1" min="-0.25885" max="0.206787" rms="0.035129"/>
+				</waveblock>
+				<waveblock start="3339488">
+					<pcmaliasblockfile summaryfile="e00000c8.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="3407872" aliaslen="262144" aliaschannel="1" min="-0.133881" max="0.132355" rms="0.025157"/>
+				</waveblock>
+				<waveblock start="3601632">
+					<pcmaliasblockfile summaryfile="e0000b2b.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="3670016" aliaslen="262144" aliaschannel="1" min="-0.068359" max="0.068359" rms="0.015302"/>
+				</waveblock>
+				<waveblock start="3863776">
+					<pcmaliasblockfile summaryfile="e0000397.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="3932160" aliaslen="262144" aliaschannel="1" min="-0.375977" max="0.362183" rms="0.046801"/>
+				</waveblock>
+				<waveblock start="4125920">
+					<pcmaliasblockfile summaryfile="e00009bd.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="4194304" aliaslen="262144" aliaschannel="1" min="-0.111206" max="0.110413" rms="0.020609"/>
+				</waveblock>
+				<waveblock start="4388064">
+					<pcmaliasblockfile summaryfile="e0000154.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="4456448" aliaslen="262144" aliaschannel="1" min="-0.111572" max="0.108582" rms="0.019501"/>
+				</waveblock>
+				<waveblock start="4650208">
+					<pcmaliasblockfile summaryfile="e0000497.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\Wind-Mark_DiAngelo-1940285615.wav" aliasstart="4718592" aliaslen="262144" aliaschannel="1" min="-0.181152" max="0.16922" rms="0.02983"/>
+				</waveblock>
+				<waveblock start="4912352">
+					<simpleblockfile filename="e0000dfa.au" len="159494" min="-0.260315" max="0.2117" rms="0.040282"/>
+				</waveblock>
+				<waveblock start="5071846">
+					<simpleblockfile filename="e00006fb.au" len="159494" min="-0.149109" max="0.122253" rms="0.017578"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="138973__huggy13ear__cotton-flapping" channel="2" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="1123200">
+				<waveblock start="0">
+					<pcmaliasblockfile summaryfile="e00001b4.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="0" aliaslen="262144" aliaschannel="0" min="-0.24295" max="0.145264" rms="0.013242"/>
+				</waveblock>
+				<waveblock start="262144">
+					<pcmaliasblockfile summaryfile="e0000b90.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="262144" aliaslen="262144" aliaschannel="0" min="-0.312866" max="0.252838" rms="0.018374"/>
+				</waveblock>
+				<waveblock start="524288">
+					<pcmaliasblockfile summaryfile="e00005c4.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="524288" aliaslen="262144" aliaschannel="0" min="-0.111694" max="0.151764" rms="0.008726"/>
+				</waveblock>
+				<waveblock start="786432">
+					<pcmaliasblockfile summaryfile="e0000a9e.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="786432" aliaslen="262144" aliaschannel="0" min="-0.144073" max="0.105377" rms="0.008709"/>
+				</waveblock>
+				<waveblock start="1048576">
+					<pcmaliasblockfile summaryfile="e0000948.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="1048576" aliaslen="74624" aliaschannel="0" min="-0.150024" max="0.139954" rms="0.008235"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+		<waveclip offset="25.46938776">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="1123200">
+				<waveblock start="0">
+					<pcmaliasblockfile summaryfile="e00001b4.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="0" aliaslen="262144" aliaschannel="0" min="-0.24295" max="0.145264" rms="0.013242"/>
+				</waveblock>
+				<waveblock start="262144">
+					<pcmaliasblockfile summaryfile="e0000b90.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="262144" aliaslen="262144" aliaschannel="0" min="-0.312866" max="0.252838" rms="0.018374"/>
+				</waveblock>
+				<waveblock start="524288">
+					<pcmaliasblockfile summaryfile="e00005c4.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="524288" aliaslen="262144" aliaschannel="0" min="-0.111694" max="0.151764" rms="0.008726"/>
+				</waveblock>
+				<waveblock start="786432">
+					<pcmaliasblockfile summaryfile="e0000a9e.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="786432" aliaslen="262144" aliaschannel="0" min="-0.144073" max="0.105377" rms="0.008709"/>
+				</waveblock>
+				<waveblock start="1048576">
+					<pcmaliasblockfile summaryfile="e0000948.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="1048576" aliaslen="74624" aliaschannel="0" min="-0.150024" max="0.139954" rms="0.008235"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+		<waveclip offset="50.93877551">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="1123200">
+				<waveblock start="0">
+					<pcmaliasblockfile summaryfile="e00001b4.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="0" aliaslen="262144" aliaschannel="0" min="-0.24295" max="0.145264" rms="0.013242"/>
+				</waveblock>
+				<waveblock start="262144">
+					<pcmaliasblockfile summaryfile="e0000b90.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="262144" aliaslen="262144" aliaschannel="0" min="-0.312866" max="0.252838" rms="0.018374"/>
+				</waveblock>
+				<waveblock start="524288">
+					<pcmaliasblockfile summaryfile="e00005c4.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="524288" aliaslen="262144" aliaschannel="0" min="-0.111694" max="0.151764" rms="0.008726"/>
+				</waveblock>
+				<waveblock start="786432">
+					<pcmaliasblockfile summaryfile="e0000a9e.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="786432" aliaslen="262144" aliaschannel="0" min="-0.144073" max="0.105377" rms="0.008709"/>
+				</waveblock>
+				<waveblock start="1048576">
+					<pcmaliasblockfile summaryfile="e0000948.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="1048576" aliaslen="74624" aliaschannel="0" min="-0.150024" max="0.139954" rms="0.008235"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+		<waveclip offset="76.40816327">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="1123200">
+				<waveblock start="0">
+					<pcmaliasblockfile summaryfile="e00001b4.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="0" aliaslen="262144" aliaschannel="0" min="-0.24295" max="0.145264" rms="0.013242"/>
+				</waveblock>
+				<waveblock start="262144">
+					<pcmaliasblockfile summaryfile="e0000b90.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="262144" aliaslen="262144" aliaschannel="0" min="-0.312866" max="0.252838" rms="0.018374"/>
+				</waveblock>
+				<waveblock start="524288">
+					<pcmaliasblockfile summaryfile="e00005c4.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="524288" aliaslen="262144" aliaschannel="0" min="-0.111694" max="0.151764" rms="0.008726"/>
+				</waveblock>
+				<waveblock start="786432">
+					<pcmaliasblockfile summaryfile="e0000a9e.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="786432" aliaslen="262144" aliaschannel="0" min="-0.144073" max="0.105377" rms="0.008709"/>
+				</waveblock>
+				<waveblock start="1048576">
+					<pcmaliasblockfile summaryfile="e0000948.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="1048576" aliaslen="74624" aliaschannel="0" min="-0.150024" max="0.139954" rms="0.008235"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+		<waveclip offset="101.87755102">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="738540">
+				<waveblock start="0">
+					<pcmaliasblockfile summaryfile="e00001b4.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="0" aliaslen="262144" aliaschannel="0" min="-0.24295" max="0.145264" rms="0.013242"/>
+				</waveblock>
+				<waveblock start="262144">
+					<pcmaliasblockfile summaryfile="e0000b90.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Originals\138973__huggy13ear__cotton-flapping.wav" aliasstart="262144" aliaslen="262144" aliaschannel="0" min="-0.312866" max="0.252838" rms="0.018374"/>
+				</waveblock>
+				<waveblock start="524288">
+					<simpleblockfile filename="e0000591.au" len="214252" min="-0.111694" max="0.151764" rms="0.007431"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>
