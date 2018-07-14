@@ -23,7 +23,7 @@ public class RepairPattern : MonoBehaviour {
 
 	// Use this for initialization
 	public void Increment () {
-		print( "incrememnt called with index of " + index );
+		//print( "incrememnt called with index of " + index );
 		index++;
 		if (index < transform.childCount) {
 			transform.GetChild( index ).gameObject.SetActive(true);

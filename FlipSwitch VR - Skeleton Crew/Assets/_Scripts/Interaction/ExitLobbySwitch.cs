@@ -23,7 +23,7 @@ public class ExitLobbySwitch : MonoBehaviour {
 					timeToTrans++;
 				} else {
 
-					if ( NumberOfPlayerHolder.instance.numberOfPlayers != Mathf.CeilToInt( ExitLobbyPlayerTrigger.playerDict.Count / 2 ) ) {
+					if ( NumberOfPlayerHolder.instance.numberOfPlayers != ExitLobbyPlayerTrigger.playerDict.Count ) {
 						print( "all connected players are in place, but not all players are connected." );
 						return;
 					}

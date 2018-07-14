@@ -21,8 +21,8 @@ public static class Controller {
 	static bool initialized = false;
 
 	public static void InitControllers(uint leftId, uint rightId) {
-        Debug.Log("controller init called with ids of " + leftId + " and " + rightId);
-        Debug.Log(SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.FarthestLeft) + " is furthest left" );
+        //Debug.Log("controller init called with ids of " + leftId + " and " + rightId);
+        //Debug.Log(SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.FarthestLeft) + " is furthest left" );
 		if (!initialized) {
 			initialized = true;
             rightIndex = rightId;
