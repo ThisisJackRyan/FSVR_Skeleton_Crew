@@ -22,7 +22,7 @@ public class Ratman : NetworkBehaviour {
 
     private void OnEnable()
     {        
-        VariableHolder.instance.ratmen.Add(gameObject);
+        VariableHolder.instance.ratmenPositions.Add(gameObject);
 	}
 
     public int GetHealth()
