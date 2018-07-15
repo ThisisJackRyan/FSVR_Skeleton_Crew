@@ -50,7 +50,7 @@ public class Ratman : NetworkBehaviour {
             HatchActivator.DisableHatches();
             print(HatchActivator.instance);
 
-            HatchActivator.instance.RpcDisableHatches();
+            HatchActivator.TellRpcToDisableHatches;
         }
 
     }

@@ -57,6 +57,10 @@ public class HatchActivator : NetworkBehaviour {
         print("rpc disable hatches");
         DisableHatches();
     }
+	
+	public static void TellRpcToDisableHatches(){
+		instance.RpcDisableHatches();
+	}
 
     private void OnTriggerStay(Collider other) {
         if (!isServer)
