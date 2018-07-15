@@ -8,7 +8,7 @@ public enum Side {
     right
 };
 
-public class Captain : NetworkBehaviour {
+public class Captain : SerializedNetworkBehaviour {
 
     #region Sounds
 
@@ -91,55 +91,39 @@ public AudioClip endOfEncounterAllIsWell;
     // ^ test against this before any tutorial speach incase of early completion
     //need to turn on mast after last part of tutorial
     public static Captain instance;
-    public Dictionary<DamagedObject, bool> damagedObjectsRepaired;
-    public Dictionary<Ratman, bool> ratmenRespawned;
-    public Dictionary<CannonInteraction, bool> playersFiredCannons;
+    public static Dictionary<DamagedObject, bool> damagedObjectsRepaired = new Dictionary<DamagedObject, bool>();
+    public static Dictionary<Ratman, bool> ratmenRespawned = new Dictionary<Ratman, bool>();
+    public static Dictionary<CannonInteraction, bool> playersFiredCannons = new Dictionary<CannonInteraction, bool>();
     public bool mastHasBeenPulled = false;
     public MastSwitch mast;
     public AudioClip[] tutorialSounds;
 
 
     public void CheckDamagedObjects() {
-        bool allObjects = true;
-        foreach (var pfc in instance.damagedObjectsRepaired) {
-            if (!pfc.Value) {
-                allObjects = false;
-                break;
-            }
+        foreach (var obj in damagedObjectsRepaired) {
+            print(obj.Key.name + " has a value of " + obj.Value);
         }
-
-        if (allObjects) {
+        if (!damagedObjectsRepaired.ContainsValue(false)) {
             RpcPlaySoundClip("RepairsComplete");
             print("Damages have been repaired");
-
         }
     }
 
     public void CheckRatmenRespawns() {
-        bool allRatmen = true;
-        foreach (var pfc in instance.ratmenRespawned) {
-            if (!pfc.Value) {
-                allRatmen = false;
-                break;
-            }
+        foreach (var obj in ratmenRespawned) {
+            print(obj.Key.name + " has a value of " + obj.Value);
         }
-
-        if (allRatmen) {
+        if (!ratmenRespawned.ContainsValue(false)) {
             RpcPlaySoundClip("RatmenComplete");
             print("Ratmen have been replenished");
         }
     }
 
     public void CheckPlayersCannonFiring() {
-        bool allPlayers = true;
-        foreach (var pfc in instance.playersFiredCannons) {
-            if (!pfc.Value) {
-                allPlayers = false;
-                break;
-            }
+        foreach (var obj in playersFiredCannons) {
+            print(obj.Key.name + " has a value of " + obj.Value);
         }
-
-        if (allPlayers) {
+        if (!playersFiredCannons.ContainsValue(false)) {
             RpcPlaySoundClip("CannonsFired");
             print("Players have fired cannons");
             mast.enabled = true;
@@ -169,18 +153,17 @@ public AudioClip endOfEncounterAllIsWell;
     #endregion
 
     private void Start() {
-        if (instance == null) {
-            instance = this;
-            playersFiredCannons = new Dictionary<CannonInteraction, bool>();
-            damagedObjectsRepaired = new Dictionary<DamagedObject, bool>();
-            ratmenRespawned = new Dictionary<Ratman, bool>();
+        if (isServer) {
+            if (instance == null) {
+                instance = this;
 
-            mast.enabled = false;
+                mast.enabled = false;
 
 
-            mySource = GetComponent<AudioSource>();
-        } else {
-            Destroy(gameObject);
+                mySource = GetComponent<AudioSource>();
+            } else {
+                Destroy(gameObject);
+            }
         }
     }
 

@@ -52,8 +52,11 @@ public class DamagedObject : NetworkBehaviour {
 		cannonScript = GetComponent<Cannon>();
 
 		if (isServer) {
-			health = Random.Range(0, 50);
-		}else if (isClient) {
+			health = Random.Range(0, 50); 
+            print(name + " enabled server check");
+            Captain.damagedObjectsRepaired.Add(this, false);
+            
+        } else if (isClient) {
 			OnHealthChange(health);
 		}
 
@@ -140,7 +143,7 @@ public class DamagedObject : NetworkBehaviour {
 		}
 
         if (health >= maxHealth) {
-            Captain.instance.damagedObjectsRepaired[this] = true;
+            Captain.damagedObjectsRepaired[this] = true;
             Captain.instance.CheckDamagedObjects();
         }
 
@@ -166,13 +169,4 @@ public class DamagedObject : NetworkBehaviour {
 		ChangeHealth(maxHealth, false);
 		print("health after: " + health);
 	}
-
-    private void OnEnable() {
-        Captain.instance.damagedObjectsRepaired.Add(this, false);
-    }
-
-    private void OnDisable() {
-        Captain.instance.damagedObjectsRepaired.Remove(this);
-
-    }
 }

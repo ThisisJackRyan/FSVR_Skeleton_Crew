@@ -39,11 +39,11 @@ public class Enemy : NetworkBehaviour {
 
         if (other.tag == "Weapon") {
             if (other.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
-                print("hit with " + health + " by " + other.GetComponent<Weapon>().data.damage);
+                //print("hit with " + health + " by " + other.GetComponent<Weapon>().data.damage);
                 health -= other.GetComponent<Weapon>().data.damage;
 
                 if (health <= 0) {
-                    print("dead");
+                    //print("dead");
                     if (isBoss) {
                         EnemySpawner.StopSpawning();
                     }
@@ -51,11 +51,11 @@ public class Enemy : NetworkBehaviour {
                 }
             }
         } else if (other.tag == "BulletPlayer" || other.tag == "CannonBallPlayer") {
-            print("hit with " + health + " by " + other.GetComponent<SCProjectile>().damage);
+            //print("hit with " + health + " by " + other.GetComponent<SCProjectile>().damage);
             health -= other.GetComponent<SCProjectile>().damage;
 
             if (health <= 0) {
-                print("dead");
+                //print("dead");
                 Destroy(gameObject);
             }
         }
@@ -66,7 +66,7 @@ public class Enemy : NetworkBehaviour {
     }
 
     public void ToggleWeaponCollider() {
-        print(name + " is toggling weapon, it is " + weaponCollider.enabled + " setting it to " + !weaponCollider.enabled);
+        //print(name + " is toggling weapon, it is " + weaponCollider.enabled + " setting it to " + !weaponCollider.enabled);
         weaponCollider.enabled = !weaponCollider.enabled;
     }
 }

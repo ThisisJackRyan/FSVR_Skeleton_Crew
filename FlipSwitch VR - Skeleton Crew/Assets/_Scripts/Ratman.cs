@@ -21,8 +21,11 @@ public class Ratman : NetworkBehaviour {
 
     private void Start() {
         VariableHolder.instance.ratmenPositions.Add(gameObject);
-        if (isServer)
+        if (isServer)  {
+             print(name + " enabled server check");
+            Captain.ratmenRespawned.Add(this, false);
             ChangeHealth(health);
+        }
         else
             OnHealthChange(health);
     }
@@ -60,7 +63,7 @@ public class Ratman : NetworkBehaviour {
         rat.transform.position = spawnPos;
         rat.SetActive(true);
 
-        Captain.instance.ratmenRespawned[this] = true;
+        Captain.ratmenRespawned[this] = true;
         Captain.instance.CheckRatmenRespawns();
 
         RpcRespawn(spawnPos);
@@ -98,13 +101,5 @@ public class Ratman : NetworkBehaviour {
     void KillRatman() {
         rat.SetActive(false);
         HatchActivator.EnableHatches();
-    }
-
-    private void OnEnable() {
-        Captain.instance.ratmenRespawned.Add(this, false);
-    }
-
-    private void OnDisable() {
-        Captain.instance.ratmenRespawned.Remove(this);
     }
 }

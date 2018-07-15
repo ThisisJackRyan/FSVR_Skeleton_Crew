@@ -29,7 +29,6 @@ public class HatchActivator : NetworkBehaviour {
     }
 
     public static void EnableHatches() {
-        print("enable hatches");
 
         foreach (var h in hatches) {
             h.GetComponent<Collider>().enabled = true;
@@ -38,7 +37,6 @@ public class HatchActivator : NetworkBehaviour {
     }
 
     public static void DisableHatches() {
-        print("disable hatches");
         foreach (var h in hatches) {
             h.GetComponent<Collider>().enabled = false;
             h.hatchSign.SetActive(false);
@@ -48,13 +46,9 @@ public class HatchActivator : NetworkBehaviour {
 
     [ClientRpc]
     public void RpcDisableHatches() {
-        print("rpc disableHataches was called (pre server check)");
-
         if (isServer)
             return;
-
-
-        print("rpc disable hatches");
+        
         DisableHatches();
     }
 	

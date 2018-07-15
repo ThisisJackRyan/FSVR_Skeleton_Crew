@@ -19,7 +19,7 @@ public class Weapon : NetworkBehaviour {
 
     private void Start() {
 		if(fire != null ) {
-			print("called");
+			//print("called");
 			fire.gameObject.SetActive( false );
 		}
 

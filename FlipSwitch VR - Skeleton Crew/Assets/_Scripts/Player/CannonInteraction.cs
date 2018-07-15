@@ -17,7 +17,7 @@ public class CannonInteraction : NetworkBehaviour {
     private void CmdFireCannon(GameObject cannon)
     {
         cannon.GetComponent<Cannon>().CreateCannonBall();
-        Captain.instance.playersFiredCannons[this] = true;
+        Captain.playersFiredCannons[this] = true;
         Captain.instance.CheckPlayersCannonFiring();
 
         RpcFireCannon(cannon);
@@ -31,11 +31,10 @@ public class CannonInteraction : NetworkBehaviour {
         cannon.GetComponent<Cannon>().CreateCannonBall();
     }
 
-    private void OnEnable() {
-        Captain.instance.playersFiredCannons.Add(this, false);
-    }
-
-    private void OnDisable() {
-        Captain.instance.playersFiredCannons.Remove(this);
+    private void Start() {
+        if (isServer) {
+            print(name + " enabled server check");
+            Captain.playersFiredCannons.Add(this, false);
+        }
     }
 }
