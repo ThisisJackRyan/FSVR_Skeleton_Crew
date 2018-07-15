@@ -31,7 +31,7 @@ public class RepairPattern : MonoBehaviour {
 		} else if(index == transform.childCount) {
 			//last node hit
 			//run repair code
-			if ( dmgObj.ChangeHealth( 20, false ) < dmgObj.fullAmount) {
+			if ( dmgObj.ChangeHealth( 20, false ) < dmgObj.maxHealth) {
 				index = 0;
 				Increment();
 			} else {

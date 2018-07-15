@@ -13,7 +13,7 @@ public class DamagedObject : NetworkBehaviour {
 	[SyncVar( hook = "OnHealthChange" )] int health = 100;
 
 	[Tooltip( "the number health percent much be at to reach the given damage state. anything below quarter is completely broken." )]
-	public int fullAmount = 90, threeQuarterAmount = 75, halfAmount = 50, quarterAmount = 25;
+	public int fullAmount = 90, threeQuarterAmount = 75, halfAmount = 50, quarterAmount = 25, maxHealth = 100;
 
 	public Transform fullState, threequarter, halfState, quarterState, deadState;
 	public Transform fullStateSpawnPos, threeQuarterSpawnPos, halfSpawnPos, quarterSpawnPos;
@@ -136,8 +136,14 @@ public class DamagedObject : NetworkBehaviour {
 			health = (health < 0) ? 0 : health;
 		} else {
 			health += Mathf.Abs( amount );
-			health = (health > 100) ? 100 : health;
+			health = (health > maxHealth) ? maxHealth : health;
 		}
+
+        if (health >= maxHealth) {
+            Captain.instance.damagedObjectsRepaired[this] = true;
+            Captain.instance.CheckDamagedObjects();
+        }
+
 		return health;
 	}
 
@@ -150,14 +156,23 @@ public class DamagedObject : NetworkBehaviour {
 	void CmdZeroHealth()
 	{
 		print("health before: " + health);
-		ChangeHealth(100);
+		ChangeHealth(maxHealth);
 		print("health after: " + health);
 	}
 	
 	[Command]
 	void CmdFullHealth() {
 		print("health before: "+ health);
-		ChangeHealth(100, false);
+		ChangeHealth(maxHealth, false);
 		print("health after: " + health);
 	}
+
+    private void OnEnable() {
+        Captain.instance.damagedObjectsRepaired.Add(this, false);
+    }
+
+    private void OnDisable() {
+        Captain.instance.damagedObjectsRepaired.Remove(this);
+
+    }
 }

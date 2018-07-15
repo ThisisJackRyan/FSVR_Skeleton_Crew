@@ -80,6 +80,7 @@ public class MastInteraction : NetworkBehaviour {
 	public void CmdReachedTarget() {
 		mast.SwapMode();
 		RpcReachedTarget();
+        Captain.instance.MastHasBeenPulled();
 	}
 	
 	[ClientRpc]
@@ -103,6 +104,5 @@ public class MastInteraction : NetworkBehaviour {
 		Destroy( rp );
 		rightHandInteracting = leftHandInteracting = false;
 	}
-
 
 }
