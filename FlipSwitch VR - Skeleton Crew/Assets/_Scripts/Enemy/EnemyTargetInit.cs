@@ -17,16 +17,30 @@ public class EnemyTargetInit : MonoBehaviour {
     }
 
     private void AddToList() {
-        if (VariableHolder.instance != null) {
-            if (targetType == TargetType.Cannon && !VariableHolder.instance.cannons.Contains(gameObject)) {
-                VariableHolder.instance.cannons.Add(gameObject);
-            } else if (targetType == TargetType.Mast && !VariableHolder.instance.mastTargets.Contains(gameObject)) {
-                VariableHolder.instance.mastTargets.Add(gameObject);
-            } else if (targetType == TargetType.Ratmen && !VariableHolder.instance.ratmen.Contains(gameObject)) {
-                VariableHolder.instance.ratmen.Add(gameObject);
-            } else if (targetType == TargetType.Player && !VariableHolder.instance.players.Contains(gameObject)) {
-                VariableHolder.instance.players.Add(gameObject);
-            }
+        switch (targetType) {
+            case TargetType.Mast:
+                if (!VariableHolder.instance.mastTargets.Contains(gameObject)) {
+                    VariableHolder.instance.mastTargets.Add(gameObject);
+                }
+                break;
+            case TargetType.Cannon:
+                if (!VariableHolder.instance.cannons.Contains(gameObject)) {
+                    VariableHolder.instance.cannons.Add(gameObject);
+                }
+                break;
+            case TargetType.Ratmen:
+                if (!VariableHolder.instance.ratmen.Contains(gameObject)) {
+                    VariableHolder.instance.ratmen.Add(gameObject);
+                }
+                break;
+            case TargetType.Player:
+                if (!VariableHolder.instance.players.Contains(gameObject)) {
+                    VariableHolder.instance.players.Add(gameObject);
+                }
+                break;
+            default:
+                Debug.LogError(targetType + " is not a valid type. Sent by " + gameObject.name);
+                break;
         }
     }
 
@@ -66,7 +80,7 @@ public class EnemyTargetInit : MonoBehaviour {
                     RemoveFromList();
                 }
             } else if (targetType == TargetType.Ratmen) {
-                int hp = GetComponentInParent<Ratman>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
+                GetComponentInParent<Ratman>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
 
             } else if (targetType == TargetType.Player) {
                 if (transform.parent.GetComponent<PlayerSetup>().isServer) {
