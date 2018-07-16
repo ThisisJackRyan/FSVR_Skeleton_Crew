@@ -16,21 +16,23 @@ public class ExitLobbySwitch : MonoBehaviour {
 
 			if (timer >= timeToTrans) {
 				if (ExitLobbyPlayerTrigger.playerDict.ContainsValue(false)) {
-					print("not enough players in the lobby trigger");
+					//print("not enough players in the lobby trigger");
 					foreach (var obj in ExitLobbyPlayerTrigger.playerDict) {
-						print(obj.Key.name + " has a value of " + obj.Value);
+						//print(obj.Key.name + " has a value of " + obj.Value);
 					}
 					timeToTrans++;
 				} else {
 
 					if ( NumberOfPlayerHolder.instance.numberOfPlayers != ExitLobbyPlayerTrigger.playerDict.Count ) {
-						print( "all connected players are in place, but not all players are connected." );
+						//print( "all connected players are in place, but not all players are connected." );
 						return;
 					}
 					//transition
-					print("should be teleporting player");
+					//print("should be teleporting player");
 
 					StartCoroutine("FadeAndTeleport");
+                    other.GetComponentInParent<ScriptSyncPlayer>().TellCaptainToStartTutorial();
+                    
 				}
 			}
 		}
@@ -51,7 +53,7 @@ public class ExitLobbySwitch : MonoBehaviour {
 		FindObjectOfType<GhostFreeRoamCamera>().transform.root.position = spawnPos.position;
 
 		SteamVR_Fade.Start(Color.clear, 2f);
-	}
+    }
 
 	private void OnTriggerEnter(Collider other) {
 		print(other.name);

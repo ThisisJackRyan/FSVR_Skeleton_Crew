@@ -13,6 +13,19 @@ public class ScriptSyncPlayer : NetworkBehaviour {
         health = n;
     }
 
+    bool hasStartedTutorial = false;
+
+    public void TellCaptainToStartTutorial() {
+        if (isServer && !hasStartedTutorial) {
+            hasStartedTutorial = true;
+            StartCoroutine("WaitToTellCaptain");
+        }
+    }
+
+    IEnumerator WaitToTellCaptain() {
+        yield return new WaitForSecondsRealtime(3);
+        FindObjectOfType<Captain>().StartTutorial();
+    }
 
 	public int ChangeHealth( int amount, bool damage = true ) {
 		if ( damage ) {

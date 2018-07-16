@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
+
 using UnityEngine;
 using UnityEngine.Networking;
 using Sirenix.OdinInspector;
@@ -77,7 +79,7 @@ public class Captain : SerializedNetworkBehaviour {
 
     private bool audioTriggered = false;
 
-    private AudioSource mySource;
+    public AudioSource mySource;
     private List<AudioClip> audioQueue;
 
     /*
@@ -104,8 +106,7 @@ public class Captain : SerializedNetworkBehaviour {
             print(obj.Key.name + " has a value of " + obj.Value);
         }
         if (!damagedObjectsRepaired.ContainsValue(false)) {
-            RpcPlaySoundClip("RepairsComplete");
-            print("Damages have been repaired");
+            RpcPlaySoundClip("PrepTut_Rat");
         }
     }
 
@@ -114,7 +115,7 @@ public class Captain : SerializedNetworkBehaviour {
             print(obj.Key.name + " has a value of " + obj.Value);
         }
         if (!ratmenRespawned.ContainsValue(false)) {
-            RpcPlaySoundClip("RatmenComplete");
+            RpcPlaySoundClip("PrepTut_Shoot");
             print("Ratmen have been replenished");
         }
     }
@@ -124,7 +125,7 @@ public class Captain : SerializedNetworkBehaviour {
             print(obj.Key.name + " has a value of " + obj.Value);
         }
         if (!playersFiredCannons.ContainsValue(false)) {
-            RpcPlaySoundClip("CannonsFired");
+            RpcPlaySoundClip("PrepTut_Mast");
             print("Players have fired cannons");
             RpcEnableRopes();
             foreach (var g in mastRopes) {
@@ -144,6 +145,28 @@ public class Captain : SerializedNetworkBehaviour {
         }
     }
 
+
+    public void StartTutorial() {
+        StartCoroutine("TutorialIntro");
+    }
+
+    IEnumerator TutorialIntro() {
+        RpcPlaySoundClip("PrepTut_Intro");
+        yield return new WaitForSecondsRealtime(GetClipLength("PrepTut_Intro") + 2f);
+        RpcPlaySoundClip("PrepTut_Repair");
+    }
+
+    float GetClipLength(string clip) {
+        for (int i = 0; i < tutorialSounds.Length; i++) {
+            if (tutorialSounds[i].name == clip) {
+                return tutorialSounds[i].length;
+            }
+        }
+
+        Debug.LogWarning(clip + " does not match any tutorial clip names for " + name);
+        return 0; 
+    }
+
     public void MastHasBeenPulled() {
         if (!mastHasBeenPulled) {
             //talkie talkie
@@ -156,6 +179,9 @@ public class Captain : SerializedNetworkBehaviour {
 
     [ClientRpc]
     public void RpcPlaySoundClip(string clip) {
+        if (isServer)
+            return;
+
         for (int i = 0; i < tutorialSounds.Length; i++) {
             if (tutorialSounds[i].name == clip) {
                 mySource.PlayOneShot(tutorialSounds[i]);
@@ -169,12 +195,8 @@ public class Captain : SerializedNetworkBehaviour {
     private void Start() {
         if (isServer) {
             if (instance == null) {
-                instance = this;
+                instance = this;   
 
-                
-
-
-                mySource = GetComponent<AudioSource>();
             } else {
                 Destroy(gameObject);
             }
