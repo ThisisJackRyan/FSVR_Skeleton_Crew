@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using BehaviorDesigner.Runtime;
 
 public class Ratman : NetworkBehaviour {
 
@@ -19,15 +20,19 @@ public class Ratman : NetworkBehaviour {
             KillRatman();
     }
 
+
+
+
     private void Start() {
         VariableHolder.instance.ratmenPositions.Add(gameObject);
-        if (isServer)  {
-             print(name + " enabled server check");
+        if (isServer) {
+            print(name + " enabled server check");
             Captain.ratmenRespawned.Add(this, false);
             ChangeHealth(health);
-        }
-        else
+        } else {
             OnHealthChange(health);
+            rat.GetComponent<BehaviorTree>().enabled = false;
+        }
     }
 
     public static void RespawnRatmen(Vector3 spawnPos) {
@@ -62,7 +67,8 @@ public class Ratman : NetworkBehaviour {
         ChangeHealth(maxHealth, false);
         rat.transform.position = spawnPos;
         rat.SetActive(true);
-
+        rat.GetComponent<BehaviorTree>().SetVariableValue("MoveToCannon", true);
+       // ratAnim.enabled = true;
         Captain.ratmenRespawned[this] = true;
         Captain.instance.CheckRatmenRespawns();
 
@@ -100,6 +106,7 @@ public class Ratman : NetworkBehaviour {
 
     void KillRatman() {
         rat.SetActive(false);
+        //ratAnim.enabled = false;
         HatchActivator.EnableHatches();
     }
 }

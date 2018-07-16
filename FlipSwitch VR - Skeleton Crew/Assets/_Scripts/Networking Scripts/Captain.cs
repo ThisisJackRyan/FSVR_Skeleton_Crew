@@ -18,51 +18,51 @@ public class Captain : SerializedNetworkBehaviour {
     // Low priority audio clips (reminders everything 30s if needed)
     [ToggleGroup("FirstToggle")]
     public AudioClip leftCannonsDown;
-     [ToggleGroup("FirstToggle")]
-public AudioClip leftCannonsAndRatmen;
-     [ToggleGroup("FirstToggle")]
-public AudioClip rightCannonsDown;
-     [ToggleGroup("FirstToggle")]
-public AudioClip rightCannonsAndRatmen;
-     [ToggleGroup("FirstToggle")]
-public AudioClip leftAndRightCannons;
-     [ToggleGroup("FirstToggle")]
-public AudioClip leftAndRightCannonsAndRatmen;
-     [ToggleGroup("FirstToggle")]
-public AudioClip ratmenOnly;
-     [ToggleGroup("FirstToggle")]
-public AudioClip shouldNeverGetHere;
-    
-// High priority audio clips
-     [ToggleGroup("FirstToggle")]
-public AudioClip enemiesAtMast;
-     [ToggleGroup("FirstToggle")]
-public AudioClip cannonDestroyedLeftSide;
-     [ToggleGroup("FirstToggle")]
-public AudioClip cannonDestroyedRightSide;
-     [ToggleGroup("FirstToggle")]
-public AudioClip cannonDestroyedBothSides;
-     [ToggleGroup("FirstToggle")]
-public AudioClip enemyIncomingLeft;
-     [ToggleGroup("FirstToggle")]
-public AudioClip enemyIncomingRight;
-     [ToggleGroup("FirstToggle")]
-public AudioClip enemyIncomingBoth;
-     [ToggleGroup("FirstToggle")]
-public AudioClip enemyBoardingLeft;
-     [ToggleGroup("FirstToggle")]
-public AudioClip enemyBoardingRight;
-     [ToggleGroup("FirstToggle")]
-public AudioClip enemyBoardingBoth;
-// End of encounter audio clips
-     [ToggleGroup("FirstToggle")]
-public AudioClip endOfEncounterRatmen;
-     [ToggleGroup("FirstToggle")]
-public AudioClip endOfEncounterCannons;
-     [ToggleGroup("FirstToggle")]
-public AudioClip endOfEncounterBoth;
-     [ToggleGroup("FirstToggle")]
-public AudioClip endOfEncounterAllIsWell;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip leftCannonsAndRatmen;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip rightCannonsDown;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip rightCannonsAndRatmen;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip leftAndRightCannons;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip leftAndRightCannonsAndRatmen;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip ratmenOnly;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip shouldNeverGetHere;
+
+    // High priority audio clips
+    [ToggleGroup("FirstToggle")]
+    public AudioClip enemiesAtMast;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip cannonDestroyedLeftSide;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip cannonDestroyedRightSide;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip cannonDestroyedBothSides;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip enemyIncomingLeft;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip enemyIncomingRight;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip enemyIncomingBoth;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip enemyBoardingLeft;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip enemyBoardingRight;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip enemyBoardingBoth;
+    // End of encounter audio clips
+    [ToggleGroup("FirstToggle")]
+    public AudioClip endOfEncounterRatmen;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip endOfEncounterCannons;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip endOfEncounterBoth;
+    [ToggleGroup("FirstToggle")]
+    public AudioClip endOfEncounterAllIsWell;
 
 
     #endregion
@@ -95,7 +95,7 @@ public AudioClip endOfEncounterAllIsWell;
     public static Dictionary<Ratman, bool> ratmenRespawned = new Dictionary<Ratman, bool>();
     public static Dictionary<CannonInteraction, bool> playersFiredCannons = new Dictionary<CannonInteraction, bool>();
     public bool mastHasBeenPulled = false;
-    public MastSwitch mast;
+    public Collider[] mastRopes;
     public AudioClip[] tutorialSounds;
 
 
@@ -126,10 +126,24 @@ public AudioClip endOfEncounterAllIsWell;
         if (!playersFiredCannons.ContainsValue(false)) {
             RpcPlaySoundClip("CannonsFired");
             print("Players have fired cannons");
-            mast.enabled = true;
+            RpcEnableRopes();
+            foreach (var g in mastRopes) {
+                g.enabled = true;
+            }
         }
     }
-    
+
+    [ClientRpc]
+    void RpcEnableRopes() {
+        if (isServer) {
+            return;
+        }
+
+        foreach (var g in mastRopes) {
+            g.enabled = true;
+        }
+    }
+
     public void MastHasBeenPulled() {
         if (!mastHasBeenPulled) {
             //talkie talkie
@@ -157,13 +171,17 @@ public AudioClip endOfEncounterAllIsWell;
             if (instance == null) {
                 instance = this;
 
-                mast.enabled = false;
+                
 
 
                 mySource = GetComponent<AudioSource>();
             } else {
                 Destroy(gameObject);
             }
+        }
+
+        foreach (var g in mastRopes) {
+            g.enabled = false;
         }
     }
 

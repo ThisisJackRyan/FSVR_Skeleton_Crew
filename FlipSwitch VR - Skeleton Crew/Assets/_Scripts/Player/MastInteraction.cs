@@ -26,8 +26,9 @@ public class MastInteraction : NetworkBehaviour {
 	}
 
 	private void Update() {
-		if ( !isLocalPlayer )
-			return;
+        if (!isLocalPlayer) {
+            return;
+        }
 
 		if(emptyLeftHand && Controller.LeftController.GetPressDown( Controller.Grip ) ) {
 			RaycastHit[] hits = Physics.SphereCastAll( leftHand.position, radius, leftHand.forward );
