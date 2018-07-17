@@ -65,16 +65,6 @@ public class DamagedObject : NetworkBehaviour {
 		repairSlider.maxValue = 100;		
 	}
 
-	//public override void OnStartClient()
-	//{
-	//	base.OnStartClient();
-	//	if (isServer) {
-	//		return;
-	//	}
-	//	OnHealthChange(health);
-	//}
-
-
 	private void Update() {
 		if ( health < 100 ) {
 			repairSlider.transform.parent.gameObject.SetActive(true);
@@ -153,20 +143,5 @@ public class DamagedObject : NetworkBehaviour {
 	public int GetHealth()
 	{
 		return health;
-	}
-
-	[Command]
-	void CmdZeroHealth()
-	{
-		print("health before: " + health);
-		ChangeHealth(maxHealth);
-		print("health after: " + health);
-	}
-	
-	[Command]
-	void CmdFullHealth() {
-		print("health before: "+ health);
-		ChangeHealth(maxHealth, false);
-		print("health after: " + health);
 	}
 }
