@@ -62,7 +62,7 @@ public class Enemy : NetworkBehaviour {
     }
 
     public void EnableEnemy() {
-        tree.SetVariableValue("ShipHasArrived", true);
+        GlobalVariables.Instance.SetVariableValue("EnemiesEnabled", true);
     }
 
     public void ToggleWeaponCollider() {
