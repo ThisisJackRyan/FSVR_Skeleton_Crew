@@ -26,7 +26,7 @@ public class Ratman : NetworkBehaviour {
     private void Start() {
         VariableHolder.instance.ratmenPositions.Add(gameObject);
         if (isServer) {
-            print(name + " enabled server check");
+          //  print(name + " enabled server check");
             Captain.ratmenRespawned.Add(this, false);
             ChangeHealth(health);
         } else {
@@ -36,7 +36,7 @@ public class Ratman : NetworkBehaviour {
     }
 
     public static void RespawnRatmen(Vector3 spawnPos) {
-        print("respawnrats called");
+       // print("respawnrats called");
         bool hasRespawned = false;
         bool needsRespawn = false;
         foreach (var item in VariableHolder.instance.ratmenPositions) {
@@ -49,12 +49,12 @@ public class Ratman : NetworkBehaviour {
                     break;
                 }
             } else {
-                print(item.name + " has health of " + item.GetComponent<Ratman>().GetHealth() + " in respawn");
+               // print(item.name + " has health of " + item.GetComponent<Ratman>().GetHealth() + " in respawn");
             }
         }
 
         if (!needsRespawn) {
-            print("doesn't need to respawn, disabling hatches");
+           // print("doesn't need to respawn, disabling hatches");
             HatchActivator.DisableHatches();
             print(HatchActivator.instance);
 

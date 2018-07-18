@@ -44,6 +44,19 @@ public class ChangeAvatar : NetworkBehaviour
 
 	}
 
+    public void DisableArmor() {
+        armorSets[armorSet].SetActive(false);
+    }
+
+    public void EnableArmor() {
+        armorSets[armorSet].SetActive(true);
+    }
+
+    public int GetColor() {
+        return color;
+    }
+
+
 	[Command]
 	void CmdChangeArmor(int armorSet)
 	{
