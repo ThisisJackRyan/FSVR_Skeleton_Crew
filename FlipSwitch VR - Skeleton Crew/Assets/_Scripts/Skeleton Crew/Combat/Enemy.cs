@@ -21,7 +21,9 @@ public class Enemy : NetworkBehaviour {
     public Collider weaponCollider;
     public BehaviorTree tree;
 
-    public bool isBoss = false;
+    private bool canBeDamaged;
+    public GameObject lastWeaponDamagedMe;
+    
     #endregion
 
     private void OnHealthChange(int n) {
@@ -39,26 +41,29 @@ public class Enemy : NetworkBehaviour {
 
         if (other.tag == "Weapon") {
             if (other.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
-                //print("hit with " + health + " by " + other.GetComponent<Weapon>().data.damage);
+                canBeDamaged = false;
                 health -= other.GetComponent<Weapon>().data.damage;
-
                 if (health <= 0) {
-                    //print("dead");
-                    if (isBoss) {
-                        EnemySpawner.StopSpawning();
-                    }
                     Destroy(gameObject);
                 }
+                Invoke("AllowDamage", 3.5f);
             }
         } else if (other.tag == "BulletPlayer" || other.tag == "CannonBallPlayer") {
-            //print("hit with " + health + " by " + other.GetComponent<SCProjectile>().damage);
             health -= other.GetComponent<SCProjectile>().damage;
 
             if (health <= 0) {
-                //print("dead");
                 Destroy(gameObject);
             }
         }
+    }
+
+    public void AllowDamage() {
+        CancelInvoke();
+        canBeDamaged = true;
+    }
+
+    public bool GetCanBeDamaged() {
+        return canBeDamaged;
     }
 
     public void EnableEnemy() {
@@ -66,7 +71,6 @@ public class Enemy : NetworkBehaviour {
     }
 
     public void ToggleWeaponCollider() {
-        //print(name + " is toggling weapon, it is " + weaponCollider.enabled + " setting it to " + !weaponCollider.enabled);
         weaponCollider.enabled = !weaponCollider.enabled;
     }
 }

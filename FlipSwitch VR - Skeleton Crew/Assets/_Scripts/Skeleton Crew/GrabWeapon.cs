@@ -97,7 +97,7 @@ public class GrabWeapon : NetworkBehaviour {
         if (hits.Length > 0) {
             //////print("hits > 0 with " + hits.Length);
             for (int i = 0; i < hits.Length; i++) {
-                if (hits[i].transform.tag == "Weapon") {
+                if (hits[i].transform.tag == "WeaponPickup") {
                     if (hits[i].transform.GetComponentInParent<Weapon>().isBeingHeldByPlayer) {
                         continue;
                     }
