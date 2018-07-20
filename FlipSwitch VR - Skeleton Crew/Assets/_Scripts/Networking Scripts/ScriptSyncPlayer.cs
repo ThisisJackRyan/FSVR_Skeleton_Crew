@@ -16,6 +16,7 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 
 
     public GameObject[] playerBody;
+    public Collider[] playerColliders;
     public GameObject[] deathExplosion;
     public Transform explosionPosition;
     bool isDead;
@@ -47,6 +48,13 @@ public class ScriptSyncPlayer : NetworkBehaviour {
             ChangeHealth(maxHealth);
     }
 
+    [Button]
+    public void ReviveMe() {
+        if (isServer) {
+            RevivePlayer();
+        }
+    }
+
     private void Start() {
          OnHealthChange(health);
     }
@@ -56,6 +64,7 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 
     public void RevivePlayer() {
         ChangeHealth(maxHealth, false);
+        VariableHolder.instance.players.Add(GetComponentInChildren<EnemyTargetInit>().gameObject);
         EnableBody();
         RpcEnableBody();
     }
@@ -64,7 +73,13 @@ public class ScriptSyncPlayer : NetworkBehaviour {
         foreach (GameObject g in playerBody) {
             g.SetActive(false);
         }
+        foreach(Collider c in playerColliders) {
+            c.enabled = false;
+        }
+
         GetComponent<ChangeAvatar>().DisableArmor();
+        GetComponent<GrabWeapon>().Death();
+
         if (!isServer) 
             Instantiate(deathExplosion[GetComponent<ChangeAvatar>().GetColor()], explosionPosition.position, Quaternion.identity);
     }
@@ -77,13 +92,20 @@ public class ScriptSyncPlayer : NetworkBehaviour {
         foreach (GameObject g in playerBody) {
             g.SetActive(true);
         }
+        foreach (Collider c in playerColliders) {
+            c.enabled = true;
+        }
 
         GetComponent<ChangeAvatar>().EnableArmor();
+        GetComponent<GrabWeapon>().Revive();
     }
 
     void EnableBody() {
         foreach(GameObject g in playerBody) {
             g.SetActive(true);
+        }
+        foreach (Collider c in playerColliders) {
+            c.enabled = true;
         }
 
         GetComponent<ChangeAvatar>().EnableArmor();

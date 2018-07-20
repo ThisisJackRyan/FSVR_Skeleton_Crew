@@ -5,7 +5,7 @@ public class ChangeAvatar : NetworkBehaviour
 {
 
 	public GameObject[] armorSets;
-	[SyncVar(hook = "OnArmorSetChange")] int armorSet = 0;
+	[SyncVar(hook = "OnArmorSetChange")] int armorSet = -1;
 	[SyncVar(hook = "OnColorChange")] int color = 0;
 
 	public Material[] colors;
@@ -15,7 +15,6 @@ public class ChangeAvatar : NetworkBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		//SetArmorSet(armorSet);
 		SetSkin(color);
 	}
 
@@ -45,11 +44,13 @@ public class ChangeAvatar : NetworkBehaviour
 	}
 
     public void DisableArmor() {
-        armorSets[armorSet].SetActive(false);
+        if(armorSet != -1)
+            armorSets[armorSet].SetActive(false);
     }
 
     public void EnableArmor() {
-        armorSets[armorSet].SetActive(true);
+        if(armorSet != -1)
+            armorSets[armorSet].SetActive(true);
     }
 
     public int GetColor() {

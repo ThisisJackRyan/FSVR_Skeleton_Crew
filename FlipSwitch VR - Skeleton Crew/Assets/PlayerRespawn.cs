@@ -8,6 +8,8 @@ public class PlayerRespawn : NetworkBehaviour {
     float timer = 0;
     bool active = false;
 
+    GameObject playerBeingRevived = null;
+
     private void OnTriggerStay(Collider other) {
         if (!isServer)
             return;
@@ -30,6 +32,7 @@ public class PlayerRespawn : NetworkBehaviour {
         if (other.gameObject.tag == "PlayerCollider" && !active) {
             timer = 0;
             active = true;
+            playerBeingRevived = other.gameObject;
         }
     }
 
@@ -37,6 +40,9 @@ public class PlayerRespawn : NetworkBehaviour {
         if (!isServer)
             return;
 
-        active = false;
+        if (other.gameObject == playerBeingRevived) {
+            active = false;
+            playerBeingRevived = null;
+        }
     }
 }

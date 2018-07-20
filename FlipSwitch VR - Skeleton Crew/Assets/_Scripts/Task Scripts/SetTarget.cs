@@ -12,14 +12,14 @@ public class SelectTarget : Conditional {
     public override void OnStart()
     {
 		if ( targetType == TargetType.Cannon ) {
-			target = VariableHolder.instance.cannons[Random.Range( 0, VariableHolder.instance.cannons.Count )];
+            target = VariableHolder.instance.cannons.Count > 0 ? VariableHolder.instance.cannons[Random.Range(0, VariableHolder.instance.cannons.Count)] : null;
 		} else if ( targetType == TargetType.Mast ) {
-			target = VariableHolder.instance.mastTargets[Random.Range( 0, VariableHolder.instance.mastTargets.Count )];
-		} else if ( targetType == TargetType.Ratmen ) {
-			target = VariableHolder.instance.ratmen[Random.Range( 0, VariableHolder.instance.ratmen.Count )];
-		} else {
-			target = VariableHolder.instance.players[Random.Range( 0, VariableHolder.instance.players.Count )];
-		}
+            target = VariableHolder.instance.mastTargets.Count > 0 ? VariableHolder.instance.mastTargets[Random.Range(0, VariableHolder.instance.mastTargets.Count)] : null;
+        } else if ( targetType == TargetType.Ratmen ) {
+            target = VariableHolder.instance.ratmen.Count > 0 ? VariableHolder.instance.ratmen[Random.Range(0, VariableHolder.instance.ratmen.Count)] : null;
+        } else {
+            target = VariableHolder.instance.players.Count > 0 ? VariableHolder.instance.players[Random.Range(0, VariableHolder.instance.players.Count)] : null;
+        }
     }
 
 

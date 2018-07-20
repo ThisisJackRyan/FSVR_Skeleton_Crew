@@ -16,6 +16,7 @@ public class GrabWeapon : NetworkBehaviour {
     private GameObject rightWeaponGameObj;
     private GameObject leftHighlightedWeaponObj;
     private GameObject rightHighlightedWeaponObj;
+    private bool isDead;
 
     // Use this for initialization
     void Start() {
@@ -37,8 +38,44 @@ public class GrabWeapon : NetworkBehaviour {
         canGrabLeft = true;
     }
 
+    public void Death() {
+        if (isLocalPlayer) {
+            if (rightWeaponGameObj) {
+                CmdDropIfHolding("right", gameObject);
+            }
+            if (leftWeaponGameObj) {
+                CmdDropIfHolding("left", gameObject);
+            }
+        }
+        if (weaponInRightHolster) {
+            print("weapon in right holster: " + weaponInRightHolster.name);
+            weaponInRightHolster.GetComponent<ObjectPositionLock>().posPoint = null;
+            weaponInRightHolster.GetComponent<ObjectPositionLock>().posOffset = Vector3.zero;
+            weaponInRightHolster.GetComponent<ObjectPositionLock>().rotOffset = Quaternion.Euler(Vector3.zero);
+            weaponInRightHolster.GetComponent<Rigidbody>().isKinematic = false;
+        }
+        if (weaponInLeftHolster) {
+            weaponInLeftHolster.GetComponent<ObjectPositionLock>().posPoint = null;
+            weaponInLeftHolster.GetComponent<ObjectPositionLock>().posOffset = Vector3.zero;
+            weaponInLeftHolster.GetComponent<ObjectPositionLock>().rotOffset = Quaternion.Euler(Vector3.zero);
+            weaponInLeftHolster.GetComponent<Rigidbody>().isKinematic = false;
+        }
+        if (leftHighlightedWeaponObj) {
+            leftHighlightedWeaponObj = null;
+        }
+        if (rightHighlightedWeaponObj) {
+            rightHighlightedWeaponObj = null;
+        }
+
+        isDead = true;
+    }
+
+    public void Revive() {
+        isDead = false;
+    }
+
     void Update() {
-        if (!isLocalPlayer) {
+        if (!isLocalPlayer || isDead) {
             return;
         }
 

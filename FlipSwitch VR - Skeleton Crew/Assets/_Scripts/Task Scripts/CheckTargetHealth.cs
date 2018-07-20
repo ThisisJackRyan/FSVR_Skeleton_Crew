@@ -23,7 +23,7 @@ public class CheckTargetHealth : Conditional {
 				break;
 			case TargetType.Ratmen:
 				Debug.Log("accessing ratman health");
-				isDead = (currentTarget.Value.GetComponent<Ratman>().GetHealth() <= 0);
+				isDead = (currentTarget.Value.GetComponentInParent<Ratman>().GetHealth() <= 0);
 				break;
 			default:
 				isDead = true;
