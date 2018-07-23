@@ -1,21 +1,40 @@
 fileFormatVersion: 2
-guid: 810d0a16b0a592248b148b6a255ce894
+guid: 3088bf2e6b85c3946b9d4d72641c6a3e
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Cannon_Barrel_Front
+    100004: Exit_Barrel_Locator
+    100006: Wick
+    100008: Wick_Locator
     400000: //RootNode
-    2100000: skeleton_body
+    400002: Cannon_Barrel_Front
+    400004: Exit_Barrel_Locator
+    400006: Wick
+    400008: Wick_Locator
+    2100000: Broken_Cannon_Metal
+    2100002: Wick1
     2300000: //RootNode
+    2300002: Cannon_Barrel_Front
+    2300004: Wick
     3300000: //RootNode
-    4300000: Bone_Pile3
-    9500000: //RootNode
+    3300002: Cannon_Barrel_Front
+    3300004: Wick
+    4300000: Cannon_Barrel
+    4300002: Cannon_Barrel_Front
+    4300004: Wick
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: skeleton_body
-    second: {fileID: 2100000, guid: f9b6dae4cb841134e864c51a8bf407ba, type: 2}
+      name: Broken_Cannon_Metal
+    second: {fileID: 2100000, guid: b4892a4b564cf7645aea50542cbe6422, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wick1
+    second: {fileID: 2100006, guid: 2f2e978982b1b284c8a74d250eebcafc, type: 3}
   materials:
     importMaterials: 1
     materialName: 0
@@ -90,7 +109,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
