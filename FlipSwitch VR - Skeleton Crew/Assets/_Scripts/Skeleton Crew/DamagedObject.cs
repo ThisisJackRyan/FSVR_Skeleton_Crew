@@ -17,7 +17,6 @@ public class DamagedObject : NetworkBehaviour {
 
 	public Transform fullState, threequarter, halfState, quarterState, deadState;
 	public Transform fullStateSpawnPos, threeQuarterSpawnPos, halfSpawnPos, quarterSpawnPos;
-	public Slider repairSlider;
 	public GameObject repairSphere;
 
 	private Cannon cannonScript;
@@ -58,19 +57,13 @@ public class DamagedObject : NetworkBehaviour {
             
         } else if (isClient) {
 			OnHealthChange(health);
-		}
-
-
-		repairSlider.minValue = 0;
-		repairSlider.maxValue = 100;		
+		}	
 	}
 
 	private void Update() {
 		if ( health < 100 ) {
-			repairSlider.transform.parent.gameObject.SetActive(true);
 			repairSphere.SetActive( true );
 		} else {
-			repairSlider.transform.parent.gameObject.SetActive( false );
 			repairSphere.SetActive( false );
 		}
 	}

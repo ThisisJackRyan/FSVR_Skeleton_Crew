@@ -10,7 +10,7 @@ public class Cannon : NetworkBehaviour {
 	public AudioClip fireSound;
 
 	[SyncVar(hook = "OnFiringChange")] private bool isFiring;
-	[SyncVar( hook = "OnReload" )] private bool isReloaded;
+	[SyncVar( hook = "OnReload" )] private bool isReloaded = true;
 
 	void OnReload( bool n ) {
 		isReloaded = n;
