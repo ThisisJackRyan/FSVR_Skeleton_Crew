@@ -7,14 +7,13 @@ public class CannonInteraction : NetworkBehaviour {
 
 	public void Fire(GameObject cannon)
     {
-        if (!isLocalPlayer)
+        if (!isServer)
             return;
 
-        CmdFireCannon(cannon);
+        FireCannon(cannon);
     }
 
-    [Command]
-    private void CmdFireCannon(GameObject cannon)
+    private void FireCannon(GameObject cannon)
     {
         cannon.GetComponent<Cannon>().CreateCannonBall();
         Captain.playersFiredCannons[this] = true;

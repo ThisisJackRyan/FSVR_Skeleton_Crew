@@ -13,7 +13,7 @@ public class SCProjectile : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other) {
 		//print("projectile triggered by : " + other.gameObject.name);
-		if (other.gameObject.tag == "Weapon" || other.gameObject.tag == "Cannon") {
+		if (other.gameObject.tag == "Weapon" || other.gameObject.tag == "Cannon" || other.gameObject.tag == "WeaponPickup") {
 			return;
 		}
 

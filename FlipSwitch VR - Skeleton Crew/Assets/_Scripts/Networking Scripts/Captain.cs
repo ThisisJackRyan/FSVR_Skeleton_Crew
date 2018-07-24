@@ -99,13 +99,15 @@ public class Captain : SerializedNetworkBehaviour {
     public bool mastHasBeenPulled = false;
     public Collider[] mastRopes;
     public AudioClip[] tutorialSounds;
+	bool damagedComplete, ratmenComplete, cannonsComplete;
 
 
     public void CheckDamagedObjects() {
         foreach (var obj in damagedObjectsRepaired) {
             print(obj.Key.name + " has a value of " + obj.Value);
         }
-        if (!damagedObjectsRepaired.ContainsValue(false)) {
+        if (!damagedObjectsRepaired.ContainsValue(false) && !damagedComplete) {
+			damagedComplete = true;
             RpcPlaySoundClip("PrepTut_Rat");
         }
     }
@@ -114,7 +116,8 @@ public class Captain : SerializedNetworkBehaviour {
         foreach (var obj in ratmenRespawned) {
             print(obj.Key.name + " has a value of " + obj.Value);
         }
-        if (!ratmenRespawned.ContainsValue(false)) {
+        if (!ratmenRespawned.ContainsValue(false) && !ratmenComplete) {
+			ratmenComplete = true;
             RpcPlaySoundClip("PrepTut_Shoot");
             print("Ratmen have been replenished");
         }
@@ -124,7 +127,8 @@ public class Captain : SerializedNetworkBehaviour {
         foreach (var obj in playersFiredCannons) {
             print(obj.Key.name + " has a value of " + obj.Value);
         }
-        if (!playersFiredCannons.ContainsValue(false)) {
+        if (!playersFiredCannons.ContainsValue(false) && !cannonsComplete) {
+			cannonsComplete = true;
             RpcPlaySoundClip("PrepTut_Mast");
             print("Players have fired cannons");
             RpcEnableRopes();

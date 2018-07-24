@@ -8,7 +8,8 @@ public class DieAfterCycle : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Invoke("Die", particleLifetime);
+		//Debug.Break();
+		Invoke("Die", 5f );
 	}
 	
 	// Update is called once per frame

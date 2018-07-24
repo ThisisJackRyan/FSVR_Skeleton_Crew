@@ -16,7 +16,6 @@ public class DamagedObject : NetworkBehaviour {
 	public int fullAmount = 90, threeQuarterAmount = 75, halfAmount = 50, quarterAmount = 25, maxHealth = 100;
 
 	public Transform fullState, threequarter, halfState, quarterState, deadState;
-	public Transform fullStateSpawnPos, threeQuarterSpawnPos, halfSpawnPos, quarterSpawnPos;
 	public GameObject repairSphere;
 
 	private Cannon cannonScript;
@@ -71,7 +70,6 @@ public class DamagedObject : NetworkBehaviour {
 	void UpdateModel() {
 		switch ( myState ) {
 			case DamageState.Full:
-				cannonScript.spawnPos = fullStateSpawnPos;
 				fullState.gameObject.SetActive( true );
 				threequarter.gameObject.SetActive( false );
 				halfState.gameObject.SetActive( false );
@@ -79,7 +77,6 @@ public class DamagedObject : NetworkBehaviour {
 				deadState.gameObject.SetActive( false );
 				break;
 			case DamageState.ThreeQuarter:
-				cannonScript.spawnPos = threeQuarterSpawnPos;
 				fullState.gameObject.SetActive( false );
 				threequarter.gameObject.SetActive( true );
 				halfState.gameObject.SetActive( false );
@@ -87,7 +84,6 @@ public class DamagedObject : NetworkBehaviour {
 				deadState.gameObject.SetActive( false );
 				break;
 			case DamageState.Half:
-				cannonScript.spawnPos = halfSpawnPos;
 				fullState.gameObject.SetActive( false );
 				threequarter.gameObject.SetActive( false );
 				halfState.gameObject.SetActive( true );
@@ -95,7 +91,6 @@ public class DamagedObject : NetworkBehaviour {
 				deadState.gameObject.SetActive( false );
 				break;
 			case DamageState.Quarter:
-				cannonScript.spawnPos = quarterSpawnPos;
 				fullState.gameObject.SetActive( false );
 				threequarter.gameObject.SetActive( false );
 				halfState.gameObject.SetActive( false );
