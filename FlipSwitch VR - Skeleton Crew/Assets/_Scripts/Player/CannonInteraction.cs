@@ -43,7 +43,7 @@ public class CannonInteraction : NetworkBehaviour {
 
 	MastInteraction mastInteraction;
 	Cannon cannonCurrentlyAiming;
-	int indexOfClosest = -1;
+	public int indexOfClosest = -1;
 	bool leftHandInteracting, rightHandInteracting;
 
 	void Update() {

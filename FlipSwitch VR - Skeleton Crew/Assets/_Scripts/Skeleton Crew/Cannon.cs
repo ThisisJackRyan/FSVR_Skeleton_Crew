@@ -19,6 +19,16 @@ public class Cannon : NetworkBehaviour {
 	[SyncVar( hook = "OnReload" )]
 	private bool isReloaded = true;
 
+	private void Start() {
+		if ( minAngle > maxAngle ) {
+			float temp = maxAngle;
+			maxAngle = minAngle;
+			minAngle = temp;
+		}
+
+		cannonBarrel.localEulerAngles = new Vector3( maxAngle, 0, 0 );
+	}
+
 	void OnReload( bool n ) {
 		isReloaded = n;
 	}
@@ -60,17 +70,23 @@ public class Cannon : NetworkBehaviour {
 			return;
 		//aiming is weird, -5 is the lowest, -45 is the highest. take in as positive and convert min and max to negative for best results
 		if ( indexOfFirstGrabbed >= 0 ) {
-			int raiseSign = ( indexOfNode > indexOfFirstGrabbed ) ? 1 : -1; //if index is greater (closer to back of cannon) then you are raising the cannon
+			int raiseSign = ( indexOfNode > indexOfFirstGrabbed ) ? -1 : 1; //if index is greater (closer to back of cannon) then you are raising the cannon
 
 			float barrelRotation = cannonBarrel.localEulerAngles.x;
-			float targetAngle = Mathf.Abs( barrelRotation + ( raiseSign * angleIncrement ) );
-			print( "current index " + indexOfFirstGrabbed + " index that called " + indexOfNode + " " + barrelRotation + " plus " + ( raiseSign * angleIncrement ) + " becomes target of " + targetAngle );
+			float targetAngle = ( barrelRotation + ( raiseSign * angleIncrement ) + 360 ) % 360;
+			//print( "current index " + indexOfFirstGrabbed + " index that called " + indexOfNode + " " + barrelRotation + " plus " + ( raiseSign * angleIncrement ) + " becomes target of " + targetAngle );
 
 			//if (targetAngel <= maxAngle && targetAngel >= minAngle) {
 			//perform rotation
 			print( targetAngle + " is within range, rotate barrel" );
-			cannonBarrel.localEulerAngles = new Vector3( targetAngle, 0, 0 );
-			print( "AFTER " + barrelRotation + " is old,  " + cannonBarrel.localRotation + " is new, target was " + targetAngle );
+			//targetAngle += 360;
+
+			if ( targetAngle >= minAngle && targetAngle <= maxAngle ) {
+				cannonBarrel.localEulerAngles = new Vector3( targetAngle, 0, 0 );
+				//print( "AFTER " + barrelRotation + " is old,  " + cannonBarrel.localRotation + " is new, target was " + targetAngle );
+
+				indexOfFirstGrabbed = indexOfNode;
+			}
 
 			//} else {
 			//	print( targetAngel + " is not within range, do not rotate barrel" );
