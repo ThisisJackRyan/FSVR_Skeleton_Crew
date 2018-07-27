@@ -10,7 +10,7 @@ public class HealthDisplay : MonoBehaviour {
 	public DamagedObject dmgObj;
 	public Enemy enemy;
 	public ScriptSyncPlayer player;
-    public Ratman rat;
+	public Ratman rat;
 
 	// Use this for initialization
 	void Start() {}
@@ -26,11 +26,11 @@ public class HealthDisplay : MonoBehaviour {
 		}
 
 		if (player) {
-            text.text = player.GetHealth().ToString();
-        }
+			text.text = player.GetHealth().ToString();
+		}
 
-        if (rat) {
-            text.text = rat.health.ToString();
-        }
-    }
+		if (rat) {
+			text.text = rat.health.ToString();
+		}
+	}
 }
