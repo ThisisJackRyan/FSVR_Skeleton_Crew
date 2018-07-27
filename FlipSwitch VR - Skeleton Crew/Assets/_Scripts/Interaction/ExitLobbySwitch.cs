@@ -56,7 +56,7 @@ public class ExitLobbySwitch : MonoBehaviour {
     }
 
 	private void OnTriggerEnter(Collider other) {
-		print(other.name);
+		//print(other.name);
 		if (other.gameObject.GetComponentInParent<ChangeAvatar>()) {
 			timer = 0;
 			active = true;

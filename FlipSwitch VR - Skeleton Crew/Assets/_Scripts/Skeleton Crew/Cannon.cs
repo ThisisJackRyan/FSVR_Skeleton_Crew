@@ -12,6 +12,7 @@ public class Cannon : NetworkBehaviour {
 	public Transform cannonBarrel;
 	public float minAngle, maxAngle;
 	public Transform[] aimingNodes;
+	public Transform handMarker;
 
 	[SyncVar(hook = "OnFiringChange")]
 	private bool isFiring;
@@ -50,9 +51,38 @@ public class Cannon : NetworkBehaviour {
 		isReloaded = true;
 	}
 
-	public void RotateBarrel() {
-		//aiming is weird, -5 is the lowest, -45 is the highest. take in as positive andconvert min and max to negative for best results
+	public int indexOfFirstGrabbed = -1; //only being set on local player
+	int angleIncrement = 5;
 
+	
+	public void RotateBarrel(int indexOfNode) {
+		if ( !isServer )
+			return;
+		//aiming is weird, -5 is the lowest, -45 is the highest. take in as positive and convert min and max to negative for best results
+		if (indexOfFirstGrabbed >= 0) {
+			int raiseSign = (indexOfNode > indexOfFirstGrabbed) ? 1 : -1; //if index is greater (closer to back of cannon) then you are raising the cannon
+
+			float barrelRotation = cannonBarrel.transform.rotation.x;
+			float targetAngel = Mathf.Abs( barrelRotation + ( raiseSign * angleIncrement ) );
+			print("current index " + indexOfFirstGrabbed + " index that called " + indexOfNode + " "+ barrelRotation + " plus " + ( raiseSign * angleIncrement ) + " becomes target of "+ targetAngel);
+
+			if (targetAngel <= maxAngle && targetAngel >= minAngle) {
+				//perform rotation
+				print(targetAngel + " is within range, rotate barrel");
+				cannonBarrel.localRotation = Quaternion.Euler(targetAngel, 0, 0);
+			} else {
+				print( targetAngel + " is not within range, do not rotate barrel" );
+			}
+
+			//RpcRotateBarrel( cannonBarrel.localRotation );
+		}
+	}
+
+	public void RpcRotateBarrel(Quaternion newRot) {
+		if (isServer) {
+			return;
+		}
+		cannonBarrel.localRotation = newRot;
 	}
 
 	private void OnDrawGizmos() {
