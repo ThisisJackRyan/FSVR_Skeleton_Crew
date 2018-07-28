@@ -41,12 +41,16 @@ public class Enemy : NetworkBehaviour {
 
         if (other.tag == "Weapon") {
             if (other.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
-                canBeDamaged = false;
-                health -= other.GetComponent<Weapon>().data.damage;
-                if (health <= 0) {
-                    Destroy(gameObject);
+                // todo: test that enemies are only being damaged by melee weapons being held by player
+                if (other.GetComponent<Weapon>().isBeingHeldByPlayer) {
+                    canBeDamaged = false;
+                    health -= other.GetComponent<Weapon>().data.damage;
+                    if (health <= 0) {
+                        Destroy(gameObject);
+                    }
+
+                    Invoke("AllowDamage", 3.5f);
                 }
-                Invoke("AllowDamage", 3.5f);
             }
         } else if (other.tag == "BulletPlayer" || other.tag == "CannonBallPlayer") {
             health -= other.GetComponent<SCProjectile>().damage;

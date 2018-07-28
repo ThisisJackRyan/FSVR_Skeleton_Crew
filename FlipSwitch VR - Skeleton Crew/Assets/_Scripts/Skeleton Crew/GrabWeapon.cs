@@ -276,12 +276,14 @@ public class GrabWeapon : NetworkBehaviour {
             return;
         }
 
+        // todo: test weapon highlighting different colors (red right, blue left)
         if (isLocalPlayer && player == gameObject) {
             if (side.Equals("left")) {
                 if (leftHighlightedWeaponObj) {
                     leftHighlightedWeaponObj.GetComponent<Weapon>().myOutline.enabled = false;
                 }
 
+                weaponToHighlight.GetComponent<Weapon>().myOutline.OutlineColor = Color.blue;
                 weaponToHighlight.GetComponent<Weapon>().myOutline.enabled = true;
                 leftHighlightedWeaponObj = weaponToHighlight;
             } else {
@@ -289,6 +291,7 @@ public class GrabWeapon : NetworkBehaviour {
                     rightHighlightedWeaponObj.GetComponent<Weapon>().myOutline.enabled = false;
                 }
 
+                weaponToHighlight.GetComponent<Weapon>().myOutline.OutlineColor = Color.red;
                 weaponToHighlight.GetComponent<Weapon>().myOutline.enabled = true;
                 rightHighlightedWeaponObj = weaponToHighlight;
             }
