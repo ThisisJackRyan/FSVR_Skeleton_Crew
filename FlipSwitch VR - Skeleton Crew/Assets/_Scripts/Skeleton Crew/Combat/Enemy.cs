@@ -23,7 +23,9 @@ public class Enemy : NetworkBehaviour {
 
     private bool canBeDamaged;
     public GameObject lastWeaponDamagedMe;
-    
+
+	public GameObject deathParticles;
+
     #endregion
 
     private void OnHealthChange(int n) {
@@ -47,6 +49,7 @@ public class Enemy : NetworkBehaviour {
                     health -= other.GetComponent<Weapon>().data.damage;
                     if (health <= 0) {
                         Destroy(gameObject);
+						RpcSpawnDeathParticles();
                     }
 
                     Invoke("AllowDamage", 3.5f);
@@ -60,6 +63,11 @@ public class Enemy : NetworkBehaviour {
             }
         }
     }
+	
+	[ClientRpc]
+	void RpcSpawnDeathParticles() {
+		Instantiate( deathParticles , new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
+	}
 
     public void AllowDamage() {
         CancelInvoke();
