@@ -7,6 +7,8 @@ public class OfflineHostHudManager : MonoBehaviour {
     [Tooltip("Objects to turn on for host")] public GameObject[] thingsToTurnOn;
     [Tooltip("Objects to turn off for host")] public GameObject[] thingsToTurnOff;
 
+
+
     private void OnEnable()
     {
         if (NetworkHelper.hostIpAddress.Equals(NetworkHelper.GetLocalIPAddress()))

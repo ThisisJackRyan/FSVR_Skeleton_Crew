@@ -1,0 +1,127 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="Snd_SkeletonGrunts_data" version="1.3.0" audacityversion="2.1.3" sel0="0.0000000000" sel1="0.0000000000" vpos="0" h="0.0000000000" zoom="86.1328125000" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags/>
+	<wavetrack name="Audio Track" channel="0" linked="1" mute="1" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="39836">
+				<waveblock start="0">
+					<simpleblockfile filename="e0002ab9.au" len="36864" min="-0.573721" max="0.633117" rms="0.116139"/>
+				</waveblock>
+				<waveblock start="36864">
+					<simpleblockfile filename="e000283c.au" len="2972" min="-0.000858" max="0.000791" rms="0.000292"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="1">
+				<controlpoint t="0.903287981859" val="1.000000000000"/>
+			</envelope>
+		</waveclip>
+		<waveclip offset="0.90331066">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="1269">
+				<waveblock start="0">
+					<simpleblockfile filename="e000209c.au" len="1269" min="-0.000387" max="0.000365" rms="0.000104"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="1">
+				<controlpoint t="0.000000000000" val="1.000000000000"/>
+			</envelope>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Audio Track" channel="1" linked="0" mute="1" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="39836">
+				<waveblock start="0">
+					<simpleblockfile filename="e0002abb.au" len="36864" min="-0.573721" max="0.633117" rms="0.116139"/>
+				</waveblock>
+				<waveblock start="36864">
+					<simpleblockfile filename="e0002c4b.au" len="2972" min="-0.000858" max="0.000791" rms="0.000292"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="1">
+				<controlpoint t="0.903287981859" val="1.000000000000"/>
+			</envelope>
+		</waveclip>
+		<waveclip offset="0.90331066">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="1269">
+				<waveblock start="0">
+					<simpleblockfile filename="e0002cd7.au" len="1269" min="-0.000387" max="0.000365" rms="0.000104"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="1">
+				<controlpoint t="0.000000000000" val="1.000000000000"/>
+			</envelope>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Audio Track" channel="0" linked="1" mute="1" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="51712">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000f7d.au" len="51712" min="-1.004284" max="0.990422" rms="0.154878"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="1">
+				<controlpoint t="1.172607709751" val="1.000000000000"/>
+			</envelope>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Audio Track" channel="1" linked="0" mute="1" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="51712">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000b74.au" len="51712" min="-1.004284" max="0.990422" rms="0.154878"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="1">
+				<controlpoint t="1.172607709751" val="1.000000000000"/>
+			</envelope>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Audio Track" channel="0" linked="1" mute="1" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="33280">
+				<waveblock start="0">
+					<simpleblockfile filename="e000212d.au" len="33280" min="-0.460002" max="0.656303" rms="0.115369"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="1">
+				<controlpoint t="0.754648526077" val="1.000000000000"/>
+			</envelope>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Audio Track" channel="1" linked="0" mute="1" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="33280">
+				<waveblock start="0">
+					<simpleblockfile filename="e000203f.au" len="33280" min="-0.460002" max="0.656303" rms="0.115369"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="1">
+				<controlpoint t="0.754648526077" val="1.000000000000"/>
+			</envelope>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Audio Track" channel="0" linked="1" mute="0" solo="1" height="150" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="36864">
+				<waveblock start="0">
+					<simpleblockfile filename="e0002efe.au" len="36864" min="-0.778704" max="0.648981" rms="0.121211"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="1">
+				<controlpoint t="0.835918367347" val="1.000000000000"/>
+			</envelope>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Audio Track" channel="1" linked="0" mute="0" solo="1" height="150" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="36864">
+				<waveblock start="0">
+					<simpleblockfile filename="e000224c.au" len="36864" min="-0.778704" max="0.648981" rms="0.121211"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="1">
+				<controlpoint t="0.835918367347" val="1.000000000000"/>
+			</envelope>
+		</waveclip>
+	</wavetrack>
+</project>

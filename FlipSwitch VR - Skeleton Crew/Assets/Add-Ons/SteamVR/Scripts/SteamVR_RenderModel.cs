@@ -127,7 +127,7 @@ public class SteamVR_RenderModel : MonoBehaviour
 		if (connected)
 		{
 			UpdateModel();
-		}
+        }
 	}
 
 	public void UpdateModel()

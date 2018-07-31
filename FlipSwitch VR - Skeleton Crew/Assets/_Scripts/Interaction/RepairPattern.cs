@@ -23,7 +23,7 @@ public class RepairPattern : MonoBehaviour {
 
 	// Use this for initialization
 	public void Increment () {
-		print( "incrememnt called with index of " + index );
+		//print( "incrememnt called with index of " + index );
 		index++;
 		if (index < transform.childCount) {
 			transform.GetChild( index ).gameObject.SetActive(true);
@@ -31,7 +31,7 @@ public class RepairPattern : MonoBehaviour {
 		} else if(index == transform.childCount) {
 			//last node hit
 			//run repair code
-			if ( dmgObj.ChangeHealth( 20, false ) < dmgObj.fullAmount) {
+			if ( dmgObj.ChangeHealth( 20, false ) < dmgObj.maxHealth) {
 				index = 0;
 				Increment();
 			} else {

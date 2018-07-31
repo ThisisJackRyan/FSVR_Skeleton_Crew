@@ -11,7 +11,8 @@ using System.Collections.Generic;
 /// </summary>
 public class Player : MonoBehaviour {
 	#region Fields
-	
+
+	public int health;
 	#endregion
 	
 	void Start() {

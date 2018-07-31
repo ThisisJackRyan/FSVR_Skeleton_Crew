@@ -1,72 +1,56 @@
-﻿using Sirenix.OdinInspector;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
 
 public class Cannon : NetworkBehaviour {
 
-    [SyncVar(hook = "OnChargeChange")] float charge = 25;
-    public float maxCharge = 75, multiplier = 10;
-    public float minCharge = 25;
-    public GameObject projectile;
-    public GameObject smoke;
-    public Transform spawnPos;
-    public Slider chargeSlider;
+	public float power;
+	public GameObject projectile;
+	public GameObject smoke;
+	public Transform spawnPos;
 	public AudioClip fireSound;
 
-	[SyncVar(hook = "OnFiringChange")] private bool isFiring;
+	public Transform cannonBarrel;
+	public float minAngle, maxAngle;
+	public Transform[] aimingNodes;
+	public Transform handMarker;
 
-    void OnFiringChange(bool n) {
-        isFiring = n;
-    }
+	[SyncVar( hook = "OnFiringChange" )]
+	private bool isFiring;
+	[SyncVar( hook = "OnReload" )]
+	private bool isReloaded = true;
 
-    void OnChargeChange(float n)
-    {
-        charge = n;
-    }
+	private void Start() {
+		if ( minAngle > maxAngle ) {
+			float temp = maxAngle;
+			maxAngle = minAngle;
+			minAngle = temp;
+		}
 
-    public bool GetIsFiring()
-    {
-        return isFiring;
-    }
+		cannonBarrel.localEulerAngles = new Vector3( maxAngle, 0, 0 );
+	}
 
-    private void Start() {
-        chargeSlider.minValue = minCharge;
-        chargeSlider.maxValue = maxCharge;
-    }
+	void OnReload( bool n ) {
+		isReloaded = n;
+	}
 
-    private void Update() {
-        if (charge > minCharge) {
-            chargeSlider.transform.parent.gameObject.SetActive(true);
-            chargeSlider.value = charge;
-        } else {
-            chargeSlider.transform.parent.gameObject.SetActive(false);
-            chargeSlider.value = minCharge;
-        }
-    }
+	void OnFiringChange( bool n ) {
+		isFiring = n;
+	}
 
-    public void SetInitialCharge()
-    {
-        charge = minCharge;
-    }
+	public bool GetIsFiring() {
+		return isFiring;
+	}
 
-    public void IncrementCharge()
-    {
-        charge++;
-        if (charge > maxCharge)
-        {
-            charge = maxCharge;
-        }
-    }
+	public void CreateCannonBall() {
+		if ( !isReloaded ) {
+			return;
+		}
 
-    public void CreateCannonBall()
-    {
 		isFiring = true;
-        GameObject bullet = Instantiate(projectile, spawnPos.position, Quaternion.identity);
-		Instantiate(smoke, spawnPos.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().velocity = spawnPos.forward * charge;
+		isReloaded = false;
+		GameObject bullet = Instantiate( projectile, spawnPos.position, Quaternion.identity );
+		Instantiate( smoke, spawnPos.position, Quaternion.identity );
+		bullet.GetComponent<Rigidbody>().velocity = spawnPos.forward * power;
 		Invoke( "ReloadCannon", 3f );
 		GetComponent<AudioSource>().clip = fireSound;
 		GetComponent<AudioSource>().Play();
@@ -74,13 +58,54 @@ public class Cannon : NetworkBehaviour {
 
 	private void ReloadCannon() {
 		isFiring = false;
-		charge = minCharge;
+		isReloaded = true;
+	}
+
+	public int indexOfFirstGrabbed = -1; //only being set on local player
+	int angleIncrement = 5;
+
+
+	public void RotateBarrel( int indexOfNode ) {
+		if ( !isServer )
+			return;
+		//aiming is weird, -5 is the lowest, -45 is the highest. take in as positive and convert min and max to negative for best results
+		if ( indexOfFirstGrabbed >= 0 ) {
+			int raiseSign = ( indexOfNode > indexOfFirstGrabbed ) ? -1 : 1; //if index is greater (closer to back of cannon) then you are raising the cannon
+
+			float barrelRotation = cannonBarrel.localEulerAngles.x;
+			float targetAngle = ( barrelRotation + ( raiseSign * angleIncrement ) + 360 ) % 360;
+			//print( "current index " + indexOfFirstGrabbed + " index that called " + indexOfNode + " " + barrelRotation + " plus " + ( raiseSign * angleIncrement ) + " becomes target of " + targetAngle );
+
+			//if (targetAngel <= maxAngle && targetAngel >= minAngle) {
+			//perform rotation
+			print( targetAngle + " is within range, rotate barrel" );
+			//targetAngle += 360;
+
+			if ( targetAngle >= minAngle && targetAngle <= maxAngle ) {
+				cannonBarrel.localEulerAngles = new Vector3( targetAngle, 0, 0 );
+				//print( "AFTER " + barrelRotation + " is old,  " + cannonBarrel.localRotation + " is new, target was " + targetAngle );
+
+				indexOfFirstGrabbed = indexOfNode;
+			}
+
+			//} else {
+			//	print( targetAngel + " is not within range, do not rotate barrel" );
+			//}
+
+			//RpcRotateBarrel( cannonBarrel.localRotation );
+		}
+	}
+
+	public void RpcRotateBarrel( Quaternion newRot ) {
+		if ( isServer ) {
+			return;
+		}
+		cannonBarrel.localRotation = newRot;
 	}
 
 	private void OnDrawGizmos() {
-		if (spawnPos) {
+		if ( spawnPos ) {
 			Gizmos.DrawLine( spawnPos.transform.position, spawnPos.transform.position + spawnPos.transform.forward * 2 );
 		}
 	}
 }
-

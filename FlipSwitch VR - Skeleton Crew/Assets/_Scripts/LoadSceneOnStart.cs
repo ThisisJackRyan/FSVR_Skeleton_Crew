@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(ConnectWithPress))]
+//[RequireComponent(typeof(ConnectWithPress))]
 public class LoadSceneOnStart : MonoBehaviour {
 
 	public string offlineScene;

@@ -13,11 +13,11 @@ public class VRIKCalibrateOnStart : NetworkBehaviour {
 	public bool calibrated = false;
 	// Use this for initialization
 	public void CalibratePlayer() {
-		print("calibrate on start local: " + isLocalPlayer + " for " + name);
+		//print("calibrate on start local: " + isLocalPlayer + " for " + name);
 		//if ( isLocalPlayer ) {
 		if (!calibrated) {
 			StartCoroutine( "CalibrateLocally" );
-			print( "should be calibrating" );
+			//print( "should be calibrating" );
 		}
 
 		//}
@@ -37,7 +37,7 @@ public class VRIKCalibrateOnStart : NetworkBehaviour {
 		calibrated = true;
         yield return new WaitForSecondsRealtime(1);
         mine.Calibrate();
-        print("calibrated locally");
+
     }
 
     [Command]
@@ -50,6 +50,6 @@ public class VRIKCalibrateOnStart : NetworkBehaviour {
     void RpcCalibrate()
     {
         mine.Calibrate();
-        print("Calibrated via rpc");
+        //print("Calibrated via rpc");
     }
 }

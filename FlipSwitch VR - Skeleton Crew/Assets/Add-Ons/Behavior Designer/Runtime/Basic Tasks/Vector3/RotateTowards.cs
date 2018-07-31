@@ -18,10 +18,15 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityVector3
         [RequiredField]
         public SharedVector3 storeResult;
 
-        public override TaskStatus OnUpdate()
-        {
-            storeResult.Value = Vector3.RotateTowards(currentRotation.Value, targetRotation.Value, maxDegreesDelta.Value * Mathf.Deg2Rad * Time.deltaTime, maxMagnitudeDelta.Value);
-            return TaskStatus.Success;
+        public override TaskStatus OnUpdate() {
+            if (transform.rotation == Quaternion.Euler(targetRotation.Value)) {
+                return TaskStatus.Success;
+            }
+            // We haven't reached the target yet so keep moving towards it
+            transform.rotation = Quaternion.Euler(Vector3.RotateTowards(currentRotation.Value, targetRotation.Value, maxDegreesDelta.Value * Mathf.Deg2Rad * Time.deltaTime, maxMagnitudeDelta.Value));
+            return TaskStatus.Running;
+            //storeResult.Value = Vector3.RotateTowards(currentRotation.Value, targetRotation.Value, maxDegreesDelta.Value * Mathf.Deg2Rad * Time.deltaTime, maxMagnitudeDelta.Value);
+            //return TaskStatus.Success;
         }
 
         public override void OnReset()

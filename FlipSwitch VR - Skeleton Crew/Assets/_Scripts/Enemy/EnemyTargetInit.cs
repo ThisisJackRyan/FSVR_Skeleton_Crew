@@ -1,44 +1,101 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum TargetType
-{
-	Mast,
-	Cannon,
-	Ratmen,
-	Player
+public enum TargetType {
+    Mast,
+    Cannon,
+    Ratmen,
+    Player
 };
 
 public class EnemyTargetInit : MonoBehaviour {
 
-	public TargetType targetType;
+    public TargetType targetType;
 
-	private void OnEnable() {
-		if(VariableHolder.instance != null ) {
-			if ( targetType == TargetType.Cannon && !VariableHolder.instance.cannons.Contains( gameObject ) ) {
-				VariableHolder.instance.cannons.Add( gameObject );
-			} else if ( targetType == TargetType.Mast && !VariableHolder.instance.mastTargets.Contains( gameObject ) ) {
-				VariableHolder.instance.mastTargets.Add( gameObject );
-			} else if ( targetType == TargetType.Ratmen && !VariableHolder.instance.ratmen.Contains( gameObject ) ) {
-				VariableHolder.instance.ratmen.Add( gameObject );
-			} else if ( targetType == TargetType.Player && !VariableHolder.instance.players.Contains(gameObject)) { 
-				VariableHolder.instance.players.Add( gameObject );
-			}
-		}
-	}
+    private void OnEnable() {
+        AddToList();
+    }
 
-	private void OnTriggerEnter( Collider other ) {
-		if(other.tag == "EnemyWeapon" ) {
-			if ( targetType == TargetType.Cannon) {
-				GetComponent<DamagedObject>().ChangeHealth( other.GetComponentInParent<Enemy>().weapon.damage );
-			} else if ( targetType == TargetType.Ratmen) {
-                GetComponent<Ratman>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
-			} else if ( targetType == TargetType.Player) {
-				if ( !transform.parent.GetComponent<PlayerSetup>().isServer ) {
-					return;
-				}
-				GetComponentInParent<ScriptSyncPlayer>().ChangeHealth( other.GetComponentInParent<Enemy>().weapon.damage );
-			}
-		}
-	}
+    private void AddToList() {
+        switch (targetType) {
+            case TargetType.Mast:
+                if (!VariableHolder.instance.mastTargets.Contains(gameObject)) {
+                    VariableHolder.instance.mastTargets.Add(gameObject);
+                }
+                break;
+            case TargetType.Cannon:
+                if (!VariableHolder.instance.cannons.Contains(gameObject)) {
+                    VariableHolder.instance.cannons.Add(gameObject);
+                }
+                break;
+            case TargetType.Ratmen:
+                if (!VariableHolder.instance.ratmen.Contains(gameObject)) {
+                    VariableHolder.instance.ratmen.Add(gameObject);
+                }
+                break;
+            case TargetType.Player:
+                if (!VariableHolder.instance.players.Contains(gameObject)) {
+                    VariableHolder.instance.players.Add(gameObject);
+                }
+                break;
+            default:
+                Debug.LogError(targetType + " is not a valid type. Sent by " + gameObject.name);
+                break;
+        }
+    }
+
+    private void RemoveFromList() {
+        switch (targetType) {
+            case TargetType.Mast:
+                if (VariableHolder.instance.mastTargets.Contains(gameObject)) {
+                    VariableHolder.instance.mastTargets.Remove(gameObject);
+                }
+                break;
+            case TargetType.Cannon:
+                if (VariableHolder.instance.cannons.Contains(gameObject)) {
+                    VariableHolder.instance.cannons.Remove(gameObject);
+                }
+                break;
+            case TargetType.Ratmen:
+                if (VariableHolder.instance.ratmen.Contains(gameObject)) {
+                    VariableHolder.instance.ratmen.Remove(gameObject);
+                }
+                break;
+            case TargetType.Player:
+                if (VariableHolder.instance.players.Contains(gameObject)) {
+                    VariableHolder.instance.players.Remove(gameObject);
+                }
+                break;
+            default:
+                Debug.LogError(targetType + " is not a valid type. Sent by " + gameObject.name);
+                break;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.tag == "EnemyWeapon") {
+            if (targetType == TargetType.Cannon) {
+                int hp = GetComponent<DamagedObject>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
+                if (hp <= 0) {
+                    RemoveFromList();
+                }
+            } else if (targetType == TargetType.Ratmen) {
+                GetComponentInParent<Ratman>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
+
+            } else if (targetType == TargetType.Player) {
+                if (transform.parent.GetComponent<PlayerSetup>().isServer) {
+
+                    int hp = GetComponentInParent<ScriptSyncPlayer>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
+                    if (hp <= 0) {
+                        RemoveFromList();
+                    }
+                }
+            }
+        }
+    }
+
+    private void OnDisable() {
+        RemoveFromList();
+    }
+
 }

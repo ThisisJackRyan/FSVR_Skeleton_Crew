@@ -2,8 +2,7 @@
 using UnityEngine.Networking;
 
 [RequireComponent(typeof(Camera))]
-public class GhostFreeRoamCamera : NetworkBehaviour
-{
+public class GhostFreeRoamCamera : NetworkBehaviour {
     public float initialSpeed = 10f;
     public float increaseSpeed = 1.25f;
 
@@ -33,36 +32,31 @@ public class GhostFreeRoamCamera : NetworkBehaviour
 
     private MeshRenderer thisRenderer;
 
-    private void OnEnable()
-    {
-        if (cursorToggleAllowed)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+    private void OnEnable() {
+        if (cursorToggleAllowed) {
+            //Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.visible = false;
         }
 
-		if (!isLocalPlayer) {
-			GetComponent<AudioListener>().enabled = false;
-		}
+        if (!isLocalPlayer) {
+            GetComponent<AudioListener>().enabled = false;
+        }
     }
 
-	
 
-    private void Start()
-    {
+
+    private void Start() {
         thisRenderer = GetComponent<MeshRenderer>();
         thisRenderer.enabled = false;
     }
 
-    private void Update()
-    {
+    private void Update() {
         if (!isLocalPlayer)
             return;
         if (Input.GetKeyDown(KeyCode.Space))
             GetComponent<KillChild>().CmdKillChild();
 
-        if (allowMovement)
-        {
+        if (allowMovement) {
             bool lastMoving = moving;
             Vector3 deltaPosition = Vector3.zero;
 
@@ -71,8 +65,7 @@ public class GhostFreeRoamCamera : NetworkBehaviour
 
             moving = false;
 
-            if (Input.GetKeyDown(isVisible))
-            {
+            if (Input.GetKeyDown(isVisible)) {
                 thisRenderer.enabled = !thisRenderer.enabled;
             }
 
@@ -83,33 +76,28 @@ public class GhostFreeRoamCamera : NetworkBehaviour
             CheckMove(upButton, ref deltaPosition, transform.up);
             CheckMove(downButton, ref deltaPosition, -transform.up);
 
-            if (moving)
-            {
+            if (moving) {
                 if (moving != lastMoving)
                     currentSpeed = initialSpeed;
 
                 transform.position += deltaPosition * currentSpeed * Time.deltaTime;
+            } else currentSpeed = 0f;
+        }
+
+        if (allowRotation) {
+            if (Input.GetMouseButton(1)) {
+                Vector3 eulerAngles = transform.eulerAngles;
+                eulerAngles.x += -Input.GetAxis("Mouse Y") * 359f * cursorSensitivity;
+                eulerAngles.y += Input.GetAxis("Mouse X") * 359f * cursorSensitivity;
+                transform.eulerAngles = eulerAngles;
             }
-            else currentSpeed = 0f;            
         }
 
-        if (allowRotation)
-        {
-            Vector3 eulerAngles = transform.eulerAngles;
-            eulerAngles.x += -Input.GetAxis("Mouse Y") * 359f * cursorSensitivity;
-            eulerAngles.y += Input.GetAxis("Mouse X") * 359f * cursorSensitivity;
-            transform.eulerAngles = eulerAngles;
-        }
-
-        if (cursorToggleAllowed)
-        {
-            if (Input.GetKey(cursorToggleButton))
-            {
-                if (!togglePressed)
-                {
+        if (cursorToggleAllowed) {
+            if (Input.GetKey(cursorToggleButton)) {
+                if (!togglePressed) {
                     togglePressed = true;
-                    switch(Cursor.lockState)
-                    {
+                    switch (Cursor.lockState) {
                         case CursorLockMode.Locked:
                             Cursor.lockState = CursorLockMode.None;
                             break;
@@ -117,23 +105,18 @@ public class GhostFreeRoamCamera : NetworkBehaviour
                             Cursor.lockState = CursorLockMode.Locked;
                             break;
                     }
-                    
+
                     Cursor.visible = !Cursor.visible;
                 }
-            }
-            else togglePressed = false;
-        }
-        else
-        {
+            } else togglePressed = false;
+        } else {
             togglePressed = false;
             Cursor.visible = false;
         }
     }
 
-    private void CheckMove(KeyCode keyCode, ref Vector3 deltaPosition, Vector3 directionVector)
-    {
-        if (Input.GetKey(keyCode))
-        {
+    private void CheckMove(KeyCode keyCode, ref Vector3 deltaPosition, Vector3 directionVector) {
+        if (Input.GetKey(keyCode)) {
             moving = true;
             deltaPosition += directionVector;
         }

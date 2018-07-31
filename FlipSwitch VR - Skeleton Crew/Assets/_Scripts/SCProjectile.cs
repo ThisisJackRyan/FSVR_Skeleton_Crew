@@ -11,11 +11,15 @@ public class SCProjectile : MonoBehaviour {
 		Invoke("KillProjectile", 10f);
 	}
 
-	private void OnCollisionEnter(Collision collision) {
-		print("projectile collided with: " + collision.gameObject.name);
-		if (collision.gameObject.tag == "Weapon" || collision.gameObject.tag == "Cannon") {
+	private void OnTriggerEnter(Collider other) {
+		//print("projectile triggered by : " + other.gameObject.name);
+		if (other.gameObject.tag == "Weapon" || other.gameObject.tag == "Cannon" || other.gameObject.tag == "WeaponPickup") {
 			return;
 		}
+
+        if (other.tag == "Untagged") {
+            //print("Hit untagged");
+        }
 
 		KillProjectile();
 	}

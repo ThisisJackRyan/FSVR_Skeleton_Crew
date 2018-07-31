@@ -14,7 +14,7 @@ public class WeaponInteraction : NetworkBehaviour {
 	public bool leftHandIsInteractable;
 
 	public MastInteraction mastInteraction;
-    public CannonInteraction cannonInteraction;
+	public CannonInteraction cannonInteraction;
 
 	public void AssignWeapon(string side, GameObject weapon ) {
 		if ( side.Equals( "left" ) ) {
@@ -54,8 +54,8 @@ public class WeaponInteraction : NetworkBehaviour {
 
 	private void Start() {
 		mastInteraction = GetComponent<MastInteraction>();
-        cannonInteraction = GetComponent<CannonInteraction>();
-    }
+		cannonInteraction = GetComponent<CannonInteraction>();
+	}
 
   
 

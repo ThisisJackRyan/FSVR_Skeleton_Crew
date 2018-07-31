@@ -22,7 +22,7 @@ public class MastSwitch : MonoBehaviour {
 		mastDown.gameObject.SetActive( false );
 		downImage.SetActive( true );
 		upImage.SetActive( false );
-        firstRunEvent.AddListener(EnableEnemy);
+        //firstRunEvent.AddListener(EnableEnemy);
 	}
 
 	private void OnMastChange( bool n ) {
@@ -30,6 +30,8 @@ public class MastSwitch : MonoBehaviour {
 	}
 
 	public void SwapMode() {
+      
+
 		Debug.LogWarning("swap called");
 		if ( raiseMast ) {
 			mastUp.gameObject.SetActive( true );
@@ -53,7 +55,7 @@ public class MastSwitch : MonoBehaviour {
 
 
 
-    private void EnableEnemy()
+    public void EnableEnemy()
     {
         foreach(Enemy enScript in FindObjectsOfType<Enemy>())
         {

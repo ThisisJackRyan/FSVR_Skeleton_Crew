@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class DieAfterCycle : MonoBehaviour {
 
+    public float particleLifetime;
+
 	// Use this for initialization
 	void Start () {
-		Invoke("Die", 2f);
+		//Debug.Break();
+		Invoke("Die", 5f );
 	}
 	
 	// Update is called once per frame

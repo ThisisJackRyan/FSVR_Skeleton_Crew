@@ -32,9 +32,9 @@ public class PathFollower : MonoBehaviour {
 	}
 
 	protected void Update() {
-		if (Input.GetKeyDown(KeyCode.Space)) {
-			StartMoving();
-		}
+		//if (Input.GetKeyDown(KeyCode.Space)) {
+		//	StartMoving();
+		//}
 
 
 		if (!canMove) {

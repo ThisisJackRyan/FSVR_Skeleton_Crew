@@ -16,10 +16,16 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityVector3
         [RequiredField]
         public SharedVector3 storeResult;
 
-        public override TaskStatus OnUpdate()
-        {
-            storeResult.Value = Vector3.MoveTowards(currentPosition.Value, targetPosition.Value, speed.Value * Time.deltaTime);
-            return TaskStatus.Success;
+        public override TaskStatus OnUpdate() {
+            if (transform.position == targetPosition.Value) {
+                return TaskStatus.Success;
+            }
+            // We haven't reached the target yet so keep moving towards it
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition.Value, speed.Value * Time.deltaTime);
+            return TaskStatus.Running;
+           
+           // storeResult.Value = Vector3.MoveTowards(currentPosition.Value, targetPosition.Value, speed.Value * Time.deltaTime);
+           // return TaskStatus.Success;
         }
 
         public override void OnReset()
