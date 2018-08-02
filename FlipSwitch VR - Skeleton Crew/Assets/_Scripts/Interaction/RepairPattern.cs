@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RepairPattern : MonoBehaviour {
 
-	private int index = 0;
+	internal int index = 0;
 	public DamagedObject dmgObj;
 
 	private void Start() {
@@ -22,7 +22,7 @@ public class RepairPattern : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	public void Increment () {
+	public virtual void Increment () {
 		//print( "incrememnt called with index of " + index );
 		index++;
 		if (index < transform.childCount) {

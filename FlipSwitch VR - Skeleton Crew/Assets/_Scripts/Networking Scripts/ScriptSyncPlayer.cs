@@ -23,6 +23,8 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 	public Transform explosionPosition;
 	bool isDead;
 
+	
+
 	void OnHealthChange( int n ) {
 		if ( n < health ) {
 			for ( int i = 0; i < hitParticles.Length; i++ ) {
