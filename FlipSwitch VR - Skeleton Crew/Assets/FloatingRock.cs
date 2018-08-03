@@ -20,6 +20,7 @@ public class FloatingRock : MonoBehaviour {
 	}
 
 	private void OnTriggerStay(Collider other) {
+		print(other);
 		if (other.transform.root.tag == "Player") {
 			timeToFall -= Time.deltaTime;
 		}
@@ -53,7 +54,7 @@ public class FloatingRock : MonoBehaviour {
 
 			//lerp!
 			float perc = currentLerpTime / raiseFallSpeed;
-			transform.position = Vector3.Lerp(startPos, endPos, perc);
+			rock.transform.position = Vector3.Lerp(startPos, endPos, perc);
 			yield return new WaitForFixedUpdate();
 		}
 	}
@@ -72,7 +73,7 @@ public class FloatingRock : MonoBehaviour {
 
 			//lerp!
 			float perc = currentLerpTime / raiseFallSpeed;
-			transform.position = Vector3.Lerp( startPos, endPos, perc );
+			rock.transform.position = Vector3.Lerp( startPos, endPos, perc );
 			yield return new WaitForFixedUpdate();
 		}
 	}

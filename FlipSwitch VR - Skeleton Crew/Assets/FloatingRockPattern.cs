@@ -14,7 +14,7 @@ public class FloatingRockPattern : RepairPattern {
 
 	// Use this for initialization
 	public override void Increment() {
-		//print( "incrememnt called with index of " + index );
+		print( "incrememnt called with index of " + index + " with casting count at "  + castRun + " and cast times needed " + timeToCast  );
 		index++;
 		if ( index < transform.childCount ) {
 			transform.GetChild( index ).gameObject.SetActive( true );
