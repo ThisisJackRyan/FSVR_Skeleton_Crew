@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c4afdabf3013ec34ca15c34bf6610616
+guid: c4bfe87cc4d3949478df0e181e0895dd
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -11,7 +11,7 @@ ModelImporter:
     2100006: Bone_Pile_Color_Ghost
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Bone_Pile_V2
+    4300000: Bone_Pile_V3
   externalObjects:
   - first:
       type: UnityEngine:Material
