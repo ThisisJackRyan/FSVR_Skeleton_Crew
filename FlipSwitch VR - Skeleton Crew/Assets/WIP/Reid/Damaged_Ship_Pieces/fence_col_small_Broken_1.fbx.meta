@@ -1,38 +1,20 @@
 fileFormatVersion: 2
-guid: c4afdabf3013ec34ca15c34bf6610616
+guid: 60b7262ded459e844abf59c715ae1956
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: Bone_Pile_Color_Normal
-    2100002: Bone_Pile_Color_Dark
-    2100004: Bone_Pile_Color_Red
-    2100006: Bone_Pile_Color_Ghost
+    2100000: Ship_Bow_Broken
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Bone_Pile_V2
+    4300000: fence_col_small_Broken_1
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Bone_Pile_Color_Dark
-    second: {fileID: 2100000, guid: c3b84efa85e088542b5ea1632f2e0b4b, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Bone_Pile_Color_Ghost
-    second: {fileID: 2100000, guid: 8aa1a3c3f00aca0488efcb8d9218c8e2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Bone_Pile_Color_Normal
-    second: {fileID: 2100000, guid: f9b6dae4cb841134e864c51a8bf407ba, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Bone_Pile_Color_Red
-    second: {fileID: 2100000, guid: 7a198e7bee133d84ead805153981d123, type: 2}
+      name: Ship_Bow_Broken
+    second: {fileID: 2100000, guid: 6e0d33dcafbe667478d1d949806622f5, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -63,7 +45,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.384
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
