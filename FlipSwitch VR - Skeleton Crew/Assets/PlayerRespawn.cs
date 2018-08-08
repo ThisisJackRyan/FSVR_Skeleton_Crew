@@ -7,20 +7,23 @@ public class PlayerRespawn : NetworkBehaviour {
 
     float timer = 0;
     bool active = false;
-
+	bool isRespawning = false;
     GameObject playerBeingRevived = null;
+	public GameObject animObject;
+	private GameObject animInstance;
 
-    private void OnTriggerStay(Collider other) {
+
+	private void OnTriggerStay(Collider other) {
         if (!isServer)
             return;
 
         if (other.gameObject.tag == "PlayerCollider" && active) {
             timer += Time.deltaTime;
 
-            if (timer >= 5) {
+            if (timer >= 1) {
                 active = false;
                 timer = 0;
-                other.gameObject.GetComponentInParent<ScriptSyncPlayer>().RevivePlayer();
+				StartRespawnAnimation();
             }
         }
     }
@@ -32,7 +35,7 @@ public class PlayerRespawn : NetworkBehaviour {
         if (other.gameObject.tag == "PlayerCollider" && !active) {
             timer = 0;
             active = true;
-            playerBeingRevived = other.gameObject;
+            playerBeingRevived = other.transform.root.gameObject;
         }
     }
 
@@ -40,9 +43,41 @@ public class PlayerRespawn : NetworkBehaviour {
         if (!isServer)
             return;
 
-        if (other.gameObject == playerBeingRevived) {
+		if ( other.gameObject == playerBeingRevived ) {
+			if ( isRespawning ) {
+				StopRespawnAnimation();
+			}
             active = false;
             playerBeingRevived = null;
         }
     }
+
+
+	private void StopRespawnAnimation() {
+		isRespawning = false;
+		CancelInvoke();
+	}
+
+
+
+	private void StartRespawnAnimation() {
+		isRespawning = true;
+		animInstance = Instantiate( animObject, playerBeingRevived.GetComponentInChildren<HipMarker>().gameObject.transform.position, Quaternion.identity );
+		//animInstance.GetComponent<ObjectPositionLock>().posPoint =
+		//	playerBeingRevived.GetComponentInChildren<HipMarker>().gameObject;
+		RpcStartRespawnAnimation( playerBeingRevived);
+		Invoke( "RespawnPlayer", animObject.GetComponentInChildren<Animation>().clip.length );
+	}
+
+	[ClientRpc]
+	private void RpcStartRespawnAnimation(GameObject player) {
+		animInstance = Instantiate( animObject, transform.position, Quaternion.identity );
+		animInstance.GetComponent<ObjectPositionLock>().posPoint =
+			player.GetComponentInChildren<HipMarker>().gameObject;
+	}
+
+	void RespawnPlayer() {
+		isRespawning = false;
+		playerBeingRevived.GetComponent<ScriptSyncPlayer>().RevivePlayer();
+	}
 }

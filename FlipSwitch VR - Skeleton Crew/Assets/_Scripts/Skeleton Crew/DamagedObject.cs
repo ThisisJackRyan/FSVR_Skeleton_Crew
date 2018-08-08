@@ -18,8 +18,6 @@ public class DamagedObject : NetworkBehaviour {
 	public Transform fullState, threequarter, halfState, quarterState, deadState;
 	public GameObject repairSphere;
 
-	private Cannon cannonScript;
-
 	private void OnHealthChange( int n ) {
 
 		health = n;
@@ -47,7 +45,7 @@ public class DamagedObject : NetworkBehaviour {
 
 	public void Start()
 	{
-		cannonScript = GetComponent<Cannon>();
+
 
 		if (isServer) {
 			health = Random.Range(0, 50); 
