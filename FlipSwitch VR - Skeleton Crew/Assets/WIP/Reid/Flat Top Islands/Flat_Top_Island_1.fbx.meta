@@ -14,7 +14,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: PM3D_Cube3D
-    second: {fileID: 2100000, guid: 0e8d9785d9e60384e8ac35b8dc7cec35, type: 2}
+    second: {fileID: 2100000, guid: 03cf206f55659ee4db927d7ff6a56497, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
