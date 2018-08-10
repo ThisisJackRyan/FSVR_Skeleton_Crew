@@ -17,13 +17,13 @@ namespace RootMotion.Demos
 		[Tooltip("(Optional) A tracker placed anywhere on the ankle or toes of the player's left leg.")] public Transform leftFootTracker;
 		[Tooltip("(Optional) A tracker placed anywhere on the ankle or toes of the player's right leg.")] public Transform rightFootTracker;
 
-        void LateUpdate()
-        {
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                Calibrate();
-            }
-        }
+        //void LateUpdate()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.C))
+        //    {
+        //        Calibrate();
+        //    }
+        //}
 
         [ContextMenu("Calibrate")]
         public void Calibrate() {
