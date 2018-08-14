@@ -11,30 +11,20 @@ public class PlayerSetup : NetworkBehaviour {
 
     public SteamVR_TrackedObject leftFoot, rightFoot, hip;
 
-
-    [SyncVar( hook = "OnPlayerNumChange")] int playerNum = 0;
-
-	public override void OnStartLocalPlayer() {
-		base.OnStartLocalPlayer();
-               
-		GhostFreeRoamCamera go = GameObject.FindObjectOfType<GhostFreeRoamCamera>();
-		go.GetComponent<Camera>().enabled = false;
-		go.enabled = false;
-	}	
+    private Camera hostCamView;
 
 	// Use this for initialization
 	void Start () {
-		if ( isLocalPlayer ) {
-			CmdSetPlayerNum(int.Parse( NetworkHelper.GetLocalIPAddress().Substring( NetworkHelper.GetLocalIPAddress().Length - 1 ) ) );
-			gameObject.name = "Player " + playerNum;
 
+		if ( isLocalPlayer ) {
             SetTrackerIDs();
 
             SteamVR_Fade.Start( Color.black, 0 );
 
 		} else {
-			OnPlayerNumChange( playerNum );
-			gameObject.name = "Player " + playerNum;
+		    if (isServer) {
+		        GameObject.Find("Host").GetComponent<Host>().AddPlayerToHostList(gameObject);
+		    }
 
             foreach (var com in componetsToDisable){
                 com.enabled = false;
@@ -46,14 +36,12 @@ public class PlayerSetup : NetworkBehaviour {
             }
         }
 
+
 		foreach ( GameObject obj in objectsToAddToDict ) {
-			//print( "adding " + obj.name + " to the player dictionary" );
 			ExitLobbyPlayerTrigger.playerDict.Add( obj, false );
 		}
         
 		if ( NumberOfPlayerHolder.instance.numberOfPlayers == VariableHolder.instance.players.Count ) {
-			//print( "all players joined" );
-
             GetComponent<VRIKCalibrateOnStart>().CalibratePlayer();
 
             var iks = FindObjectsOfType<VRIKCalibrateOnStart>();
@@ -70,7 +58,6 @@ public class PlayerSetup : NetworkBehaviour {
 	}
 
 	IEnumerator FadeIn() {
-		//print("fade corou");
 		yield return new WaitForSecondsRealtime(1f);
 		SteamVR_Fade.Start( Color.clear, 1 );
 	}
@@ -81,13 +68,29 @@ public class PlayerSetup : NetworkBehaviour {
         hip.index = TrackerIds.hipId;
     }
 
-	[Command]
-    private void CmdSetPlayerNum(int n)
-    {
-        playerNum = n;
+    public void SetCameraSettings(int playerNum) {
+        hostCamView = new Camera(); // todo assign to camera that host can see through
+        switch (playerNum) {
+            case 1:
+                hostCamView.rect = new Rect(new Vector2(0f, 0.55f), new Vector2(0.5f, 0.45f));
+                break;
+            case 2:
+                hostCamView.rect = new Rect(new Vector2(0.5f, 0.55f), new Vector2(0.5f, 0.45f));
+                break;
+            case 3:
+                hostCamView.rect = new Rect(new Vector2(0f, 0.10f), new Vector2(0.5f, 0.45f));
+                break;
+            case 4:
+                hostCamView.rect = new Rect(new Vector2(0.5f, 0.10f), new Vector2(0.5f, 0.45f));
+                break;
+        }
     }
 
-	private void OnPlayerNumChange(int num ) {
-		playerNum = num;
+    public void EnableCamera() {
+        hostCamView.enabled = true;
+    }
+
+    public void DisableCamera() {
+        hostCamView.enabled = false;
     }
 }
