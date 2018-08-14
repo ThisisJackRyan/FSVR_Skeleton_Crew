@@ -37,10 +37,9 @@ public class AvatarSwitch : MonoBehaviour {
 
             timer += Time.deltaTime;
 
-			if ( timer >= 2 ) {
+			if ( timer >= 0.5f ) {
 				OnActivate();
 				active = false;
-
 			}
 		}
 	}

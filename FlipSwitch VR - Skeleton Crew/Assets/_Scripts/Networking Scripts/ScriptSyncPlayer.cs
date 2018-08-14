@@ -14,14 +14,13 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 	[Tooltip( "The death particles (old player particles)" )] public GameObject[] deathParticles;
 	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
 
-
-
-
 	public GameObject[] playerBody;
 	public Collider[] playerColliders;
 	public GameObject[] deathExplosion;
 	public Transform explosionPosition;
 	bool isDead;
+
+	
 
 	void OnHealthChange( int n ) {
 		if ( n < health ) {

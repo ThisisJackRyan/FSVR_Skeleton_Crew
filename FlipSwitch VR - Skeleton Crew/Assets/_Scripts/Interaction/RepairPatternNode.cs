@@ -15,10 +15,13 @@ public class RepairPatternNode : MonoBehaviour {
 
 	void Timer() {
 		pattern.gameObject.SetActive( false );
-		repairSphere.GetComponent<Renderer>().enabled = true;
+		if ( repairSphere ) {
+			repairSphere.GetComponent<Renderer>().enabled = true;
+		}
 	}
 
 	private void OnTriggerEnter( Collider other ) {
+		print("werfweqrwer");
 		pattern.Increment();
 		CancelInvoke();
 		gameObject.SetActive( false );
