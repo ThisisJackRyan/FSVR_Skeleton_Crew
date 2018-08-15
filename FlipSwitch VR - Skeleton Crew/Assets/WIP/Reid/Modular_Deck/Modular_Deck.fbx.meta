@@ -133,7 +133,7 @@ ModelImporter:
     400124: UNBROKEN_Deck_Piece_H_5
     400126: UNBROKEN_Deck_Piece_H_6
     400128: UNBROKEN_Deck_Piece_H_7
-    2100000: main_planks
+    2100000: Seamless_Deck_Planks
     2300000: //RootNode
     2300002: UNBROKEN_Deck_Piece_A_1
     2300004: UNBROKEN_Deck_Piece_A_2
@@ -305,8 +305,12 @@ ModelImporter:
     4300108: UNBROKEN_Deck_Piece_H_5
     4300110: UNBROKEN_Deck_Piece_H_6
     4300112: UNBROKEN_Deck_Piece_H_7
-    9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Seamless_Deck_Planks
+    second: {fileID: 2100000, guid: 7b052daee410b7d43b3aa77e37f608f8, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -381,7 +385,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
