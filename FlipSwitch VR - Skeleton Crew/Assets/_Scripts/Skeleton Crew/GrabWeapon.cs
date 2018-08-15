@@ -115,22 +115,16 @@ public class GrabWeapon : NetworkBehaviour {
 	public void SendCommandToHighlight( bool isLeft ) {
 		if ( isLeft ) {
 			if ( !leftWeaponGameObj && canGrabLeft ) {
-				CmdFindAndHighlightNearestWeapon( "left", gameObject );
+				FindAndHighlightNearestWeapon( "left", gameObject );
 			}
 		} else {
 			if ( !rightWeaponGameObj && canGrabRight ) {
-				CmdFindAndHighlightNearestWeapon( "right", gameObject );
+				FindAndHighlightNearestWeapon( "right", gameObject );
 			}
 		}
 	}
 
 	public void SendCommandToUnHighlight( bool isLeft ) {
-		CmdUnHighlightFromHands( isLeft );
-	}
-
-	[Command]
-	private void CmdUnHighlightFromHands( bool isLeft ) {
-
 		if ( isLeft ) {
 			leftHighlightedWeaponObj = null;
 			RpcUnhighlightWeapon( "left", gameObject );
@@ -140,9 +134,7 @@ public class GrabWeapon : NetworkBehaviour {
 		}
 	}
 
-	#region Commands
-	[Command]
-	private void CmdFindAndHighlightNearestWeapon( string side, GameObject player ) {
+	private void FindAndHighlightNearestWeapon( string side, GameObject player ) {
 		Transform hand = side.Equals( "left" ) ? leftHand : rightHand;
 
 		Collider[] hits = Physics.OverlapSphere( hand.position, radius );
@@ -198,6 +190,8 @@ public class GrabWeapon : NetworkBehaviour {
 			}
 		}
 	}
+
+	#region Commands
 
 	[Command]
 	private void CmdGrabIfHighlighted( string side ) {

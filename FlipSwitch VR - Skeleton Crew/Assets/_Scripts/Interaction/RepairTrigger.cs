@@ -5,7 +5,8 @@ using UnityEngine;
 public class RepairTrigger : MonoBehaviour {
 
 	public RepairPattern[] repairPatterns;
-	RepairPattern repairPattern;
+	[HideInInspector]
+	public RepairPattern repairPattern;
 	Transform activator;
 
 	float timer = 0;
@@ -18,19 +19,24 @@ public class RepairTrigger : MonoBehaviour {
 			if (timer >= 1) {
 				repairPattern.gameObject.SetActive( true );//
 				repairPattern.Init();//
-				active = false;
 
 				GetComponent<Renderer>().enabled = false;
 				transform.position = new Vector3( transform.position.x, other.transform.root.GetComponentInChildren<HipMarker>().transform.position.y, transform.position.z );
+
+				active = false;
+				//repairPattern = null;
+				activator = null;
 			}
 		}
 	}
 
 	private void OnTriggerEnter( Collider other ) {
-		if ( other.gameObject.GetComponentInParent<MastInteraction>() ) {
-			if (repairPattern != null && repairPattern.gameObject.activeInHierarchy) {//
+		if ( other.gameObject.GetComponentInParent<MastInteraction>() ) {//player check
+			if (repairPattern != null && repairPattern.gameObject.activeInHierarchy) {//pattern is active
 				return;
 			}
+
+			print( "returning because active in hieracrhy is false:" + ( repairPattern != null ) );
 
 			timer = 0;
 			active = true;
@@ -50,13 +56,19 @@ public class RepairTrigger : MonoBehaviour {
 	}
 
 	private void OnTriggerExit( Collider other ) {
-		if (other.transform.root != activator) {
+		if (other.transform.root != activator ) {
 			return;
 		}
 
 		active = false;
-		repairPattern = null;
-		activator = null;
+		//repairPattern = null;
+		//activator = null;
 	}
+
+	private void OnDisable() {
+		print("repoaIR NODE DISABLED");
+	}
+
+
 
 }

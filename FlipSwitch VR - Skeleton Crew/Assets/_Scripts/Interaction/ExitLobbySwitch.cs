@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public class ExitLobbySwitch : MonoBehaviour {
+public class ExitLobbySwitch : NetworkBehaviour {
 
 	float timer = 0, timeToTrans = 2;
 	bool active = false;
@@ -11,6 +12,10 @@ public class ExitLobbySwitch : MonoBehaviour {
 	public CaptainDialogueLobby captain;
 
 	private void OnTriggerStay(Collider other) {
+		if ( !isServer ) {
+			return;
+		}
+
 		if (other.gameObject.GetComponentInParent<ChangeAvatar>() && active) {
 			timer += Time.deltaTime;
 
@@ -30,7 +35,8 @@ public class ExitLobbySwitch : MonoBehaviour {
 					//transition
 					//print("should be teleporting player");
 
-					StartCoroutine("FadeAndTeleport");
+					//StartCoroutine("FadeAndTeleport");
+					StartFade();
                     other.GetComponentInParent<ScriptSyncPlayer>().TellCaptainToStartTutorial();
                     
 				}
@@ -39,10 +45,27 @@ public class ExitLobbySwitch : MonoBehaviour {
 	}
 
 	public void StartFade() {
+		print( "asdfkj;asdf: SERVER pre call" );
+
+		RpcStartFade();
+		print( "asdfkj;asdf: SERVER" );
 		StartCoroutine("FadeAndTeleport");
 	}
 
+	[ClientRpc]
+	void RpcStartFade() {
+		print( "asdfkj;asdf: CLIENTS pre server check , client: " + isClient );
+
+		if ( isServer ) {
+			return;
+		}
+		print( "asdfkj;asdf: CLIENTS" );
+
+		StartCoroutine( "FadeAndTeleport" );
+	}
+
 	IEnumerator FadeAndTeleport() {
+		RpcStartFade();
 		SteamVR_Fade.Start(Color.black, 1f);
 		yield return new WaitForSecondsRealtime(1.5f);
 		foreach (var go in ExitLobbyPlayerTrigger.playerDict.Keys) {
@@ -56,6 +79,10 @@ public class ExitLobbySwitch : MonoBehaviour {
     }
 
 	private void OnTriggerEnter(Collider other) {
+		if ( !isServer ) {
+			return;
+		}
+
 		//print(other.name);
 		if (other.gameObject.GetComponentInParent<ChangeAvatar>()) {
 			timer = 0;
@@ -64,6 +91,10 @@ public class ExitLobbySwitch : MonoBehaviour {
 	}
 
 	private void OnTriggerExit(Collider other) {
+		if ( !isServer ) {
+			return;
+		}
+
 		if (other.gameObject.GetComponentInParent<ChangeAvatar>()) {
 			active = false;
 		}

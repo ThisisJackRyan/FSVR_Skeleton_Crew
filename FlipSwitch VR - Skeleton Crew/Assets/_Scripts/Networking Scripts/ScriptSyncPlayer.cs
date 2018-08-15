@@ -20,7 +20,7 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 	public Transform explosionPosition;
 	bool isDead;
 
-	
+
 
 	void OnHealthChange( int n ) {
 		if ( n < health ) {
@@ -102,6 +102,12 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 			Instantiate( deathExplosion[GetComponent<ChangeAvatar>().GetColor()], explosionPosition.position, Quaternion.identity );
 	}
 
+	public void TurnOffColliders() { //todo rename for nathans sake
+		foreach ( Collider c in playerColliders ) {
+			c.enabled = false;
+		}
+	}
+
 	[ClientRpc]
 	void RpcEnableBody() {
 		if ( isServer )
@@ -109,9 +115,6 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 
 		foreach ( GameObject g in playerBody ) {
 			g.SetActive( true );
-		}
-		foreach ( Collider c in playerColliders ) {
-			c.enabled = true;
 		}
 
 		GetComponent<ChangeAvatar>().EnableArmor();
@@ -122,6 +125,7 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 		foreach ( GameObject g in playerBody ) {
 			g.SetActive( true );
 		}
+
 		foreach ( Collider c in playerColliders ) {
 			c.enabled = true;
 		}

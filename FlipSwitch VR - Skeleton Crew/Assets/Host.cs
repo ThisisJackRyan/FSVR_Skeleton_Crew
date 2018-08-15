@@ -32,15 +32,18 @@ public class Host : NetworkBehaviour {
         {
             return;
         }
-        GameObject.Find("Canvas").SetActive(true);
-        GameObject uiManager = GameObject.Find("HostUIManager");
-        uiManager.SetActive(true);
 
-        scriptHostUi = uiManager.GetComponent<HostUiManager>();
-        scriptHostUi.SetHost(this);
-    }
+		GetComponent<Camera>().enabled = true;
 
-    public void AddPlayerToHostList(GameObject playerToAdd) {
+		//GameObject.Find("Canvas").SetActive(true);
+		//GameObject uiManager = GameObject.Find("HostUIManager");
+		//uiManager.SetActive(true);
+
+		//scriptHostUi = uiManager.GetComponent<HostUiManager>();
+		//scriptHostUi.SetHost(this);
+	}
+
+	public void AddPlayerToHostList(GameObject playerToAdd) {
         RpcAddPlayerToHost(playerToAdd);
     }
 

@@ -20,10 +20,13 @@ public class PlayerSetup : NetworkBehaviour {
 			SetTrackerIDs();
 
 			SteamVR_Fade.Start( Color.black, 0 );
+			GetComponent<ScriptSyncPlayer>().TurnOffColliders();
 
 		} else {
 			if (isServer) {
-				GameObject.Find("Host").GetComponent<Host>().AddPlayerToHostList(gameObject);
+				GameObject.FindObjectOfType<Host>().AddPlayerToHostList(gameObject);
+			} else {
+				GetComponent<ScriptSyncPlayer>().TurnOffColliders();
 			}
 
 			foreach (var com in componetsToDisable){
@@ -34,6 +37,7 @@ public class PlayerSetup : NetworkBehaviour {
 			{
 				obj.SetActive(false);
 			}
+			
 		}
 
 
