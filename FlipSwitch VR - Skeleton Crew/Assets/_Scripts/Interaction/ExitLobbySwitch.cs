@@ -65,7 +65,6 @@ public class ExitLobbySwitch : NetworkBehaviour {
 	}
 
 	IEnumerator FadeAndTeleport() {
-		RpcStartFade();
 		SteamVR_Fade.Start(Color.black, 1f);
 		yield return new WaitForSecondsRealtime(1.5f);
 		foreach (var go in ExitLobbyPlayerTrigger.playerDict.Keys) {

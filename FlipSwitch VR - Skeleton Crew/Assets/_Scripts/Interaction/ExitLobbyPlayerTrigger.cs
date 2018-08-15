@@ -10,19 +10,6 @@ public class ExitLobbyPlayerTrigger : MonoBehaviour {
 	public string mainLevel;
 	public GameObject[] exitSwitches;
 
-	private void Start() {
-		foreach ( var go in exitSwitches ) {
-			go.SetActive( false );
-		}
-			EnableSwitches();
-	}
-
-	void EnableSwitches() {
-		foreach (var go in exitSwitches) {
-			go.SetActive( true );
-		}
-	}
-
 	private void OnTriggerEnter( Collider other ) {
 		if (playerDict.ContainsKey(other.gameObject)) {
 			playerDict[other.gameObject] = true;

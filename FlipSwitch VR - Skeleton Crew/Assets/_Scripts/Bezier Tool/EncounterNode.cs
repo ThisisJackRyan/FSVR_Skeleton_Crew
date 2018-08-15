@@ -54,7 +54,6 @@ public class EncounterNode : NetworkBehaviour {
 #pragma warning disable 0219
 	[ClientRpc]
 	private void RpcSpawnEnemy(Vector3 spawnPos ) {
-		GameObject g = Instantiate( prefabToSpawn, spawnPos, Quaternion.identity );
-		
+		GameObject g = Instantiate( prefabToSpawn, spawnPos, Quaternion.identity );		
 	}
 }
