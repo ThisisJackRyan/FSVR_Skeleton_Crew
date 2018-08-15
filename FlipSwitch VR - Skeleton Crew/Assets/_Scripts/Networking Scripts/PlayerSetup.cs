@@ -34,8 +34,6 @@ public class PlayerSetup : NetworkBehaviour {
 			{
 				obj.SetActive(false);
 			}
-
-
 		}
 
 
@@ -71,7 +69,6 @@ public class PlayerSetup : NetworkBehaviour {
 	}
 
 	public void SetCameraSettings(int playerNum) {
-		//hostCamView = new Camera(); // todo assign to camera that host can see through
 		switch (playerNum) {
 			case 1:
 				hostCamView.rect = new Rect(new Vector2(0f, 0.55f), new Vector2(0.5f, 0.45f));
