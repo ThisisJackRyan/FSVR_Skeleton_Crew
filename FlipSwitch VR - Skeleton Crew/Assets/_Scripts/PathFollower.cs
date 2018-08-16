@@ -92,7 +92,7 @@ public class PathFollower : MonoBehaviour {
 
 		currentLerpTime = 0f;
 
-		path.Nodes[currentNode].GetComponent<EncounterNode>().CmdSpawn();
+		path.Nodes[currentNode].GetComponent<EncounterNode>().Spawn();
 
 		//update rot values
 		currRot = nextRot;

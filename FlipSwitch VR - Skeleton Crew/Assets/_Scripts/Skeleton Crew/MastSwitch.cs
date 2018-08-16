@@ -29,6 +29,11 @@ public class MastSwitch : MonoBehaviour {
 		raiseMast = n;
 	}
 
+	[Button]
+	public void FirstRun() {
+		firstRunEvent.Invoke();
+	}
+
 	public void SwapMode() {
       
 

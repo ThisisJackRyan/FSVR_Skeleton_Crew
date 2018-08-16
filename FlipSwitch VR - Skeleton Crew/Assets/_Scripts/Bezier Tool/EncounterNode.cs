@@ -9,6 +9,7 @@ public class EncounterNode : NetworkBehaviour {
 	public float spawnRadiusMin, spawnRadiusMax;
 	public int numToSpawnMin, numToSpawnMax;
 	public float spawnDistFromRock = 2;
+	public Transform shipTransform;
 
 	public static GameObject[] Floaters
 	{
@@ -20,9 +21,11 @@ public class EncounterNode : NetworkBehaviour {
 
 	static GameObject[] floaters;
 
-	// Update is called once per frame
-	[Command]
-	public void CmdSpawn () {
+	public void Spawn () {
+		if ( !isServer ) {
+			return;
+		}
+
 		print(name + " called spawn" + Time.time);
 
 		int spawnCount = Random.Range( numToSpawnMin, numToSpawnMax + 1 );
@@ -35,7 +38,7 @@ public class EncounterNode : NetworkBehaviour {
 			List<GameObject> rocks = new List<GameObject>();
 
 			foreach (GameObject go in Floaters) {
-				float dist = Vector3.Distance( transform.position, go.transform.position );
+				float dist = Vector3.Distance( shipTransform.position, go.transform.position );
 				if (dist > spawnRadiusMin && dist < spawnRadiusMax ) {
 					rocks.Add( go );
 				}
@@ -44,7 +47,7 @@ public class EncounterNode : NetworkBehaviour {
 			if (rocks.Count > 0) {
 				int chosenOne = Random.Range(0, rocks.Count);
 			//calc other side
-				Vector3 spawnVector = rocks[chosenOne].transform.position - transform.position;
+				Vector3 spawnVector = rocks[chosenOne].transform.position - shipTransform.position;
 				spawnVector = rocks[chosenOne].transform.position + ( spawnVector.normalized * spawnDistFromRock );
 				//spawn
 				RpcSpawnEnemy( spawnVector );
@@ -54,6 +57,8 @@ public class EncounterNode : NetworkBehaviour {
 #pragma warning disable 0219
 	[ClientRpc]
 	private void RpcSpawnEnemy(Vector3 spawnPos ) {
+
+		print( "should be spawning an enemy" );
 		GameObject g = Instantiate( prefabToSpawn, spawnPos, Quaternion.identity );		
 	}
 }
