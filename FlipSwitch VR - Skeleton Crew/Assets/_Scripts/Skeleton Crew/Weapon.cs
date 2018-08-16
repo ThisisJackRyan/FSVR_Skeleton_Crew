@@ -29,6 +29,10 @@ public class Weapon : NetworkBehaviour {
 		}
 	}
 
+	public void Reload() {
+		ammo = data.ammo;
+	}
+
 	public void SpawnBullet() {
 		//needs ammo check, do we want ammo based on weapon or player? prolly weapon
 		if (ammo-- <= 0) {  //decrements after check
