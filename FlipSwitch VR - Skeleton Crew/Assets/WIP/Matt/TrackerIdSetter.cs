@@ -11,7 +11,8 @@ public class TrackerIdSetter : MonoBehaviour {
         Collider[] hits = Physics.OverlapSphere(transform.position, radius, setterMask);
 
         if (hits.Length > 0) {
-            //Debug.LogWarning("left hits length of " + hits.Length);
+			//Debug.LogWarning("left hits length of " + hits.Length);
+
 
             for (int i = 0; i < hits.Length; i++) {
                 if (hits[i].tag == "LeftFootSetter") {

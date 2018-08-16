@@ -2,6 +2,8 @@
 using UnityEngine.Networking;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
+using System;
+using Random = UnityEngine.Random;
 
 public class DamagedObject : NetworkBehaviour {
 
@@ -11,12 +13,20 @@ public class DamagedObject : NetworkBehaviour {
 
 	DamageState myState;
 	[SyncVar( hook = "OnHealthChange" )] int health = 100;
+	[SyncVar( hook = "OnPatternIndexChange" )] int rng = -1;
+
 
 	[Tooltip( "the number health percent much be at to reach the given damage state. anything below quarter is completely broken." )]
 	public int fullAmount = 90, threeQuarterAmount = 75, halfAmount = 50, quarterAmount = 25, maxHealth = 100;
 
 	public Transform fullState, threequarter, halfState, quarterState, deadState;
 	public GameObject repairSphere;
+	public RepairPattern[] repairPatterns;
+
+	private void OnPatternIndexChange(int n ) {
+		rng = n;
+		repairPattern = repairPatterns[rng];
+	}
 
 	private void OnHealthChange( int n ) {
 
@@ -45,8 +55,6 @@ public class DamagedObject : NetworkBehaviour {
 
 	public void Start()
 	{
-
-
 		if (isServer) {
 			health = Random.Range(0, 50); 
             print(name + " enabled server check");
@@ -55,6 +63,85 @@ public class DamagedObject : NetworkBehaviour {
         } else if (isClient) {
 			OnHealthChange(health);
 		}	
+	}
+
+	RepairPattern repairPattern;
+
+	internal RepairPattern SelectPattern() {
+		if (!isServer) {
+			return null;
+		}
+
+		rng = Random.Range( 0, repairPatterns.Length );
+		repairPattern = repairPatterns[rng];
+		print( "setting repairPattern to " + repairPattern.name );
+		foreach ( var pat in repairPatterns ) {
+			pat.gameObject.SetActive( false );
+		}
+
+		return repairPattern;
+	}
+
+	internal void DisablePatternOnClients() {
+		if ( !isServer ) {
+			return;
+		}
+
+		RpcDisablePattern();
+	}
+
+	[ClientRpc]
+	private void RpcDisablePattern() {
+		repairPattern.gameObject.SetActive( false );
+		if(health < maxHealth ) {
+			repairSphere.SetActive( true );
+		}
+	}
+
+	internal void EnablePatternOnClients() {
+		if ( !isServer ) {
+			return;
+		}
+
+		RpcEnablePattern();
+	}
+
+	[ClientRpc]
+	private void RpcEnablePattern() {
+		repairPattern.gameObject.SetActive( true );//
+
+		repairSphere.GetComponent<Renderer>().enabled = false;
+	}
+
+	internal void DisableRepairNode(int index ) {
+		if ( !isServer ) {
+			return;
+		}
+
+		RpcDisableNode( index );
+	}
+
+	[ClientRpc]
+	private void RpcDisableNode(int index ) {
+		print( "pattern name: " + repairPattern.name );
+		print( "index received: " + index );
+		repairPattern.
+			transform.GetChild( index ).gameObject.SetActive( false );
+	}
+
+	internal void EnableRepairNode(int index ) {
+		if ( !isServer ) {
+			return;
+		}
+		repairPattern.transform.GetChild( 0 ).gameObject.SetActive( true );
+
+		RpcEnableNode( index );
+	}
+
+	[ClientRpc]
+	private void RpcEnableNode(int index ) {
+		repairPattern.transform.GetChild( 0 ).gameObject.SetActive( true );
+		repairPattern.transform.GetChild( index ).gameObject.SetActive( true );
 	}
 
 	private void Update() {

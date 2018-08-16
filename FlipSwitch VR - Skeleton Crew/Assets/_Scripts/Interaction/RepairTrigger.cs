@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RepairTrigger : MonoBehaviour {
 
-	public RepairPattern[] repairPatterns;
+	public DamagedObject dmgObj;
 	[HideInInspector]
 	public RepairPattern repairPattern;
 	Transform activator;
@@ -22,6 +22,7 @@ public class RepairTrigger : MonoBehaviour {
 
 				GetComponent<Renderer>().enabled = false;
 				transform.position = new Vector3( transform.position.x, other.transform.root.GetComponentInChildren<HipMarker>().transform.position.y, transform.position.z );
+				dmgObj.EnablePatternOnClients();
 
 				active = false;
 				//repairPattern = null;
@@ -42,12 +43,7 @@ public class RepairTrigger : MonoBehaviour {
 			active = true;
 			GetComponent<Renderer>().enabled = true;
 
-			int rng = Random.Range(0, repairPatterns.Length);
-			repairPattern = repairPatterns[rng];
-
-			foreach (var pat in repairPatterns) {
-				pat.gameObject.SetActive(false);
-			}
+			repairPattern = dmgObj.SelectPattern();			
 
 			activator = other.transform.root;
 
