@@ -6,7 +6,7 @@ public class VariableHolder : MonoBehaviour {
 	public List<GameObject> ratmen;
 	public List<GameObject> mastTargets;
 	public List<GameObject> cannons;
-    public List<GameObject> ratmenPositions;
+    public Dictionary<GameObject, bool> ratmenPositions = new Dictionary<GameObject, bool>();
 	
     public int numPlayers;
 

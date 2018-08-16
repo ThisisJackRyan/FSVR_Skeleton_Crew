@@ -11,6 +11,7 @@ public class HatchActivator : NetworkBehaviour {
 
     public static List<HatchActivator> hatches = new List<HatchActivator> ();
     public GameObject hatchSign;
+	public bool isLeftHatch;
 
     public static HatchActivator instance;
 
@@ -28,33 +29,36 @@ public class HatchActivator : NetworkBehaviour {
         hatches.Remove(this);
     }
 
-    public static void EnableHatches() {
-
-        foreach (var h in hatches) {
-            h.GetComponent<Collider>().enabled = true;
-            h.hatchSign.SetActive(true);
-        }
+    public static void EnableHatch(bool isLeftHatch) {
+		foreach ( var h in hatches ) {
+			if ( h.isLeftHatch == isLeftHatch ) {
+				h.GetComponent<Collider>().enabled = true;
+				h.hatchSign.SetActive( true );
+			}
+		}
     }
 
-    public static void DisableHatches() {
+    public static void DisableHatch(bool isLeftHatch) {
         foreach (var h in hatches) {
-            h.GetComponent<Collider>().enabled = false;
-            h.hatchSign.SetActive(false);
-
+			if (h.isLeftHatch == isLeftHatch) {
+				h.GetComponent<Collider>().enabled = false;
+				h.hatchSign.SetActive( false );
+			}
+           
         }
     }
 
     [ClientRpc]
-    public void RpcDisableHatches() {
+    public void RpcDisableHatch(bool isLeftHatch) {
         if (isServer)
             return;
         
-        DisableHatches();
+        DisableHatch(isLeftHatch);
     }
 	
-	public static void TellRpcToDisableHatches(){
-		instance.RpcDisableHatches();
-	}
+	//public static void TellRpcToDisableHatches(){
+	//	instance.RpcDisableHatches(isLeftHatch);
+	//}
 
     private void OnTriggerStay(Collider other) {
         if (!isServer)
@@ -66,7 +70,7 @@ public class HatchActivator : NetworkBehaviour {
             if (timer >= 1) {
                 active = false;
                 timer = 0;
-                Ratman.RespawnRatmen(transform.position);
+                Ratman.RespawnRatmen(transform.position, isLeftHatch);
             }
         }
     }
