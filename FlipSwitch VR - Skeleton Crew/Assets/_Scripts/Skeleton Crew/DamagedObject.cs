@@ -23,7 +23,7 @@ public class DamagedObject : NetworkBehaviour {
 	public GameObject repairSphere;
 	public RepairPattern[] repairPatterns;
 
-	private void OnPatternIndexChange(int n ) {
+	private void OnPatternIndexChange( int n ) {
 		rng = n;
 		repairPattern = repairPatterns[rng];
 	}
@@ -34,7 +34,7 @@ public class DamagedObject : NetworkBehaviour {
 
 		if ( health >= fullAmount ) {
 			myState = DamageState.Full;
-		} else if(health >= threeQuarterAmount ) {
+		} else if ( health >= threeQuarterAmount ) {
 			myState = DamageState.ThreeQuarter;
 		} else if ( health >= halfAmount ) {
 			myState = DamageState.Half;
@@ -53,22 +53,21 @@ public class DamagedObject : NetworkBehaviour {
 	//	base.OnStartServer();
 	//}
 
-	public void Start()
-	{
-		if (isServer) {
-			health = Random.Range(0, 50); 
-            print(name + " enabled server check");
-            Captain.damagedObjectsRepaired.Add(this, false);
-            
-        } else if (isClient) {
-			OnHealthChange(health);
-		}	
+	public void Start() {
+		if ( isServer ) {
+			health = 0;
+			print( name + " enabled server check" );
+			Captain.damagedObjectsRepaired.Add( this, false );
+
+		} else if ( isClient ) {
+			OnHealthChange( health );
+		}
 	}
 
 	RepairPattern repairPattern;
 
 	internal RepairPattern SelectPattern() {
-		if (!isServer) {
+		if ( !isServer ) {
 			return null;
 		}
 
@@ -93,7 +92,7 @@ public class DamagedObject : NetworkBehaviour {
 	[ClientRpc]
 	private void RpcDisablePattern() {
 		repairPattern.gameObject.SetActive( false );
-		if(health < maxHealth ) {
+		if ( health < maxHealth ) {
 			repairSphere.SetActive( true );
 		}
 	}
@@ -113,7 +112,7 @@ public class DamagedObject : NetworkBehaviour {
 		repairSphere.GetComponent<Renderer>().enabled = false;
 	}
 
-	internal void DisableRepairNode(int index ) {
+	internal void DisableRepairNode( int index ) {
 		if ( !isServer ) {
 			return;
 		}
@@ -122,14 +121,13 @@ public class DamagedObject : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	private void RpcDisableNode(int index ) {
+	private void RpcDisableNode( int index ) {
 		print( "pattern name: " + repairPattern.name );
 		print( "index received: " + index );
-		repairPattern.
-			transform.GetChild( index ).gameObject.SetActive( false );
+		repairPattern.transform.GetChild( index ).gameObject.SetActive( false );
 	}
 
-	internal void EnableRepairNode(int index ) {
+	internal void EnableRepairNode( int index ) {
 		if ( !isServer ) {
 			return;
 		}
@@ -139,7 +137,7 @@ public class DamagedObject : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	private void RpcEnableNode(int index ) {
+	private void RpcEnableNode( int index ) {
 		repairPattern.transform.GetChild( 0 ).gameObject.SetActive( true );
 		repairPattern.transform.GetChild( index ).gameObject.SetActive( true );
 	}
@@ -190,31 +188,30 @@ public class DamagedObject : NetworkBehaviour {
 				deadState.gameObject.SetActive( true );
 				break;
 		}
-	
+
 	}
 
-	public int ChangeHealth(int amount, bool damage = true ) {
-		if (!isServer)
+	public int ChangeHealth( int amount, bool damage = true ) {
+		if ( !isServer )
 			return health;
 
-		if (damage) {
-			health -= Mathf.Abs(amount);
-			health = (health < 0) ? 0 : health;
+		if ( damage ) {
+			health -= Mathf.Abs( amount );
+			health = ( health < 0 ) ? 0 : health;
 		} else {
 			health += Mathf.Abs( amount );
-			health = (health > maxHealth) ? maxHealth : health;
+			health = ( health > maxHealth ) ? maxHealth : health;
 		}
 
-        if (health >= maxHealth) {
-            Captain.damagedObjectsRepaired[this] = true;
-            Captain.instance.CheckDamagedObjects();
-        }
+		if ( health >= maxHealth ) {
+			Captain.damagedObjectsRepaired[this] = true;
+			Captain.instance.CheckDamagedObjects();
+		}
 
 		return health;
 	}
 
-	public int GetHealth()
-	{
+	public int GetHealth() {
 		return health;
 	}
 }

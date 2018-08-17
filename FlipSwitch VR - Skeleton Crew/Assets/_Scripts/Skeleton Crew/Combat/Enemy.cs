@@ -11,78 +11,91 @@ using BehaviorDesigner.Runtime;
 /// Description: Enemy
 /// </summary>
 public class Enemy : NetworkBehaviour {
-    #region Fields
+	#region Fields
 
-    [SyncVar(hook = "OnHealthChange")] public int health;
-    public int soulCount;
-    [Tooltip("souls per second")]
-    public int drainRate;
-    public WeaponData weapon;
-    public Collider weaponCollider;
-    public BehaviorTree tree;
+	[SyncVar(hook = "OnHealthChange")] public int health;
+	public int soulCount;
+	[Tooltip("souls per second")]
+	public int drainRate;
+	public WeaponData weapon;
+	public Collider weaponCollider;
+	public BehaviorTree tree;
 
-    private bool canBeDamaged;
-    public GameObject lastWeaponDamagedMe;
+	private bool canBeDamaged;
+	public GameObject lastWeaponDamagedMe;
 
 	public GameObject deathParticles;
+	public bool tutorialGuard = false;
 
-    #endregion
 
-    private void OnHealthChange(int n) {
-        health = n;
-    }
+	#endregion
 
-    private void Start() {
-        if (weapon.type == WeaponData.WeaponType.Melee && weaponCollider.enabled)
-            ToggleWeaponCollider();
-    }
+	private void OnHealthChange(int n) {
+		health = n;
+	}
 
-    private void OnTriggerEnter(Collider other) {
-        if (!isServer)
-            return;
+	private void Start() {
+		if (weapon.type == WeaponData.WeaponType.Melee && weaponCollider.enabled) {
+			
+			ToggleWeaponCollider();
+		}
+		if (tutorialGuard) {
+			Captain.enemiesKilled.Add(this, false);
+		}
+	}
 
-        if (other.tag == "Weapon") {
-            if (other.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
-                // todo: test that enemies are only being damaged by melee weapons being held by player
-                if (other.GetComponent<Weapon>().isBeingHeldByPlayer) {
-                    canBeDamaged = false;
-                    health -= other.GetComponent<Weapon>().data.damage;
-                    if (health <= 0) {
-                        Destroy(gameObject);
+	private void OnTriggerEnter(Collider other) {
+		if (!isServer)
+			return;
+
+		if (other.tag == "Weapon") {
+			if (other.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
+				// todo: test that enemies are only being damaged by melee weapons being held by player
+				if (other.GetComponent<Weapon>().isBeingHeldByPlayer) {
+					canBeDamaged = false;
+					health -= other.GetComponent<Weapon>().data.damage;
+					if (health <= 0) {
+						Destroy(gameObject);
 						RpcSpawnDeathParticles();
-                    }
+					}
 
-                    Invoke("AllowDamage", 3.5f);
-                }
-            }
-        } else if (other.tag == "BulletPlayer" || other.tag == "CannonBallPlayer") {
-            health -= other.GetComponent<SCProjectile>().damage;
+					Invoke("AllowDamage", 3.5f);
+				}
+			}
+		} else if (other.tag == "BulletPlayer" || other.tag == "CannonBallPlayer") {
+			health -= other.GetComponent<SCProjectile>().damage;
 
-            if (health <= 0) {
-                Destroy(gameObject);
-            }
-        }
-    }
-	
+			if (health <= 0) {
+				if (tutorialGuard) {
+					Captain.enemiesKilled[this] = true;
+					Captain.instance.CheckEnemiesKilled();
+				}
+
+				Destroy( gameObject);
+			}
+		}
+	}
+
+
 	[ClientRpc]
 	void RpcSpawnDeathParticles() {
 		Instantiate( deathParticles , new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
 	}
 
-    public void AllowDamage() {
-        CancelInvoke();
-        canBeDamaged = true;
-    }
+	public void AllowDamage() {
+		CancelInvoke();
+		canBeDamaged = true;
+	}
 
-    public bool GetCanBeDamaged() {
-        return canBeDamaged;
-    }
+	public bool GetCanBeDamaged() {
+		return canBeDamaged;
+	}
 
-    public void EnableEnemy() {
-        GlobalVariables.Instance.SetVariableValue("EnemiesEnabled", true);
-    }
+	public void EnableEnemy() {
+		GlobalVariables.Instance.SetVariableValue("EnemiesEnabled", true);
+	}
 
-    public void ToggleWeaponCollider() {
-        weaponCollider.enabled = !weaponCollider.enabled;
-    }
+	public void ToggleWeaponCollider() {
+		weaponCollider.enabled = !weaponCollider.enabled;
+	}
 }
