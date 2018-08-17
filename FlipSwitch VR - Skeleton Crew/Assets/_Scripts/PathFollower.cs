@@ -160,16 +160,20 @@ public class PathFollower : NetworkBehaviour {
 			Vector3 spawnVector = rocks[chosenOne].transform.position - shipTransform.position;
 			spawnVector = rocks[chosenOne].transform.position + ( spawnVector.normalized * spawnDistFromRock );
 			//spawn
-			RpcSpawnEnemy( spawnVector );
+			Instantiate( prefabToSpawn, spawnVector, Quaternion.identity );
+			RpcSpawnEnemy( prefabToSpawn, spawnVector );
 		}
 	}
 
 #pragma warning disable 0219
 
 	[ClientRpc]
-	private void RpcSpawnEnemy( Vector3 spawnPos ) {
+	private void RpcSpawnEnemy( GameObject prefab, Vector3 spawnPos ) {
+		if ( isServer ) {
+			return;
+		}
 		print( "should be spawning an enemy" );
-		GameObject g = Instantiate( prefabToSpawn, spawnPos, Quaternion.identity );
+		GameObject g = Instantiate( prefab, spawnPos, Quaternion.identity );
 	}
 
 	#endregion
