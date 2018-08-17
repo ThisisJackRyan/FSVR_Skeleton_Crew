@@ -106,6 +106,7 @@ public class Captain : SerializedNetworkBehaviour {
 		DisableFirePrompt();
 		DisableRatHatches();
 		DisableRopes();
+		DisableGuards();
 	}
 
 	#region Tutorial shit
@@ -143,16 +144,59 @@ public class Captain : SerializedNetworkBehaviour {
 
 	#endregion
 
-	public List<GameObject> tutorialCannons, actualCannons, cannonFirePrompts, tutorialRatHatch, ratHatch;
+	public List<GameObject> tutorialCannons, actualCannons, cannonFirePrompts, tutorialRatHatch, ratHatch, tutorialGuards;
 
 	public void StartTutorial() {
 		TutorialIntro();
+		EnableGuardsByPlayerCount();
 	}
 
 	void TutorialIntro() {
 		RpcPlaySoundClip( "PrepTut_Intro" );
 		Invoke( "TutorialIntro", 35f );
 	}
+
+	#region guards 
+	void EnableGuardsByPlayerCount() {
+		for ( int i = 0; i < tutorialGuards.Count && i <= VariableHolder.instance.numPlayers; i++ ) {
+			tutorialGuards[i].SetActive( true );
+		}
+
+		RpcEnableGuards();
+
+	}
+
+	[ClientRpc]
+	void RpcEnableGuards() {
+		if ( isServer ) {
+			return;
+		}
+		for ( int i = 0; i < tutorialGuards.Count; i++ ) {
+			tutorialGuards[i].SetActive( true );
+
+		}
+	}
+
+	void DisableGuards() {
+		for ( int i = 0; i < tutorialGuards.Count; i++ ) {
+			tutorialGuards[i].SetActive( false );
+
+		}
+
+		RpcDisableGuards();
+	}
+
+	[ClientRpc]
+	void RpcDisableGuards() {
+		if ( isServer ) {
+			return;
+		}
+		for ( int i = 0; i < tutorialGuards.Count; i++ ) {
+			tutorialGuards[i].SetActive( false );
+
+		}
+	}
+	#endregion
 
 	public void CheckEnemiesKilled() {
 		foreach ( var obj in enemiesKilled ) {

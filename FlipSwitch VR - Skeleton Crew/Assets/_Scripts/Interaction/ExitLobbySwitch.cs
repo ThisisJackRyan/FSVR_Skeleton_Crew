@@ -37,29 +37,29 @@ public class ExitLobbySwitch : NetworkBehaviour {
 
 					//StartCoroutine("FadeAndTeleport");
 					StartFade();
-                    other.GetComponentInParent<ScriptSyncPlayer>().TellCaptainToStartTutorial();
-                    
+					other.GetComponentInParent<ScriptSyncPlayer>().TellCaptainToStartTutorial();
+					
 				}
 			}
 		}
 	}
 
 	public void StartFade() {
-		print( "asdfkj;asdf: SERVER pre call" );
+		//print( "asdfkj;asdf: SERVER pre call" );
 
 		RpcStartFade();
-		print( "asdfkj;asdf: SERVER" );
+		//print( "asdfkj;asdf: SERVER" );
 		StartCoroutine("FadeAndTeleport");
 	}
 
 	[ClientRpc]
 	void RpcStartFade() {
-		print( "asdfkj;asdf: CLIENTS pre server check , client: " + isClient );
+		//print( "asdfkj;asdf: CLIENTS pre server check , client: " + isClient );
 
 		if ( isServer ) {
 			return;
 		}
-		print( "asdfkj;asdf: CLIENTS" );
+		//print( "asdfkj;asdf: CLIENTS" );
 
 		StartCoroutine( "FadeAndTeleport" );
 	}
@@ -75,7 +75,7 @@ public class ExitLobbySwitch : NetworkBehaviour {
 		FindObjectOfType<GhostFreeRoamCamera>().transform.root.position = spawnPos.position;
 
 		SteamVR_Fade.Start(Color.clear, 2f);
-    }
+	}
 
 	private void OnTriggerEnter(Collider other) {
 		if ( !isServer ) {
