@@ -35,15 +35,16 @@ public class Host : NetworkBehaviour {
 
 		GetComponent<Camera>().enabled = true;
 
-		//GameObject.Find("Canvas").SetActive(true);
-		//GameObject uiManager = GameObject.Find("HostUIManager");
-		//uiManager.SetActive(true);
+		Resources.FindObjectsOfTypeAll<HostCanvas>()[0].gameObject.SetActive(true);
+		GameObject uiManager = GameObject.Find( "HostUIManager" );
+		uiManager.SetActive( true );
 
-		//scriptHostUi = uiManager.GetComponent<HostUiManager>();
-		//scriptHostUi.SetHost(this);
+		scriptHostUi = uiManager.GetComponent<HostUiManager>();
+		scriptHostUi.SetHost( this );
 	}
 
 	public void AddPlayerToHostList(GameObject playerToAdd) {
+		
         RpcAddPlayerToHost(playerToAdd);
     }
 
@@ -52,6 +53,8 @@ public class Host : NetworkBehaviour {
         if (!isLocalPlayer) {
             return;
         }
+
+	    print("should be adding " + playerToAdd.name + " to host list on host client");
 
         players.Add(playerToAdd);
         playerToAdd.GetComponent<PlayerSetup>().SetCameraSettings(players.Count);

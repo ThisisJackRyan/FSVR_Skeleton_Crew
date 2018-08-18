@@ -13,7 +13,8 @@ using BehaviorDesigner.Runtime;
 public class Enemy : NetworkBehaviour {
 	#region Fields
 
-	[SyncVar(hook = "OnHealthChange")] public int health;
+	[SyncVar(hook = "OnHealthChange")]
+	public int health;
 	public int soulCount;
 	[Tooltip("souls per second")]
 	public int drainRate;
@@ -27,20 +28,28 @@ public class Enemy : NetworkBehaviour {
 	public GameObject deathParticles;
 	public bool tutorialGuard = false;
 
-
 	#endregion
 
 	private void OnHealthChange(int n) {
 		health = n;
+
+		if (health <= 0) {
+
+			if ( tutorialGuard ) {
+				print( "tut guard killed" );
+				Captain.enemiesKilled[this] = true;
+				Captain.instance.CheckEnemiesKilled();
+			}
+		}
 	}
 
 	private void Start() {
-		if (weapon.type == WeaponData.WeaponType.Melee && weaponCollider.enabled) {
-			
-			ToggleWeaponCollider();
-		}
-		if (tutorialGuard) {
-			Captain.enemiesKilled.Add(this, false);
+		
+
+		if (weapon) {
+			if (weapon.type == WeaponData.WeaponType.Melee && weaponCollider.enabled) {
+				ToggleWeaponCollider();
+			}
 		}
 	}
 
@@ -66,20 +75,32 @@ public class Enemy : NetworkBehaviour {
 			health -= other.GetComponent<SCProjectile>().damage;
 
 			if (health <= 0) {
-				if (tutorialGuard) {
-					Captain.enemiesKilled[this] = true;
-					Captain.instance.CheckEnemiesKilled();
-				}
-
-				Destroy( gameObject);
+				Destroy(gameObject);
 			}
 		}
 	}
 
+	public int ChangeHealth( int amount, bool damage = true ) {
+		if ( !isServer )
+			return health;
+
+		if ( damage ) {
+			health -= Mathf.Abs( amount );
+			health = ( health < 0 ) ? 0 : health;
+		} else {
+			health += Mathf.Abs( amount );
+			health = ( health > maxHealth ) ? maxHealth : health;
+		}
+
+		return health;
+	}
+
+	public int maxHealth = 100;
+
 
 	[ClientRpc]
 	void RpcSpawnDeathParticles() {
-		Instantiate( deathParticles , new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
+		Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
 	}
 
 	public void AllowDamage() {

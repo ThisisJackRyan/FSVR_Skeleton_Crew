@@ -54,14 +54,17 @@ public class DamagedObject : NetworkBehaviour {
 	//}
 
 	public void Start() {
-		if ( isServer ) {
-			health = 0;
-			print( name + " enabled server check" );
-			Captain.damagedObjectsRepaired.Add( this, false );
+		//ChangeHealth( maxHealth );
 
+		if ( isServer ) {
+			print( name + " enabled server check" );
+			health = 0;
+			Captain.damagedObjectsRepaired.Add( this, false );
 		} else if ( isClient ) {
 			OnHealthChange( health );
 		}
+
+
 	}
 
 	RepairPattern repairPattern;
@@ -192,6 +195,7 @@ public class DamagedObject : NetworkBehaviour {
 	}
 
 	public int ChangeHealth( int amount, bool damage = true ) {
+		print(name+"change health called");
 		if ( !isServer )
 			return health;
 

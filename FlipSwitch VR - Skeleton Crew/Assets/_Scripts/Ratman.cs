@@ -21,7 +21,7 @@ public class Ratman : NetworkBehaviour {
 			KillRatman();
 	}
 
-	private void Start() {
+	void Start() {
 		VariableHolder.instance.ratmenPositions.Add( gameObject, isOnTheLeft );
 		if ( isServer ) {
 			//  print(name + " enabled server check");

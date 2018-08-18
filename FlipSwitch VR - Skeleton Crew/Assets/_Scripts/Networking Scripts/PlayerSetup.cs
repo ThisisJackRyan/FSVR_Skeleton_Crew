@@ -24,6 +24,7 @@ public class PlayerSetup : NetworkBehaviour {
 
 		} else {
 			if (isServer) {
+				print("should be adding " + gameObject.name + " to host list");
 				GameObject.FindObjectOfType<Host>().AddPlayerToHostList(gameObject);
 			} else {
 				GetComponent<ScriptSyncPlayer>().TurnOffColliders();
@@ -49,13 +50,14 @@ public class PlayerSetup : NetworkBehaviour {
 			GetComponent<VRIKCalibrateOnStart>().CalibratePlayer();
 
 			var iks = FindObjectsOfType<VRIKCalibrateOnStart>();
-			print(iks.Length);
+			//print(iks.Length);
 			foreach (var item in iks) {
 				print(item.calibrated + " calibrated " + name);
 				item.CalibratePlayer();
 			}
 
 			FindObjectOfType<CaptainDialogueLobby>().enabled = true;
+			FindObjectOfType<Captain>().Init();
 			StartCoroutine("FadeIn");
 		}
 
