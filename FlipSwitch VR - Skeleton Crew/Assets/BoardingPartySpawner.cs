@@ -22,22 +22,24 @@ public class BoardingPartySpawner : NetworkBehaviour {
 		print( "Spawing " + crewBosses[bossIndex].name + " as boss, and " + crewMembers[crewIndex1] + " as crew member 1, " + crewMembers[crewIndex2] + " as crew member 2." );
 
 		GameObject boss = Instantiate(crewBosses[bossIndex], transform.GetChild(0).position, Quaternion.identity);
-        RpcSpawnEnemy(boss, 0);
+		NetworkServer.Spawn(boss);
 
-        GameObject crew1 = Instantiate(crewMembers[crewIndex1], transform.GetChild(1).position, Quaternion.identity);
-        RpcSpawnEnemy(crew1, 1);
+		GameObject crew1 = Instantiate(crewMembers[crewIndex1], transform.GetChild(1).position, Quaternion.identity);
+		NetworkServer.Spawn( crew1 );
 
-        GameObject crew2 = Instantiate(crewMembers[crewIndex2], transform.GetChild(2).position, Quaternion.identity);
-        RpcSpawnEnemy(crew2, 2);
-    }
 
-    private void RpcSpawnEnemy(GameObject g, int childIndex) {
+		GameObject crew2 = Instantiate(crewMembers[crewIndex2], transform.GetChild(2).position, Quaternion.identity);
+		NetworkServer.Spawn( crew2 );
+
+	}
+
+	private void RpcSpawnEnemy(GameObject g, int childIndex) {
 		//if (isServer) {
 		//    return;
 		//}
 		print( "gadkjfas;lkdfj" );
-        GameObject c = Instantiate(g, transform.GetChild(childIndex).position, Quaternion.identity);
-        c.transform.parent = transform;
-    }
-    
+		GameObject c = Instantiate(g, transform.GetChild(childIndex).position, Quaternion.identity);
+		c.transform.parent = transform;
+	}
+	
 }

@@ -171,7 +171,8 @@ public class PathFollower : NetworkBehaviour {
 			//spawn
 			GameObject g = Instantiate( prefabToSpawn, spawnVector, Quaternion.identity );
 			print( g.name + " spawned, calling rpc" );
-			RpcSpawnEnemy( g, spawnVector );
+			//RpcSpawnEnemy( g, spawnVector );
+			NetworkServer.Spawn(g);
 		}
 	}
 
