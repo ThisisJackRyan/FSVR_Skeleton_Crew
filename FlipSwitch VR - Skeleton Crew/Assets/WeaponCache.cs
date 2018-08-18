@@ -57,17 +57,17 @@ public class WeaponCache : NetworkBehaviour {
 
 	}
 
-	[ClientRpc]
-	void RpcSpawn(GameObject go) {
-		if (isServer) {
-			print("rpc spawn on server with " + go.name);
-			return;
-		}
+	//[ClientRpc]
+	//void RpcSpawn(GameObject go) {
+	//	if (isServer) {
+	//		print("rpc spawn on server with " + go.name);
+	//		return;
+	//	}
 
-		print("rpc spawn on client");
+	//	print("rpc spawn on client");
 
-		Instantiate(go, spawnPos.position, Quaternion.identity);
-	}
+	//	Instantiate(go, spawnPos.position, Quaternion.identity);
+	//}
 
 	private void OnDrawGizmosSelected() {
 		Gizmos.DrawWireSphere(collider.bounds.center, spawnRadius);
