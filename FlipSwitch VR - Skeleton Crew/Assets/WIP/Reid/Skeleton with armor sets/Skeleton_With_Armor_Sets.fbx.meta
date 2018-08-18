@@ -1,0 +1,390 @@
+fileFormatVersion: 2
+guid: 9b0eaee8a15be3942be870f90bfa5aa6
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Archer_Battle_Skirt
+    100002: Archer_Bow
+    100004: Archer_Chestplate
+    100006: Archer_Helmet
+    100008: Archer_Left_Greaves
+    100010: Archer_Left_Shoulder
+    100012: Archer_Left_Tassets
+    100014: Archer_Mail_Cape
+    100016: Archer_Mail_Helmet
+    100018: Archer_Mail_Left_Shoulder
+    100020: Archer_Mail_Left_Skirt
+    100022: Archer_Mail_Right_Shoulder
+    100024: Archer_Mail_Right_Skirt
+    100026: Archer_Mail_set
+    100028: Archer_Mail_Skirt
+    100030: Archer_Right_Gauntlet
+    100032: Archer_Right_Shoulder
+    100034: Archer_set
+    100036: arrow_001
+    100038: arrow_02
+    100040: arrow_03
+    100042: arrow_04
+    100044: arrow_05
+    100046: arrow_06
+    100048: Bip01
+    100050: Bip01 back_left_Wmount
+    100052: Bip01 back_right_Wmount
+    100054: Bip01 Head
+    100056: Bip01 L Calf
+    100058: Bip01 L Clavicle
+    100060: Bip01 L Finger0
+    100062: Bip01 L Finger01
+    100064: Bip01 L Finger02
+    100066: Bip01 L Finger1
+    100068: Bip01 L Finger11
+    100070: Bip01 L Finger12
+    100072: Bip01 L Foot
+    100074: Bip01 L Forearm
+    100076: Bip01 L Hand
+    100078: Bip01 L Thigh
+    100080: Bip01 L Toe0
+    100082: Bip01 L UpperArm
+    100084: Bip01 Neck
+    100086: Bip01 Neck1
+    100088: Bip01 Pelvis
+    100090: Bip01 R Calf
+    100092: Bip01 R Clavicle
+    100094: Bip01 R Finger0
+    100096: Bip01 R Finger01
+    100098: Bip01 R Finger02
+    100100: Bip01 R Finger1
+    100102: Bip01 R Finger11
+    100104: Bip01 R Finger12
+    100106: Bip01 R Foot
+    100108: Bip01 R Forearm
+    100110: Bip01 R Hand
+    100112: Bip01 R Thigh
+    100114: Bip01 R Toe0
+    100116: Bip01 R UpperArm
+    100118: Bip01 Rhand_Weapon
+    100120: Bip01 Spine
+    100122: Bip01 Spine1
+    100124: Bip01 Spine2
+    100126: bone_bow02
+    100128: bow02
+    100130: Bow_animation_controller02
+    100132: Footman_Chestplate
+    100134: Footman_Left_Shield
+    100136: Footman_Left_Shoulder
+    100138: Footman_Right_Gauntlet
+    100140: Footman_Right_Greave
+    100142: Footman_Right_Shoulder
+    100144: Footman_Right_Tassets
+    100146: Footman_set
+    100148: Hair
+    100150: quiver
+    100152: skeleton_archer
+    100154: Skeleton_footman_shield02
+    100156: Skeleton_footman_sword01
+    100158: Skeleton_footman_sword02
+    100160: //RootNode
+    100162: Warlord_Battle_Skirt
+    100164: Warlord_Chestplate
+    100166: Warlord_Helmet
+    100168: Warlord_Left_Greaves
+    100170: Warlord_Left_Shoulder
+    100172: Warlord_Left_Tassets
+    100174: Warlord_Right_Gauntlet
+    100176: Warlord_Right_Glove
+    100178: Warlord_Right_Shoulder
+    100180: Warlord_Right_Tassets
+    100182: Warlord_set
+    100184: Warlord_Sword
+    400000: Archer_Battle_Skirt
+    400002: Archer_Bow
+    400004: Archer_Chestplate
+    400006: Archer_Helmet
+    400008: Archer_Left_Greaves
+    400010: Archer_Left_Shoulder
+    400012: Archer_Left_Tassets
+    400014: Archer_Mail_Cape
+    400016: Archer_Mail_Helmet
+    400018: Archer_Mail_Left_Shoulder
+    400020: Archer_Mail_Left_Skirt
+    400022: Archer_Mail_Right_Shoulder
+    400024: Archer_Mail_Right_Skirt
+    400026: Archer_Mail_set
+    400028: Archer_Mail_Skirt
+    400030: Archer_Right_Gauntlet
+    400032: Archer_Right_Shoulder
+    400034: Archer_set
+    400036: arrow_001
+    400038: arrow_02
+    400040: arrow_03
+    400042: arrow_04
+    400044: arrow_05
+    400046: arrow_06
+    400048: Bip01
+    400050: Bip01 back_left_Wmount
+    400052: Bip01 back_right_Wmount
+    400054: Bip01 Head
+    400056: Bip01 L Calf
+    400058: Bip01 L Clavicle
+    400060: Bip01 L Finger0
+    400062: Bip01 L Finger01
+    400064: Bip01 L Finger02
+    400066: Bip01 L Finger1
+    400068: Bip01 L Finger11
+    400070: Bip01 L Finger12
+    400072: Bip01 L Foot
+    400074: Bip01 L Forearm
+    400076: Bip01 L Hand
+    400078: Bip01 L Thigh
+    400080: Bip01 L Toe0
+    400082: Bip01 L UpperArm
+    400084: Bip01 Neck
+    400086: Bip01 Neck1
+    400088: Bip01 Pelvis
+    400090: Bip01 R Calf
+    400092: Bip01 R Clavicle
+    400094: Bip01 R Finger0
+    400096: Bip01 R Finger01
+    400098: Bip01 R Finger02
+    400100: Bip01 R Finger1
+    400102: Bip01 R Finger11
+    400104: Bip01 R Finger12
+    400106: Bip01 R Foot
+    400108: Bip01 R Forearm
+    400110: Bip01 R Hand
+    400112: Bip01 R Thigh
+    400114: Bip01 R Toe0
+    400116: Bip01 R UpperArm
+    400118: Bip01 Rhand_Weapon
+    400120: Bip01 Spine
+    400122: Bip01 Spine1
+    400124: Bip01 Spine2
+    400126: bone_bow02
+    400128: bow02
+    400130: Bow_animation_controller02
+    400132: Footman_Chestplate
+    400134: Footman_Left_Shield
+    400136: Footman_Left_Shoulder
+    400138: Footman_Right_Gauntlet
+    400140: Footman_Right_Greave
+    400142: Footman_Right_Shoulder
+    400144: Footman_Right_Tassets
+    400146: Footman_set
+    400148: Hair
+    400150: quiver
+    400152: skeleton_archer
+    400154: Skeleton_footman_shield02
+    400156: Skeleton_footman_sword01
+    400158: Skeleton_footman_sword02
+    400160: //RootNode
+    400162: Warlord_Battle_Skirt
+    400164: Warlord_Chestplate
+    400166: Warlord_Helmet
+    400168: Warlord_Left_Greaves
+    400170: Warlord_Left_Shoulder
+    400172: Warlord_Left_Tassets
+    400174: Warlord_Right_Gauntlet
+    400176: Warlord_Right_Glove
+    400178: Warlord_Right_Shoulder
+    400180: Warlord_Right_Tassets
+    400182: Warlord_set
+    400184: Warlord_Sword
+    2100000: bow_stuff
+    2100002: Skeleton_shield_A
+    2100004: skeleton_footman_sword
+    2100006: warlord_sword
+    2100008: skeleton_body
+    2100010: Warlord_armor
+    2100012: hair
+    2100014: skeleton_archer_armor
+    2100016: skeleton_archer_mail
+    2100018: skeleton_1H_armor
+    2300000: arrow_001
+    2300002: arrow_02
+    2300004: arrow_03
+    2300006: arrow_04
+    2300008: arrow_05
+    2300010: arrow_06
+    2300012: bow02
+    2300014: quiver
+    2300016: Skeleton_footman_shield02
+    2300018: Skeleton_footman_sword01
+    2300020: Skeleton_footman_sword02
+    2300022: Warlord_Sword
+    3300000: arrow_001
+    3300002: arrow_02
+    3300004: arrow_03
+    3300006: arrow_04
+    3300008: arrow_05
+    3300010: arrow_06
+    3300012: bow02
+    3300014: quiver
+    3300016: Skeleton_footman_shield02
+    3300018: Skeleton_footman_sword01
+    3300020: Skeleton_footman_sword02
+    3300022: Warlord_Sword
+    4300000: bow02
+    4300002: Skeleton_footman_shield02
+    4300004: Skeleton_footman_sword01
+    4300006: quiver
+    4300008: arrow_02
+    4300010: arrow_03
+    4300012: arrow_04
+    4300014: arrow_05
+    4300016: arrow_001
+    4300018: Warlord_Sword
+    4300020: Skeleton_footman_sword02
+    4300022: arrow_06
+    4300024: skeleton_archer
+    4300026: Warlord_Helmet
+    4300028: Warlord_Battle_Skirt
+    4300030: Warlord_Left_Shoulder
+    4300032: Warlord_Right_Shoulder
+    4300034: Warlord_Right_Gauntlet
+    4300036: Warlord_Right_Glove
+    4300038: Warlord_Chestplate
+    4300040: Warlord_Left_Greaves
+    4300042: Warlord_Left_Tassets
+    4300044: Warlord_Right_Tassets
+    4300046: Hair
+    4300048: Archer_Helmet
+    4300050: Archer_Left_Tassets
+    4300052: Archer_Left_Greaves
+    4300054: Archer_Battle_Skirt
+    4300056: Archer_Right_Gauntlet
+    4300058: Archer_Left_Shoulder
+    4300060: Archer_Right_Shoulder
+    4300062: Archer_Chestplate
+    4300064: Archer_Bow
+    4300066: Archer_Mail_Helmet
+    4300068: Archer_Mail_Cape
+    4300070: Archer_Mail_Right_Shoulder
+    4300072: Archer_Mail_Left_Shoulder
+    4300074: Archer_Mail_Skirt
+    4300076: Archer_Mail_Right_Skirt
+    4300078: Archer_Mail_Left_Skirt
+    4300080: Footman_Chestplate
+    4300082: Footman_Left_Shield
+    4300084: Footman_Left_Shoulder
+    4300086: Footman_Right_Shoulder
+    4300088: Footman_Right_Tassets
+    4300090: Footman_Right_Greave
+    4300092: Footman_Right_Gauntlet
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: Archer_Battle_Skirt
+    13700002: Archer_Bow
+    13700004: Archer_Chestplate
+    13700006: Archer_Helmet
+    13700008: Archer_Left_Greaves
+    13700010: Archer_Left_Shoulder
+    13700012: Archer_Left_Tassets
+    13700014: Archer_Mail_Cape
+    13700016: Archer_Mail_Helmet
+    13700018: Archer_Mail_Left_Shoulder
+    13700020: Archer_Mail_Left_Skirt
+    13700022: Archer_Mail_Right_Shoulder
+    13700024: Archer_Mail_Right_Skirt
+    13700026: Archer_Mail_Skirt
+    13700028: Archer_Right_Gauntlet
+    13700030: Archer_Right_Shoulder
+    13700032: Footman_Chestplate
+    13700034: Footman_Left_Shield
+    13700036: Footman_Left_Shoulder
+    13700038: Footman_Right_Gauntlet
+    13700040: Footman_Right_Greave
+    13700042: Footman_Right_Shoulder
+    13700044: Footman_Right_Tassets
+    13700046: Hair
+    13700048: skeleton_archer
+    13700050: Warlord_Battle_Skirt
+    13700052: Warlord_Chestplate
+    13700054: Warlord_Helmet
+    13700056: Warlord_Left_Greaves
+    13700058: Warlord_Left_Shoulder
+    13700060: Warlord_Left_Tassets
+    13700062: Warlord_Right_Gauntlet
+    13700064: Warlord_Right_Glove
+    13700066: Warlord_Right_Shoulder
+    13700068: Warlord_Right_Tassets
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

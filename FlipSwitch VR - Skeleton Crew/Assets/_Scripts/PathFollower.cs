@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityEngine.Networking;
+using UnityEngine.Networking;
 
-public class PathFollower : MonoBehaviour {
+public class PathFollower : NetworkBehaviour {
 
 	public NodePath path;
 	int currentNode, nextNode;
@@ -19,15 +19,19 @@ public class PathFollower : MonoBehaviour {
 	bool canMove = false;
 
 	protected void Start() {
+		if ( !isServer ) {
+			return;
+		}
 		currentNode = 0;
 		nextNode = 1;
 		currRot = transform.rotation;
 		nextRot = CalcRotation( path.Nodes[nextNode] );
-
 	}
 
-
 	public void StartMoving() {
+		if ( !isServer ) {
+			return;
+		}
 		canMove = true;
 	}
 
@@ -35,16 +39,19 @@ public class PathFollower : MonoBehaviour {
 		//if (Input.GetKeyDown(KeyCode.Space)) {
 		//	StartMoving();
 		//}
-
-
-		if (!canMove) {
+		if ( !isServer ) {
 			return;
 		}
 
-		if (nextNode < path.Nodes.Length) {
+
+		if ( !canMove ) {
+			return;
+		}
+
+		if ( nextNode < path.Nodes.Length ) {
 			MovePosition();
 		} else {
-			print("next node too high " + nextNode + " " + path.Nodes.Length);
+			print( "next node too high " + nextNode + " " + path.Nodes.Length );
 		}
 	}
 
@@ -53,26 +60,26 @@ public class PathFollower : MonoBehaviour {
 	void MovePosition() {
 		//increment timer once per frame
 		currentLerpTime += Time.deltaTime * speed;
-		if (currentLerpTime > timeToNextNode) {
+		if ( currentLerpTime > timeToNextNode ) {
 			currentLerpTime = timeToNextNode;
 		}
 
 		//lerp!
 		float perc = currentLerpTime / timeToNextNode;
-		transform.position = Vector3.Lerp(path.Nodes[currentNode].position, path.Nodes[nextNode].position, perc);
+		transform.position = Vector3.Lerp( path.Nodes[currentNode].position, path.Nodes[nextNode].position, perc );
 
 		//lerp rotation
 		//print("curr " + currRot + " next " + nextRot);
 		transform.rotation = Quaternion.Lerp( currRot, nextRot, perc );
 
-		if (perc >= 1) {
+		if ( perc >= 1 ) {
 			IncrementNode();
 		}
 	}
 
 	Quaternion currRot, nextRot;
 
-	Quaternion CalcRotation(Transform target) {
+	Quaternion CalcRotation( Transform target ) {
 		Vector3 vectorToTarget = target.transform.position - transform.position;
 		Vector3 facingDirection = transform.forward; // just for clarity!
 
@@ -82,21 +89,103 @@ public class PathFollower : MonoBehaviour {
 		return rotation * transform.rotation;
 	}
 
-
-
 	void IncrementNode() {
 		currentNode = nextNode;
-		if (this.nextNode < path.Nodes.Length - 1) {
+		if ( this.nextNode < path.Nodes.Length - 1 ) {
 			nextNode++;
 		}
 
 		currentLerpTime = 0f;
 
-		path.Nodes[currentNode].GetComponent<EncounterNode>().Spawn();
+		SpawnEncounter( currentStage );
 
 		//update rot values
 		currRot = nextRot;
-		nextRot = CalcRotation(path.Nodes[nextNode]);
+		nextRot = CalcRotation( path.Nodes[nextNode] );
 	}
+
+	void SpawnEncounter( EncounterStage stage ) {
+		switch ( stage ) {
+			case EncounterStage.First:
+				Spawn( firstEncounters );
+				break;
+			case EncounterStage.Second:
+				Spawn( secondEncounters );
+				break;
+			case EncounterStage.Third:
+				Spawn( thirdEncounters );
+				break;
+		}
+	}
+	
+	#region spawn stuff
+
+	EncounterStage currentStage;
+	GameObject prefabToSpawn;
+
+	[Header("Spawning stuff")]
+	public float spawnDistFromRock = 2;
+	public float spawnRadiusMin, spawnRadiusMax;
+	public Transform shipTransform;
+	[Tooltip("second encounters will be the object that spawns the meteor prefab, not the prefab itself. third encounters is for ratmen." +
+		"it again will have a specific object that tells rats to spawn. will prolly be changed tho. ")]
+	public GameObject[] firstEncounters, secondEncounters, thirdEncounters;
+
+	enum EncounterStage {
+		First, Second, Third
+	}
+
+	public static GameObject[] Floaters {
+		get {
+			return floaters ?? ( floaters = GameObject.FindGameObjectsWithTag( "Floater" ) );
+		}
+	}
+
+	static GameObject[] floaters;
+
+	public void Spawn( GameObject[] toSpawnList ) {
+		if ( !isServer ) {
+			return;
+		}
+
+
+		int spawnIndex = Random.Range( 0, toSpawnList.Length );
+		prefabToSpawn = toSpawnList[spawnIndex];
+		
+		print( name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name  );
+		//find rock
+		List<GameObject> rocks = new List<GameObject>();
+
+		foreach ( GameObject go in Floaters ) {
+			float dist = Vector3.Distance( shipTransform.position, go.transform.position );
+			if ( dist > spawnRadiusMin && dist < spawnRadiusMax ) {
+				rocks.Add( go );
+			}
+		}
+
+		if ( rocks.Count > 0 ) {
+			int chosenOne = Random.Range( 0, rocks.Count );
+			//calc other side
+			Vector3 spawnVector = rocks[chosenOne].transform.position - shipTransform.position;
+			spawnVector = rocks[chosenOne].transform.position + ( spawnVector.normalized * spawnDistFromRock );
+			//spawn
+			GameObject g = Instantiate( prefabToSpawn, spawnVector, Quaternion.identity );
+			print( g.name + " spawned, calling rpc" );
+			RpcSpawnEnemy( g, spawnVector );
+		}
+	}
+
+#pragma warning disable 0219
+
+	[ClientRpc]
+	private void RpcSpawnEnemy( GameObject g, Vector3 spawnPos ) {
+		if ( isServer ) {
+			print("server says G is " + g.name);
+			return;
+		}
+		Instantiate( g, spawnPos, Quaternion.identity );
+	}
+
+	#endregion
 
 }
