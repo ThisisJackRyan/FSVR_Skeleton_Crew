@@ -31,7 +31,8 @@ public class MastSwitch : MonoBehaviour {
 
 	[Button]
 	public void FirstRun() {
-		firstRunEvent.Invoke();
+		if(FindObjectOfType<Host>().isServer)
+			firstRunEvent.Invoke();
 	}
 
 	public void SwapMode() {

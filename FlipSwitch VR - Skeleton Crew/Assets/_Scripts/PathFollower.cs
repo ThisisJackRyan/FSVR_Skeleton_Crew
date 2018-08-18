@@ -19,6 +19,9 @@ public class PathFollower : NetworkBehaviour {
 	bool canMove = false;
 
 	protected void Start() {
+		if ( !isServer ) {
+			return;
+		}
 		currentNode = 0;
 		nextNode = 1;
 		currRot = transform.rotation;
@@ -26,6 +29,9 @@ public class PathFollower : NetworkBehaviour {
 	}
 
 	public void StartMoving() {
+		if ( !isServer ) {
+			return;
+		}
 		canMove = true;
 	}
 
@@ -33,6 +39,9 @@ public class PathFollower : NetworkBehaviour {
 		//if (Input.GetKeyDown(KeyCode.Space)) {
 		//	StartMoving();
 		//}
+		if ( !isServer ) {
+			return;
+		}
 
 
 		if ( !canMove ) {
@@ -139,11 +148,11 @@ public class PathFollower : NetworkBehaviour {
 			return;
 		}
 
-		print( name + " called spawn" + Time.time );
 
 		int spawnIndex = Random.Range( 0, toSpawnList.Length );
 		prefabToSpawn = toSpawnList[spawnIndex];
 		
+		print( name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name  );
 		//find rock
 		List<GameObject> rocks = new List<GameObject>();
 
@@ -160,20 +169,21 @@ public class PathFollower : NetworkBehaviour {
 			Vector3 spawnVector = rocks[chosenOne].transform.position - shipTransform.position;
 			spawnVector = rocks[chosenOne].transform.position + ( spawnVector.normalized * spawnDistFromRock );
 			//spawn
-			Instantiate( prefabToSpawn, spawnVector, Quaternion.identity );
-			RpcSpawnEnemy( prefabToSpawn, spawnVector );
+			GameObject g = Instantiate( prefabToSpawn, spawnVector, Quaternion.identity );
+			print( g.name + " spawned, calling rpc" );
+			RpcSpawnEnemy( g, spawnVector );
 		}
 	}
 
 #pragma warning disable 0219
 
 	[ClientRpc]
-	private void RpcSpawnEnemy( GameObject prefab, Vector3 spawnPos ) {
+	private void RpcSpawnEnemy( GameObject g, Vector3 spawnPos ) {
 		if ( isServer ) {
+			print("server says G is " + g.name);
 			return;
 		}
-		print( "should be spawning an enemy" );
-		GameObject g = Instantiate( prefab, spawnPos, Quaternion.identity );
+		Instantiate( g, spawnPos, Quaternion.identity );
 	}
 
 	#endregion
