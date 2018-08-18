@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 public class CannonAimNode : MonoBehaviour {
 
 	public CannonInteraction player;
+	public GameObject particles;
 	Cannon cannon;
 	bool active;
 	int index;
