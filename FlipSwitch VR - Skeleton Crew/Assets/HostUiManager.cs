@@ -17,7 +17,7 @@ public class HostUiManager : MonoBehaviour {
     private bool isHostPerspective = true;
 
     public void UpdateUI() {
-        playerSelectDropdown.options = null;
+		playerSelectDropdown.options.Clear();
         List<string> playerNames = new List<string>();
         foreach (GameObject player in host.GetPlayerList()) {
             playerNames.Add(player.name);

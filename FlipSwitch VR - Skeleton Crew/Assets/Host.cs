@@ -8,7 +8,7 @@ public class Host : NetworkBehaviour {
 
     public GameObject tagResetterPrefab;
 
-    private List<GameObject> players;
+	List<GameObject> players;
     private HostUiManager scriptHostUi;
 
     private GameObject selectedPlayer;
@@ -44,7 +44,7 @@ public class Host : NetworkBehaviour {
 	}
 
 	public void AddPlayerToHostList(GameObject playerToAdd) {
-		
+		print("pre rpc " + playerToAdd.name);
         RpcAddPlayerToHost(playerToAdd);
     }
 
@@ -55,6 +55,10 @@ public class Host : NetworkBehaviour {
         }
 
 	    print("should be adding " + playerToAdd.name + " to host list on host client");
+
+		if (players == null) {
+			players = new List<GameObject>();
+		}
 
         players.Add(playerToAdd);
         playerToAdd.GetComponent<PlayerSetup>().SetCameraSettings(players.Count);
