@@ -27,19 +27,8 @@ public class BoardingPartySpawner : NetworkBehaviour {
 		GameObject crew1 = Instantiate(crewMembers[crewIndex1], transform.GetChild(1).position, Quaternion.identity);
 		NetworkServer.Spawn( crew1 );
 
-
 		GameObject crew2 = Instantiate(crewMembers[crewIndex2], transform.GetChild(2).position, Quaternion.identity);
 		NetworkServer.Spawn( crew2 );
 
 	}
-
-	private void RpcSpawnEnemy(GameObject g, int childIndex) {
-		//if (isServer) {
-		//    return;
-		//}
-		print( "gadkjfas;lkdfj" );
-		GameObject c = Instantiate(g, transform.GetChild(childIndex).position, Quaternion.identity);
-		c.transform.parent = transform;
-	}
-	
 }
