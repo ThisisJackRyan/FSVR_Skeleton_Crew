@@ -6,15 +6,16 @@ using UnityEngine.Networking;
 public class Crystal : NetworkBehaviour {
 
 	public Transform[] otherCrystals;
+	public int health = 1;
 
-	private void OnTriggerEnter( Collider other ) {
+	private void OnTriggerEnter(Collider other) {
 		if (!isServer) {
 			return;
 		}
 
-			//Debug.LogWarning(other.tag + " hit crystal");
+		//Debug.LogWarning(other.tag + " hit crystal");
 
-		if ( other.tag == "BulletPlayer" ) {
+		if (other.tag == "BulletPlayer") {
 			//destroy gameobject
 			//print("in the bullet player if");
 			RpcHitByMusket(other.gameObject);
@@ -26,19 +27,23 @@ public class Crystal : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	void RpcHitByMusket( GameObject bullet ) {
-		//print("called rpc bullet");
+	void RpcHitByMusket(GameObject bullet) {
 		Destroy(bullet);
-		Destroy(gameObject);
+
+		health--;
+		if (health <= 0) {
+			//print("called rpc bullet");
+			Destroy(gameObject);
+		}
 	}
 
 	[ClientRpc]
-	void RpcHitByCannon( GameObject bullet ) {
+	void RpcHitByCannon(GameObject bullet) {
 		//print("called rpc cannon");
-		Destroy( bullet );
+		Destroy(bullet);
 
-		foreach ( var t in otherCrystals) {
-			Destroy( t.gameObject );
+		foreach (var t in otherCrystals) {
+			Destroy(t.gameObject);
 		}
 	}
 }

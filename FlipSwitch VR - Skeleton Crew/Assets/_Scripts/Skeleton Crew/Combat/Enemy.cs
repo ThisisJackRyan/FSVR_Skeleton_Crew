@@ -61,6 +61,11 @@ public class Enemy : NetworkBehaviour {
 		}
 	}
 
+	public void KillMe() {
+		if ( isServer )
+			ChangeHealth( maxHealth );
+	}
+
 	private void Start() {
 		if (weapon) {
 			if (weapon.type == WeaponData.WeaponType.Melee && weaponCollider.enabled) {

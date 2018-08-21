@@ -5,6 +5,7 @@ using UnityEngine;
 public class SCProjectile : MonoBehaviour {
 
 	public int damage;
+	public bool oneShotKill = false;
 
 	// Use this for initialization//print(transform.position);
 	void Awake() {
@@ -17,9 +18,13 @@ public class SCProjectile : MonoBehaviour {
 			return;
 		}
 
-        if (other.tag == "Untagged") {
-            //print("Hit untagged");
-        }
+		if (oneShotKill) {
+			if (other.tag == "Player") {
+				other.GetComponent<ScriptSyncPlayer>().KillMe();
+			} else if (other.tag == "Enemy") {
+				other.GetComponent<Enemy>().KillMe();
+			}
+		}
 
 		KillProjectile();
 	}
