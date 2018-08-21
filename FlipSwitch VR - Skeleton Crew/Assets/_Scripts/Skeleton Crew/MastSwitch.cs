@@ -53,6 +53,7 @@ public class MastSwitch : MonoBehaviour {
 
 		if (!firstLoad) {
 			firstRunEvent.Invoke();
+			BehaviorDesigner.Runtime.GlobalVariables.Instance.GetVariable( "EnemiesEnabled" ).SetValue( true );
 			firstLoad = true;
 		}
 	}

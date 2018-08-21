@@ -16,6 +16,8 @@ public class PathFollower : NetworkBehaviour {
 	Vector3 startPos;
 	Vector3 endPos;
 
+	public int encounterOneTotalTime = 180, breakTimer = 60;
+
 	bool canMove = false;
 
 	protected void Start() {
@@ -33,6 +35,17 @@ public class PathFollower : NetworkBehaviour {
 			return;
 		}
 		canMove = true;
+		currentStage = EncounterStage.First;
+		Invoke( "ChangeToPhaseTwo", encounterOneTotalTime );
+	}
+
+	void ChangeToPhaseTwo() {
+		currentStage = EncounterStage.firstBreak;
+		Invoke( "StartSecondPhase", breakTimer );
+	}
+
+	void StartSecondPhase() {
+		currentStage = EncounterStage.Second;
 	}
 
 	protected void Update() {
@@ -42,7 +55,6 @@ public class PathFollower : NetworkBehaviour {
 		if ( !isServer ) {
 			return;
 		}
-
 
 		if ( !canMove ) {
 			return;
@@ -107,13 +119,20 @@ public class PathFollower : NetworkBehaviour {
 	void SpawnEncounter( EncounterStage stage ) {
 		switch ( stage ) {
 			case EncounterStage.First:
+				print( "hit node during first" );
+
 				Spawn( firstEncounters );
 				break;
 			case EncounterStage.Second:
+				print( "hit node during second" );
+
 				Spawn( secondEncounters );
 				break;
 			case EncounterStage.Third:
 				Spawn( thirdEncounters );
+				break;
+			default:
+				print("hit node during break");
 				break;
 		}
 	}
@@ -132,7 +151,7 @@ public class PathFollower : NetworkBehaviour {
 	public GameObject[] firstEncounters, secondEncounters, thirdEncounters;
 
 	enum EncounterStage {
-		First, Second, Third
+		First, Second, Third, firstBreak, secondBreak
 	}
 
 	public static GameObject[] Floaters {

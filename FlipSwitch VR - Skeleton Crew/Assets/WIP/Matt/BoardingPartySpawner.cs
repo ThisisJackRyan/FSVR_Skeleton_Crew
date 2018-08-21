@@ -22,12 +22,15 @@ public class BoardingPartySpawner : NetworkBehaviour {
 		print( "Spawing " + crewBosses[bossIndex].name + " as boss, and " + crewMembers[crewIndex1] + " as crew member 1, " + crewMembers[crewIndex2] + " as crew member 2." );
 
 		GameObject boss = Instantiate(crewBosses[bossIndex], transform.GetChild(0).position, Quaternion.identity);
+		boss.transform.parent = transform;
 		NetworkServer.Spawn(boss);
 
 		GameObject crew1 = Instantiate(crewMembers[crewIndex1], transform.GetChild(1).position, Quaternion.identity);
+		crew1.transform.parent = transform;
 		NetworkServer.Spawn( crew1 );
 
 		GameObject crew2 = Instantiate(crewMembers[crewIndex2], transform.GetChild(2).position, Quaternion.identity);
+		crew2.transform.parent = transform;
 		NetworkServer.Spawn( crew2 );
 
 	}

@@ -27,10 +27,28 @@ public class Enemy : NetworkBehaviour {
 
 	public GameObject deathParticles;
 	public bool tutorialGuard = false;
+	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
+
 
 	#endregion
 
 	private void OnHealthChange(int n) {
+		if (n < health) {
+
+			for ( int i = 0; i < hitParticles.Length; i++ ) {
+				hitParticles[i].SetActive( true );
+				var particles = hitParticles[i].GetComponent<ParticleSystem>();
+				//particles.Simulate( 0, true, true );
+				foreach ( ParticleSystem ps in particles.GetComponentsInChildren<ParticleSystem>() ) {
+					particles.Simulate( 0, true, true );
+				}
+				particles.Play();
+				print( particles.name + " should be emiitng" );
+			}
+			Invoke( "TurnOffHit", 2.0f );
+
+		}
+
 		health = n;
 
 		if (health <= 0) {
@@ -44,8 +62,6 @@ public class Enemy : NetworkBehaviour {
 	}
 
 	private void Start() {
-		
-
 		if (weapon) {
 			if (weapon.type == WeaponData.WeaponType.Melee && weaponCollider.enabled) {
 				ToggleWeaponCollider();
@@ -87,12 +103,20 @@ public class Enemy : NetworkBehaviour {
 		if ( damage ) {
 			health -= Mathf.Abs( amount );
 			health = ( health < 0 ) ? 0 : health;
+
+
 		} else {
 			health += Mathf.Abs( amount );
 			health = ( health > maxHealth ) ? maxHealth : health;
 		}
 
 		return health;
+	}
+
+	void TurnOffHit() {
+		for ( int i = 0; i < hitParticles.Length; i++ ) {
+			hitParticles[i].SetActive( false );
+		}
 	}
 
 	public int maxHealth = 100;
