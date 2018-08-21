@@ -21,6 +21,7 @@ public class RepairPatternNode : MonoBehaviour {
 		if ( repairSphere ) {
 			repairSphere.GetComponent<Renderer>().enabled = true;
 			repairSphere.GetComponent<RepairTrigger>().repairPattern = null;
+			repairSphere.GetComponent<RepairTrigger>().particles.SetActive(true);
 		}
 	}
 

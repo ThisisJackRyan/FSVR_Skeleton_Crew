@@ -13,7 +13,7 @@ public class MastInteraction : NetworkBehaviour {
 	public bool leftHandInteracting;
 	public bool rightHandInteracting;
 	public MastSwitch mast;
-	public GameObject gp;
+	//public GameObject gp;
 	public GameObject hp;
 	public GameObject rp;
 
@@ -35,7 +35,7 @@ public class MastInteraction : NetworkBehaviour {
 			for ( int i = 0; i < hits.Length; i++ ) {
 				if ( hits[i].transform.tag == "MastRope" ) {
 					print( "mast grab " + hits[i].point );
-					gp = Instantiate( grabPoint, leftHand.position, Quaternion.identity );
+					//gp = Instantiate( grabPoint, leftHand.position, Quaternion.identity );
 					hp = Instantiate( handPoint, leftHand.position, Quaternion.identity );
 					hp.GetComponent<HeightMatch>().toMatch = leftHand;
 					hp.GetComponent<HeightMatch>().mastInteraction = this;
@@ -53,7 +53,7 @@ public class MastInteraction : NetworkBehaviour {
 			for ( int i = 0; i < hits.Length; i++ ) {
 				if ( hits[i].transform.tag == "MastRope" ) {
 					print( "mast grab " + hits[i].point );
-					gp = Instantiate( grabPoint, rightHand.position, Quaternion.identity );
+					//gp = Instantiate( grabPoint, rightHand.position, Quaternion.identity );
 					hp = Instantiate( handPoint, rightHand.position, Quaternion.identity );
 					hp.GetComponent<HeightMatch>().toMatch = rightHand;
 					hp.GetComponent<HeightMatch>().mastInteraction = this;
@@ -66,12 +66,12 @@ public class MastInteraction : NetworkBehaviour {
 			}
 		}
 
-		if(gp != null && hp != null && leftHandInteracting && Controller.LeftController.GetPressUp( Controller.Grip )) {
+		if(/*gp != null &&*/ hp != null && leftHandInteracting && Controller.LeftController.GetPressUp( Controller.Grip )) {
 			CleanupPoints();
 			//leftHandInteracting = false;
 		}
 
-		if ( gp != null && hp != null && rightHandInteracting && Controller.RightController.GetPressUp( Controller.Grip )) {
+		if (/*gp != null &&*/hp != null && rightHandInteracting && Controller.RightController.GetPressUp( Controller.Grip )) {
 			CleanupPoints();
 			//rightHandInteracting = false;
 		}
@@ -100,7 +100,7 @@ public class MastInteraction : NetworkBehaviour {
 
 
 	public void CleanupPoints() {
-		Destroy( gp );
+		//Destroy( gp );
 		Destroy( hp );
 		Destroy( rp );
 		rightHandInteracting = leftHandInteracting = false;
