@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Random = UnityEngine.Random;
 
 public class PathFollower : NetworkBehaviour {
 
@@ -9,6 +11,7 @@ public class PathFollower : NetworkBehaviour {
 	int currentNode, nextNode;
 	public float speed = 1;
 	public GameObject shipDeck;
+	public GameObject crystalDeathParticles;
 
 	[SerializeField]
 	float timeToNextNode = 1f;
@@ -38,6 +41,14 @@ public class PathFollower : NetworkBehaviour {
 		canMove = true;
 		currentStage = EncounterStage.First;
 		Invoke( "ChangeToPhaseTwo", encounterOneTotalTime );
+	}
+
+	internal void DestroyCrystal( GameObject g ) {
+		if ( isServer ) {
+			NetworkServer.Destroy( g );
+			GameObject go = Instantiate( crystalDeathParticles, g.transform.position, Quaternion.identity );
+			NetworkServer.Spawn( go );
+		}
 	}
 
 	void ChangeToPhaseTwo() {
