@@ -7,7 +7,9 @@ using UnityEngine.Networking;
 public class Host : NetworkBehaviour {
 
     public GameObject tagResetterPrefab;
-
+    public Vector3[] guardSpawnPos;
+    public Vector3[] guardSpawnRot;
+    public GameObject guardPrefab;
 	List<GameObject> players;
     private HostUiManager scriptHostUi;
 
@@ -38,6 +40,11 @@ public class Host : NetworkBehaviour {
 		Resources.FindObjectsOfTypeAll<HostCanvas>()[0].gameObject.SetActive(true);
 		GameObject uiManager = GameObject.Find( "HostUIManager" );
 		uiManager.SetActive( true );
+
+        for(int i=0; i<GetComponent<NumberOfPlayerHolder>().numberOfPlayers ; i++) {
+            GameObject g = Instantiate(guardPrefab, guardSpawnPos[i], Quaternion.Euler(guardSpawnRot[i]));
+            NetworkServer.Spawn(g);
+        }
 
 		scriptHostUi = uiManager.GetComponent<HostUiManager>();
 		scriptHostUi.SetHost( this );
