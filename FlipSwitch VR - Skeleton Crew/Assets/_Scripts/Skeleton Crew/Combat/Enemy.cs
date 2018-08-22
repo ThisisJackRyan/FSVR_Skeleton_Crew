@@ -52,12 +52,15 @@ public class Enemy : NetworkBehaviour {
 		health = n;
 
 		if (health <= 0) {
-
 			if ( tutorialGuard ) {
 				print( "tut guard killed" );
 				Captain.enemiesKilled[this] = true;
 				Captain.instance.CheckEnemiesKilled();
 			}
+
+			Destroy( gameObject );
+			Instantiate( deathParticles, new Vector3( transform.position.x, transform.position.y + 0.5f, transform.position.z ), Quaternion.identity );
+
 		}
 	}
 

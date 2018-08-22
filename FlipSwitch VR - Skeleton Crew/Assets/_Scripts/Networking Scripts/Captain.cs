@@ -113,7 +113,7 @@ public class Captain : SerializedNetworkBehaviour {
 		DisableFirePrompt();
 		DisableRatHatches();
 		DisableRopes();
-		DisableGuards();
+		//DisableGuards();
 	}
 
 	#region Tutorial shit
@@ -157,7 +157,7 @@ public class Captain : SerializedNetworkBehaviour {
 		print("start tutorial");
 
 		TutorialIntro();
-		EnableGuardsByPlayerCount();
+		//EnableGuardsByPlayerCount();
 	}
 
 	void TutorialIntro() {
@@ -165,48 +165,48 @@ public class Captain : SerializedNetworkBehaviour {
 		Invoke("TutorialIntro", 35f);
 	}
 
-	#region guards 
+	//#region guards 
 
-	void EnableGuardsByPlayerCount() {
-		for (int i = 0; i < tutorialGuards.Count && i < VariableHolder.instance.numPlayers; i++) {
-			tutorialGuards[i].SetActive(true);
-			enemiesKilled.Add(tutorialGuards[i].GetComponent<Enemy>(), false);
-		}
+	//void EnableGuardsByPlayerCount() {
+	//	for (int i = 0; i < tutorialGuards.Count && i < VariableHolder.instance.numPlayers; i++) {
+	//		tutorialGuards[i].SetActive(true);
+	//		enemiesKilled.Add(tutorialGuards[i].GetComponent<Enemy>(), false);
+	//	}
 
-		RpcEnableGuards(VariableHolder.instance.numPlayers);
-	}
+	//	RpcEnableGuards(VariableHolder.instance.numPlayers);
+	//}
 
-	[ClientRpc]
-	void RpcEnableGuards(int count) {
-		if (isServer) {
-			return;
-		}
+	//[ClientRpc]
+	//void RpcEnableGuards(int count) {
+	//	if (isServer) {
+	//		return;
+	//	}
 
-		print("count is " + count);
-		for (int i = 0; i < tutorialGuards.Count && i < count; i++) {
-			tutorialGuards[i].SetActive(true);
-		}
-	}
+	//	print("count is " + count);
+	//	for (int i = 0; i < tutorialGuards.Count && i < count; i++) {
+	//		tutorialGuards[i].SetActive(true);
+	//	}
+	//}
 
-	void DisableGuards() {
-		for (int i = 0; i < tutorialGuards.Count; i++) {
-			tutorialGuards[i].SetActive(false);
-		}
+	//void DisableGuards() {
+	//	for (int i = 0; i < tutorialGuards.Count; i++) {
+	//		tutorialGuards[i].SetActive(false);
+	//	}
 
-		RpcDisableGuards();
-	}
+	//	RpcDisableGuards();
+	//}
 
-	[ClientRpc]
-	void RpcDisableGuards() {
-		if (isServer) {
-			return;
-		}
-		for (int i = 0; i < tutorialGuards.Count; i++) {
-			tutorialGuards[i].SetActive(false);
-		}
-	}
+	//[ClientRpc]
+	//void RpcDisableGuards() {
+	//	if (isServer) {
+	//		return;
+	//	}
+	//	for (int i = 0; i < tutorialGuards.Count; i++) {
+	//		tutorialGuards[i].SetActive(false);
+	//	}
+	//}
 
-	#endregion
+	//#endregion
 
 	public void CheckEnemiesKilled() {
 		foreach (var obj in enemiesKilled) {

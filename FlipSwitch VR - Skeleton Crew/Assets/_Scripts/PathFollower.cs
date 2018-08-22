@@ -8,6 +8,7 @@ public class PathFollower : NetworkBehaviour {
 	public NodePath path;
 	int currentNode, nextNode;
 	public float speed = 1;
+	public GameObject shipDeck;
 
 	[SerializeField]
 	float timeToNextNode = 1f;
@@ -189,6 +190,11 @@ public class PathFollower : NetworkBehaviour {
 			spawnVector = rocks[chosenOne].transform.position + ( spawnVector.normalized * spawnDistFromRock );
 			//spawn
 			GameObject g = Instantiate( prefabToSpawn, spawnVector, Quaternion.identity );
+
+			if (g.GetComponent<ImpactReticuleSpawner>()) {
+				g.GetComponent<ImpactReticuleSpawner>().deckMesh = shipDeck;
+			}
+
 			print( g.name + " spawned, calling rpc" );
 			//RpcSpawnEnemy( g, spawnVector );
 			NetworkServer.Spawn(g);

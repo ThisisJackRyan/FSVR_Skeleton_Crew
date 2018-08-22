@@ -12,6 +12,7 @@ public class EnemyCannonReticle : NetworkBehaviour {
 	public ParticleSystemRenderer skullParticleSystem;
 	public float damageRadius = 5f;
 	public int damage = 15;
+	public GameObject[] deckDamagePrefabs;
 
 	// Use this for initialization
 	void Start() {
@@ -38,7 +39,6 @@ public class EnemyCannonReticle : NetworkBehaviour {
 				if ( !holdProjectileInAir ) {
 					SpawnBall();
 				}
-				ball.GetComponent<Rigidbody>().isKinematic = false;
 				yield return null;
 			}
 
@@ -49,6 +49,10 @@ public class EnemyCannonReticle : NetworkBehaviour {
 
 	GameObject ball;
 	void SpawnBall() {
+		if (!isServer) {
+			return;
+		}
+
 		ball = Instantiate(projectile, spawnPos.transform.position, Quaternion.identity);
 		ball.GetComponent<Rigidbody>().isKinematic = true;
 		NetworkServer.Spawn(ball);
@@ -56,15 +60,12 @@ public class EnemyCannonReticle : NetworkBehaviour {
 
 	private void OnTriggerEnter( Collider other ) {
 		if (other.gameObject == ball) {
+			Destroy( other );
 			Explode();
 		}
 	}
 
 	void Explode() {
-		var boom = Instantiate( particles, transform.position, Quaternion.identity );
-		NetworkServer.Spawn( boom );
-
-
 		foreach ( ParticleSystem system in GetComponentsInChildren<ParticleSystem>()) {
 			system.Clear(true);
 			system.Stop(true);
@@ -74,16 +75,38 @@ public class EnemyCannonReticle : NetworkBehaviour {
 			return;
 		}
 
+		var boom = Instantiate( particles, transform.position, Quaternion.identity );
+		NetworkServer.Spawn( boom );
+
 		Collider[] hits = Physics.OverlapSphere( transform.position, damageRadius );
 		for ( int i = 0; i < hits.Length; i++ ) {
 			if ( hits[i].GetComponent<DamagedObject>() ) {
 				hits[i].GetComponent<DamagedObject>().ChangeHealth( damage );
-			} else if ( hits[i].GetComponent<Player>() ) {
+			} else if ( hits[i].GetComponent<ScriptSyncPlayer>() ) {
 				hits[i].GetComponent<ScriptSyncPlayer>().ChangeHealth( damage );
+			} else if ( hits[i].GetComponent<Enemy>() ) {
+				hits[i].GetComponent<Enemy>().ChangeHealth( damage );
+			} else if ( hits[i].GetComponent<Ratman>() ) {
+				hits[i].GetComponent<Ratman>().ChangeHealth( damage );
 			}
 		}
 
+		NetworkServer.Destroy( gameObject );
+
+		//spawn damage
+		if (deckDamagePrefabs.Length > 0) {
+			int rng = Random.Range( 0, deckDamagePrefabs.Length );
+			GameObject dmg = Instantiate( deckDamagePrefabs[rng], transform.position, Quaternion.identity );
+			NetworkServer.Spawn( dmg );
+		}
 	}
+
+	private void OnDrawGizmos() {
+			Gizmos.color = Color.red;
+			Gizmos.DrawSphere( transform.position, damageRadius );		
+	}
+
+
 
 }
 
