@@ -144,12 +144,12 @@ public class ImpactReticle : NetworkBehaviour {
 		for ( int i = 0; i < hits.Length; i++ ) {
 			if ( hits[i].GetComponent<DamagedObject>() ) {
 				hits[i].GetComponent<DamagedObject>().ChangeHealth( damage );
-			} else if ( hits[i].GetComponent<ScriptSyncPlayer>() ) {
-				hits[i].GetComponent<ScriptSyncPlayer>().ChangeHealth( damage );
+			} else if ( hits[i].GetComponentInParent<ScriptSyncPlayer>() ) {
+				hits[i].GetComponentInParent<ScriptSyncPlayer>().ChangeHealth( damage );
 			} else if ( hits[i].GetComponent<Enemy>() ) {
 				hits[i].GetComponent<Enemy>().ChangeHealth( damage );
-			} else if ( hits[i].GetComponent<Ratman>() ) {
-				hits[i].GetComponent<Ratman>().ChangeHealth( damage );
+			} else if ( hits[i].GetComponentInParent<Ratman>() ) {
+				hits[i].GetComponentInParent<Ratman>().ChangeHealth( damage );
 			}
 		}
 

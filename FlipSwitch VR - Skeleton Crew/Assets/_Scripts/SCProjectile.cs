@@ -29,8 +29,8 @@ public class SCProjectile : NetworkBehaviour {
 		}
 
 		if (oneShotKill) {
-			if (other.tag == "Player") {
-				other.GetComponent<ScriptSyncPlayer>().KillMe();
+			if (other.tag == "PlayerCollider") {
+				other.GetComponentInParent<ScriptSyncPlayer>().KillMe();
 			} else if (other.tag == "Enemy") {
 				other.GetComponent<Enemy>().KillMe();
 			}

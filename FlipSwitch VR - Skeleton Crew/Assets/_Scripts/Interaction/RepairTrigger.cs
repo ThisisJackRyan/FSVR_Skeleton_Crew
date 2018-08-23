@@ -27,6 +27,7 @@ public class RepairTrigger : MonoBehaviour {
 				transform.position = new Vector3(transform.position.x,
 				                                 other.transform.root.GetComponentInChildren<HipMarker>().transform.position.y,
 				                                 transform.position.z);
+
 				dmgObj.EnablePatternOnClients();
 
 				active = false;
@@ -42,9 +43,7 @@ public class RepairTrigger : MonoBehaviour {
 			if (repairPattern != null && repairPattern.gameObject.activeInHierarchy) { //pattern is active
 				return;
 			}
-
-			print("returning because active in hieracrhy is false:" + (repairPattern != null));
-
+			
 			timer = 0;
 			active = true;
 			particles.SetActive(true);

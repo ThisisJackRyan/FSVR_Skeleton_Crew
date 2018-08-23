@@ -54,6 +54,13 @@ public class DamagedObject : NetworkBehaviour {
 			myState = DamageState.None;
 		}
 
+		if(health < maxHealth ) {
+			repairSphere.SetActive( true );
+			DisablePatternOnClients();
+		} else {
+			repairSphere.SetActive( false );
+		}
+
 		UpdateModel();
 
 	}
@@ -107,7 +114,7 @@ public class DamagedObject : NetworkBehaviour {
 	private void RpcDisablePattern() {
 		repairPattern.gameObject.SetActive( false );
 		if ( health < maxHealth ) {
-			repairSphere.SetActive( true );
+			repairSphere.transform.GetChild(0).gameObject.SetActive( true );
 		}
 	}
 
@@ -123,7 +130,7 @@ public class DamagedObject : NetworkBehaviour {
 	private void RpcEnablePattern() {
 		repairPattern.gameObject.SetActive( true );//
 
-		repairSphere.GetComponent<Renderer>().enabled = false;
+		repairSphere.transform.GetChild(0).gameObject.SetActive(false);
 	}
 
 	internal void DisableRepairNode( int index ) {
@@ -154,14 +161,6 @@ public class DamagedObject : NetworkBehaviour {
 	private void RpcEnableNode( int index ) {
 		repairPattern.transform.GetChild( 0 ).gameObject.SetActive( true );
 		repairPattern.transform.GetChild( index ).gameObject.SetActive( true );
-	}
-
-	private void Update() {
-		if ( health < 100 ) {
-			repairSphere.SetActive( true );
-		} else {
-			repairSphere.SetActive( false );
-		}
 	}
 
 	void UpdateModel() {

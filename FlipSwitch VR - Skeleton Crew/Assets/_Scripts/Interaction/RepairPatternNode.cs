@@ -19,13 +19,16 @@ public class RepairPatternNode : MonoBehaviour {
 		print(name + " timer ran out");
 		pattern.gameObject.SetActive( false );
 		if ( repairSphere ) {
-			repairSphere.GetComponent<Renderer>().enabled = true;
+			//repairSphere.GetComponent<Renderer>().enabled = true;
 			repairSphere.GetComponent<RepairTrigger>().repairPattern = null;
 			repairSphere.GetComponent<RepairTrigger>().particles.SetActive(true);
 		}
 	}
 
 	private void OnTriggerEnter( Collider other ) {
+		if ( !other.GetComponentInParent<MastInteraction>() ) {
+			return;
+		}
 		pattern.Increment();
 		CancelInvoke();
 		gameObject.SetActive( false );

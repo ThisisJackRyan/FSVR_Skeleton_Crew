@@ -23,6 +23,7 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 
 
 	void OnHealthChange( int n ) {
+		print("player health change");
 		if ( n < health ) {
 			for ( int i = 0; i < hitParticles.Length; i++ ) {
 				hitParticles[i].SetActive( true );
