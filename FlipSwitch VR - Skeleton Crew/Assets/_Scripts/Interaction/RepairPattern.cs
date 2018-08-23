@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class RepairPattern : MonoBehaviour {
 
+    // NOTES FOR MATT: 
+    // Never disabling the path image itself throughout the increment process.
+    // Possibly getting multiple patterns enabled at one time? Or different ones for client and server, 
+    // and that's causing all sorts of issues with getting things desynced between client and server.
+    // Need to test the int syncvar in damaged object to ensure that it's selecting the same pattern on both
+    // Client and server. Server should be setting the int, then syncvar hooking that out.
+    
+    // I've added in a few things, but I have no real way to test. Look through changes to the script and see.
+    // Should just be some isServer checks on RPCs to make sure things aren't being ran twice on server
+    // And an onenable method in the RepairTrigger disabling everything besides the particles once the repair sphere is set to active (hopefully), 
+    // not sure how that will work with network. Know we had issues with something similar before.
+
 	internal int index = 0;
 	public DamagedObject dmgObj;
 

@@ -14,31 +14,34 @@ public class RepairTrigger : MonoBehaviour {
 	bool active = false;
 
 	private void OnTriggerStay(Collider other) {
-		if (other.transform.root == activator && active) {
-			timer += Time.deltaTime;
+        if (other.transform.root != activator && !active) {
+            return;
+        }
 
-			if (timer >= 1) {
-				repairPattern.gameObject.SetActive(true); //
-				repairPattern.Init(); //
+        timer += Time.deltaTime;
 
-				particles.SetActive(false);
-				tracePrompt.SetActive(true);
+		if (timer >= 1) {
+			repairPattern.gameObject.SetActive(true); //
+			repairPattern.Init(); //
 
-				transform.position = new Vector3(transform.position.x,
-				                                 other.transform.root.GetComponentInChildren<HipMarker>().transform.position.y,
-				                                 transform.position.z);
+			particles.SetActive(false);
+			tracePrompt.SetActive(true);
 
-				dmgObj.EnablePatternOnClients();
+			transform.position = new Vector3(transform.position.x,
+				                                other.transform.root.GetComponentInChildren<HipMarker>().transform.position.y,
+				                                transform.position.z);
 
-				active = false;
+			dmgObj.EnablePatternOnClients(); // <-- Enables pattern & disables particles on clients
 
-				//repairPattern = null;
-				activator = null;
-			}
+			active = false;
+			activator = null;
 		}
 	}
 
 	private void OnTriggerEnter(Collider other) {
+        if (!GetComponentInParent<DamagedObject>().isServer) {
+            return;
+        }
 		if (other.gameObject.GetComponentInParent<MastInteraction>()) { //player check
 			if (repairPattern != null && repairPattern.gameObject.activeInHierarchy) { //pattern is active
 				return;
@@ -46,7 +49,7 @@ public class RepairTrigger : MonoBehaviour {
 			
 			timer = 0;
 			active = true;
-			particles.SetActive(true);
+			//particles.SetActive(true);
 			tracePrompt.SetActive(false);
 
 			repairPattern = dmgObj.SelectPattern();
@@ -72,4 +75,14 @@ public class RepairTrigger : MonoBehaviour {
 		print("repoaIR NODE DISABLED");
 	}
 
+    private void OnEnable() {
+        print("repair sphere has been enabled. Should be setting the particles to active. Disabling all other children. Should effectively initialize the repairing.");
+        for(int i=0; i<transform.childCount; i++) {
+            if (i == 0) {
+                transform.GetChild(i).gameObject.SetActive(true);
+                continue;
+            }
+            transform.GetChild(i).gameObject.SetActive(false);
+        }
+    }
 }

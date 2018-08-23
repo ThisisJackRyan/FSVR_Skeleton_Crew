@@ -27,11 +27,22 @@ public class DamagedObject : NetworkBehaviour {
 	public AudioClip damageClip, healClip;
 
 	private void OnPatternIndexChange( int n ) {
+        if (isServer) {
+            return;
+        }
 		rng = n;
-		repairPattern = repairPatterns[rng];
+
+        if (rng != -1) {
+            repairPattern = repairPatterns[rng];
+            print("repair patter is now " + repairPattern.name + " on the client damaged object");
+        }
 	}
 
 	private void OnHealthChange( int n ) {
+        if (isServer) {
+            return;
+        }
+
 		if ( health > n ) {
 			GetComponent<AudioSource>().PlayOneShot( damageClip );
 			Instantiate( dmgParticles, transform.position, Quaternion.identity );
@@ -56,7 +67,6 @@ public class DamagedObject : NetworkBehaviour {
 
 		if(health < maxHealth ) {
 			repairSphere.SetActive( true );
-			DisablePatternOnClients();
 		} else {
 			repairSphere.SetActive( false );
 		}
@@ -65,25 +75,14 @@ public class DamagedObject : NetworkBehaviour {
 
 	}
 
-
-	//// Use this for initialization
-	//public override void OnStartServer() {
-	//	base.OnStartServer();
-	//}
-
 	public void Start() {
-		//ChangeHealth( maxHealth );
-
 		if ( isServer ) {
-			print( name + " enabled server check" );
 			health = 0;
 			Captain.damagedObjectsRepaired.Add( this, false );
 		} else if ( isClient ) {
 			OnHealthChange( health );
-		}
-
-
-	}
+        }
+    }
 
 	RepairPattern repairPattern;
 
@@ -112,6 +111,11 @@ public class DamagedObject : NetworkBehaviour {
 
 	[ClientRpc]
 	private void RpcDisablePattern() {
+        if (isServer) {
+            return;
+        }
+
+
 		repairPattern.gameObject.SetActive( false );
 		if ( health < maxHealth ) {
 			repairSphere.transform.GetChild(0).gameObject.SetActive( true );
@@ -128,9 +132,11 @@ public class DamagedObject : NetworkBehaviour {
 
 	[ClientRpc]
 	private void RpcEnablePattern() {
-		repairPattern.gameObject.SetActive( true );//
-
-		repairSphere.transform.GetChild(0).gameObject.SetActive(false);
+        if (isServer) {
+            return;
+        }
+		repairPattern.gameObject.SetActive( true ); // turns on the pattern gameobject
+		repairSphere.transform.GetChild(0).gameObject.SetActive(false); //  disables the particles
 	}
 
 	internal void DisableRepairNode( int index ) {
@@ -143,6 +149,11 @@ public class DamagedObject : NetworkBehaviour {
 
 	[ClientRpc]
 	private void RpcDisableNode( int index ) {
+        if (isServer) {
+            return;
+        }
+
+
 		print( "pattern name: " + repairPattern.name );
 		print( "index received: " + index );
 		repairPattern.transform.GetChild( index ).gameObject.SetActive( false );
@@ -152,13 +163,18 @@ public class DamagedObject : NetworkBehaviour {
 		if ( !isServer ) {
 			return;
 		}
-		repairPattern.transform.GetChild( 0 ).gameObject.SetActive( true );
+		repairPattern.transform.GetChild( 0 ).gameObject.SetActive( true ); // Enables the pattern on server?
 
 		RpcEnableNode( index );
 	}
 
 	[ClientRpc]
 	private void RpcEnableNode( int index ) {
+        if (isServer) {
+            return;
+        }
+
+
 		repairPattern.transform.GetChild( 0 ).gameObject.SetActive( true );
 		repairPattern.transform.GetChild( index ).gameObject.SetActive( true );
 	}
@@ -212,17 +228,28 @@ public class DamagedObject : NetworkBehaviour {
 		if ( damage ) {
 			health -= Mathf.Abs( amount );
 			health = ( health < 0 ) ? 0 : health;
-		} else {
+            GetComponent<AudioSource>().PlayOneShot(damageClip);
+            Instantiate(dmgParticles, transform.position, Quaternion.identity);
+        } else {
 			health += Mathf.Abs( amount );
 			health = ( health > maxHealth ) ? maxHealth : health;
-		}
+            GetComponent<AudioSource>().PlayOneShot(healClip);
+            Instantiate(healParticles, transform.position, Quaternion.identity);
+        }
 
 		if ( health >= maxHealth ) {
 			Captain.damagedObjectsRepaired[this] = true;
 			Captain.instance.CheckDamagedObjects();
 		}
 
-		return health;
+        // Changes health on the server
+        if (health < maxHealth) {
+            repairSphere.SetActive(true);
+        } else {
+            repairSphere.SetActive(false);
+        }
+
+        return health;
 	}
 
 	public int GetHealth() {
