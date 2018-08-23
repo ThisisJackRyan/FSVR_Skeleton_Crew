@@ -23,7 +23,7 @@ public class ImpactReticuleSpawner : NetworkBehaviour {
 		float y = deckMesh.transform.position.y;
         float x = Random.Range(deckBounds.min.x + 1, deckBounds.max.x - 1);
         float z = Random.Range(deckBounds.min.z + 1, deckBounds.max.z - 1);
-        retVect.Set(x, 0, z);
+        retVect.Set(x, y + 0.04f, z);
 		gizmo = retVect;
 
         return retVect;

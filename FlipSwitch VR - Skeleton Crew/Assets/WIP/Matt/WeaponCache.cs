@@ -25,7 +25,7 @@ public class WeaponCache : NetworkBehaviour {
 			return;
 		}
 
-		print("spawn on server");
+		//print("spawn on server");
 
 		counter++;
 		if (counter >= startingCount) {
@@ -41,7 +41,7 @@ public class WeaponCache : NetworkBehaviour {
 		}
 
 		if (weapons >= startingCount) {
-			print("spawn on server found too many weapons, returning");
+			//print("spawn on server found too many weapons, returning");
 
 			return;
 		}

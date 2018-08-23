@@ -23,12 +23,22 @@ public class DamagedObject : NetworkBehaviour {
 	public GameObject repairSphere;
 	public RepairPattern[] repairPatterns;
 
+	public GameObject dmgParticles, healParticles;
+	public AudioClip damageClip, healClip;
+
 	private void OnPatternIndexChange( int n ) {
 		rng = n;
 		repairPattern = repairPatterns[rng];
 	}
 
 	private void OnHealthChange( int n ) {
+		if ( health > n ) {
+			GetComponent<AudioSource>().PlayOneShot( damageClip );
+			Instantiate( dmgParticles, transform.position, Quaternion.identity );
+		} else if (health < n) {
+			GetComponent<AudioSource>().PlayOneShot( healClip );
+			Instantiate( healParticles, transform.position, Quaternion.identity );
+		}
 
 		health = n;
 
@@ -47,6 +57,7 @@ public class DamagedObject : NetworkBehaviour {
 		UpdateModel();
 
 	}
+
 
 	//// Use this for initialization
 	//public override void OnStartServer() {
