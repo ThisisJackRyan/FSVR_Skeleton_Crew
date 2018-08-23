@@ -6,7 +6,8 @@ using UnityEngine.Networking;
 public class ImpactReticle : NetworkBehaviour {
 
 	public bool holdProjectileInAir = false;
-	public GameObject particles, projectile, spawnPos;
+	public GameObject particles,  spawnPos;
+	public GameObject[] projectiles;
 	[Tooltip("index = time left")]
 	public Material[] countDownMaterials;
 	public ParticleSystemRenderer skullParticleSystem;
@@ -90,7 +91,8 @@ public class ImpactReticle : NetworkBehaviour {
 			return;
 		}
 
-		ball = Instantiate(projectile, spawnPos.transform.position, Quaternion.identity);
+		int RNG = Random.Range(0, projectiles.Length);
+		ball = Instantiate(projectiles[RNG], spawnPos.transform.position, Quaternion.identity);
 		//ball.name = "fuck this shit";
 		//ClientScene.RegisterPrefab( ball );
 		//ball.GetComponent<Rigidbody>().isKinematic = true;
