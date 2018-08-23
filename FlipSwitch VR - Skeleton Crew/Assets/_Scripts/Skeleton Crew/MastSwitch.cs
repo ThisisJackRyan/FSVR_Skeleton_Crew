@@ -15,13 +15,16 @@ public class MastSwitch : MonoBehaviour {
 	public GameObject upImage, downImage;
 	bool firstLoad = false;
 	public UnityEvent firstRunEvent;
+	public GameObject pathFollower;
+	public AudioClip raise, lower;
+	AudioSource source;
 
 	private void Start() {
 		mastUp.gameObject.SetActive(true);
 		mastDown.gameObject.SetActive(false);
 		downImage.SetActive(true);
 		upImage.SetActive(false);
-
+		source = GetComponent<AudioSource>();
 		//firstRunEvent.AddListener(EnableEnemy);
 	}
 
@@ -42,12 +45,16 @@ public class MastSwitch : MonoBehaviour {
 			mastDown.gameObject.SetActive(false);
 			downImage.SetActive(true);
 			upImage.SetActive(false);
+			pathFollower.GetComponent<PathFollower>().ChangeSpeed( false );
+			source.PlayOneShot(raise);
 			raiseMast = !raiseMast;
 		} else {
 			mastUp.gameObject.SetActive(false);
 			mastDown.gameObject.SetActive(true);
 			downImage.SetActive(false);
 			upImage.SetActive(true);
+			pathFollower.GetComponent<PathFollower>().ChangeSpeed( true );
+			source.PlayOneShot( lower );
 			raiseMast = !raiseMast;
 		}
 

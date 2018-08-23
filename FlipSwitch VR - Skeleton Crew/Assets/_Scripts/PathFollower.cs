@@ -10,6 +10,7 @@ public class PathFollower : NetworkBehaviour {
 	public NodePath path;
 	int currentNode, nextNode;
 	public float speed = 1;
+	public float maxSpeed = 2, minSpeed = 0.5f;
 	public GameObject shipDeck;
 	public GameObject crystalDeathParticles;
 
@@ -41,6 +42,10 @@ public class PathFollower : NetworkBehaviour {
 		canMove = true;
 		currentStage = EncounterStage.First;
 		Invoke( "ChangeToPhaseTwo", encounterOneTotalTime );
+	}
+
+	public void ChangeSpeed(bool faster) {
+		speed = (faster) ? maxSpeed : minSpeed;
 	}
 
 	internal void DestroyCrystal( GameObject g ) {

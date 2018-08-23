@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class EnemyCannonReticle : NetworkBehaviour {
+public class ImpactReticle : NetworkBehaviour {
 
 	public bool holdProjectileInAir = false;
 	public GameObject particles, projectile, spawnPos;
@@ -14,10 +14,15 @@ public class EnemyCannonReticle : NetworkBehaviour {
 	public int damage = 15;
 	public GameObject[] deckDamagePrefabs;
 
+	public void SetBall(GameObject newBall) {
+		print("setting new ball to " + newBall);
+		ball = newBall;
+	}
+
 	// Use this for initialization
 	void Start() {
 		StartCoroutine("CountDown");
-
+		
 		/*
 		 start countdown
 		 update graphic each second
@@ -34,11 +39,24 @@ public class EnemyCannonReticle : NetworkBehaviour {
 		}
 
 		for (int i = countDownMaterials.Length - 1; i < countDownMaterials.Length && i >= 0; i--) {
-			print( "here in loop" );
+			//print( "here in loop" );
 			if (i == 0) {
 				if ( !holdProjectileInAir ) {
 					SpawnBall();
 				}
+
+				//if (isServer) {
+				//	RpcAssignBall( ball.GetComponent<NetworkIdentity>() );
+				//}
+				if (ball) {
+
+					ball.GetComponent<Rigidbody>().isKinematic = false;
+				}
+				else{
+					print( "no ball, invoking kill" );
+					Invoke("Kill", 2);
+				}
+
 				yield return null;
 			}
 
@@ -47,22 +65,66 @@ public class EnemyCannonReticle : NetworkBehaviour {
 		}
 	}
 
-	GameObject ball;
+	[ClientRpc]
+	void RpcAssignBall( NetworkIdentity id ) {
+		if ( isServer ) {
+			return;
+		}
+
+		ball = ClientScene.FindLocalObject( id.netId );
+	}
+
+	void Kill() {
+		if (!isServer) {
+			return;
+		}
+
+		NetworkServer.Destroy( gameObject );
+	}
+
+	//[SyncVar]
+	public GameObject ball;
+	
 	void SpawnBall() {
 		if (!isServer) {
 			return;
 		}
 
 		ball = Instantiate(projectile, spawnPos.transform.position, Quaternion.identity);
-		ball.GetComponent<Rigidbody>().isKinematic = true;
+		//ball.name = "fuck this shit";
+		//ClientScene.RegisterPrefab( ball );
+		//ball.GetComponent<Rigidbody>().isKinematic = true;
 		NetworkServer.Spawn(ball);
+		StartCoroutine("SyncAfterFrame");
+		//RpcAssignBall( ball.GetComponent<NetworkIdentity>() );
+	}
+
+	IEnumerator SyncAfterFrame() {
+		yield return new WaitForEndOfFrame();
+		if (isServer) {
+			RpcAssignBall( ball.GetComponent<NetworkIdentity>() );
+		}
+		yield return new WaitForEndOfFrame();
+		if (ball) {
+			ball.GetComponent<SCProjectile>().SetReticle( gameObject );
+		}
+
 	}
 
 	private void OnTriggerEnter( Collider other ) {
 		if (other.gameObject == ball) {
-			Destroy( other );
+			Destroy( other.gameObject );
 			Explode();
 		}
+	}
+
+	public override void OnNetworkDestroy() {
+		StopAllCoroutines();
+		base.OnNetworkDestroy();
+	}
+
+	public void OnDestroy() {
+		StopAllCoroutines();
 	}
 
 	void Explode() {
@@ -95,15 +157,28 @@ public class EnemyCannonReticle : NetworkBehaviour {
 
 		//spawn damage
 		if (deckDamagePrefabs.Length > 0) {
+			Collider[] cols = Physics.OverlapSphere( transform.position, 0.5f );
+			foreach ( var item in cols ) {
+				if (item.tag == "Indestructible") {
+					return;
+				}
+			}
+
 			int rng = Random.Range( 0, deckDamagePrefabs.Length );
 			GameObject dmg = Instantiate( deckDamagePrefabs[rng], transform.position, Quaternion.identity );
 			NetworkServer.Spawn( dmg );
 		}
 	}
 
+	bool debug = false;
 	private void OnDrawGizmos() {
+		if (debug) {
 			Gizmos.color = Color.red;
-			Gizmos.DrawSphere( transform.position, damageRadius );		
+			Gizmos.DrawWireSphere( transform.position, damageRadius );
+			Gizmos.color = Color.blue;
+
+			Gizmos.DrawSphere( transform.position, 0.5f );
+		}
 	}
 
 

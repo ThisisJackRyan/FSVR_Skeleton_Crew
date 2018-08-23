@@ -8,12 +8,14 @@ public class CannonFuse : MonoBehaviour {
 	float timer = 0;
 	bool active = false;
 
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Fire" && !cannonScript.GetIsFiring() && cannonScript.isServer)
         {
 			print("resetting timer");
 			timer = 0;
+			cannonScript.PlayFuse();
 			active = true;
 		}
     }

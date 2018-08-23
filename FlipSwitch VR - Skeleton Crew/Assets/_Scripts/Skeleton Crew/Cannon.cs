@@ -7,7 +7,7 @@ public class Cannon : NetworkBehaviour {
 	public GameObject projectile;
 	public GameObject smoke;
 	public Transform spawnPos;
-	public AudioClip fireSound;
+	public AudioClip fireSound, fuseClip;
 
 	public Transform cannonBarrel;
 	public float minAngle, maxAngle;
@@ -27,6 +27,23 @@ public class Cannon : NetworkBehaviour {
 		}
 
 		cannonBarrel.localEulerAngles = new Vector3( maxAngle, 0, 0 );
+	}
+
+	[ClientRpc]
+	public void RpcPlayFuse() {
+		if (isServer) {
+			return;
+		}
+		GetComponent<AudioSource>().PlayOneShot(fuseClip);
+	}
+
+	public void PlayFuse() {
+		if (!isServer) {
+			return;
+		}
+		GetComponent<AudioSource>().PlayOneShot( fuseClip );
+		RpcPlayFuse();
+
 	}
 
 	void OnReload( bool n ) {
