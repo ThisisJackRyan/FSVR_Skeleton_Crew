@@ -24,7 +24,7 @@ public class PlayerSetup : NetworkBehaviour {
 
 		} else {
 			if (isServer) {
-				print("should be adding " + gameObject.name + " to host list");
+				//print("should be adding " + gameObject.name + " to host list");
 				GameObject.FindObjectOfType<Host>().AddPlayerToHostList(gameObject);
 			} else {
 				GetComponent<ScriptSyncPlayer>().TurnOffColliders();
@@ -52,7 +52,7 @@ public class PlayerSetup : NetworkBehaviour {
 			var iks = FindObjectsOfType<VRIKCalibrateOnStart>();
 			//print(iks.Length);
 			foreach (var item in iks) {
-				print(item.calibrated + " calibrated " + name);
+				//print(item.calibrated + " calibrated " + name);
 				item.CalibratePlayer();
 			}
 

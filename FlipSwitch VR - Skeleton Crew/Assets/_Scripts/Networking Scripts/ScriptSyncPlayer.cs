@@ -155,7 +155,7 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 	}
 
 	public void TellCaptainToStartTutorial() {
-		print( "tell captain to start tut called" );
+		//print( "tell captain to start tut called" );
 
 		if ( isServer && !hasStartedTutorial ) {
 			hasStartedTutorial = true;

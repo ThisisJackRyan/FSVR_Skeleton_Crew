@@ -30,7 +30,7 @@ public class CannonInteraction : NetworkBehaviour {
 
 	private void Start() {
 		if ( isServer ) {
-			print( name + " enabled server check" );
+			//print( name + " enabled server check" );
 			Captain.playersFiredCannons.Add( this, false );
 		}
 

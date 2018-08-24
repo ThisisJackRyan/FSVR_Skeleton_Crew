@@ -37,21 +37,21 @@ public class Host : NetworkBehaviour {
 
 		GetComponent<Camera>().enabled = true;
 
-		Resources.FindObjectsOfTypeAll<HostCanvas>()[0].gameObject.SetActive(true);
-		GameObject uiManager = GameObject.Find( "HostUIManager" );
-		uiManager.SetActive( true );
+		//Resources.FindObjectsOfTypeAll<HostCanvas>()[0].gameObject.SetActive(true);
+		//GameObject uiManager = GameObject.Find( "HostUIManager" );
+		//uiManager.SetActive( true );
 
         for(int i=0; i<GetComponent<NumberOfPlayerHolder>().numberOfPlayers ; i++) {
             GameObject g = Instantiate(guardPrefab, guardSpawnPos[i], Quaternion.Euler(guardSpawnRot[i]));
             NetworkServer.Spawn(g);
         }
 
-		scriptHostUi = uiManager.GetComponent<HostUiManager>();
-		scriptHostUi.SetHost( this );
+		//scriptHostUi = uiManager.GetComponent<HostUiManager>();
+		//scriptHostUi.SetHost( this );
 	}
 
 	public void AddPlayerToHostList(GameObject playerToAdd) {
-		print("pre rpc " + playerToAdd.name);
+		//print("pre rpc " + playerToAdd.name);
         RpcAddPlayerToHost(playerToAdd);
     }
 
@@ -61,7 +61,7 @@ public class Host : NetworkBehaviour {
             return;
         }
 
-	    print("should be adding " + playerToAdd.name + " to host list on host client");
+	    //print("should be adding " + playerToAdd.name + " to host list on host client");
 
 		if (players == null) {
 			players = new List<GameObject>();

@@ -19,7 +19,8 @@ public class CannonAimNode : MonoBehaviour {
 
 	private void OnTriggerEnter( Collider other ) {
 		if (!player || !cannon.isServer) {
-			print( "player is null, is not the server" );
+			//print( "player is null, is not the server" );
+			
 			return;
 		}
 		print( "other: " + other.transform.root );

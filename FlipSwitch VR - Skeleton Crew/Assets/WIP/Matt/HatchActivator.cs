@@ -19,7 +19,7 @@ public class HatchActivator : NetworkBehaviour {
 	public static HatchActivator instance;
 
 	private void OnEnable() {
-		print("on enable");
+		//print("on enable");
 		hatches.Add(this);
 		GetComponent<Collider>().enabled = false;
 		hatchSign.SetActive(false);

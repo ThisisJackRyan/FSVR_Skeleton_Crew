@@ -23,7 +23,8 @@ public class ImpactReticle : NetworkBehaviour {
 	// Use this for initialization
 	void Start() {
 		StartCoroutine("CountDown");
-		
+		Invoke("Kill", countDownMaterials.Length + 2);
+
 		/*
 		 start countdown
 		 update graphic each second
@@ -52,10 +53,6 @@ public class ImpactReticle : NetworkBehaviour {
 				if (ball) {
 
 					ball.GetComponent<Rigidbody>().isKinematic = false;
-				}
-				else{
-					//print( "no ball, invoking kill" );
-					Invoke("Kill", 2);
 				}
 
 				yield return null;
@@ -115,7 +112,7 @@ public class ImpactReticle : NetworkBehaviour {
 
 	private void OnTriggerEnter( Collider other ) {
 		if (other.gameObject == ball) {
-			Destroy( other.gameObject );
+			other.GetComponent<SCProjectile>().KillProjectile();
 			Explode();
 		}
 	}

@@ -88,15 +88,15 @@ public class Captain : SerializedNetworkBehaviour {
 	void Start() {
 		if (isServer) {
 			if (instance == null) {
-				print("is server, setting as instance");
+				//print("is server, setting as instance");
 				instance = this;
 			} else {
-				print("is server with instance, destroying");
+				//print("is server with instance, destroying");
 
 				Destroy(gameObject);
 			}
 		} else {
-			print("not server");
+			//print("not server");
 		}
 
 		foreach (var g in mastRopes) {

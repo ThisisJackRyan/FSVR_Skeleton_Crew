@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -9,6 +10,8 @@ public class SCProjectile : NetworkBehaviour {
 	public int damage;
 	public bool oneShotKill = false, isDestructible = false;
 	public GameObject deathParticles;
+	public GameObject particles;
+	public float particleKillTimer = 2f;
 	[HideInInspector]
 	public GameObject reticle;
 
@@ -43,19 +46,35 @@ public class SCProjectile : NetworkBehaviour {
 			//destroy gameobject
 			//print("in the bullet player if");
 			HitByMusket( other.gameObject );
-		} else if(!other.GetComponent<ImpactReticle>()) {
+		}
 
+		if (!other.GetComponent<ImpactReticle>()) {
 			KillProjectile();
-
 		}
 
 	}
 
-	private void KillProjectile() {
-		Destroy(gameObject);
-		if (reticle && isServer) {
-			NetworkServer.Destroy( reticle );
+	public void KillProjectile() {
+		if (!isServer) {
+			return;
 		}
+
+		RpcKillProjectile();
+
+		particles.transform.parent = null;
+		Destroy(particles, particleKillTimer );
+		Destroy(gameObject);
+	}
+
+	[ClientRpc]
+	private void RpcKillProjectile() {
+		if (isServer) {
+			return;
+		}
+
+		particles.transform.parent = null;
+		Destroy( particles, particleKillTimer );
+		Destroy( gameObject );
 	}
 
 	public int health = 1;
