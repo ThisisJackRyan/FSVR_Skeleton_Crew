@@ -1,35 +1,55 @@
 fileFormatVersion: 2
-guid: 3088bf2e6b85c3946b9d4d72641c6a3e
+guid: e04eff005efe05748a60353190395f98
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: Cannon_Barrel_Front
-    100004: Exit_Barrel_Locator
-    100006: Wick
-    100008: Wick_Locator
-    400000: //RootNode
-    400002: Cannon_Barrel_Front
-    400004: Exit_Barrel_Locator
-    400006: Wick
-    400008: Wick_Locator
+    100000: Cannon_Barrel_Front
+    100002: //RootNode
+    100004: Cannon_Body
+    100006: Cannon_Hatch
+    100008: Exit_Barrel_Locator
+    100010: Hatch_Gear
+    100012: Wick
+    100014: Wick_Locator
+    400000: Cannon_Barrel_Front
+    400002: //RootNode
+    400004: Cannon_Body
+    400006: Cannon_Hatch
+    400008: Exit_Barrel_Locator
+    400010: Hatch_Gear
+    400012: Wick
+    400014: Wick_Locator
     2100000: Broken_Cannon_Metal
-    2100002: Wick1
-    2300000: //RootNode
-    2300002: Cannon_Barrel_Front
-    2300004: Wick
-    3300000: //RootNode
-    3300002: Cannon_Barrel_Front
-    3300004: Wick
-    4300000: Cannon_Barrel
-    4300002: Cannon_Barrel_Front
-    4300004: Wick
+    2100002: Gear
+    2100004: Wick1
+    2300000: Cannon_Barrel_Front
+    2300002: Cannon_Body
+    2300004: Cannon_Hatch
+    2300006: Hatch_Gear
+    2300008: Wick
+    3300000: Cannon_Barrel_Front
+    3300002: Cannon_Body
+    3300004: Cannon_Hatch
+    3300006: Hatch_Gear
+    3300008: Wick
+    4300000: Cannon_Barrel_Front
+    4300002: Cannon_Body
+    4300004: Cannon_Hatch
+    4300006: Hatch_Gear
+    4300008: Wick
+    7400000: Take 001
+    9500000: //RootNode
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Broken_Cannon_Metal
-    second: {fileID: 2100000, guid: b4892a4b564cf7645aea50542cbe6422, type: 2}
+    second: {fileID: 2100000, guid: e2d960835c20b9f4d8118ba492396dfc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gear
+    second: {fileID: 2100000, guid: 3ab1c60c248878d489cd9c05c3bad1a8, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -109,7 +129,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
