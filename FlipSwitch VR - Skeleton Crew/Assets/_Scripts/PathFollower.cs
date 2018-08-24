@@ -194,10 +194,13 @@ public class PathFollower : NetworkBehaviour {
 
 		foreach ( GameObject go in Floaters ) {
 			float dist = Vector3.Distance( shipTransform.position, go.transform.position );
+			print( "distance to " + go.name + " is " + dist );
 			if ( dist > spawnRadiusMin && dist < spawnRadiusMax ) {
 				rocks.Add( go );
 			}
 		}
+		print( "number of floaters " + Floaters.Length );
+		print( "rocks in range " + rocks.Count );
 
 		if ( rocks.Count > 0 ) {
 			int chosenOne = Random.Range( 0, rocks.Count );
