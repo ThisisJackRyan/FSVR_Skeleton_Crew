@@ -11,6 +11,9 @@ public class HatchActivator : NetworkBehaviour {
 
 	public static List<HatchActivator> hatches = new List<HatchActivator> ();
 	public GameObject hatchSign;
+	public Animator animator;
+	public AudioSource audioSource;
+	public AudioClip openClip;
 	public bool isLeftHatch;
 
 	public static HatchActivator instance;
@@ -56,10 +59,18 @@ public class HatchActivator : NetworkBehaviour {
 		
 		DisableHatch(isLeftHatch);
 	}
-	
-	//public static void TellRpcToDisableHatches(){
-	//	instance.RpcDisableHatches(isLeftHatch);
-	//}
+
+
+	[ClientRpc]
+	public void RpcAnimateHatch(bool opening ) {
+		if (isServer) {
+			return;
+		}
+
+		animator.SetBool( "Opening", opening );
+		audioSource.PlayOneShot( openClip );
+
+	}
 
 	private void OnTriggerStay(Collider other) {
 		if (!isServer)
@@ -71,9 +82,45 @@ public class HatchActivator : NetworkBehaviour {
 			if (timer >= 1) {
 				active = false;
 				timer = 0;
-				Ratman.RespawnRatmen(transform.position, isLeftHatch);
+				StartCoroutine("AnimateAndRespawnRatmen");
 			}
 		}
+	}
+
+	IEnumerator AnimateAndRespawnRatmen() {
+		animator.SetBool( "Opening", true );
+		audioSource.PlayOneShot(openClip);
+		RpcAnimateHatch( true );
+		yield return new WaitForSeconds(1);
+		bool hasRespawned = false;
+
+		foreach ( var item in VariableHolder.instance.ratmenPositions ) {
+			if ( item.Value != isLeftHatch ) {
+				continue;
+			}
+
+			if ( item.Key.GetComponent<Ratman>().GetHealth() <= 0 ) {
+				item.Key.GetComponent<Ratman>().Respawn(  transform.position );
+				hasRespawned = true;
+				yield return new WaitForSeconds( 1 );
+			}
+		}
+
+		if ( hasRespawned ) {
+			DisableHatch( isLeftHatch );
+			instance.RpcDisableHatch( isLeftHatch );
+		}
+
+		animator.SetBool( "Opening", false );
+		audioSource.PlayOneShot( openClip );
+
+		RpcAnimateHatch( false );
+
+		yield return new WaitForSeconds( 1 );
+	}
+
+	void RespawnRatmen(Vector3 spawnPos, bool isLeftHatch) {
+
 	}
 
 	private void OnTriggerEnter(Collider other) {

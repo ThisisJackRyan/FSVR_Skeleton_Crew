@@ -114,7 +114,7 @@ ModelImporter:
       name: Ship_Hatch_Closed
       takeName: Take 001
       firstFrame: 0
-      lastFrame: 0
+      lastFrame: 0.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -142,7 +142,7 @@ ModelImporter:
       name: Ship_Hatch_Open
       takeName: Take 001
       firstFrame: 15
-      lastFrame: 15
+      lastFrame: 16
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

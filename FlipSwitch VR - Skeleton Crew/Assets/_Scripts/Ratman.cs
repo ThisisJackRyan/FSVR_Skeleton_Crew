@@ -57,28 +57,7 @@ public class Ratman : NetworkBehaviour {
 			ChangeHealth( maxHealth );
 	}
 
-	public static void RespawnRatmen( Vector3 spawnPos, bool isLeftHatch ) {
-		// print("respawnrats called");
-		bool hasRespawned = false;
-		//bool needsRespawn = false;
-		foreach ( var item in VariableHolder.instance.ratmenPositions ) {
-			if ( item.Value != isLeftHatch ) {
-				continue;
-			}
-
-			if ( item.Key.GetComponent<Ratman>().GetHealth() <= 0 ) {
-				item.Key.GetComponent<Ratman>().Respawn( spawnPos );
-				hasRespawned = true;
-			}
-		}
-
-		if ( hasRespawned ) {
-			HatchActivator.DisableHatch( isLeftHatch );
-			HatchActivator.instance.RpcDisableHatch( isLeftHatch );
-		}
-	}
-
-	void Respawn( Vector3 spawnPos ) {
+	public void Respawn( Vector3 spawnPos ) {
 		ChangeHealth( maxHealth, false );
 		rat.transform.position = spawnPos;
 		rat.SetActive( true );
