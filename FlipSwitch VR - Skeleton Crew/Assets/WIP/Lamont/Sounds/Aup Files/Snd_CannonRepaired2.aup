@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="Snd_CannonRepaired2_data" version="1.3.0" audacityversion="2.1.3" sel0="0.0000000000" sel1="0.0000000000" vpos="0" h="0.0000000000" zoom="86.1328125000" rate="96000.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags/>
+	<wavetrack name="collect_item_hurry_out_of_time_01" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="96000" gain="1.0" pan="0.0">
+		<waveclip offset="0.24622917">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="44909">
+				<waveblock start="0">
+					<simpleblockfile filename="e00000d5.au" len="44909" min="-0.622473" max="0.614068" rms="0.09804"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="collect_item_hurry_out_of_time_01" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="96000" gain="1.0" pan="0.0">
+		<waveclip offset="0.24622917">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="44909">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000cff.au" len="44909" min="-0.891251" max="0.794923" rms="0.115129"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="collect_item_hurry_out_of_time_01" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="96000" gain="1.0" pan="0.0">
+		<waveclip offset="-0.14011458">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="37089">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000732.au" len="37089" min="-0.623132" max="0.612352" rms="0.101495"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="collect_item_hurry_out_of_time_01" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="96000" gain="1.0" pan="0.0">
+		<waveclip offset="-0.14011458">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="37089">
+				<waveblock start="0">
+					<simpleblockfile filename="e00003f2.au" len="37089" min="-0.890812" max="0.796985" rms="0.116903"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>

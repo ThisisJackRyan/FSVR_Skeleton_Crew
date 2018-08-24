@@ -98,6 +98,11 @@ impact-04.wav
 	-cc0
 	-https://freesound.org/people/smuz/sounds/260000/
 	
+torch_whoosh_20.wav
+	-Soundrangers
+	-cc0
+	-Soundrangers.com
+	
 ---------------------------------------------------------------------------------------------------------	
 34091__dangerbabe__drum -> Snd_WarDrum1
 	-dangerbabe
