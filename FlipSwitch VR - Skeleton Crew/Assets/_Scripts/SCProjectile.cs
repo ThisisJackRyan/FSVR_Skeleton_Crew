@@ -48,9 +48,9 @@ public class SCProjectile : NetworkBehaviour {
 			HitByMusket( other.gameObject );
 		}
 
-		if (!other.GetComponent<ImpactReticle>()) {
-			KillProjectile();
-		}
+		//if (!other.GetComponentInParent<ImpactReticle>()) {
+		//	KillProjectile();
+		//}
 
 	}
 
@@ -62,9 +62,15 @@ public class SCProjectile : NetworkBehaviour {
 		RpcKillProjectile();
 
 		particles.transform.parent = null;
-		Destroy(particles, particleKillTimer );
-		Destroy(gameObject);
+		//Invoke( "KillParticles", particleKillTimer );
+		particles.AddComponent<DieAfterTimeNetworked>().particleLifetime = particleKillTimer;
+
+		NetworkServer.Destroy( gameObject );
 	}
+
+	//void KillParticles() {
+	//	NetworkServer.Destroy( particles);
+	//}
 
 	[ClientRpc]
 	private void RpcKillProjectile() {
@@ -73,8 +79,6 @@ public class SCProjectile : NetworkBehaviour {
 		}
 
 		particles.transform.parent = null;
-		Destroy( particles, particleKillTimer );
-		Destroy( gameObject );
 	}
 
 	public int health = 1;

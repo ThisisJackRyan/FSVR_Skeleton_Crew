@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FloatingRockPattern : RepairPattern {
 
-	public FloatingRock floatingRock;
+	public FloatingRock[] floatingRocks;
 	public int timeToCast = 2;
 	int castRun = 0;
 
@@ -28,7 +28,9 @@ public class FloatingRockPattern : RepairPattern {
 				Increment();
 			} else {
 				//full healed
-				floatingRock.RaiseRock();
+				foreach (var rock in floatingRocks) {
+					rock.RaiseRock();
+				}
 				castRun = 0;
 				gameObject.SetActive(false);
 			}

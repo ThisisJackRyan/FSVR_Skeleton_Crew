@@ -112,17 +112,19 @@ public class ImpactReticle : NetworkBehaviour {
 
 	private void OnTriggerEnter( Collider other ) {
 		if (other.gameObject == ball) {
-			other.GetComponent<SCProjectile>().KillProjectile();
+			//other.GetComponent<SCProjectile>().KillProjectile();
 			Explode();
 		}
 	}
 
 	public override void OnNetworkDestroy() {
+		CancelInvoke();
 		StopAllCoroutines();
 		base.OnNetworkDestroy();
 	}
 
 	public void OnDestroy() {
+		CancelInvoke();
 		StopAllCoroutines();
 	}
 
