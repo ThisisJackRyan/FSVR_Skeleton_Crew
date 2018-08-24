@@ -77,7 +77,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	private bool audioTriggered = false;
 
-	public AudioSource mySource;
+	public AudioSource mySource, ambientSource;
 	private List<AudioClip> audioQueue;
 
 	/*
@@ -156,8 +156,21 @@ public class Captain : SerializedNetworkBehaviour {
 	public void StartTutorial() {
 		print("start tutorial");
 
+		ambientSource.enabled = true;
+		RpcEnableAmbient();
+
 		TutorialIntro();
 		//EnableGuardsByPlayerCount();
+	}
+
+	[ClientRpc]
+	void RpcEnableAmbient() {
+		if (isServer) {
+			return;
+		}
+
+		ambientSource.enabled = true;
+
 	}
 
 	void TutorialIntro() {
