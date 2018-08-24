@@ -23,7 +23,7 @@ public class ImpactReticle : NetworkBehaviour {
 	// Use this for initialization
 	void Start() {
 		StartCoroutine("CountDown");
-		Invoke("Kill", countDownMaterials.Length + 2);
+		Invoke( "Kill", countDownMaterials.Length + 2 );
 
 		/*
 		 start countdown

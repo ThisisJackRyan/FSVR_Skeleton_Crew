@@ -48,29 +48,25 @@ public class SCProjectile : NetworkBehaviour {
 			HitByMusket( other.gameObject );
 		}
 
-		//if (!other.GetComponentInParent<ImpactReticle>()) {
-		//	KillProjectile();
+		//if ( !other.GetComponent<ImpactReticle>() ) {
 		//}
+			KillProjectile();
 
 	}
 
 	public void KillProjectile() {
-		if (!isServer) {
-			return;
-		}
+		//if ( !isServer ) {
+		//	return;
+		//}
 
-		RpcKillProjectile();
+		//RpcKillProjectile();
+
+		//todo needs fixed
 
 		particles.transform.parent = null;
-		//Invoke( "KillParticles", particleKillTimer );
-		particles.AddComponent<DieAfterTimeNetworked>().particleLifetime = particleKillTimer;
-
-		NetworkServer.Destroy( gameObject );
+		Destroy(particles, particleKillTimer );
+		Destroy(gameObject);
 	}
-
-	//void KillParticles() {
-	//	NetworkServer.Destroy( particles);
-	//}
 
 	[ClientRpc]
 	private void RpcKillProjectile() {
@@ -79,6 +75,8 @@ public class SCProjectile : NetworkBehaviour {
 		}
 
 		particles.transform.parent = null;
+		Destroy( particles, particleKillTimer );
+		Destroy( gameObject );
 	}
 
 	public int health = 1;
