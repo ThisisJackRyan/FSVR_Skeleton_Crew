@@ -11,6 +11,7 @@ public class PathFollower : NetworkBehaviour {
 	int currentNode, nextNode;
 	public float speed = 1;
 	public float maxSpeed = 2, minSpeed = 0.5f;
+	public Vector2 yLimiter;
 	public GameObject shipDeck;
 	public GameObject crystalDeathParticles;
 
@@ -207,6 +208,9 @@ public class PathFollower : NetworkBehaviour {
 			//calc other side
 			Vector3 spawnVector = rocks[chosenOne].transform.position - shipTransform.position;
 			spawnVector = rocks[chosenOne].transform.position + ( spawnVector.normalized * spawnDistFromRock );
+
+			float rng = Random.Range(yLimiter.x, yLimiter.y);
+			spawnVector.y = rng;
 			//spawn
 			GameObject g = Instantiate( prefabToSpawn, spawnVector, Quaternion.identity );
 
