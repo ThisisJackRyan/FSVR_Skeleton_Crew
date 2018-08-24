@@ -10,13 +10,13 @@ public class RepairPatternNode : MonoBehaviour {
 
 	private void OnEnable() {
 		//pattern = GetComponentInParent<RepairPattern>();
-		print(name +  " enabled" );
+		//print(name +  " enabled" );
 
 		Invoke( "Timer", 5 );
 	}
 
 	void Timer() {
-		print(name + " timer ran out");
+		//print(name + " timer ran out");
 		pattern.gameObject.SetActive( false );
 		if ( repairSphere ) {
 			//repairSphere.GetComponent<Renderer>().enabled = true;
@@ -35,7 +35,7 @@ public class RepairPatternNode : MonoBehaviour {
 	}
 
 	private void OnDisable() {
-		print( name + " canceling invoke on disable, pattern is " + pattern.name );
+		//print( name + " canceling invoke on disable, pattern is " + pattern.name );
 		CancelInvoke();
 	}
 }

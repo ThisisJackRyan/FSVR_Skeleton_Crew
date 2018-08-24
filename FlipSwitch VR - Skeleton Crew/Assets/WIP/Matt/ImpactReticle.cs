@@ -54,7 +54,7 @@ public class ImpactReticle : NetworkBehaviour {
 					ball.GetComponent<Rigidbody>().isKinematic = false;
 				}
 				else{
-					print( "no ball, invoking kill" );
+					//print( "no ball, invoking kill" );
 					Invoke("Kill", 2);
 				}
 

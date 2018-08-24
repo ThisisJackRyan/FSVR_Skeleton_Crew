@@ -15,11 +15,13 @@ public class Ratman : NetworkBehaviour {
 		if ( isServer )
 			return;
 
-		if (n < health) {
-			if ( isServer ) {
-				int rng = Random.Range( 0, hitSounds.Length );
-				GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
-				RpcPlayHitSound( rng );
+		if ( n < health ) {
+			if ( n >= 0 ) {
+				if ( isServer ) {
+					int rng = Random.Range( 0, hitSounds.Length );
+					GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
+					RpcPlayHitSound( rng );
+				}
 			}
 		}
 

@@ -154,7 +154,7 @@ public class Captain : SerializedNetworkBehaviour {
 	public List<GameObject> tutorialCannons, actualCannons, cannonFirePrompts, tutorialRatHatch, ratHatch, tutorialGuards, mastPrompts; //todo disable mast prompt etc
 
 	public void StartTutorial() {
-		print("start tutorial");
+		//print("start tutorial");
 
 		ambientSource.enabled = true;
 		RpcEnableAmbient();
@@ -223,7 +223,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckEnemiesKilled() {
 		foreach (var obj in enemiesKilled) {
-			print(obj.Key.name + " has a value of " + obj.Value);
+			//print(obj.Key.name + " has a value of " + obj.Value);
 		}
 		if (!enemiesKilled.ContainsValue(false) && !guardsComplete) {
 			guardsComplete = true;
@@ -279,9 +279,9 @@ public class Captain : SerializedNetworkBehaviour {
 	#endregion
 
 	public void CheckDamagedObjects() {
-		foreach (var obj in damagedObjectsRepaired) {
-			print(obj.Key.name + " has a value of " + obj.Value);
-		}
+		//foreach (var obj in damagedObjectsRepaired) {
+		//	print(obj.Key.name + " has a value of " + obj.Value);
+		//}
 		if (!damagedObjectsRepaired.ContainsValue(false) && !damagedComplete) {
 			damagedComplete = true;
 			RpcPlaySoundClip("PrepTut_Shoot");
@@ -330,9 +330,9 @@ public class Captain : SerializedNetworkBehaviour {
 	#endregion
 
 	public void CheckPlayersCannonFiring() {
-		foreach (var obj in playersFiredCannons) {
-			print(obj.Key.name + " has a value of " + obj.Value);
-		}
+		//foreach (var obj in playersFiredCannons) {
+		//	print(obj.Key.name + " has a value of " + obj.Value);
+		//}
 		if (!playersFiredCannons.ContainsValue(false) && !cannonsComplete) {
 			cannonsComplete = true;
 			RpcPlaySoundClip("PrepTut_Rat");
@@ -393,9 +393,9 @@ public class Captain : SerializedNetworkBehaviour {
 	#endregion
 
 	public void CheckRatmenRespawns() {
-		foreach (var obj in ratmenRespawned) {
-			print(obj.Key.name + " has a value of " + obj.Value);
-		}
+		//foreach (var obj in ratmenRespawned) {
+		//	print(obj.Key.name + " has a value of " + obj.Value);
+		//}
 		if (!ratmenRespawned.ContainsValue(false) && !ratmenComplete) {
 			ratmenComplete = true;
 			RpcPlaySoundClip("PrepTut_Mast");
@@ -465,7 +465,7 @@ public class Captain : SerializedNetworkBehaviour {
 		mastHasBeenPulled = true;
 
 		RpcPlaySoundClip("MastPulled");
-		print("mast has been pulled");
+		//print("mast has been pulled");
 	}
 
 	[ClientRpc]
@@ -473,7 +473,7 @@ public class Captain : SerializedNetworkBehaviour {
 		if (isServer)
 			return;
 
-		print("playing sound clip " + clip);
+		//print("playing sound clip " + clip);
 
 		for (int i = 0; i < tutorialSounds.Length; i++) {
 			if (tutorialSounds[i].name == clip) {

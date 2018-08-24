@@ -14,7 +14,7 @@ public class RepairTrigger : MonoBehaviour {
 	bool active = false;
 
 	private void OnTriggerStay(Collider other) {
-        if (other.transform.root != activator && !active) {
+        if (other.transform.root != activator || !active) {
             return;
         }
 
@@ -72,11 +72,11 @@ public class RepairTrigger : MonoBehaviour {
 	}
 
 	private void OnDisable() {
-		print("repoaIR NODE DISABLED");
+		//print("repoaIR NODE DISABLED");
 	}
 
     private void OnEnable() {
-        print("repair sphere has been enabled. Should be setting the particles to active. Disabling all other children. Should effectively initialize the repairing.");
+        //print("repair sphere has been enabled. Should be setting the particles to active. Disabling all other children. Should effectively initialize the repairing.");
         for(int i=0; i<transform.childCount; i++) {
             if (i == 0) {
                 transform.GetChild(i).gameObject.SetActive(true);

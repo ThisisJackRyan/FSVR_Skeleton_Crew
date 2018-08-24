@@ -20,24 +20,24 @@ public class ChangeAvatar : NetworkBehaviour
 
 	public void SetArmorSet(int i ) {
 		armorSet = i;
-		print( "armor was set to " + i );
+		//print( "armor was set to " + i );
 	}
 
 	public void SetSkin( int i ) {
 		color = i;
-		print("color was set to " + i);
+		//print("color was set to " + i);
 	}
 
 	void OnArmorSetChange(int n)
 	{
-		print( "on armor change called" );
+		//print( "on armor change called" );
 		armorSet = n;
 		CmdChangeArmor( armorSet );
 	}
 
 	void OnColorChange(int n)
 	{
-		print("on color change called");
+		//print("on color change called");
 		color = n;
 		CmdChangeColor( color );
 

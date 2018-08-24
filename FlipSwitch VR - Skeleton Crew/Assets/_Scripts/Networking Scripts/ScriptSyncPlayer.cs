@@ -23,7 +23,7 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 
 
 	void OnHealthChange( int n ) {
-		print("player health change");
+		//print("player health change");
 		if ( n < health ) {
 			for ( int i = 0; i < hitParticles.Length; i++ ) {
 				hitParticles[i].SetActive( true );
@@ -33,10 +33,12 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 			}
 			Invoke( "TurnOffHit", 1.0f );
 
-			if ( isServer ) {
-				int rng = Random.Range( 0, hitSounds.Length );
-				GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
-				RpcPlayHitSound( rng );
+			if (n >= 0) {
+				if ( isServer ) {
+					int rng = Random.Range( 0, hitSounds.Length );
+					GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
+					RpcPlayHitSound( rng );
+				}
 			}
 		}
 

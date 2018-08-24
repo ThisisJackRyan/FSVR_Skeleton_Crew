@@ -45,23 +45,24 @@ public class Enemy : NetworkBehaviour {
 					particles.Simulate( 0, true, true );
 				}
 				particles.Play();
-				print( particles.name + " should be emiitng" );
+				//print( particles.name + " should be emiitng" );
 			}
 			Invoke( "TurnOffHit", 2.0f );
 
-			if (isServer) { 
-				int rng = Random.Range( 0, hitSounds.Length );
-				GetComponent<AudioSource>().PlayOneShot(hitSounds[rng]);
-				RpcPlayHitSound( rng );
+			if ( n >= 0 ) {
+				if ( isServer ) {
+					int rng = Random.Range( 0, hitSounds.Length );
+					GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
+					RpcPlayHitSound( rng );
+				}
 			}
-
 		}
 
 		health = n;
 
 		if (health <= 0) {
 			if ( tutorialGuard ) {
-				print( "tut guard killed" );
+				//print( "tut guard killed" );
 				Captain.enemiesKilled[this] = true;
 				Captain.instance.CheckEnemiesKilled();
 			}

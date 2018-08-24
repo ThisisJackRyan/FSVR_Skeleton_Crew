@@ -34,7 +34,7 @@ public class DamagedObject : NetworkBehaviour {
 
         if (rng != -1) {
             repairPattern = repairPatterns[rng];
-            print("repair patter is now " + repairPattern.name + " on the client damaged object");
+            //print("repair patter is now " + repairPattern.name + " on the client damaged object");
         }
 	}
 
@@ -43,7 +43,7 @@ public class DamagedObject : NetworkBehaviour {
             return;
         }
 
-		if ( health > n ) {
+		if ( health > n && n >= 0) {
 			GetComponent<AudioSource>().PlayOneShot( damageClip );
 			Instantiate( dmgParticles, transform.position, Quaternion.identity );
 		} else if (health < n) {
@@ -77,7 +77,7 @@ public class DamagedObject : NetworkBehaviour {
 
 	public void Start() {
 		if ( isServer ) {
-			health = 0;
+			ChangeHealth( maxHealth );
 			Captain.damagedObjectsRepaired.Add( this, false );
 		} else if ( isClient ) {
 			OnHealthChange( health );
@@ -93,7 +93,7 @@ public class DamagedObject : NetworkBehaviour {
 
 		rng = Random.Range( 0, repairPatterns.Length );
 		repairPattern = repairPatterns[rng];
-		print( "setting repairPattern to " + repairPattern.name );
+		//print( "setting repairPattern to " + repairPattern.name );
 		foreach ( var pat in repairPatterns ) {
 			pat.gameObject.SetActive( false );
 		}
@@ -154,8 +154,8 @@ public class DamagedObject : NetworkBehaviour {
         }
 
 
-		print( "pattern name: " + repairPattern.name );
-		print( "index received: " + index );
+		//print( "pattern name: " + repairPattern.name );
+		//print( "index received: " + index );
 		repairPattern.transform.GetChild( index ).gameObject.SetActive( false );
 	}
 
@@ -221,7 +221,7 @@ public class DamagedObject : NetworkBehaviour {
 	}
 
 	public int ChangeHealth( int amount, bool damage = true ) {
-		print(name+"change health called");
+		//print(name+"change health called");
 		if ( !isServer )
 			return health;
 
