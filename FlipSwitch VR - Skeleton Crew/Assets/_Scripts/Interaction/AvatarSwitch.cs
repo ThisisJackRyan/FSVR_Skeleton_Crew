@@ -27,6 +27,7 @@ public class AvatarSwitch : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter( Collider other ) {
+		print("trigger entered");
 		timer = 0;
 		active = true;
 	}

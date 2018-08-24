@@ -56,6 +56,12 @@ public class Weapon : NetworkBehaviour {
 		else {
 			fire.gameObject.SetActive(true);
 		}
+
+		if (data.firesound) {
+
+		GetComponent<AudioSource>().clip = data.firesound;
+		}
+
 	}
 
 	public void TurnOffFire() {

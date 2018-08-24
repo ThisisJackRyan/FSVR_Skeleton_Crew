@@ -32,6 +32,12 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 				particles.Play();
 			}
 			Invoke( "TurnOffHit", 1.0f );
+
+			if ( isServer ) {
+				int rng = Random.Range( 0, hitSounds.Length );
+				GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
+				RpcPlayHitSound( rng );
+			}
 		}
 
 		health = n;
@@ -44,6 +50,18 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 		} else if ( health <= maxHealth ) { // enabled: internal & external ; disabled: death
 			UpdateParticles( true, true, false );
 		}
+	}
+
+
+	public AudioClip[] hitSounds;
+
+	[ClientRpc]
+	private void RpcPlayHitSound( int rng ) {
+		if ( isServer ) {
+			return;
+		}
+
+		GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
 	}
 
 	void TurnOffHit() {

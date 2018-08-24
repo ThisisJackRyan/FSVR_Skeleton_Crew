@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -10,6 +11,7 @@ public class GrabWeapon : NetworkBehaviour {
 
 	public Transform rightHand, leftHand;
 	public GameObject rightHolster, leftHolster;
+	public AudioClip holsterClip, drawClip;
 	private GameObject weaponInRightHolster, weaponInLeftHolster;
 
 	private GameObject leftWeaponGameObj;
@@ -227,15 +229,21 @@ public class GrabWeapon : NetworkBehaviour {
 			if ( temp == weaponInRightHolster ) {
 				////print("found weapon in right holster");
 				weaponInRightHolster = null;
+				//RpcPlayDrawSound();
 			} else if ( temp == weaponInLeftHolster ) {
 				////print("found weapon in left holster");
 
 				weaponInLeftHolster = null;
+				//RpcPlayDrawSound();
 			}
 
 			weaponInteraction.AssignWeapon( side, temp );
 			RpcGrabWeapon( side, temp );
 		}
+	}
+
+	void PlayDrawSound() {
+		GetComponent<AudioSource>().PlayOneShot( drawClip );
 	}
 
 	[Command]
@@ -349,6 +357,8 @@ public class GrabWeapon : NetworkBehaviour {
 		weapon.GetComponent<Rigidbody>().isKinematic = true;
 
 		weaponInteraction.AssignWeapon( side, weapon );
+
+		PlayDrawSound();
 	}
 
 	[ClientRpc]
@@ -418,6 +428,8 @@ public class GrabWeapon : NetworkBehaviour {
 
 			leftWeaponGameObj = null;
 
+			GetComponent<AudioSource>().PlayOneShot(holsterClip);
+
 			if ( isLocalPlayer ) {
 				StopCoroutine( "GrabCooldownLeft" );
 				StartCoroutine( "GrabCooldownLeft" );
@@ -443,6 +455,7 @@ public class GrabWeapon : NetworkBehaviour {
 			}
 
 			rightWeaponGameObj = null;
+			GetComponent<AudioSource>().PlayOneShot( holsterClip );
 
 			if ( isLocalPlayer ) {
 				StopCoroutine( "GrabCooldownRight" );

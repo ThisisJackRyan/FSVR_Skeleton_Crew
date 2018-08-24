@@ -6,19 +6,10 @@ using UnityEngine.Networking;
 
 public class AmmoCache : NetworkBehaviour{
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
 	float timer;
 	bool active;
 	GameObject activator;
+	public AudioClip reloadClip;
 
 	private void OnTriggerEnter( Collider other ) {
 		if ( !isServer )
@@ -51,13 +42,23 @@ public class AmmoCache : NetworkBehaviour{
 		if ( other.gameObject == activator && active ) {
 			timer += Time.deltaTime;
 
-			if ( timer >= 1 ) {
+			if ( timer >= 0.5f ) {
 				active = false;
 				timer = 0;
 				other.GetComponent < Weapon > ().Reload();
+				GetComponent<AudioSource>().PlayOneShot( reloadClip );
+				RpcPlaySound();
 			}
 		}
 	}
 
+	[ClientRpc]
+	void RpcPlaySound() {
+		if (isServer) {
+			return;
+		}
+		GetComponent<AudioSource>().PlayOneShot( reloadClip );
+
+	}
 
 }

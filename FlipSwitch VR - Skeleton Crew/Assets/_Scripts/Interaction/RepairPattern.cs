@@ -52,7 +52,7 @@ public class RepairPattern : MonoBehaviour {
 				Init();
 			} else {
 				//full healed
-				print( "fully healed" );
+				print( "fully healed" ); //null ref here?
 				GetComponentInParent<RepairTrigger>().repairPattern = null;
 				gameObject.SetActive( false );
 			}

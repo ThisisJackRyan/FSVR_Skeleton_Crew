@@ -15,6 +15,14 @@ public class Ratman : NetworkBehaviour {
 		if ( isServer )
 			return;
 
+		if (n < health) {
+			if ( isServer ) {
+				int rng = Random.Range( 0, hitSounds.Length );
+				GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
+				RpcPlayHitSound( rng );
+			}
+		}
+
 		health = n;
 
 		if ( health <= 0 )
@@ -31,6 +39,22 @@ public class Ratman : NetworkBehaviour {
 			OnHealthChange( health );
 			rat.GetComponent<BehaviorTree>().enabled = false;
 		}
+	}
+
+	public AudioClip[] hitSounds;
+
+	[ClientRpc]
+	private void RpcPlayHitSound( int rng ) {
+		if ( isServer ) {
+			return;
+		}
+
+		GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
+	}
+
+	public void KillMe() {
+		if ( isServer )
+			ChangeHealth( maxHealth );
 	}
 
 	public static void RespawnRatmen( Vector3 spawnPos, bool isLeftHatch ) {

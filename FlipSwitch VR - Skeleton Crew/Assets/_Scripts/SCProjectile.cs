@@ -8,6 +8,7 @@ public class SCProjectile : NetworkBehaviour {
 
 	public int damage;
 	public bool oneShotKill = false, isDestructible = false;
+	public GameObject deathParticles;
 	[HideInInspector]
 	public GameObject reticle;
 
@@ -29,10 +30,12 @@ public class SCProjectile : NetworkBehaviour {
 		}
 
 		if (oneShotKill) {
-			if (other.tag == "PlayerCollider") {
+			if ( other.tag == "PlayerCollider" ) {
 				other.GetComponentInParent<ScriptSyncPlayer>().KillMe();
-			} else if (other.tag == "Enemy") {
+			} else if ( other.tag == "Enemy" ) {
 				other.GetComponent<Enemy>().KillMe();
+			} else if (other.tag == "Ratman") {
+				other.GetComponentInParent<Ratman>().KillMe();
 			}
 		}
 
@@ -60,11 +63,19 @@ public class SCProjectile : NetworkBehaviour {
 	void HitByMusket( GameObject bullet ) {
 		Destroy( bullet );
 
+		if (!isServer) {
+			return;
+		}
+
 		health--;
 		if ( health <= 0 ) {
 			//print("called rpc bullet");
 			NetworkServer.Destroy(gameObject);
 			NetworkServer.Destroy( reticle );
+			if (deathParticles) {
+				var dp = Instantiate(deathParticles, transform.position, Quaternion.identity);
+				NetworkServer.Spawn(dp);
+			}
 
 		}
 	}

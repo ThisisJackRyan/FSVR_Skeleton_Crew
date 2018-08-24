@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using BehaviorDesigner.Runtime;
+using System;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// Author: Matt Gipson
@@ -47,6 +49,12 @@ public class Enemy : NetworkBehaviour {
 			}
 			Invoke( "TurnOffHit", 2.0f );
 
+			if (isServer) { 
+				int rng = Random.Range( 0, hitSounds.Length );
+				GetComponent<AudioSource>().PlayOneShot(hitSounds[rng]);
+				RpcPlayHitSound( rng );
+			}
+
 		}
 
 		health = n;
@@ -62,6 +70,17 @@ public class Enemy : NetworkBehaviour {
 			Instantiate( deathParticles, new Vector3( transform.position.x, transform.position.y + 0.5f, transform.position.z ), Quaternion.identity );
 
 		}
+	}
+
+	public AudioClip[] hitSounds;
+
+	[ClientRpc]
+	private void RpcPlayHitSound( int rng ) {
+		if (isServer) {
+			return;
+		}
+
+		GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
 	}
 
 	public void KillMe() {

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class MastSwitch : MonoBehaviour {
 
-	public Transform mastUp, mastDown;
+	public Animator sailAnimator;
 	public float swapTime = 3;
 	bool raiseMast;
 
@@ -20,8 +20,6 @@ public class MastSwitch : MonoBehaviour {
 	AudioSource source;
 
 	private void Start() {
-		mastUp.gameObject.SetActive(true);
-		mastDown.gameObject.SetActive(false);
 		downImage.SetActive(true);
 		upImage.SetActive(false);
 		source = GetComponent<AudioSource>();
@@ -38,23 +36,24 @@ public class MastSwitch : MonoBehaviour {
 			firstRunEvent.Invoke();
 	}
 
+	[Button]
 	public void SwapMode() {
 		Debug.LogWarning("swap called");
 		if (raiseMast) {
-			mastUp.gameObject.SetActive(true);
-			mastDown.gameObject.SetActive(false);
 			downImage.SetActive(true);
 			upImage.SetActive(false);
 			pathFollower.GetComponent<PathFollower>().ChangeSpeed( false );
 			source.PlayOneShot(raise);
+
+			sailAnimator.SetBool( "Opening", false );
 			raiseMast = !raiseMast;
 		} else {
-			mastUp.gameObject.SetActive(false);
-			mastDown.gameObject.SetActive(true);
 			downImage.SetActive(false);
 			upImage.SetActive(true);
 			pathFollower.GetComponent<PathFollower>().ChangeSpeed( true );
 			source.PlayOneShot( lower );
+
+			sailAnimator.SetBool( "Opening", true );
 			raiseMast = !raiseMast;
 		}
 
@@ -62,12 +61,6 @@ public class MastSwitch : MonoBehaviour {
 			firstRunEvent.Invoke();
 			BehaviorDesigner.Runtime.GlobalVariables.Instance.GetVariable( "EnemiesEnabled" ).SetValue( true );
 			firstLoad = true;
-		}
-	}
-
-	public void EnableEnemy() {
-		foreach (Enemy enScript in FindObjectsOfType<Enemy>()) {
-			enScript.EnableEnemy();
 		}
 	}
 
