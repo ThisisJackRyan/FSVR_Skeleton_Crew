@@ -48,18 +48,20 @@ public class SCProjectile : NetworkBehaviour {
 			HitByMusket( other.gameObject );
 		}
 
-		if (!other.GetComponent<ImpactReticle>()) {
+		//if ( !other.GetComponent<ImpactReticle>() ) {
+		//}
 			KillProjectile();
-		}
 
 	}
 
 	public void KillProjectile() {
-		if (!isServer) {
-			return;
-		}
+		//if ( !isServer ) {
+		//	return;
+		//}
 
-		RpcKillProjectile();
+		//RpcKillProjectile();
+
+		//todo needs fixed
 
 		particles.transform.parent = null;
 		Destroy(particles, particleKillTimer );
