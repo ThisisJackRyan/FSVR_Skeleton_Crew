@@ -22,6 +22,8 @@ public class PlayerSetup : NetworkBehaviour {
 			SteamVR_Fade.Start( Color.black, 0 );
 			GetComponent<ScriptSyncPlayer>().TurnOffColliders();
 
+			//GetComponentInChildren<SteamVR_PlayArea>().BuildMesh();
+
 		} else {
 			if (isServer) {
 				//print("should be adding " + gameObject.name + " to host list");
