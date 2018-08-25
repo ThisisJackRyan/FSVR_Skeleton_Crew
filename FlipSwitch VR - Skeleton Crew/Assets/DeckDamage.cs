@@ -11,6 +11,7 @@ public class DeckDamage : NetworkBehaviour {
 	public RepairDeckPattern repairPattern;
 	public float repairRadius = 0.5f;
 	public GameObject repairSphere;
+	public GameObject particles;
 
 	[SyncVar( hook = "OnPatternIndexChange" )] int rng = -1;
 	private void OnPatternIndexChange( int n ) {
@@ -57,6 +58,8 @@ public class DeckDamage : NetworkBehaviour {
 			}
 		}
 
+		var p = Instantiate( particles , transform.position, Quaternion.identity);
+		NetworkServer.Spawn( p );
 		NetworkServer.Destroy( transform.root.gameObject );
 	}
 

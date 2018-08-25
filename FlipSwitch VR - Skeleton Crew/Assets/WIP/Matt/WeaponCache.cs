@@ -9,7 +9,7 @@ public class WeaponCache : NetworkBehaviour {
 	public float timeBetweenSpawns = 30;
 	public int startingCount = 5;
 	public GameObject[] toSpawn;
-	public Collider collider;
+	public Collider myCollider;
 	public float spawnRadius;
 
 	int counter = 0;
@@ -34,7 +34,7 @@ public class WeaponCache : NetworkBehaviour {
 		}
 
 		int weapons = 0;
-		foreach (var col in Physics.OverlapSphere(collider.bounds.center, spawnRadius)) {
+		foreach (var col in Physics.OverlapSphere(myCollider.bounds.center, spawnRadius)) {
 			if (col.tag == "Weapon") {
 				weapons++;
 			}
@@ -70,7 +70,7 @@ public class WeaponCache : NetworkBehaviour {
 	//}
 
 	private void OnDrawGizmosSelected() {
-		Gizmos.DrawWireSphere(collider.bounds.center, spawnRadius);
+		Gizmos.DrawWireSphere(myCollider.bounds.center, spawnRadius);
 	}
 
 }

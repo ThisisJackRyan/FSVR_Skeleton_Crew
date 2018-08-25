@@ -9,7 +9,7 @@ public class FindClosestGameObjectFromList : Action {
 
 	public override void OnStart() {
 
-		GameObject[] list = listToChooseFrom.Value.ToArray();
+		//GameObject[] list = listToChooseFrom.Value.ToArray();
 		float dist = float.MaxValue;
 
 		foreach (var go in listToChooseFrom.Value.ToArray()) {
