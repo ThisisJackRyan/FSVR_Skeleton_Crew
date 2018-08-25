@@ -20,7 +20,15 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 	public Transform explosionPosition;
 	bool isDead;
 
+	public AudioClip deathSound;
+	[ClientRpc]
+	private void RpcPlayDeathSound() {
+		if ( isServer ) {
+			return;
+		}
 
+		GetComponent<AudioSource>().PlayOneShot( deathSound );
+	}
 
 	void OnHealthChange( int n ) {
 		//print("player health change");
@@ -38,6 +46,12 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 					int rng = Random.Range( 0, hitSounds.Length );
 					GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
 					RpcPlayHitSound( rng );
+				}
+			} else if ( n <= 0 ) {
+				if ( isServer ) {
+
+					GetComponent<AudioSource>().PlayOneShot( deathSound );
+					RpcPlayDeathSound();
 				}
 			}
 		}

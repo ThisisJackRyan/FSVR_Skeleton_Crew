@@ -11,10 +11,17 @@ public class Ratman : NetworkBehaviour {
 	public bool isOnTheLeft;
 	int maxHealth = 100;
 
-	void OnHealthChange( int n ) {
-		if ( isServer )
+	public AudioClip deathSound;
+	[ClientRpc]
+	private void RpcPlayDeathSound() {
+		if ( isServer ) {
 			return;
+		}
 
+		GetComponent<AudioSource>().PlayOneShot( deathSound );
+	}
+
+	void OnHealthChange( int n ) {
 		if ( n < health ) {
 			if ( n >= 0 ) {
 				if ( isServer ) {
@@ -22,6 +29,11 @@ public class Ratman : NetworkBehaviour {
 					GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
 					RpcPlayHitSound( rng );
 				}
+			}
+		} else if ( n <= 0 ) {
+			if ( isServer ) {
+				GetComponent<AudioSource>().PlayOneShot( deathSound );
+				RpcPlayDeathSound();
 			}
 		}
 
@@ -84,7 +96,7 @@ public class Ratman : NetworkBehaviour {
 		return health;
 	}
 
-	public int ChangeHealth( int amount, bool damage = true ) {
+	public int ChangeHealth( int amount, bool damage = true ) { 
 		if ( damage ) {
 			health -= Mathf.Abs( amount );
 			health = ( health < 0 ) ? 0 : health;
