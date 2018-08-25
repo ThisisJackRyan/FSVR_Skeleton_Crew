@@ -30,12 +30,13 @@ public class Ratman : NetworkBehaviour {
 					RpcPlayHitSound( rng );
 				}
 			}
-		} else if ( n <= 0 ) {
-			if ( isServer ) {
-				GetComponent<AudioSource>().PlayOneShot( deathSound );
-				RpcPlayDeathSound();
-			}
 		}
+		//else if ( n <= 0 ) {
+		//	if ( isServer ) {
+		//		GetComponent<AudioSource>().PlayOneShot( deathSound );
+		//		RpcPlayDeathSound();
+		//	}
+		//}
 
 		health = n;
 
@@ -112,7 +113,11 @@ public class Ratman : NetworkBehaviour {
 		return health;
 	}
 
+	public GameObject deathParticles;
+
 	void KillRatman() {
+		Instantiate( deathParticles, new Vector3( rat.transform.position.x, rat.transform.position.y + 0.5f, rat.transform.position.z ), Quaternion.identity );
+
 		rat.SetActive( false );
 		//ratAnim.enabled = false;
 		HatchActivator.EnableHatch( isOnTheLeft );

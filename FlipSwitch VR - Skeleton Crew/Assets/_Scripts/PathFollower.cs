@@ -189,19 +189,19 @@ public class PathFollower : NetworkBehaviour {
 		int spawnIndex = Random.Range( 0, toSpawnList.Length );
 		prefabToSpawn = toSpawnList[spawnIndex];
 		
-		print( name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name  );
+		//print( name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name  );
 		//find rock
 		List<GameObject> rocks = new List<GameObject>();
 
 		foreach ( GameObject go in Floaters ) {
 			float dist = Vector3.Distance( shipTransform.position, go.transform.position );
-			print( "distance to " + go.name + " is " + dist );
+			//print( "distance to " + go.name + " is " + dist );
 			if ( dist > spawnRadiusMin && dist < spawnRadiusMax ) {
 				rocks.Add( go );
 			}
 		}
-		print( "number of floaters " + Floaters.Length );
-		print( "rocks in range " + rocks.Count );
+		//print( "number of floaters " + Floaters.Length );
+		//print( "rocks in range " + rocks.Count );
 
 		if ( rocks.Count > 0 ) {
 			int chosenOne = Random.Range( 0, rocks.Count );

@@ -47,13 +47,14 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 					GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
 					RpcPlayHitSound( rng );
 				}
-			} else if ( n <= 0 ) {
-				if ( isServer ) {
+			} 
+			//else if ( n <= 0 ) {
+			//	if ( isServer ) {
 
-					GetComponent<AudioSource>().PlayOneShot( deathSound );
-					RpcPlayDeathSound();
-				}
-			}
+			//		GetComponent<AudioSource>().PlayOneShot( deathSound );
+			//		RpcPlayDeathSound();
+			//	}
+			//}
 		}
 
 		health = n;

@@ -62,9 +62,11 @@ public class SCProjectile : NetworkBehaviour {
 		//RpcKillProjectile();
 
 		//todo needs fixed
+		if (particles) {
 
-		particles.transform.parent = null;
-		Destroy(particles, particleKillTimer );
+			particles.transform.parent = null;
+			Destroy(particles, particleKillTimer );
+		}
 		Destroy(gameObject);
 	}
 
