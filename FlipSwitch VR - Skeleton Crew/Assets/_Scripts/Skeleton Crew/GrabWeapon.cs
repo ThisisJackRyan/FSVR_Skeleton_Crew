@@ -115,6 +115,10 @@ public class GrabWeapon : NetworkBehaviour {
 	}
 
 	public void SendCommandToHighlight( bool isLeft ) {
+		//if (isServer) {
+		//	return;
+		//}
+
 		if ( isLeft ) {
 			if ( !leftWeaponGameObj && canGrabLeft ) {
 				FindAndHighlightNearestWeapon( "left", gameObject );
@@ -127,6 +131,10 @@ public class GrabWeapon : NetworkBehaviour {
 	}
 
 	public void SendCommandToUnHighlight( bool isLeft ) {
+		//if ( isServer ) {
+		//	return;
+		//}
+
 		if ( isLeft ) {
 			leftHighlightedWeaponObj = null;
 			RpcUnhighlightWeapon( "left", gameObject );

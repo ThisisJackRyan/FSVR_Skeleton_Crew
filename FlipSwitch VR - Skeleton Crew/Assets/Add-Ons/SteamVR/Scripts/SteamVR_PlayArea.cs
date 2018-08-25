@@ -91,7 +91,7 @@ public class SteamVR_PlayArea : MonoBehaviour
 	public void BuildMesh()
 	{
 
-		Debug.LogWarning( name + " called build mesh" );
+		//Debug.LogWarning( name + " called build mesh" );
 
 
 		var rect = new HmdQuad_t();
