@@ -40,5 +40,7 @@ public class Crystal : MonoBehaviour {
 		}
 		transform.root.GetComponent<PathFollower>().DestroyCrystal( gameObject );
 
+		Destroy( gameObject ); //todo fully network this
+
 	}
 }
