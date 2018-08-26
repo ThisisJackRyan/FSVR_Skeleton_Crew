@@ -49,6 +49,7 @@ public class GrabWeapon : NetworkBehaviour {
 				CmdDropIfHolding( "left", gameObject );
 			}
 		}
+
 		if ( weaponInRightHolster ) {
 			print( "weapon in right holster: " + weaponInRightHolster.name );
 			weaponInRightHolster.GetComponent<ObjectPositionLock>().posPoint = null;
@@ -62,11 +63,17 @@ public class GrabWeapon : NetworkBehaviour {
 			weaponInLeftHolster.GetComponent<ObjectPositionLock>().rotOffset = Quaternion.Euler( Vector3.zero );
 			weaponInLeftHolster.GetComponent<Rigidbody>().isKinematic = false;
 		}
-		if ( leftHighlightedWeaponObj ) {
-			leftHighlightedWeaponObj = null;
-		}
-		if ( rightHighlightedWeaponObj ) {
-			rightHighlightedWeaponObj = null;
+
+		if (isServer) {
+			
+
+
+			if ( leftHighlightedWeaponObj ) {
+				SendCommandToUnHighlight(true);
+			}
+			if ( rightHighlightedWeaponObj ) {
+				SendCommandToUnHighlight(false);
+			}
 		}
 
 		isDead = true;
