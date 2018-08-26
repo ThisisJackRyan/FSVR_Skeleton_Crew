@@ -90,16 +90,19 @@ public class SCProjectile : NetworkBehaviour {
 			return;
 		}
 
-		health--;
-		if ( health <= 0 ) {
-			//print("called rpc bullet");
-			NetworkServer.Destroy(gameObject);
-			NetworkServer.Destroy( reticle );
-			if (deathParticles) {
-				var dp = Instantiate(deathParticles, transform.position, Quaternion.identity);
-				NetworkServer.Spawn(dp);
-			}
+		if (GetComponent<Rigidbody>().isKinematic) {
 
+			health--;
+			if ( health <= 0 ) {
+				//print("called rpc bullet");
+				NetworkServer.Destroy(gameObject);
+				NetworkServer.Destroy( reticle );
+				if (deathParticles) {
+					var dp = Instantiate(deathParticles, transform.position, Quaternion.identity);
+					NetworkServer.Spawn(dp);
+				}
+
+			}
 		}
 	}
 
