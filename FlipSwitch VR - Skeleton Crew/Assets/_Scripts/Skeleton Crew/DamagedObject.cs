@@ -43,7 +43,7 @@ public class DamagedObject : NetworkBehaviour {
             return;
         }
 
-		if ( health > n && n >= 0) {
+		if ( health > n && n > 0) {
 			GetComponent<AudioSource>().PlayOneShot( damageClip );
 			Instantiate( dmgParticles, transform.position, Quaternion.identity );
 		} else if (health < n) {

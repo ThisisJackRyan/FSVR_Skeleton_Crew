@@ -7,7 +7,6 @@ public class BoardingPartySpawner : NetworkBehaviour {
 
 	public GameObject[] crewBosses, crewMembers;
 
-
 	// Use this for initialization
 	void Start () {
 		if ( !isServer ) {
@@ -16,9 +15,6 @@ public class BoardingPartySpawner : NetworkBehaviour {
 
 		int bossIndex = Random.Range( 0, crewBosses.Length );
 		int crewIndex1 = Random.Range( 0, crewMembers.Length );
-		int crewIndex2 = Random.Range( 0, crewMembers.Length );
-
-		print( "Spawing " + crewBosses[bossIndex].name + " as boss, and " + crewMembers[crewIndex1] + " as crew member 1, " + crewMembers[crewIndex2] + " as crew member 2." );
 
 		GameObject boss = Instantiate(crewBosses[bossIndex], transform.GetChild(0).position, Quaternion.identity);
 		boss.transform.parent = transform;
@@ -28,9 +24,12 @@ public class BoardingPartySpawner : NetworkBehaviour {
 		crew1.transform.parent = transform;
 		NetworkServer.Spawn( crew1 );
 
-		GameObject crew2 = Instantiate(crewMembers[crewIndex2], transform.GetChild(2).position, Quaternion.identity);
-		crew2.transform.parent = transform;
-		NetworkServer.Spawn( crew2 );
-
+		for(int i=0; i<FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers-2; i++ ) {
+			int crewIndex = Random.Range( 0, crewMembers.Length );
+			
+			GameObject crew = Instantiate( crewMembers[crewIndex], transform.GetChild( i+2 ).position, Quaternion.identity );
+			crew.transform.parent = transform;
+			NetworkServer.Spawn( crew );
+		}
 	}
 }

@@ -64,6 +64,14 @@ public class PathFollower : NetworkBehaviour {
 
 	void StartSecondPhase() {
 		currentStage = EncounterStage.Second;
+		Invoke("StartSecondBreak", encounterOneTotalTime);
+		InvokeRepeating("SpawnMeteors", meteorSpawnTimer, meteorSpawnTimer);
+	}
+
+	void StartSecondBreak() {
+		currentStage = EncounterStage.secondBreak;
+		CancelInvoke( "SpawnMeteors" );
+		//add timer for boss battle
 	}
 
 	protected void Update() {
@@ -83,6 +91,34 @@ public class PathFollower : NetworkBehaviour {
 		} else {
 			print( "next node too high " + nextNode + " " + path.Nodes.Length );
 		}
+	}
+
+	public float xOffset = 50;
+	public float meteorSpawnTimer = .5f;
+	public float meteorRadius = 40;
+	public GameObject[] meteors;
+	void SpawnMeteors() {
+		bool hitDeck = false;
+		Vector2 spawnVector;
+		Vector3 rayVector;
+		do { 
+			hitDeck = false;
+			spawnVector = Random.insideUnitCircle * 40;
+			rayVector = new Vector3( spawnVector.x + shipDeck.transform.position.x, Random.Range(5f, 50f), spawnVector.y + shipDeck.transform.position.z );
+			var hits = Physics.RaycastAll( rayVector, Vector3.down );
+			foreach (var hit in hits) {
+				if (hit.collider.gameObject == shipDeck) {
+					hitDeck = true;
+				}
+			}
+		} while ( hitDeck );
+
+		//not hitting deck
+		int rng = Random.Range(0, meteors.Length);
+		rayVector.x += xOffset;
+		var m = Instantiate(meteors[rng], rayVector, Quaternion.identity);
+		m.transform.parent = transform;
+		NetworkServer.Spawn( m );
 	}
 
 #pragma warning disable 0219

@@ -13,6 +13,18 @@ public class DeckDamage : NetworkBehaviour {
 	public GameObject repairSphere;
 	public GameObject particles;
 
+
+	private void OnEnable() {
+		Collider[] cols = Physics.OverlapSphere( transform.position, 0.5f );
+		foreach ( var item in cols ) {
+			if ( item.GetComponent<DeckDamage>() ) {
+				if ( item.GetComponent<DeckDamage>().repairSphere.activeInHierarchy ) {
+					repairSphere.SetActive( false );
+				}
+			}
+		}
+	}
+
 	[SyncVar( hook = "OnPatternIndexChange" )] int rng = -1;
 	private void OnPatternIndexChange( int n ) {
 		if ( isServer ) {

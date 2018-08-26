@@ -30,13 +30,14 @@ public class Host : NetworkBehaviour {
     #region Initialization
     void Start()
     {
-        if (!isLocalPlayer)
-        {
-            return;
+        if (!isLocalPlayer && !isServer)
+		{
+			GetComponent<AudioListener>().enabled = false;
+			return;
         }
 
 		GetComponent<Camera>().enabled = true;
-
+		GetComponent<AudioListener>().enabled = true;
 		//Resources.FindObjectsOfTypeAll<HostCanvas>()[0].gameObject.SetActive(true);
 		//GameObject uiManager = GameObject.Find( "HostUIManager" );
 		//uiManager.SetActive( true );
@@ -57,7 +58,7 @@ public class Host : NetworkBehaviour {
 
     [ClientRpc]
     private void RpcAddPlayerToHost(GameObject playerToAdd) {
-        if (!isLocalPlayer) {
+		if ( !isLocalPlayer) {
             return;
         }
 
@@ -70,7 +71,7 @@ public class Host : NetworkBehaviour {
         players.Add(playerToAdd);
         playerToAdd.GetComponent<PlayerSetup>().SetCameraSettings(players.Count);
         playerToAdd.name = "Player " + players.Count;
-        scriptHostUi.UpdateUI();
+      //  scriptHostUi.UpdateUI();
     }
 
     #endregion

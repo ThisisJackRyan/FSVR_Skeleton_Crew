@@ -32,18 +32,6 @@ public class GhostFreeRoamCamera : NetworkBehaviour {
 
     private MeshRenderer thisRenderer;
 
-    private void OnEnable() {
-        if (cursorToggleAllowed) {
-            //Cursor.lockState = CursorLockMode.Locked;
-            //Cursor.visible = false;
-        }
-
-        if (!isLocalPlayer) {
-            GetComponent<AudioListener>().enabled = false;
-        }
-    }
-
-
 
     private void Start() {
         thisRenderer = GetComponent<MeshRenderer>();
