@@ -11,7 +11,7 @@ public class CannonFuse : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Fire" && !cannonScript.GetIsFiring() && cannonScript.isServer)
+		if (other.tag == "Fire" && !cannonScript.GetIsFiring() && cannonScript.isServer  && cannonScript.GetComponent<DamagedObject>().GetHealth() > 0)
 		{
 			//print("resetting timer");
 			timer = 0;
