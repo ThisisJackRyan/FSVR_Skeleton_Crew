@@ -134,8 +134,10 @@ public class ScriptSyncPlayer : NetworkBehaviour {
 		GetComponent<ChangeAvatar>().DisableArmor();
 		GetComponent<GrabWeapon>().Death();
 
-		if ( !isServer )
-			Instantiate( deathExplosion[GetComponent<ChangeAvatar>().GetColor()], explosionPosition.position, Quaternion.identity );
+		if (isServer) {
+			var g = Instantiate( deathExplosion[GetComponent<ChangeAvatar>().GetColor()], explosionPosition.position, Quaternion.identity );//todo add server spawning
+			NetworkServer.Spawn(g);
+		}
 	}
 
 	public void TurnOffColliders() { //todo rename for nathans sake

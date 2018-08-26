@@ -307,13 +307,13 @@ public class Captain : SerializedNetworkBehaviour {
 		if (isServer) {
 			return;
 		}
-		for (int i = 0; i < tutorialCannons.Count; i++) {
+		for (int i = 0; i < cannonFirePrompts.Count; i++) {
 			cannonFirePrompts[i].SetActive(true);
 		}
 	}
 
 	void DisableFirePrompt() {
-		for (int i = 0; i < tutorialCannons.Count; i++) {
+		for (int i = 0; i < cannonFirePrompts.Count; i++) {
 			cannonFirePrompts[i].SetActive(false);
 		}
 
@@ -325,7 +325,7 @@ public class Captain : SerializedNetworkBehaviour {
 		if (isServer) {
 			return;
 		}
-		for (int i = 0; i < tutorialCannons.Count; i++) {
+		for (int i = 0; i < cannonFirePrompts.Count; i++) {
 			cannonFirePrompts[i].SetActive(false);
 		}
 	}
