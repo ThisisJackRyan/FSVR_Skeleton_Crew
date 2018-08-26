@@ -24,7 +24,7 @@ public class Enemy : NetworkBehaviour {
 	public Collider weaponCollider;
 	public BehaviorTree tree;
 
-	private bool canBeDamaged;
+	private bool canBeDamaged = true;
 	public GameObject lastWeaponDamagedMe;
 
 	public GameObject deathParticles;

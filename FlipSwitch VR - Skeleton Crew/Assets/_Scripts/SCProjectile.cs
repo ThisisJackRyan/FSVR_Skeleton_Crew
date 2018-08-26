@@ -34,11 +34,11 @@ public class SCProjectile : NetworkBehaviour {
 
 		if (oneShotKill) {
 			if ( other.tag == "PlayerCollider" ) {
-				other.GetComponentInParent<ScriptSyncPlayer>().KillMe();
+				other.GetComponentInParent<ScriptSyncPlayer>().ChangeHealth(150);
 			} else if ( other.tag == "Enemy" ) {
-				other.GetComponent<Enemy>().KillMe();
+				other.GetComponent<Enemy>().ChangeHealth(150);
 			} else if (other.tag == "Ratman") {
-				other.GetComponentInParent<Ratman>().KillMe();
+				other.GetComponentInParent<Ratman>().ChangeHealth(150);
 			}
 		}
 
