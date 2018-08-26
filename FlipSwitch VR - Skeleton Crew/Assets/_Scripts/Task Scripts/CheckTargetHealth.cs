@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
-using Sirenix.OdinInspector.Editor.Drawers;
+//using Sirenix.OdinInspector.Editor.Drawers;
 using UnityEngine.AI;
 
 public class CheckTargetHealth : Conditional {
