@@ -73,13 +73,13 @@ public class Weapon : NetworkBehaviour {
 
 		if (fire.gameObject.activeInHierarchy) {
 			fire.gameObject.SetActive(false);
-		}
 
-		if (data.firesound) {
-			GetComponent<AudioSource>().clip = data.firesound;
-		}
+			if (data.firesound) {
+				GetComponent<AudioSource>().clip = data.firesound;
+			}
 
-		GetComponent<AudioSource>().Play();
+			GetComponent<AudioSource>().Play();
+		}
 
 	}
 

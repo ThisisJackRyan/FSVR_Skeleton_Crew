@@ -39,16 +39,16 @@ public class DamagedObject : NetworkBehaviour {
 	}
 
 	private void OnHealthChange( int n ) {
-		if (isServer) {
-			return;
-		}
+		if ( !isServer ) {
+			//return;
 
-		if ( health > n && n > 0) {
-			GetComponent<AudioSource>().PlayOneShot( damageClip );
-			Instantiate( dmgParticles, transform.position, Quaternion.identity );
-		} else if (health < n) {
-			GetComponent<AudioSource>().PlayOneShot( healClip );
-			Instantiate( healParticles, transform.position, Quaternion.identity );
+			if ( health > n && n > 0) {
+				GetComponent<AudioSource>().PlayOneShot( damageClip );
+				Instantiate( dmgParticles, transform.position, Quaternion.identity );
+			} else if (health < n) {
+				GetComponent<AudioSource>().PlayOneShot( healClip );
+				Instantiate( healParticles, transform.position, Quaternion.identity );
+			}
 		}
 
 		health = n;
