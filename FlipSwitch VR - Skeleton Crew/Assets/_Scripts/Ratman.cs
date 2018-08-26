@@ -116,10 +116,15 @@ public class Ratman : NetworkBehaviour {
 	public GameObject deathParticles;
 
 	void KillRatman() {
-		Instantiate( deathParticles, new Vector3( rat.transform.position.x, rat.transform.position.y + 0.5f, rat.transform.position.z ), Quaternion.identity );
-
 		rat.SetActive( false );
 		//ratAnim.enabled = false;
 		HatchActivator.EnableHatch( isOnTheLeft );
+
+		if (!isServer) {
+
+			return;
+		}
+		var g = Instantiate( deathParticles, new Vector3( rat.transform.position.x, rat.transform.position.y + 0.5f, rat.transform.position.z ), Quaternion.identity );
+		NetworkServer.Spawn(g);
 	}
 }
