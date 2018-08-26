@@ -38,5 +38,7 @@ public class Crystal : MonoBehaviour {
 		foreach (var t in otherCrystals) {
 			transform.root.GetComponent<PathFollower>().DestroyCrystal( t.gameObject );
 		}
+		transform.root.GetComponent<PathFollower>().DestroyCrystal( gameObject );
+
 	}
 }

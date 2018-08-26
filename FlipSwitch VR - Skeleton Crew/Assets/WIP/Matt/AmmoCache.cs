@@ -15,7 +15,7 @@ public class AmmoCache : NetworkBehaviour{
 		if ( !isServer )
 			return;
 
-		if ( other.gameObject.GetComponent<Weapon>() && !active ) {
+		if ( other.gameObject.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Gun && !active ) {
 			timer = 0;
 			active = true;
 			activator = other.gameObject;

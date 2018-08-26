@@ -26,7 +26,7 @@ public class HealthDisplay : MonoBehaviour {
 		}
 
 		if (player) {
-			text.text = player.GetHealth().ToString();
+			text.text = player.GetHealth() <= 0 ? "Respawn" : player.GetHealth().ToString();
 		}
 
 		if (rat) {

@@ -12,7 +12,6 @@ public class Cannon : NetworkBehaviour {
 	public Transform cannonBarrel;
 	public float minAngle, maxAngle;
 	public Transform[] aimingNodes;
-	public Transform handMarker;
 
 	[SyncVar( hook = "OnFiringChange" )]
 	private bool isFiring;

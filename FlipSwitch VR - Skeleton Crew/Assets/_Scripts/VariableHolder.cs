@@ -22,7 +22,7 @@ public class VariableHolder : MonoBehaviour {
 
 	public void NumPlayerChanged(string n)
 	{
-		Debug.Log("String passed in " + n);
+		//Debug.Log("String passed in " + n);
 		numPlayers = int.Parse(n);
 		if(numPlayers > 4 || numPlayers < 1)
 		{

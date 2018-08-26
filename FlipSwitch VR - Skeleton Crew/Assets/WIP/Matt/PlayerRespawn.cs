@@ -33,9 +33,11 @@ public class PlayerRespawn : NetworkBehaviour {
             return;
 
         if (other.gameObject.tag == "PlayerCollider" && !active) {
-            timer = 0;
-            active = true;
-            playerBeingRevived = other.transform.root.gameObject;
+	        if (other.GetComponentInParent<ScriptSyncPlayer>().GetHealth() <= 0) {
+		        timer = 0;
+		        active = true;
+		        playerBeingRevived = other.transform.root.gameObject;
+	        }
         }
     }
 
