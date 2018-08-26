@@ -6,9 +6,9 @@ using UnityEngine.AI;
 
 public class CheckTargetHealth : Conditional {
 
-    public SharedGameObject currentTarget;
-    
-    private bool isDead;
+	public SharedGameObject currentTarget;
+	
+	private bool isDead;
 	// Use this for initialization
 	public override void OnStart () {
 		Debug.Log("current target is: " + currentTarget.Value.name + " on enemy named " + gameObject.name + " who is dead? " + isDead);
@@ -31,8 +31,8 @@ public class CheckTargetHealth : Conditional {
 		}
 	}
 
-    // Update is called once per frame
-    public override TaskStatus OnUpdate() {
-	    return isDead ? TaskStatus.Success : TaskStatus.Failure;
-    }
+	// Update is called once per frame
+	public override TaskStatus OnUpdate() {
+		return isDead ? TaskStatus.Success : TaskStatus.Failure;
+	}
 }

@@ -56,13 +56,6 @@ public class Enemy : NetworkBehaviour {
 					RpcPlayHitSound( rng );
 				}
 			} 
-			//else if ( n <= 0 ) {
-			//	if ( isServer ) {
-
-			//		GetComponent<AudioSource>().PlayOneShot( deathSound );
-			//		RpcPlayDeathSound();
-			//	}
-			//}
 		}
 
 		health = n;
@@ -121,7 +114,7 @@ public class Enemy : NetworkBehaviour {
 		if (other.tag == "Weapon") {
 			if (other.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
 				// todo: test that enemies are only being damaged by melee weapons being held by player
-				if (other.GetComponent<Weapon>().isBeingHeldByPlayer) {
+				if (other.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
 					canBeDamaged = false;
 					health -= other.GetComponent<Weapon>().data.damage;
 					if (health <= 0) {
@@ -169,6 +162,10 @@ public class Enemy : NetworkBehaviour {
 
 	[ClientRpc]
 	void RpcSpawnDeathParticles() {
+		if (isServer) {
+			return;
+		}
+
 		Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
 	}
 
