@@ -16,17 +16,18 @@ public class AvatarSwitch : MonoBehaviour {
 
 
     public void OnActivate() {
-		print("on activate was called");
+		//print("on activate was called");
 		if ( type == ChangeType.Armor ) {
-			print( "on activate was armor" );
+			//print( "on activate was armor" );
 			activator.GetComponentInParent<ChangeAvatar>().SetArmorSet( armorSet );
 		} else if (type == ChangeType.Color) {
-			print( "on activate was color" );
+			//print( "on activate was color" );
 			activator.GetComponentInParent<ChangeAvatar>().SetSkin( skinColor );
 		}
 	}
 
 	private void OnTriggerEnter( Collider other ) {
+		//print("trigger entered");
 		timer = 0;
 		active = true;
 	}

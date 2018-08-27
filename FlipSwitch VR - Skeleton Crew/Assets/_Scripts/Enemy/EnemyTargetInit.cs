@@ -83,9 +83,9 @@ public class EnemyTargetInit : MonoBehaviour {
                 GetComponentInParent<Ratman>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
 
             } else if (targetType == TargetType.Player) {
-                if (transform.parent.GetComponent<PlayerSetup>().isServer) {
+                if (transform.parent.GetComponent<FSVRPlayer>().isServer) {
 
-                    int hp = GetComponentInParent<ScriptSyncPlayer>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
+                    int hp = GetComponentInParent<Player>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
                     if (hp <= 0) {
                         RemoveFromList();
                     }

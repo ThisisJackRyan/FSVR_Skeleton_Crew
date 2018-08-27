@@ -22,23 +22,23 @@ public class ScriptNetworkManager : NetworkManager {
 
     public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
-        //if (testing)
-        //{
-        //    GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
-        //    NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
-        //} else
-        //{
-		    if ( firstSpawn ) {
-			    GameObject host = Instantiate( hostPrefab, Vector3.zero, Quaternion.identity );
-			    NetworkServer.AddPlayerForConnection( conn, host, playerControllerId );
-			    firstSpawn = false;
-		    } else {
-			    GameObject player = Instantiate( playerPrefab, Vector3.zero, Quaternion.identity );
+		//if (testing)
+		//{
+		//    GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+		//    NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
+		//} else
+		//{
+		if ( firstSpawn ) {
+			GameObject host = Instantiate( hostPrefab, Vector3.zero, Quaternion.identity );
+			NetworkServer.AddPlayerForConnection( conn, host, playerControllerId );
+			firstSpawn = false;
+		} else {
+			GameObject player = Instantiate( playerPrefab, Vector3.zero, Quaternion.identity );
 			    NetworkServer.AddPlayerForConnection( conn, player, playerControllerId );
-		    }
-        //}
-		
-		
+		}
+		//}
+
+
 
 		//if ( NetworkHelper.hostIpAddress.Equals( conn.address ) ) {
 		//	GameObject host = Instantiate( hostPrefab, Vector3.zero, Quaternion.identity );

@@ -35,6 +35,7 @@ public class ConnectWithPress : MonoBehaviour {
                     item.SetTrackerId();
                 }
 
+
                 StartCoroutine("FadeAndLoad");
             }
         }

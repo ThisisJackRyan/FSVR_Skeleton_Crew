@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="Snd_SailRaise_data" version="1.3.0" audacityversion="2.1.3" sel0="0.0000000000" sel1="0.0000000000" vpos="0" h="0.1098374906" zoom="236.7133468672" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags/>
+	<wavetrack name="Snd_SailRaise" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="48000" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="118175">
+				<waveblock start="0">
+					<pcmaliasblockfile summaryfile="e0000d00.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Snd_SailRaise.wav" aliasstart="0" aliaslen="118175" aliaschannel="0" min="-0.749549" max="0.820118" rms="0.162363"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Snd_SailRaise" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="48000" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="118175">
+				<waveblock start="0">
+					<pcmaliasblockfile summaryfile="e0000680.auf" aliasfile="C:\Users\virga\Documents\Unity\Phase 3\FlipSwitch VR - Skeleton Crew\Assets\WIP\Lamont\Sounds\Snd_SailRaise.wav" aliasstart="0" aliaslen="118175" aliaschannel="1" min="-0.877303" max="0.784907" rms="0.158856"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Snd_SailWind" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.99184311">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="43222">
+				<waveblock start="0">
+					<simpleblockfile filename="e000047b.au" len="43222" min="-0.240737" max="0.245596" rms="0.026263"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Snd_SailWind" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.99184311">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="43222">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000842.au" len="43222" min="-0.241309" max="0.246072" rms="0.026146"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>

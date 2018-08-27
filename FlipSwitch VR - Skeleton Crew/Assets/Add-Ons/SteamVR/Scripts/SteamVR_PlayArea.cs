@@ -20,6 +20,7 @@ public class SteamVR_PlayArea : MonoBehaviour
 	public enum Size
 	{
 		Calibrated,
+		_540x500,
 		_400x300,
 		_300x225,
 		_200x150
@@ -89,6 +90,10 @@ public class SteamVR_PlayArea : MonoBehaviour
 
 	public void BuildMesh()
 	{
+
+		//Debug.LogWarning( name + " called build mesh" );
+
+
 		var rect = new HmdQuad_t();
 		if ( !GetBounds( size, ref rect ) )
 			return;

@@ -88,6 +88,20 @@ sail raising.wav
 	-cc0
 	-https://freesound.org/people/cabro/sounds/265621/
 
+267887__wjl__short-fireball-woosh.flac
+	-wjl
+	-cc0
+	-https://freesound.org/people/wjl/sounds/267887/
+
+impact-04.wav
+	-smuz
+	-cc0
+	-https://freesound.org/people/smuz/sounds/260000/
+	
+torch_whoosh_20.wav
+	-Soundrangers
+	-cc0
+	-Soundrangers.com
 	
 ---------------------------------------------------------------------------------------------------------	
 34091__dangerbabe__drum -> Snd_WarDrum1
@@ -156,6 +170,11 @@ Dragon Sounds
 	-Editted
 	-https://freesound.org/people/Slaking_97/packs/18685/
 	
+SFX_MAGIC_FIREBALL_001.wav -> Snd_TorchWoosh
+	-JoelAudio
+	-Attribution 3.0
+	-Editted
+	-https://freesound.org/people/JoelAudio/sounds/77691/
 --------------------------------------------------------------------------------------------------------
 "Let's Play with Free Sound Effects" 
 http://taira-komori.jpn.org/freesounden.html 

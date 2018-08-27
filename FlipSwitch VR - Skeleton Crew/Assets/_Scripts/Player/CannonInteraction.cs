@@ -30,7 +30,7 @@ public class CannonInteraction : NetworkBehaviour {
 
 	private void Start() {
 		if ( isServer ) {
-			print( name + " enabled server check" );
+			//print( name + " enabled server check" );
 			Captain.playersFiredCannons.Add( this, false );
 		}
 
@@ -158,7 +158,7 @@ public class CannonInteraction : NetworkBehaviour {
 		}
 
 		foreach ( CannonAimNode node in cannon.GetComponentsInChildren<CannonAimNode>() ) {
-			node.gameObject.GetComponent<Renderer>().enabled = true;
+			node.particles.SetActive( true);
 		}
 
 		cannonCurrentlyAiming = cannon.GetComponent<Cannon>();
@@ -178,7 +178,7 @@ public class CannonInteraction : NetworkBehaviour {
 		}
 
 		foreach ( CannonAimNode node in cannon.GetComponentsInChildren<CannonAimNode>() ) {
-			node.gameObject.GetComponent<Renderer>().enabled = false;
+			node.particles.SetActive( false );
 		}
 
 		cannonCurrentlyAiming = null;
