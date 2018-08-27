@@ -37,7 +37,7 @@ public class ExitLobbySwitch : NetworkBehaviour {
 
 					//StartCoroutine("FadeAndTeleport");
 					StartFade();
-					other.GetComponentInParent<ScriptSyncPlayer>().TellCaptainToStartTutorial();
+					other.GetComponentInParent<Player>().TellCaptainToStartTutorial();
 					
 				}
 			}
