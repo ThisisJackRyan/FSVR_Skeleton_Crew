@@ -680,7 +680,27 @@ ModelImporter:
     7400002: Take 001
     9500000: //RootNode
     11100000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bone_Pile_Color_Dark
+    second: {fileID: 2100000, guid: 0d35525663cdd8d4daea45ce77be05d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bone_Pile_Color_Ghost
+    second: {fileID: 2100000, guid: 6efd8e120580c214dbef646b3e1d754f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bone_Pile_Color_Normal
+    second: {fileID: 2100000, guid: f9b6dae4cb841134e864c51a8bf407ba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bone_Pile_Color_Red
+    second: {fileID: 2100000, guid: 5cb2dfab4484ce24b910cd9951766d3f, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
