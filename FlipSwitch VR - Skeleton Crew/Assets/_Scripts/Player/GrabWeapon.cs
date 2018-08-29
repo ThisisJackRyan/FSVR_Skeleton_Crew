@@ -55,19 +55,20 @@ public class GrabWeapon : NetworkBehaviour {
 			weaponInRightHolster.GetComponent<ObjectPositionLock>().posPoint = null;
 			weaponInRightHolster.GetComponent<ObjectPositionLock>().posOffset = Vector3.zero;
 			weaponInRightHolster.GetComponent<ObjectPositionLock>().rotOffset = Quaternion.Euler( Vector3.zero );
-			weaponInRightHolster.GetComponent<Rigidbody>().isKinematic = false;
+			if (isServer) {
+				weaponInRightHolster.GetComponent<Rigidbody>().isKinematic = false;
+			}
 		}
 		if ( weaponInLeftHolster ) {
 			weaponInLeftHolster.GetComponent<ObjectPositionLock>().posPoint = null;
 			weaponInLeftHolster.GetComponent<ObjectPositionLock>().posOffset = Vector3.zero;
 			weaponInLeftHolster.GetComponent<ObjectPositionLock>().rotOffset = Quaternion.Euler( Vector3.zero );
-			weaponInLeftHolster.GetComponent<Rigidbody>().isKinematic = false;
+			if (isServer) {
+				weaponInLeftHolster.GetComponent<Rigidbody>().isKinematic = false;
+			}
 		}
 
 		if (isServer) {
-			
-
-
 			if ( leftHighlightedWeaponObj ) {
 				SendCommandToUnHighlight(true);
 			}
@@ -311,7 +312,6 @@ public class GrabWeapon : NetworkBehaviour {
 			return;
 		}
 
-		// todo: test weapon highlighting different colors (red right, blue left)
 		if ( isLocalPlayer && player == gameObject ) {
 			if ( side.Equals( "left" ) ) {
 				if ( leftHighlightedWeaponObj ) {
@@ -389,7 +389,7 @@ public class GrabWeapon : NetworkBehaviour {
 			leftWeaponGameObj.GetComponent<Weapon>().playerWhoHolstered = null;
 
 			leftWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = null;
-			leftWeaponGameObj.GetComponent<Rigidbody>().isKinematic = false;
+			//leftWeaponGameObj.GetComponent<Rigidbody>().isKinematic = false;
 			leftWeaponGameObj = null;
 			weaponInteraction.UnassignWeapon( side );
 
@@ -403,7 +403,7 @@ public class GrabWeapon : NetworkBehaviour {
 			rightWeaponGameObj.GetComponent<Weapon>().playerWhoHolstered = null;
 
 			rightWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = null;
-			rightWeaponGameObj.GetComponent<Rigidbody>().isKinematic = false;
+			//rightWeaponGameObj.GetComponent<Rigidbody>().isKinematic = false;
 			rightWeaponGameObj = null;
 			weaponInteraction.UnassignWeapon( side );
 

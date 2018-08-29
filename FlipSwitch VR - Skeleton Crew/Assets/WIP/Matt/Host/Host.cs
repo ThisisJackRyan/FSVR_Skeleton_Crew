@@ -6,35 +6,32 @@ using UnityEngine.Networking;
 
 public class Host : NetworkBehaviour {
 
-    public GameObject tagResetterPrefab;
-    public Vector3[] guardSpawnPos;
-    public Vector3[] guardSpawnRot;
-    public GameObject guardPrefab;
+	public GameObject tagResetterPrefab;
 	List<GameObject> players;
-    private HostUiManager scriptHostUi;
+	private HostUiManager scriptHostUi;
 
-    private GameObject selectedPlayer;
+	private GameObject selectedPlayer;
 
-    #region Getters & Setters
-    public void SetSelectedPlayer(GameObject p)
-    {
-        selectedPlayer = p;
-    }
+	#region Getters & Setters
+	public void SetSelectedPlayer(GameObject p)
+	{
+		selectedPlayer = p;
+	}
 
-    public List<GameObject> GetPlayerList()
-    {
-        return players;
-    }
-    #endregion
+	public List<GameObject> GetPlayerList()
+	{
+		return players;
+	}
+	#endregion
 
-    #region Initialization
-    void Start()
-    {
-        if (!isLocalPlayer && !isServer)
+	#region Initialization
+	void Start()
+	{
+		if (!isLocalPlayer && !isServer)
 		{
 			GetComponent<AudioListener>().enabled = false;
 			return;
-        }
+		}
 
 		GetComponent<Camera>().enabled = true;
 		GetComponent<AudioListener>().enabled = true;
@@ -42,10 +39,7 @@ public class Host : NetworkBehaviour {
 		//GameObject uiManager = GameObject.Find( "HostUIManager" );
 		//uiManager.SetActive( true );
 
-        for(int i=0; i<GetComponent<NumberOfPlayerHolder>().numberOfPlayers ; i++) {
-            GameObject g = Instantiate(guardPrefab, guardSpawnPos[i], Quaternion.Euler(guardSpawnRot[i]));
-            NetworkServer.Spawn(g);
-        }
+
 
 		//scriptHostUi = uiManager.GetComponent<HostUiManager>();
 		//scriptHostUi.SetHost( this );
@@ -53,86 +47,86 @@ public class Host : NetworkBehaviour {
 
 	public void AddPlayerToHostList(GameObject playerToAdd) {
 		//print("pre rpc " + playerToAdd.name);
-        RpcAddPlayerToHost(playerToAdd);
-    }
+		RpcAddPlayerToHost(playerToAdd);
+	}
 
-    [ClientRpc]
-    private void RpcAddPlayerToHost(GameObject playerToAdd) {
+	[ClientRpc]
+	private void RpcAddPlayerToHost(GameObject playerToAdd) {
 		if ( !isLocalPlayer) {
-            return;
-        }
+			return;
+		}
 
-	    //print("should be adding " + playerToAdd.name + " to host list on host client");
+		//print("should be adding " + playerToAdd.name + " to host list on host client");
 
 		if (players == null) {
 			players = new List<GameObject>();
 		}
 
-        players.Add(playerToAdd);
-        playerToAdd.GetComponent<FSVRPlayer>().SetCameraSettings(players.Count);
-        playerToAdd.name = "Player " + players.Count;
-      //  scriptHostUi.UpdateUI();
-    }
+		players.Add(playerToAdd);
+		playerToAdd.GetComponent<FSVRPlayer>().SetCameraSettings(players.Count);
+		playerToAdd.name = "Player " + players.Count;
+	  //  scriptHostUi.UpdateUI();
+	}
 
-    #endregion
+	#endregion
 
-    #region Handle Pausing
-    public void TogglePause() {
-        if (isLocalPlayer) {
-            CmdTogglePause();
-        }
-    }
+	#region Handle Pausing
+	public void TogglePause() {
+		if (isLocalPlayer) {
+			CmdTogglePause();
+		}
+	}
 
-    [Command]
-    private void CmdTogglePause() {
-        RpcTogglePause();
-    }
+	[Command]
+	private void CmdTogglePause() {
+		RpcTogglePause();
+	}
 
-    [ClientRpc]
-    private void RpcTogglePause() {
-        if (Time.timeScale == 0f) {
-            Time.timeScale = 1f;
-        } else {
-            Time.timeScale = 0f;
-        }
-    }
-    #endregion
+	[ClientRpc]
+	private void RpcTogglePause() {
+		if (Time.timeScale == 0f) {
+			Time.timeScale = 1f;
+		} else {
+			Time.timeScale = 0f;
+		}
+	}
+	#endregion
 
-    #region Handle Calibrations
+	#region Handle Calibrations
 
-    public void PerformCalibration() {
-        if (!selectedPlayer) {
-            return;
-        }
+	public void PerformCalibration() {
+		if (!selectedPlayer) {
+			return;
+		}
 
-        CmdCalibratePlayer(selectedPlayer);
-    }
+		CmdCalibratePlayer(selectedPlayer);
+	}
 
-    [Command]
-    private void CmdCalibratePlayer(GameObject g) {
-        RpcCalibratePlayer(g);
-    }
+	[Command]
+	private void CmdCalibratePlayer(GameObject g) {
+		RpcCalibratePlayer(g);
+	}
 
-    [ClientRpc]
-    private void RpcCalibratePlayer(GameObject g) {
-        if (isServer) {
-            return;
-        }
+	[ClientRpc]
+	private void RpcCalibratePlayer(GameObject g) {
+		if (isServer) {
+			return;
+		}
 
-        g.GetComponentInChildren<VRIKCalibrationController>().Calibrate();
-    }
+		g.GetComponentInChildren<VRIKCalibrationController>().Calibrate();
+	}
 
-    #endregion
+	#endregion
 
-    #region Handle Tag Resetting
+	#region Handle Tag Resetting
 
-    #endregion
+	#endregion
 
-    #region Handle Player Leaving
+	#region Handle Player Leaving
 
-    #endregion
+	#endregion
 
-    #region Handle Player Returning
+	#region Handle Player Returning
 
-    #endregion
+	#endregion
 }

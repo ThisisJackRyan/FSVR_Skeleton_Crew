@@ -6,9 +6,9 @@ using Sirenix.OdinInspector;
 
 public class ImpactReticuleSpawner : NetworkBehaviour {
 
-    public GameObject deckMesh;
-    public GameObject reticlePrefab;
-    public int totalSpawns = 6;
+	public GameObject deckMesh;
+	public GameObject reticlePrefab;
+	public int totalSpawns = 6;
 	int curSpawn;
 	public float timeBeforeStart = 1.5f, timeBetweenSpawns = 5, checkRadius = 0.5f;
 	Vector3 gizmo = Vector3.zero;
@@ -16,9 +16,9 @@ public class ImpactReticuleSpawner : NetworkBehaviour {
 
 	[Button]
 	private Vector3 GeneratePoint() {
-        Vector3 retVect = Vector3.zero;
+		Vector3 retVect = Vector3.zero;
 
-        Bounds deckBounds = deckMesh.GetComponent<MeshRenderer>().bounds;
+		Bounds deckBounds = deckMesh.GetComponent<MeshRenderer>().bounds;
 
 		bool found = false;
 
@@ -34,7 +34,7 @@ public class ImpactReticuleSpawner : NetworkBehaviour {
 			RaycastHit[] hits = Physics.SphereCastAll( retVect, checkRadius, Vector3.up );
 
 			foreach ( var hit in hits ) {
-				print( "spherecast hit " + hit.transform.name );
+				//print( "spherecast hit " + hit.transform.name );
 				if ( hit.transform.tag == "Indestructible" ) {
 					found = true;
 					break;
@@ -45,25 +45,25 @@ public class ImpactReticuleSpawner : NetworkBehaviour {
 
 		gizmo = retVect;
 
-        return retVect;
-    }
+		return retVect;
+	}
 
 	private void Start() {
 		InvokeRepeating( "SpawnReticle", timeBeforeStart, timeBetweenSpawns );
 	}
 
 	public void SpawnReticle() {
-        if (!isServer) {
-            return;
-        }
+		if (!isServer) {
+			return;
+		}
 
-        GameObject reticle = Instantiate(reticlePrefab, GeneratePoint(), Quaternion.identity);
-        NetworkServer.Spawn(reticle);
+		GameObject reticle = Instantiate(reticlePrefab, GeneratePoint(), Quaternion.identity);
+		NetworkServer.Spawn(reticle);
 		curSpawn++;
 		if(curSpawn >= totalSpawns ) {
 			NetworkServer.Destroy( gameObject );
 		}
-    }
+	}
 
 	private void OnDrawGizmos() {
 		if (debug) {

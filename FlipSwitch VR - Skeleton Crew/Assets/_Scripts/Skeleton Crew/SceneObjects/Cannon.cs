@@ -12,6 +12,7 @@ public class Cannon : NetworkBehaviour {
 	public Transform cannonBarrel;
 	public float minAngle, maxAngle;
 	public Transform[] aimingNodes;
+	public AudioClip aimClip;
 
 	[SyncVar( hook = "OnFiringChange" )]
 	private bool isFiring;
@@ -43,6 +44,23 @@ public class Cannon : NetworkBehaviour {
 		GetComponent<AudioSource>().PlayOneShot( fuseClip );
 		RpcPlayFuse();
 
+	}
+
+
+	[ClientRpc]
+	public void RpcPlayAim() {
+		if ( isServer ) {
+			return;
+		}
+		GetComponent<AudioSource>().PlayOneShot( aimClip );
+	}
+
+	public void PlayAim() {
+		if ( !isServer ) {
+			return;
+		}
+		GetComponent<AudioSource>().PlayOneShot( aimClip );
+		RpcPlayAim();
 	}
 
 	void OnReload( bool n ) {

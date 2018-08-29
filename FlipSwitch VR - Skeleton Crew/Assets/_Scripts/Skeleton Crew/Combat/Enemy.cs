@@ -40,10 +40,10 @@ public class Enemy : NetworkBehaviour {
 			for ( int i = 0; i < hitParticles.Length; i++ ) {
 				hitParticles[i].SetActive( true );
 				var particles = hitParticles[i].GetComponent<ParticleSystem>();
-				//particles.Simulate( 0, true, true );
-				foreach ( ParticleSystem ps in particles.GetComponentsInChildren<ParticleSystem>() ) {
-					particles.Simulate( 0, true, true );
-				}
+				particles.Simulate( 0, true, true );
+				//foreach ( ParticleSystem ps in particles.GetComponentsInChildren<ParticleSystem>() ) {
+				//	particles.Simulate( 0, true, true );
+				//}
 				particles.Play();
 				//print( particles.name + " should be emiitng" );
 			}
@@ -130,6 +130,8 @@ public class Enemy : NetworkBehaviour {
 
 			if (health <= 0) {
 				Destroy(gameObject);
+				RpcSpawnDeathParticles();
+
 			}
 		}
 	}

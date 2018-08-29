@@ -28,6 +28,8 @@ public class Crystal : MonoBehaviour {
 		if (health <= 0) {
 			//print("called rpc bullet");
 			transform.root.GetComponent<PathFollower>().DestroyCrystal(gameObject);
+			Destroy( gameObject ); //todo fully network this
+
 		}
 	}
 
