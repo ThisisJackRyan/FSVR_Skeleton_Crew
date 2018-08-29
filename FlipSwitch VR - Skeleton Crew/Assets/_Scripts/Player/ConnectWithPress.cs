@@ -35,7 +35,6 @@ public class ConnectWithPress : MonoBehaviour {
                     item.SetTrackerId();
                 }
 
-
                 StartCoroutine("FadeAndLoad");
             }
         }
@@ -56,16 +55,12 @@ public class ConnectWithPress : MonoBehaviour {
 
     IEnumerator FadeAndLoad() {
         SteamVR_Fade.Start(Color.black, 1, true);
-        //SteamVR.instance.compositor.FadeToColor( 0, 0, 0, 0, 1, true );
         yield return new WaitForSecondsRealtime(1f);
-        //SteamVR_Fade.View( Color.black, 3f );
-        //GetComponentInChildren<Camera>().enabled = false;
+        NetworkManager.singleton.networkAddress = NetworkManager.singleton.serverBindAddress;
         NetworkManager.singleton.StartClient();
+
         yield return new WaitForSecondsRealtime(1f);
         SteamVR_Fade.Start(Color.clear, 1, true);
-        //GetComponentInChildren<Camera>().enabled = true;
-
-        //Destroy(gameObject);
     }
 }
 
