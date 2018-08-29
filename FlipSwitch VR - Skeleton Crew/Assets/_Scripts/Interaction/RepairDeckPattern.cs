@@ -18,6 +18,8 @@ public class RepairDeckPattern : MonoBehaviour {
 		
 
 		FaceActivator(activator);
+
+		deckDmg.FacePattern(transform);
 		
 		Increment();
 		//print("awerrrrrrrrrrrrrrrrrrrrrrrgwer");
@@ -28,7 +30,7 @@ public class RepairDeckPattern : MonoBehaviour {
 										 activator.GetComponentInChildren<HipMarker>().transform.position.y,
 										 transform.position.z );
 
-		Vector3 v = activator.position - transform.position;
+		Vector3 v = activator.GetComponentInChildren<HipMarker>().transform.position - transform.position;
 
 		v.x = v.z = 0.0f;
 		transform.LookAt( Camera.main.transform.position - v );
