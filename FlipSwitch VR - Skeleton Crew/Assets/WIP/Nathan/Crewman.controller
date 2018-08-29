@@ -5,7 +5,7 @@ AnimatorController:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Shooter
+  m_Name: Crewman
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Horizontal Input
@@ -18377,7 +18377,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400076, guid: 52f01f7da6e7efb428f251cc0b049e1e, type: 3}
+  m_Motion: {fileID: 7400000, guid: 1bce76f50f1ef6e44a8a76a89db959f6, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -43011,7 +43011,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400084, guid: f1a9a077a6f638446a31f5a0ed489124, type: 3}
+  m_Motion: {fileID: 7400000, guid: 1bce76f50f1ef6e44a8a76a89db959f6, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -52026,33 +52026,33 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
-  - first: {fileID: 110712910}
-    second: []
-  - first: {fileID: 110757426}
+  - first: {fileID: 110704950}
     second: []
   - first: {fileID: 110710869}
     second: []
-  - first: {fileID: 110795098}
-    second: []
   - first: {fileID: 110711482}
     second: []
-  - first: {fileID: 110776506}
-    second: []
-  - first: {fileID: 110704950}
+  - first: {fileID: 110712910}
     second: []
   - first: {fileID: 110719763}
     second: []
-  - first: {fileID: 110798212}
+  - first: {fileID: 110726908}
+    second: []
+  - first: {fileID: 110757426}
     second: []
   - first: {fileID: 110768776}
     second: []
-  - first: {fileID: 110799402}
+  - first: {fileID: 110776506}
     second: []
-  - first: {fileID: 110726908}
+  - first: {fileID: 110795098}
+    second: []
+  - first: {fileID: 110798212}
+    second: []
+  - first: {fileID: 110799402}
     second: []
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 48, y: 84, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_EntryPosition: {x: 48, y: 120, z: 0}
   m_ExitPosition: {x: 876, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 110220223}
@@ -53121,25 +53121,25 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
-  - first: {fileID: 110739180}
-    second: []
-  - first: {fileID: 110760356}
-    second: []
   - first: {fileID: 110701324}
-    second: []
-  - first: {fileID: 110742978}
-    second: []
-  - first: {fileID: 110730776}
-    second: []
-  - first: {fileID: 110728174}
-    second: []
-  - first: {fileID: 110748928}
     second: []
   - first: {fileID: 110707714}
     second: []
+  - first: {fileID: 110719174}
+    second: []
   - first: {fileID: 110723340}
     second: []
-  - first: {fileID: 110719174}
+  - first: {fileID: 110728174}
+    second: []
+  - first: {fileID: 110730776}
+    second: []
+  - first: {fileID: 110739180}
+    second: []
+  - first: {fileID: 110742978}
+    second: []
+  - first: {fileID: 110748928}
+    second: []
+  - first: {fileID: 110760356}
     second: []
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
@@ -53748,25 +53748,25 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
+  - first: {fileID: 110701164}
+    second: []
+  - first: {fileID: 110702082}
+    second: []
   - first: {fileID: 110724894}
     second: []
   - first: {fileID: 110733362}
     second: []
   - first: {fileID: 110755482}
     second: []
-  - first: {fileID: 110791436}
-    second: []
-  - first: {fileID: 110796872}
+  - first: {fileID: 110759310}
     second: []
   - first: {fileID: 110759756}
     second: []
-  - first: {fileID: 110759310}
-    second: []
-  - first: {fileID: 110701164}
-    second: []
   - first: {fileID: 110762086}
     second: []
-  - first: {fileID: 110702082}
+  - first: {fileID: 110791436}
+    second: []
+  - first: {fileID: 110796872}
     second: []
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
@@ -53961,23 +53961,23 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
-  - first: {fileID: 110747828}
-    second: []
-  - first: {fileID: 110744828}
-    second: []
-  - first: {fileID: 110770426}
-    second: []
-  - first: {fileID: 110760206}
-    second: []
-  - first: {fileID: 110738176}
+  - first: {fileID: 110708998}
     second: []
   - first: {fileID: 110731790}
     second: []
-  - first: {fileID: 110770254}
+  - first: {fileID: 110738176}
     second: []
   - first: {fileID: 110738410}
     second: []
-  - first: {fileID: 110708998}
+  - first: {fileID: 110744828}
+    second: []
+  - first: {fileID: 110747828}
+    second: []
+  - first: {fileID: 110760206}
+    second: []
+  - first: {fileID: 110770254}
+    second: []
+  - first: {fileID: 110770426}
     second: []
   - first: {fileID: 110781326}
     second: []
@@ -57712,25 +57712,25 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
+  - first: {fileID: 110704122}
+    second: []
   - first: {fileID: 110717064}
-    second: []
-  - first: {fileID: 110732744}
-    second: []
-  - first: {fileID: 110795972}
-    second: []
-  - first: {fileID: 110759200}
     second: []
   - first: {fileID: 110717492}
     second: []
-  - first: {fileID: 110704122}
+  - first: {fileID: 110732744}
     second: []
-  - first: {fileID: 110790156}
+  - first: {fileID: 110759200}
     second: []
   - first: {fileID: 110767734}
     second: []
+  - first: {fileID: 110784792}
+    second: []
   - first: {fileID: 110788190}
     second: []
-  - first: {fileID: 110784792}
+  - first: {fileID: 110790156}
+    second: []
+  - first: {fileID: 110795972}
     second: []
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
@@ -58008,37 +58008,37 @@ AnimatorStateMachine:
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: 110737385}
-    second: []
-  - first: {fileID: 110773239}
-    second: []
-  - first: {fileID: 110727357}
-    second: []
-  - first: {fileID: 110712632}
-    second: []
-  - first: {fileID: 110782802}
-    second: []
-  - first: {fileID: 110781170}
-    second: []
-  - first: {fileID: 110780914}
-    second: []
-  - first: {fileID: 110790806}
-    second: []
-  - first: {fileID: 110708100}
-    second: []
   - first: {fileID: 110703342}
     second: []
   - first: {fileID: 110705976}
+    second: []
+  - first: {fileID: 110708100}
+    second: []
+  - first: {fileID: 110712632}
     second: []
   - first: {fileID: 110722914}
     second: []
   - first: {fileID: 110726986}
     second: []
+  - first: {fileID: 110727357}
+    second: []
   - first: {fileID: 110736890}
+    second: []
+  - first: {fileID: 110737385}
     second: []
   - first: {fileID: 110756860}
     second: []
+  - first: {fileID: 110773239}
+    second: []
   - first: {fileID: 110780354}
+    second: []
+  - first: {fileID: 110780914}
+    second: []
+  - first: {fileID: 110781170}
+    second: []
+  - first: {fileID: 110782802}
+    second: []
+  - first: {fileID: 110790806}
     second: []
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 24, y: -72, z: 0}
@@ -58650,45 +58650,45 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
-  - first: {fileID: 110727166}
-    second: []
-  - first: {fileID: 110764277}
-    second: []
-  - first: {fileID: 110773309}
-    second: []
-  - first: {fileID: 110760615}
+  - first: {fileID: 110704469}
     second: []
   - first: {fileID: 110709222}
     second: []
-  - first: {fileID: 110704469}
+  - first: {fileID: 110713981}
+    second: []
+  - first: {fileID: 110714078}
+    second: []
+  - first: {fileID: 110724651}
+    second: []
+  - first: {fileID: 110727166}
     second: []
   - first: {fileID: 110733404}
     second: []
-  - first: {fileID: 110713981}
+  - first: {fileID: 110760615}
+    second: []
+  - first: {fileID: 110762234}
+    second: []
+  - first: {fileID: 110764277}
+    second: []
+  - first: {fileID: 110769682}
+    second: []
+  - first: {fileID: 110773144}
+    second: []
+  - first: {fileID: 110773309}
+    second: []
+  - first: {fileID: 110773822}
+    second: []
+  - first: {fileID: 110775188}
+    second: []
+  - first: {fileID: 110775736}
     second: []
   - first: {fileID: 110781946}
     second: []
   - first: {fileID: 110790319}
     second: []
-  - first: {fileID: 110724651}
+  - first: {fileID: 110792586}
     second: []
   - first: {fileID: 110793794}
-    second: []
-  - first: {fileID: 110775736}
-    second: []
-  - first: {fileID: 110769682}
-    second: []
-  - first: {fileID: 110775188}
-    second: []
-  - first: {fileID: 110773144}
-    second: []
-  - first: {fileID: 110762234}
-    second: []
-  - first: {fileID: 110773822}
-    second: []
-  - first: {fileID: 110714078}
-    second: []
-  - first: {fileID: 110792586}
     second: []
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: -24, y: 24, z: 0}
@@ -58788,29 +58788,29 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
-  - first: {fileID: 110764565}
-    second: []
   - first: {fileID: 110700120}
     second: []
-  - first: {fileID: 110772108}
+  - first: {fileID: 110706572}
+    second: []
+  - first: {fileID: 110718480}
     second: []
   - first: {fileID: 110719306}
     second: []
   - first: {fileID: 110738870}
     second: []
-  - first: {fileID: 110787640}
-    second: []
-  - first: {fileID: 110706572}
-    second: []
   - first: {fileID: 110741664}
-    second: []
-  - first: {fileID: 110718480}
     second: []
   - first: {fileID: 110745598}
     second: []
   - first: {fileID: 110750718}
     second: []
+  - first: {fileID: 110764565}
+    second: []
   - first: {fileID: 110767124}
+    second: []
+  - first: {fileID: 110772108}
+    second: []
+  - first: {fileID: 110787640}
     second: []
   - first: {fileID: 110796386}
     second: []
