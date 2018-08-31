@@ -39,7 +39,7 @@ public class CannonInteraction : NetworkBehaviour {
 
 	#region Cannon aiming
 
-	public float maxReachToCannonWheel = 2f;
+	public float maxReachToCannonWheel = 0.5f;
 
 	MastInteraction mastInteraction;
 	Cannon cannonCurrentlyAiming;
@@ -65,14 +65,14 @@ public class CannonInteraction : NetworkBehaviour {
 		if (leftHandInteracting && Controller.LeftController.GetPress( Controller.Grip ) ) {
 			if ( Vector3.Distance( mastInteraction.leftHand.position, cannonCurrentlyAiming.aimingNodes[indexOfClosest].position ) > maxReachToCannonWheel ) {
 				leftHandInteracting = false;
-				CmdStopInteracting(true);
+				CmdStopInteracting(true, false);
 			}
 		}
 
 		if (rightHandInteracting && Controller.RightController.GetPress( Controller.Grip ) ) {
 			if ( Vector3.Distance( mastInteraction.rightHand.position, cannonCurrentlyAiming.aimingNodes[indexOfClosest].position ) > maxReachToCannonWheel ) {
 				rightHandInteracting = false;
-				CmdStopInteracting(false);
+				CmdStopInteracting(false, false);
 			}
 		}
 
@@ -80,13 +80,13 @@ public class CannonInteraction : NetworkBehaviour {
 		if ( leftHandInteracting && Controller.LeftController.GetPressUp( Controller.Grip ) ) {
 			//print( "inside up left" );
 			leftHandInteracting = false;
-			CmdStopInteracting(true);
+			CmdStopInteracting(true, true);
 		}
 
 		if ( rightHandInteracting && Controller.RightController.GetPressUp( Controller.Grip ) ) {
 			//print( "inside up right" );
 			rightHandInteracting = false;
-			CmdStopInteracting(false);
+			CmdStopInteracting(false, true);
 		}
 	}
 
@@ -157,7 +157,10 @@ public class CannonInteraction : NetworkBehaviour {
 			return;
 		}
 
-		foreach ( CannonAimNode node in cannon.GetComponentsInChildren<CannonAimNode>() ) {
+        foreach (var node in cannon.GetComponentInChildren<AngleSetterTrigger>().nodes) {
+            node.SetActive(false);
+        }
+        foreach ( CannonAimNode node in cannon.GetComponentsInChildren<CannonAimNode>() ) {
 			node.particles.SetActive( true);
 		}
 
@@ -172,7 +175,7 @@ public class CannonInteraction : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	private void RpcStopInteractingOnClient( GameObject cannon, GameObject player, bool isLeft ) {
+	private void RpcStopInteractingOnClient( GameObject cannon, GameObject player, bool isLeft, bool showMarkerNodes ) {
 		if ( player != gameObject && !isServer ) {
 			return;
 		}
@@ -181,7 +184,9 @@ public class CannonInteraction : NetworkBehaviour {
 			node.particles.SetActive( false );
 		}
 
-		cannonCurrentlyAiming = null;
+        cannon.GetComponentInChildren<AngleSetterTrigger>().TurnOffNodes();
+
+        cannonCurrentlyAiming = null;
 		indexOfClosest = -1;
 		if ( isLeft ) {
 			leftHandInteracting = false;
@@ -191,18 +196,27 @@ public class CannonInteraction : NetworkBehaviour {
 	}
 
 	[Command]
-	public void CmdStopInteracting(bool isLeft) {
+	public void CmdStopInteracting(bool isLeft, bool showMarkerNodes) {
 		for ( int index = 0; index < cannonCurrentlyAiming.aimingNodes.Length; index++ ) {
 			Transform node = cannonCurrentlyAiming.aimingNodes[index];
 			//node.GetComponent<Renderer>().enabled = false;
 			node.GetComponent<CannonAimNode>().player = null;
 		}
 
-		RpcStopInteractingOnClient( cannonCurrentlyAiming.gameObject, gameObject, isLeft );
+		RpcStopInteractingOnClient( cannonCurrentlyAiming.gameObject, gameObject, isLeft, showMarkerNodes );
 		cannonCurrentlyAiming.indexOfFirstGrabbed = -1;
 		cannonCurrentlyAiming = null;
 		indexOfClosest = -1;
 	}
 
-	#endregion
+    [ClientRpc]
+    public void RpcTurnOffHintNodes(GameObject cannon) {
+        cannon.GetComponentInChildren<AngleSetterTrigger>().TurnOffNodes();
+    }
+
+    [ClientRpc]
+    public void RpcTurnONHintNodes(GameObject cannon) {
+        cannon.GetComponentInChildren<AngleSetterTrigger>().TurnONNodes();
+    }
+    #endregion
 }

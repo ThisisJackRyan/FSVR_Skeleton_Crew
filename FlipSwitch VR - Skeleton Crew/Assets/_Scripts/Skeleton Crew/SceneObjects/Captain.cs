@@ -138,9 +138,12 @@ public class Captain : SerializedNetworkBehaviour {
 	public GameObject guardPrefab;
 
 	public void StartTutorial() {
+        if (!isServer) {
+            return;
+        }
 		//print("start tutorial");
 
-		for ( int i = 0; i < NetworkManager.singleton.GetComponent<NumberOfPlayerHolder>().numberOfPlayers; i++ ) {
+		for ( int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++ ) {
 			GameObject g = Instantiate( guardPrefab, guardPositions[i].position, guardPositions[i].rotation );
 			enemiesKilled.Add( g.GetComponent<Enemy>(), false );
 			NetworkServer.Spawn( g );

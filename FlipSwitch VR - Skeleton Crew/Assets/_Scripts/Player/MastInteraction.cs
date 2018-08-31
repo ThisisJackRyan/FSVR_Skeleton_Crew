@@ -8,102 +8,201 @@ public class MastInteraction : NetworkBehaviour {
 	public bool emptyLeftHand;
 	public bool emptyRightHand;
 	public float radius = 0.1f;
-	public GameObject grabPoint, handPoint;
+    public float maxReachToMastWheel = 0.5f;
+
+    public GameObject grabPoint, handPoint;
 	public Transform rightHand, leftHand;
 	public bool leftHandInteracting;
 	public bool rightHandInteracting;
 	public MastSwitch mast;
-	//public GameObject gp;
-	public GameObject hp;
-	public GameObject rp;
+    public Transform[] aimingNodes;
+    public int indexOfClosest = -1;
 
-	//internal GameObject selected;
 
-	private void Start() {
+
+    //internal GameObject selected;
+
+    private void Start() {
 		emptyLeftHand = true;
 		emptyRightHand = true;
 		mast = FindObjectOfType<MastSwitch>();		
 	}
 
-	private void Update() {
-		if (!isLocalPlayer) {
-			return;
-		}
+    void Update() {
+        if (!isLocalPlayer) {
+            return;
+        }
 
-		if(emptyLeftHand && Controller.LeftController.GetPressDown( Controller.Grip ) ) {
-			RaycastHit[] hits = Physics.SphereCastAll( leftHand.position, radius, leftHand.forward );
+        //closest hasnt been found, grabbing is allowed  //are we changing the -1 sentinel?
+        if (!leftHandInteracting && emptyLeftHand && Controller.LeftController.GetPressDown(Controller.Grip)) {
+            CmdHandleAiming(true);
+            //print("inside button down left");
+        }
+
+        if (!rightHandInteracting && emptyRightHand && Controller.RightController.GetPressDown(Controller.Grip)) {
+            CmdHandleAiming(false);
+        }
+
+        //player has grabbed wheel
+        if (leftHandInteracting && Controller.LeftController.GetPress(Controller.Grip)) {
+            if (Vector3.Distance(leftHand.position, aimingNodes[indexOfClosest].position) > maxReachToMastWheel) {
+                leftHandInteracting = false;
+                CmdStopInteracting(true, false);
+            }
+        }
+
+        if (rightHandInteracting && Controller.RightController.GetPress(Controller.Grip)) {
+            if (Vector3.Distance(rightHand.position, aimingNodes[indexOfClosest].position) > maxReachToMastWheel) {
+                rightHandInteracting = false;
+                CmdStopInteracting(false, false);
+            }
+        }
+
+        //player let go
+        if (leftHandInteracting && Controller.LeftController.GetPressUp(Controller.Grip)) {
+            //print( "inside up left" );
+            leftHandInteracting = false;
+            CmdStopInteracting(true, true);
+        }
+
+        if (rightHandInteracting && Controller.RightController.GetPressUp(Controller.Grip)) {
+            //print( "inside up right" );
+            rightHandInteracting = false;
+            CmdStopInteracting(false, true);
+        }
+    }
+
+    //todo Captain.instance.MastHasBeenPulled(); still needs to be called when mast is pulled/changed
+
+        [Command]
+	private void CmdHandleAiming( bool isLeft ) {
+		if ( isLeft ) {
+			Collider[] hits = Physics.OverlapSphere( mastInteraction.leftHand.position, mastInteraction.radius );
 			for ( int i = 0; i < hits.Length; i++ ) {
-				if ( hits[i].transform.tag == "MastRope" ) {
-					print( "mast grab " + hits[i].point );
-					//gp = Instantiate( grabPoint, leftHand.position, Quaternion.identity );
-					hp = Instantiate( handPoint, leftHand.position, Quaternion.identity );
-					hp.GetComponent<HeightMatch>().toMatch = leftHand;
-					hp.GetComponent<HeightMatch>().mastInteraction = this;
-					rp = Instantiate( grabPoint, leftHand.position - new Vector3( 0, .5f, 0 ), Quaternion.identity );
-					rp.tag = "ReleasePoint";
-					print( rp.tag );
+				if ( hits[i].transform.tag == "CannonAimingWheel" ) {
+					cannonCurrentlyAiming = hits[i].GetComponentInParent<Cannon>();
+					//get closest node
+					Transform closest = null;
+					for ( int index = 0; index < cannonCurrentlyAiming.aimingNodes.Length; index++ ) {
+						Transform node = cannonCurrentlyAiming.aimingNodes[index];
+						node.GetComponent<CannonAimNode>().player = this;
+						if ( !closest ) {
+							closest = node;
+							indexOfClosest = index;
+						} else {
+							if ( Mathf.Abs( Vector3.Distance( mastInteraction.leftHand.position, hits[i].transform.position ) ) <
+								Mathf.Abs( Vector3.Distance( mastInteraction.leftHand.position, closest.transform.position ) ) ) {
+								closest = node;
+								indexOfClosest = index;
+							}
+						}
+					}
 
+					RpcStartInteractingOnClient( cannonCurrentlyAiming.gameObject, gameObject, isLeft, indexOfClosest );
+					//got closest node
+					cannonCurrentlyAiming.indexOfFirstGrabbed = indexOfClosest;
 					leftHandInteracting = true;
 				}
 			}
-		}
-
-		if(emptyRightHand && Controller.RightController.GetPressDown( Controller.Grip ) ) {
-			RaycastHit[] hits = Physics.SphereCastAll( rightHand.position, radius, rightHand.forward );
+		} else {
+			Collider[] hits = Physics.OverlapSphere( mastInteraction.rightHand.position, mastInteraction.radius );
 			for ( int i = 0; i < hits.Length; i++ ) {
-				if ( hits[i].transform.tag == "MastRope" ) {
-					print( "mast grab " + hits[i].point );
-					//gp = Instantiate( grabPoint, rightHand.position, Quaternion.identity );
-					hp = Instantiate( handPoint, rightHand.position, Quaternion.identity );
-					hp.GetComponent<HeightMatch>().toMatch = rightHand;
-					hp.GetComponent<HeightMatch>().mastInteraction = this;
-					rp = Instantiate( grabPoint, rightHand.position - new Vector3( 0, .5f, 0 ), Quaternion.identity );
-					rp.tag = "ReleasePoint";
-					print( rp.tag );
+				if ( hits[i].transform.tag == "CannonAimingWheel" ) {
+					cannonCurrentlyAiming = hits[i].GetComponentInParent<Cannon>();
+					Transform closest = null;
+					for ( int index = 0; index < cannonCurrentlyAiming.aimingNodes.Length; index++ ) {
+						Transform node = cannonCurrentlyAiming.aimingNodes[index];
+						//node.GetComponent<Renderer>().enabled = true;
+						node.GetComponent<CannonAimNode>().player = this;
+						if ( !closest ) {
+							closest = node;
+							indexOfClosest = index;
+						} else {
+							if ( Mathf.Abs( Vector3.Distance( mastInteraction.rightHand.position, hits[i].transform.position ) ) <
+								Mathf.Abs( Vector3.Distance( mastInteraction.rightHand.position, closest.transform.position ) ) ) {
+								closest = node;
+								indexOfClosest = index;
+							}
+						}
+					}
+
+					RpcStartInteractingOnClient( cannonCurrentlyAiming.gameObject, gameObject, isLeft, indexOfClosest );
+					cannonCurrentlyAiming.indexOfFirstGrabbed = indexOfClosest;
 
 					rightHandInteracting = true;
 				}
 			}
 		}
+	}
 
-		if(/*gp != null &&*/ hp != null && leftHandInteracting && Controller.LeftController.GetPressUp( Controller.Grip )) {
-			CleanupPoints();
-			//leftHandInteracting = false;
+	[ClientRpc]
+	private void RpcStartInteractingOnClient( GameObject cannon,GameObject player, bool isLeft, int iOfClosest ) {
+		if (player != gameObject && !isServer) {
+			return;
 		}
 
-		if (/*gp != null &&*/hp != null && rightHandInteracting && Controller.RightController.GetPressUp( Controller.Grip )) {
-			CleanupPoints();
-			//rightHandInteracting = false;
+        foreach (var node in cannon.GetComponentInChildren<AngleSetterTrigger>().nodes) {
+            node.SetActive(false);
+        }
+        foreach ( CannonAimNode node in cannon.GetComponentsInChildren<CannonAimNode>() ) {
+			node.particles.SetActive( true);
+		}
+
+		cannonCurrentlyAiming = cannon.GetComponent<Cannon>();
+		indexOfClosest = iOfClosest;
+
+		if (isLeft) {
+			leftHandInteracting = true;
+		} else {
+			rightHandInteracting = true;
+		}
+	}
+
+	[ClientRpc]
+	private void RpcStopInteractingOnClient( GameObject cannon, GameObject player, bool isLeft, bool showMarkerNodes ) {
+		if ( player != gameObject && !isServer ) {
+			return;
+		}
+
+		foreach ( CannonAimNode node in cannon.GetComponentsInChildren<CannonAimNode>() ) {
+			node.particles.SetActive( false );
+		}
+
+        cannon.GetComponentInChildren<AngleSetterTrigger>().TurnOffNodes();
+
+        cannonCurrentlyAiming = null;
+		indexOfClosest = -1;
+		if ( isLeft ) {
+			leftHandInteracting = false;
+		} else {
+			rightHandInteracting = false;
 		}
 	}
 
 	[Command]
-	public void CmdReachedTarget() {
-		mast.SwapMode();
-		RpcReachedTarget();
-		Captain.instance.MastHasBeenPulled();
-	}
-	
-	[ClientRpc]
-	private void RpcReachedTarget() {
-		if (isServer) {
-			return;
+	public void CmdStopInteracting(bool isLeft, bool showMarkerNodes) {
+		for ( int index = 0; index < cannonCurrentlyAiming.aimingNodes.Length; index++ ) {
+			Transform node = cannonCurrentlyAiming.aimingNodes[index];
+			//node.GetComponent<Renderer>().enabled = false;
+			node.GetComponent<CannonAimNode>().player = null;
 		}
 
-		print( "rpc reached target" );
-		mast.SwapMode();
-		if ( isLocalPlayer ) {
-			Debug.LogWarning( "is local player on " + name );
-			CleanupPoints();
-		}
+		RpcStopInteractingOnClient( cannonCurrentlyAiming.gameObject, gameObject, isLeft, showMarkerNodes );
+		cannonCurrentlyAiming.indexOfFirstGrabbed = -1;
+		cannonCurrentlyAiming = null;
+		indexOfClosest = -1;
 	}
 
 
-	public void CleanupPoints() {
-		//Destroy( gp );
-		Destroy( hp );
-		Destroy( rp );
-		rightHandInteracting = leftHandInteracting = false;
-	}
+
+    [ClientRpc]
+    public void RpcTurnOffHintNodes(GameObject cannon) {
+        cannon.GetComponentInChildren<AngleSetterTrigger>().TurnOffNodes();
+    }
+
+    [ClientRpc]
+    public void RpcTurnONHintNodes(GameObject cannon) {
+        cannon.GetComponentInChildren<AngleSetterTrigger>().TurnONNodes();
+    }
 
 }

@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,28 +7,22 @@ using UnityEngine.Events;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class MastSwitch : MonoBehaviour {
+public class MastSwitch : NetworkBehaviour {
 
 	public Animator sailAnimator;
-	public float swapTime = 3;
-	bool raiseMast;
-
-	public GameObject upImage, downImage;
-	bool firstLoad = false;
+	public float speedIncrement = 0.3f;
+    public int indexOfFirstGrabbed = -1; //only being set on local player
+    
+    bool firstLoad = false;
 	public UnityEvent firstRunEvent;
-	public GameObject pathFollower;
+	public PathFollower pathFollower;
 	public AudioClip raise, lower;
-	AudioSource source;
+    public AudioClip aimClip;
+
+    AudioSource source;
 
 	private void Start() {
-		downImage.SetActive(true);
-		upImage.SetActive(false);
 		source = GetComponent<AudioSource>();
-		//firstRunEvent.AddListener(EnableEnemy);
-	}
-
-	private void OnMastChange(bool n) {
-		raiseMast = n;
 	}
 
 	[Button]
@@ -36,32 +31,51 @@ public class MastSwitch : MonoBehaviour {
 			firstRunEvent.Invoke();
 	}
 
-	[Button]
-	public void SwapMode() {
-		Debug.LogWarning("swap called");
-		if (raiseMast) {
-			downImage.SetActive(true);
-			upImage.SetActive(false);
-			pathFollower.GetComponent<PathFollower>().ChangeSpeed( false );
-			source.PlayOneShot(raise);
+    public void AdjustSails(int indexOfNode) {
+        if (!isServer) {
+            return;
+        }
 
-			sailAnimator.SetBool( "Opening", false );
-			raiseMast = !raiseMast;
-		} else {
-			downImage.SetActive(false);
-			upImage.SetActive(true);
-			pathFollower.GetComponent<PathFollower>().ChangeSpeed( true );
-			source.PlayOneShot( lower );
+        if (indexOfFirstGrabbed >= 0) {
+            int raiseSign = (indexOfNode > indexOfFirstGrabbed) ? -1 : 1; //if index is greater (closer to back of cannon) then you are raising the cannon
 
-			sailAnimator.SetBool( "Opening", true );
-			raiseMast = !raiseMast;
-		}
+            pathFollower.ChangeSpeed(speedIncrement * raiseSign);
+            indexOfFirstGrabbed = indexOfNode;
 
-		if (!firstLoad) {
-			firstRunEvent.Invoke();
-			BehaviorDesigner.Runtime.GlobalVariables.Instance.GetVariable( "EnemiesEnabled" ).SetValue( true );
-			firstLoad = true;
-		}
-	}
+            RpcAdjustSails(pathFollower.speed );
+
+            //todo add animator code here
+
+            if (!firstLoad) {
+                firstRunEvent.Invoke();
+                firstLoad = true;
+            }
+        }
+    }
+
+    [ClientRpc]
+    public void RpcAdjustSails(float newSpeed) {
+        if (isServer) {
+            return;
+        }
+        //do local animation set here, may not need if using network animator
+    }
+
+
+    [ClientRpc]
+    public void RpcPlayAim() {
+        if (isServer) {
+            return;
+        }
+        GetComponent<AudioSource>().PlayOneShot(aimClip);
+    }
+
+    public void PlayAim() {
+        if (!isServer) {
+            return;
+        }
+        GetComponent<AudioSource>().PlayOneShot(aimClip);
+        RpcPlayAim();
+    }
 
 }

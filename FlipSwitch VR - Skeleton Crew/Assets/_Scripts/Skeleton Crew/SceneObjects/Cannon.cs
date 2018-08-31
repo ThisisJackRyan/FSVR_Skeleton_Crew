@@ -98,7 +98,6 @@ public class Cannon : NetworkBehaviour {
 	public int indexOfFirstGrabbed = -1; //only being set on local player
 	int angleIncrement = 5;
 
-
 	public void RotateBarrel( int indexOfNode ) {
 		if ( !isServer )
 			return;
@@ -130,6 +129,7 @@ public class Cannon : NetworkBehaviour {
 		}
 	}
 
+    [ClientRpc]
 	public void RpcRotateBarrel( Quaternion newRot ) {
 		if ( isServer ) {
 			return;
