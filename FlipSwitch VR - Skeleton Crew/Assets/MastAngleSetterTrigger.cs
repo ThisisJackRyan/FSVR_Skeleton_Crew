@@ -19,7 +19,7 @@ public class MastAngleSetterTrigger : MonoBehaviour {
             return;
         }
         //print("enter");
-        if (other.GetComponentInParent<CannonInteraction>()) {
+        if (other.GetComponent<GrabWeaponHand>()) {
             activator = other.transform.root.gameObject;
             //print("player");
 

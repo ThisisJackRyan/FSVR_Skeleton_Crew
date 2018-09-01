@@ -25,7 +25,7 @@ public class CannonAimNode : MonoBehaviour {
 		}
 		//print( "other: " + other.transform.root );
 		//print( "player: " + player.transform.root );
-		if (other.transform.root == player.transform.root) {
+		if (other.transform.root == player.transform.root && other.GetComponent<GrabWeaponHand>()) {
 			cannon.RotateBarrel(index);
 			GetComponentInParent<Cannon>().PlayAim();
 			//print("lw oiwh oiwer h o");

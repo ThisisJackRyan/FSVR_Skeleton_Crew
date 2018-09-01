@@ -21,8 +21,9 @@ public class MastAimNode : MonoBehaviour {
             return;
         }
 
-        if (other.transform.root == player.transform.root) {
+        if (other.transform.root == player.transform.root && other.GetComponent<GrabWeaponHand>()) {
             //adjust mast speed
+            //print(name +" calling adjust sails wiht index of " + index);
             mast.AdjustSails(index);
             //GetComponentInParent<MastSwitch>().PlayAim();// play sound
         }

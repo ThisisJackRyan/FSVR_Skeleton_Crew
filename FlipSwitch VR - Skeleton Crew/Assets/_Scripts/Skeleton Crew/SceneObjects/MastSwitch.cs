@@ -15,7 +15,7 @@ public class MastSwitch : NetworkBehaviour {
     
 	public PathFollower pathFollower;
 	public AudioClip raise, lower;
-    public AudioClip aimClip;
+    public AudioClip aimClip, maxClip;
     public GameObject[] aimingNodes;
 
     AudioSource source;
@@ -28,19 +28,23 @@ public class MastSwitch : NetworkBehaviour {
         if (!isServer) {
             return;
         }
+        //print("index first grabbed " + indexOfFirstGrabbed);
+        //print("index of node " + indexOfNode);
 
         if (indexOfFirstGrabbed >= 0) {
             int raiseSign = (indexOfNode > indexOfFirstGrabbed) ? -1 : 1; //if index is greater (closer to back of cannon) then you are raising the cannon
 
             bool playSound = pathFollower.ChangeSpeed(speedIncrement * raiseSign);
 
-            if (playSound) {
-                PlayAimSound();
-            }
+           
+            PlayAimSound(playSound);
+            
 
             indexOfFirstGrabbed = indexOfNode;
 
             RpcAdjustSails(pathFollower.speed );
+
+            sailAnimator.SetFloat("Speed",pathFollower.speed);
 
             //todo add animator code here
 
@@ -57,19 +61,30 @@ public class MastSwitch : NetworkBehaviour {
 
 
     [ClientRpc]
-    public void RpcPlayAimSound() {
+    public void RpcPlayAimSound(bool notMax) {
         if (isServer) {
             return;
         }
-        GetComponent<AudioSource>().PlayOneShot(aimClip);
+
+        if (notMax) {
+            GetComponent<AudioSource>().PlayOneShot(aimClip);
+        } else {
+            GetComponent<AudioSource>().PlayOneShot(maxClip);
+        }
     }
 
-    public void PlayAimSound() {
+    public void PlayAimSound(bool notMax) {
         if (!isServer) {
             return;
         }
-        GetComponent<AudioSource>().PlayOneShot(aimClip);
-        RpcPlayAimSound();
+
+        if (notMax) {
+            GetComponent<AudioSource>().PlayOneShot(aimClip);
+        } else {
+            GetComponent<AudioSource>().PlayOneShot(maxClip);
+        }
+        
+        RpcPlayAimSound(notMax);
     }
 
 }

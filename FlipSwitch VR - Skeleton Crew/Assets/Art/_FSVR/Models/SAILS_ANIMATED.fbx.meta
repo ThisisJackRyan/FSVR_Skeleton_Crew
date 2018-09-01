@@ -582,7 +582,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Closing 002
       takeName: Take 001
-      firstFrame: 8.5
+      firstFrame: 9.5
       lastFrame: 17
       wrapMode: 0
       orientationOffsetY: 0
@@ -610,7 +610,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Closing 003
       takeName: Take 001
-      firstFrame: 17
+      firstFrame: 18
       lastFrame: 25.5
       wrapMode: 0
       orientationOffsetY: 0
@@ -638,7 +638,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Closing 004
       takeName: Take 001
-      firstFrame: 25.5
+      firstFrame: 26.5
       lastFrame: 34
       wrapMode: 0
       orientationOffsetY: 0
@@ -666,7 +666,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Closing 005
       takeName: Take 001
-      firstFrame: 34
+      firstFrame: 35
       lastFrame: 42.5
       wrapMode: 0
       orientationOffsetY: 0
@@ -694,7 +694,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Closing 006
       takeName: Take 001
-      firstFrame: 42.5
+      firstFrame: 43.5
       lastFrame: 51
       wrapMode: 0
       orientationOffsetY: 0
@@ -722,7 +722,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Closing 007
       takeName: Take 001
-      firstFrame: 51
+      firstFrame: 52
       lastFrame: 59.5
       wrapMode: 0
       orientationOffsetY: 0
