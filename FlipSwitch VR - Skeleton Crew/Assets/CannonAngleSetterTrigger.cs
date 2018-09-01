@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AngleSetterTrigger : MonoBehaviour {
+public class CannonAngleSetterTrigger : MonoBehaviour {
 
     Cannon cannon;
     public GameObject[] nodes;

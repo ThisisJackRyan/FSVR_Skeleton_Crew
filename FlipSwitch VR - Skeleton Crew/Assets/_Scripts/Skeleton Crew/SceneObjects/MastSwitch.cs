@@ -18,6 +18,7 @@ public class MastSwitch : NetworkBehaviour {
 	public PathFollower pathFollower;
 	public AudioClip raise, lower;
     public AudioClip aimClip;
+    public GameObject[] aimingNodes;
 
     AudioSource source;
 

@@ -157,7 +157,7 @@ public class CannonInteraction : NetworkBehaviour {
 			return;
 		}
 
-        foreach (var node in cannon.GetComponentInChildren<AngleSetterTrigger>().nodes) {
+        foreach (var node in cannon.GetComponentInChildren<CannonAngleSetterTrigger>().nodes) {
             node.SetActive(false);
         }
         foreach ( CannonAimNode node in cannon.GetComponentsInChildren<CannonAimNode>() ) {
@@ -184,7 +184,7 @@ public class CannonInteraction : NetworkBehaviour {
 			node.particles.SetActive( false );
 		}
 
-        cannon.GetComponentInChildren<AngleSetterTrigger>().TurnOffNodes();
+        cannon.GetComponentInChildren<CannonAngleSetterTrigger>().TurnOffNodes();
 
         cannonCurrentlyAiming = null;
 		indexOfClosest = -1;
@@ -211,12 +211,12 @@ public class CannonInteraction : NetworkBehaviour {
 
     [ClientRpc]
     public void RpcTurnOffHintNodes(GameObject cannon) {
-        cannon.GetComponentInChildren<AngleSetterTrigger>().TurnOffNodes();
+        cannon.GetComponentInChildren<CannonAngleSetterTrigger>().TurnOffNodes();
     }
 
     [ClientRpc]
     public void RpcTurnONHintNodes(GameObject cannon) {
-        cannon.GetComponentInChildren<AngleSetterTrigger>().TurnONNodes();
+        cannon.GetComponentInChildren<CannonAngleSetterTrigger>().TurnONNodes();
     }
     #endregion
 }

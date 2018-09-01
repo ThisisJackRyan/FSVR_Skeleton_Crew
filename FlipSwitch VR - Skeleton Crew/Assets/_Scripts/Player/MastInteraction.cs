@@ -25,7 +25,7 @@ public class MastInteraction : NetworkBehaviour {
     private void Start() {
 		emptyLeftHand = true;
 		emptyRightHand = true;
-		mast = FindObjectOfType<MastSwitch>();		
+		//mast = FindObjectOfType<MastSwitch>();		
 	}
 
     void Update() {
@@ -77,57 +77,60 @@ public class MastInteraction : NetworkBehaviour {
         [Command]
 	private void CmdHandleAiming( bool isLeft ) {
 		if ( isLeft ) {
-			Collider[] hits = Physics.OverlapSphere( mastInteraction.leftHand.position, mastInteraction.radius );
+			Collider[] hits = Physics.OverlapSphere( leftHand.position, radius );
 			for ( int i = 0; i < hits.Length; i++ ) {
-				if ( hits[i].transform.tag == "CannonAimingWheel" ) {
-					cannonCurrentlyAiming = hits[i].GetComponentInParent<Cannon>();
+				if ( hits[i].transform.tag == "MastAdjustmentWheel") {
+					mast = hits[i].GetComponentInParent<MastSwitch>();
+
 					//get closest node
 					Transform closest = null;
-					for ( int index = 0; index < cannonCurrentlyAiming.aimingNodes.Length; index++ ) {
-						Transform node = cannonCurrentlyAiming.aimingNodes[index];
-						node.GetComponent<CannonAimNode>().player = this;
+					for ( int index = 0; index < mast.aimingNodes.Length; index++ ) {
+						Transform node = mast.aimingNodes[index].transform;
+						node.GetComponent<MastAimNode>().player = this;
+
 						if ( !closest ) {
 							closest = node;
 							indexOfClosest = index;
 						} else {
-							if ( Mathf.Abs( Vector3.Distance( mastInteraction.leftHand.position, hits[i].transform.position ) ) <
-								Mathf.Abs( Vector3.Distance( mastInteraction.leftHand.position, closest.transform.position ) ) ) {
+							if ( Mathf.Abs( Vector3.Distance( leftHand.position, hits[i].transform.position ) ) <
+								Mathf.Abs( Vector3.Distance( leftHand.position, closest.transform.position ) ) ) {
 								closest = node;
 								indexOfClosest = index;
 							}
 						}
 					}
 
-					RpcStartInteractingOnClient( cannonCurrentlyAiming.gameObject, gameObject, isLeft, indexOfClosest );
+					RpcStartInteractingOnClient( mast.gameObject, gameObject, isLeft, indexOfClosest );
 					//got closest node
-					cannonCurrentlyAiming.indexOfFirstGrabbed = indexOfClosest;
+					mast.indexOfFirstGrabbed = indexOfClosest;
 					leftHandInteracting = true;
 				}
 			}
 		} else {
-			Collider[] hits = Physics.OverlapSphere( mastInteraction.rightHand.position, mastInteraction.radius );
+			Collider[] hits = Physics.OverlapSphere( rightHand.position, radius );
 			for ( int i = 0; i < hits.Length; i++ ) {
 				if ( hits[i].transform.tag == "CannonAimingWheel" ) {
-					cannonCurrentlyAiming = hits[i].GetComponentInParent<Cannon>();
+					mast = hits[i].GetComponentInParent<MastSwitch>();
+
 					Transform closest = null;
-					for ( int index = 0; index < cannonCurrentlyAiming.aimingNodes.Length; index++ ) {
-						Transform node = cannonCurrentlyAiming.aimingNodes[index];
+					for ( int index = 0; index < mast.aimingNodes.Length; index++ ) {
+						Transform node = mast.aimingNodes[index].transform;
 						//node.GetComponent<Renderer>().enabled = true;
-						node.GetComponent<CannonAimNode>().player = this;
+						node.GetComponent<MastAimNode>().player = this;
 						if ( !closest ) {
 							closest = node;
 							indexOfClosest = index;
 						} else {
-							if ( Mathf.Abs( Vector3.Distance( mastInteraction.rightHand.position, hits[i].transform.position ) ) <
-								Mathf.Abs( Vector3.Distance( mastInteraction.rightHand.position, closest.transform.position ) ) ) {
+							if ( Mathf.Abs( Vector3.Distance( rightHand.position, hits[i].transform.position ) ) <
+								Mathf.Abs( Vector3.Distance( rightHand.position, closest.transform.position ) ) ) {
 								closest = node;
 								indexOfClosest = index;
 							}
 						}
 					}
 
-					RpcStartInteractingOnClient( cannonCurrentlyAiming.gameObject, gameObject, isLeft, indexOfClosest );
-					cannonCurrentlyAiming.indexOfFirstGrabbed = indexOfClosest;
+					RpcStartInteractingOnClient( mast.gameObject, gameObject, isLeft, indexOfClosest );
+					mast.indexOfFirstGrabbed = indexOfClosest;
 
 					rightHandInteracting = true;
 				}
@@ -136,19 +139,19 @@ public class MastInteraction : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	private void RpcStartInteractingOnClient( GameObject cannon,GameObject player, bool isLeft, int iOfClosest ) {
+	private void RpcStartInteractingOnClient( GameObject mastTrigger,GameObject player, bool isLeft, int iOfClosest ) {
 		if (player != gameObject && !isServer) {
 			return;
 		}
 
-        foreach (var node in cannon.GetComponentInChildren<AngleSetterTrigger>().nodes) {
+        foreach (var node in mastTrigger.GetComponentInChildren<MastAngleSetterTrigger>().nodes) {
             node.SetActive(false);
         }
-        foreach ( CannonAimNode node in cannon.GetComponentsInChildren<CannonAimNode>() ) {
+        foreach ( MastAimNode node in mastTrigger.GetComponentsInChildren<MastAimNode>() ) {
 			node.particles.SetActive( true);
 		}
 
-		cannonCurrentlyAiming = cannon.GetComponent<Cannon>();
+		mast = mastTrigger.GetComponent<MastSwitch>();
 		indexOfClosest = iOfClosest;
 
 		if (isLeft) {
@@ -159,18 +162,18 @@ public class MastInteraction : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	private void RpcStopInteractingOnClient( GameObject cannon, GameObject player, bool isLeft, bool showMarkerNodes ) {
+	private void RpcStopInteractingOnClient( GameObject mastTrigger, GameObject player, bool isLeft, bool showMarkerNodes ) {
 		if ( player != gameObject && !isServer ) {
 			return;
 		}
 
-		foreach ( CannonAimNode node in cannon.GetComponentsInChildren<CannonAimNode>() ) {
+		foreach ( CannonAimNode node in mastTrigger.GetComponentsInChildren<CannonAimNode>() ) {
 			node.particles.SetActive( false );
 		}
 
-        cannon.GetComponentInChildren<AngleSetterTrigger>().TurnOffNodes();
+        mastTrigger.GetComponentInChildren<MastAngleSetterTrigger>().TurnOffNodes();
 
-        cannonCurrentlyAiming = null;
+        mast = null;
 		indexOfClosest = -1;
 		if ( isLeft ) {
 			leftHandInteracting = false;
@@ -181,28 +184,26 @@ public class MastInteraction : NetworkBehaviour {
 
 	[Command]
 	public void CmdStopInteracting(bool isLeft, bool showMarkerNodes) {
-		for ( int index = 0; index < cannonCurrentlyAiming.aimingNodes.Length; index++ ) {
-			Transform node = cannonCurrentlyAiming.aimingNodes[index];
+		for ( int index = 0; index < mast.aimingNodes.Length; index++ ) {
+			Transform node = mast.aimingNodes[index].transform;
 			//node.GetComponent<Renderer>().enabled = false;
 			node.GetComponent<CannonAimNode>().player = null;
 		}
 
-		RpcStopInteractingOnClient( cannonCurrentlyAiming.gameObject, gameObject, isLeft, showMarkerNodes );
-		cannonCurrentlyAiming.indexOfFirstGrabbed = -1;
-		cannonCurrentlyAiming = null;
+		RpcStopInteractingOnClient( mast.gameObject, gameObject, isLeft, showMarkerNodes );
+		mast.indexOfFirstGrabbed = -1;
+		mast = null;
 		indexOfClosest = -1;
 	}
 
-
-
     [ClientRpc]
     public void RpcTurnOffHintNodes(GameObject cannon) {
-        cannon.GetComponentInChildren<AngleSetterTrigger>().TurnOffNodes();
+        cannon.GetComponentInChildren<MastAngleSetterTrigger>().TurnOffNodes();
     }
 
     [ClientRpc]
     public void RpcTurnONHintNodes(GameObject cannon) {
-        cannon.GetComponentInChildren<AngleSetterTrigger>().TurnONNodes();
+        cannon.GetComponentInChildren<MastAngleSetterTrigger>().TurnONNodes();
     }
 
 }

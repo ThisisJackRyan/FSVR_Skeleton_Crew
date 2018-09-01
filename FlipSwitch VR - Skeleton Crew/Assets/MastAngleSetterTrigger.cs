@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CannonAngleSetterTrigger : MonoBehaviour {
+public class MastAngleSetterTrigger : MonoBehaviour {
 
     MastSwitch mast;
     public GameObject[] nodes;
