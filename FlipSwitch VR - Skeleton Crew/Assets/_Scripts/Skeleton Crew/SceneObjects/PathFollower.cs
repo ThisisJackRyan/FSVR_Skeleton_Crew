@@ -49,13 +49,26 @@ public class PathFollower : NetworkBehaviour {
 		speed = (faster) ? maxSpeed : minSpeed;
 	}
 
-    public void ChangeSpeed(float increment) {
+    bool firstMove = true;
+
+    public bool ChangeSpeed(float increment) {
+        if (firstMove && Mathf.Sign(increment) == 1) {
+            StartMoving();
+            firstMove = false;
+        }
+
+        if (speed == maxSpeed || speed == minSpeed) {
+            return false;
+        }
+
         speed += increment;
         if (speed > maxSpeed) {
             speed = maxSpeed;
         } else if (speed < minSpeed) {
             speed = minSpeed;
         }
+
+        return true;
     }
 
 

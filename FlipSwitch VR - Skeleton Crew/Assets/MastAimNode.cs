@@ -24,7 +24,7 @@ public class MastAimNode : MonoBehaviour {
         if (other.transform.root == player.transform.root) {
             //adjust mast speed
             mast.AdjustSails(index);
-            GetComponentInParent<MastSwitch>().PlayAim();// play sound
+            //GetComponentInParent<MastSwitch>().PlayAim();// play sound
         }
     }
 }

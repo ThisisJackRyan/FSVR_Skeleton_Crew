@@ -15,7 +15,6 @@ public class MastInteraction : NetworkBehaviour {
 	public bool leftHandInteracting;
 	public bool rightHandInteracting;
 	public MastSwitch mast;
-    public Transform[] aimingNodes;
     public int indexOfClosest = -1;
 
 
@@ -45,14 +44,15 @@ public class MastInteraction : NetworkBehaviour {
 
         //player has grabbed wheel
         if (leftHandInteracting && Controller.LeftController.GetPress(Controller.Grip)) {
-            if (Vector3.Distance(leftHand.position, aimingNodes[indexOfClosest].position) > maxReachToMastWheel) {
+            print("Index closest " + indexOfClosest);
+            if (Vector3.Distance(leftHand.position, mast.aimingNodes[indexOfClosest].transform.position) > maxReachToMastWheel) {
                 leftHandInteracting = false;
                 CmdStopInteracting(true, false);
             }
         }
 
         if (rightHandInteracting && Controller.RightController.GetPress(Controller.Grip)) {
-            if (Vector3.Distance(rightHand.position, aimingNodes[indexOfClosest].position) > maxReachToMastWheel) {
+            if (Vector3.Distance(rightHand.position, mast.aimingNodes[indexOfClosest].transform.position) > maxReachToMastWheel) {
                 rightHandInteracting = false;
                 CmdStopInteracting(false, false);
             }
@@ -109,7 +109,7 @@ public class MastInteraction : NetworkBehaviour {
 		} else {
 			Collider[] hits = Physics.OverlapSphere( rightHand.position, radius );
 			for ( int i = 0; i < hits.Length; i++ ) {
-				if ( hits[i].transform.tag == "CannonAimingWheel" ) {
+				if ( hits[i].transform.tag == "MastAdjustmentWheel" ) {
 					mast = hits[i].GetComponentInParent<MastSwitch>();
 
 					Transform closest = null;
@@ -141,6 +141,7 @@ public class MastInteraction : NetworkBehaviour {
 	[ClientRpc]
 	private void RpcStartInteractingOnClient( GameObject mastTrigger,GameObject player, bool isLeft, int iOfClosest ) {
 		if (player != gameObject && !isServer) {
+            print("not this go");
 			return;
 		}
 
@@ -164,10 +165,15 @@ public class MastInteraction : NetworkBehaviour {
 	[ClientRpc]
 	private void RpcStopInteractingOnClient( GameObject mastTrigger, GameObject player, bool isLeft, bool showMarkerNodes ) {
 		if ( player != gameObject && !isServer ) {
-			return;
+            print("RPC stop interacting called but returned");
+
+            return;
 		}
 
-		foreach ( CannonAimNode node in mastTrigger.GetComponentsInChildren<CannonAimNode>() ) {
+        print("RPC stop interacting called");
+
+
+        foreach ( MastAimNode node in mastTrigger.GetComponentsInChildren<MastAimNode>() ) {
 			node.particles.SetActive( false );
 		}
 
@@ -184,10 +190,11 @@ public class MastInteraction : NetworkBehaviour {
 
 	[Command]
 	public void CmdStopInteracting(bool isLeft, bool showMarkerNodes) {
+        print("stop interacting called");
 		for ( int index = 0; index < mast.aimingNodes.Length; index++ ) {
 			Transform node = mast.aimingNodes[index].transform;
 			//node.GetComponent<Renderer>().enabled = false;
-			node.GetComponent<CannonAimNode>().player = null;
+			node.GetComponent<MastAimNode>().player = null;
 		}
 
 		RpcStopInteractingOnClient( mast.gameObject, gameObject, isLeft, showMarkerNodes );
@@ -197,13 +204,13 @@ public class MastInteraction : NetworkBehaviour {
 	}
 
     [ClientRpc]
-    public void RpcTurnOffHintNodes(GameObject cannon) {
-        cannon.GetComponentInChildren<MastAngleSetterTrigger>().TurnOffNodes();
+    public void RpcTurnOffHintNodes(GameObject mast) {
+        mast.GetComponentInChildren<MastAngleSetterTrigger>().TurnOffNodes();
     }
 
     [ClientRpc]
-    public void RpcTurnONHintNodes(GameObject cannon) {
-        cannon.GetComponentInChildren<MastAngleSetterTrigger>().TurnONNodes();
+    public void RpcTurnONHintNodes(GameObject mast) {
+        mast.GetComponentInChildren<MastAngleSetterTrigger>().TurnONNodes();
     }
 
 }

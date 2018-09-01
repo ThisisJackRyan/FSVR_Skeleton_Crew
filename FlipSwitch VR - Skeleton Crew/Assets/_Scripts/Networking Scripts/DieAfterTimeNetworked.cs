@@ -19,7 +19,7 @@ public class DieAfterTimeNetworked : NetworkBehaviour {
 		if (!isServer) {
 			return;
 		}
-		print("should be destroying " + name);
+		//print("should be destroying " + name);
 		NetworkServer.Destroy( gameObject );
 	}
 }

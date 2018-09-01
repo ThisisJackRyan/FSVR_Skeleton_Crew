@@ -34,7 +34,7 @@ public class MastAngleSetterTrigger : MonoBehaviour {
 
             //no aim node particle is active, turn these on
             TurnONNodes();
-            activator.GetComponent<MastInteraction>().RpcTurnONHintNodes(transform.root.gameObject);
+            activator.GetComponent<MastInteraction>().RpcTurnONHintNodes(mast.gameObject);
 
         }
     }
@@ -52,7 +52,7 @@ public class MastAngleSetterTrigger : MonoBehaviour {
             //is player, show orbs
             TurnOffNodes();
 
-            activator.GetComponent<CannonInteraction>().RpcTurnOffHintNodes(transform.root.gameObject);
+            activator.GetComponent<MastInteraction>().RpcTurnOffHintNodes(mast.gameObject);
         }
     }
 
