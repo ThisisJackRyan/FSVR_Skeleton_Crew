@@ -275,7 +275,10 @@ namespace Opsive.ThirdPersonController
 
             // Execute any custom events.
             if (!string.IsNullOrEmpty(m_DamageEvent)) {
+                print("should be executing damage events");
                 EventHandler.ExecuteEvent(hitTransform.gameObject, m_DamageEvent, m_DamageAmount, hitPoint, hitNormal * -m_ImpactForce, m_Character);
+                EventHandler.ExecuteEvent(m_DamageEvent,(int) m_DamageAmount); // NATHAN ADDED THIS
+
             }
 
             // Add any melee effects. These effects do not need to be added on the server.

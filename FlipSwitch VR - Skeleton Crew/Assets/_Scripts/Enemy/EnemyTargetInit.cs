@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using Opsive.ThirdPersonController.Wrappers;
 public enum TargetType {
     Mast,
     Cannon,
@@ -13,6 +13,7 @@ public class EnemyTargetInit : MonoBehaviour {
     public TargetType targetType;
 
     private void OnEnable() {
+        Opsive.ThirdPersonController.EventHandler.RegisterEvent<int>("DamagedByMelee", ApplyMeleeDamage);
         AddToList();
     }
 
@@ -44,6 +45,25 @@ public class EnemyTargetInit : MonoBehaviour {
         }
     }
 
+    private void ApplyMeleeDamage(int dmg) {
+        print("apply melee damage called with " + dmg + " coming in");
+        if (targetType == TargetType.Cannon) {
+            int hp = GetComponent<DamagedObject>().ChangeHealth(dmg);
+            if (hp <= 0) {
+                RemoveFromList();
+            }
+        } else if (targetType == TargetType.Ratmen) {
+            GetComponentInParent<Ratman>().ChangeHealth(dmg);
+        } else if (targetType == TargetType.Player) {
+            if (transform.parent.GetComponent<FSVRPlayer>().isServer) {
+                int hp = GetComponentInParent<Player>().ChangeHealth(dmg);
+                if (hp <= 0) {
+                    RemoveFromList();
+                }
+            }
+        }
+    }
+
     private void RemoveFromList() {
         switch (targetType) {
             case TargetType.Mast:
@@ -72,29 +92,8 @@ public class EnemyTargetInit : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if (other.tag == "EnemyWeapon") {
-            if (targetType == TargetType.Cannon) {
-                int hp = GetComponent<DamagedObject>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
-                if (hp <= 0) {
-                    RemoveFromList();
-                }
-            } else if (targetType == TargetType.Ratmen) {
-                GetComponentInParent<Ratman>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
-
-            } else if (targetType == TargetType.Player) {
-                if (transform.parent.GetComponent<FSVRPlayer>().isServer) {
-
-                    int hp = GetComponentInParent<Player>().ChangeHealth(other.GetComponentInParent<Enemy>().weapon.damage);
-                    if (hp <= 0) {
-                        RemoveFromList();
-                    }
-                }
-            }
-        }
-    }
-
     private void OnDisable() {
+        Opsive.ThirdPersonController.EventHandler.UnregisterEvent<int>("DamagedByMelee", ApplyMeleeDamage);
         RemoveFromList();
     }
 
