@@ -1,60 +1,21 @@
 fileFormatVersion: 2
-guid: e04eff005efe05748a60353190395f98
+guid: 47558a4a25a39dc4db2710091c2be6fc
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: Cannon_Barrel_Front
-    100002: //RootNode
-    100004: Cannon_Body
-    100006: Cannon_Hatch
-    100008: Exit_Barrel_Locator
-    100010: Hatch_Gear
-    100012: Wick
-    100014: Wick_Locator
-    400000: Cannon_Barrel_Front
-    400002: //RootNode
-    400004: Cannon_Body
-    400006: Cannon_Hatch
-    400008: Exit_Barrel_Locator
-    400010: Hatch_Gear
-    400012: Wick
-    400014: Wick_Locator
-    2100000: Broken_Cannon_Metal
-    2100002: Gear
-    2100004: Wick1
-    2300000: Cannon_Barrel_Front
-    2300002: Cannon_Body
-    2300004: Cannon_Hatch
-    2300006: Hatch_Gear
-    2300008: Wick
-    3300000: Cannon_Barrel_Front
-    3300002: Cannon_Body
-    3300004: Cannon_Hatch
-    3300006: Hatch_Gear
-    3300008: Wick
-    4300000: Cannon_Barrel_Front
-    4300002: Cannon_Body
-    4300004: Cannon_Hatch
-    4300006: Hatch_Gear
-    4300008: Wick
-    7400000: Take 001
+    100000: //RootNode
+    400000: //RootNode
+    2100000: Bones_Dragon
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Skeleton_Dragon_LOD_Left_Back_Leg
     9500000: //RootNode
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Broken_Cannon_Metal
-    second: {fileID: 2100000, guid: e2d960835c20b9f4d8118ba492396dfc, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Gear
-    second: {fileID: 2100000, guid: 3ab1c60c248878d489cd9c05c3bad1a8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Wick1
-    second: {fileID: 2100006, guid: 2f2e978982b1b284c8a74d250eebcafc, type: 3}
+      name: Bones_Dragon
+    second: {fileID: 2100000, guid: 269a3bfbc1adf1b468408967d810f00b, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
