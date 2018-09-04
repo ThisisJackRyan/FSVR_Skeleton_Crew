@@ -73,8 +73,6 @@ ModelImporter:
     100134: Loading_Cannon_Ball
     100136: Ratkin_Skeleton
     100138: //RootNode
-    100140: Slave_Pick
-    100142: Slave_Pick01
     400000: Bip01
     400002: Bip01 back_left_Wmount
     400004: Bip01 Head
@@ -145,28 +143,30 @@ ModelImporter:
     400134: Loading_Cannon_Ball
     400136: Ratkin_Skeleton
     400138: //RootNode
-    400140: Slave_Pick
-    400142: Slave_Pick01
-    2100000: Skaven_slave_weapon2
-    2100002: Cannon_Ball_Metal
+    2100000: Cannon_Ball_Metal
+    2100002: Skaven_slave_weapon2
     2100004: Ratkin_Skeleton
     2300000: leg_brasers
     2300002: Loading_Cannon_Ball
-    2300004: Slave_Pick
-    2300006: Slave_Pick01
     3300000: leg_brasers
     3300002: Loading_Cannon_Ball
-    3300004: Slave_Pick
-    3300006: Slave_Pick01
-    4300000: Slave_Pick01
-    4300002: Loading_Cannon_Ball
-    4300004: Slave_Pick
-    4300006: leg_brasers
-    4300008: Ratkin_Skeleton
-    7400000: Reload
+    4300000: Loading_Cannon_Ball
+    4300002: leg_brasers
+    4300004: Ratkin_Skeleton
+    7400000: Cannon Reload
     9500000: //RootNode
     13700000: Ratkin_Skeleton
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cannon_Ball_Metal
+    second: {fileID: 2100000, guid: 9b18e2a4cd9da9345b881e70b1c5302d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ratkin_Skeleton
+    second: {fileID: 2100000, guid: 0745fd56101fb904c8310c0a938b194a, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -195,7 +195,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Reload
+      name: Cannon Reload
       takeName: Take 001
       firstFrame: 2900
       lastFrame: 3960

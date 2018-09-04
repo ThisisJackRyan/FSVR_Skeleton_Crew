@@ -140,6 +140,10 @@ ModelImporter:
     100268: SH_Sword_G01
     100270: SH_Sword_G2
     100272: Skeleton_Body
+    100274: SH_Shield_C4
+    100276: SH_Shield_F4
+    100278: SH_Shield_G4
+    100280: SH_Sword_B4
     400000: ARMOR_SET_A
     400002: ARMOR_SET_B
     400004: ARMOR_SET_C
@@ -277,6 +281,10 @@ ModelImporter:
     400268: SH_Sword_G01
     400270: SH_Sword_G2
     400272: Skeleton_Body
+    400274: SH_Shield_C4
+    400276: SH_Shield_F4
+    400278: SH_Shield_G4
+    400280: SH_Sword_B4
     2100000: hair1
     2100002: Helmet_A1
     2100004: Chest_A1
@@ -337,6 +345,66 @@ ModelImporter:
     2100114: SH_Shoulders_G
     2100116: SH_Chest_G
     2100118: phong1
+    2100120: hair3
+    2100122: Helmet_A3
+    2100124: Chest_A3
+    2100126: Shoulders_A3
+    2100128: SH_Sword__A3
+    2100130: Boots_A3
+    2100132: Legs_A3
+    2100134: Gloves_A3
+    2100136: SH_Shield_A4
+    2100138: SH_Shield__B3
+    2100140: Helmet_B3
+    2100142: Chest_B3
+    2100144: Boots_B3
+    2100146: Gloves_B3
+    2100148: Shoulders_B3
+    2100150: Legs_B3
+    2100152: SH_Sword_B3
+    2100154: SH_Sword_C5
+    2100156: SH_Shield_C3
+    2100158: Chest_C3
+    2100160: Mail_C3
+    2100162: Shoulders_C3
+    2100164: Helmet_C3
+    2100166: Gloves_C3
+    2100168: Boots_C3
+    2100170: Legs_C3
+    2100172: SH_LegsArmor_D3
+    2100174: SH_Boots_D3
+    2100176: SH_Shouldrers_D3
+    2100178: SH_Sword_D4
+    2100180: SH_Shield_D3
+    2100182: SH_Gloves_D3
+    2100184: SH_Chest_D3
+    2100186: Mail_D3
+    2100188: SH_Helmet_D3
+    2100190: SH_Helmet_E4
+    2100192: SH_Boots_E3
+    2100194: SH_Shouldrers_E3
+    2100196: SH_Sword_E4
+    2100198: SH_Shield_E3
+    2100200: SH_Chest_E4
+    2100202: SH_LegsArmor_E3
+    2100204: SH_Gloves_E3
+    2100206: SH_Helmet_F4
+    2100208: SH_Sword_F4
+    2100210: SH_Shield_F3
+    2100212: SH_Chest_F4
+    2100214: SH_Shoulders_F3
+    2100216: SH_Gloves_F3
+    2100218: SH_Boots_F3
+    2100220: SH_LegsArmor_F3
+    2100222: SH_Helmet_G4
+    2100224: SH_Sword_G4
+    2100226: SH_Shield_G3
+    2100228: SH_Gloves_G3
+    2100230: SH_Boots_G3
+    2100232: SH_LegsArmor_G3
+    2100234: SH_Shoulders_G3
+    2100236: SH_Chest_G3
+    2100238: phong4
     2300000: SH_Shield_A2
     2300002: SH_Shield_B
     2300004: SH_Shield_C2
@@ -344,6 +412,9 @@ ModelImporter:
     2300008: SH_Shield_E01
     2300010: SH_Shield_F2
     2300012: SH_Shield_G2
+    2300014: SH_Shield_C4
+    2300016: SH_Shield_F4
+    2300018: SH_Shield_G4
     3300000: SH_Shield_A2
     3300002: SH_Shield_B
     3300004: SH_Shield_C2
@@ -351,6 +422,9 @@ ModelImporter:
     3300008: SH_Shield_E01
     3300010: SH_Shield_F2
     3300012: SH_Shield_G2
+    3300014: SH_Shield_C4
+    3300016: SH_Shield_F4
+    3300018: SH_Shield_G4
     4300000: Hair
     4300002: SH_Helmet_A
     4300004: SH_CHest_Armor_A
@@ -423,6 +497,24 @@ ModelImporter:
     4300138: SH_Sword_G01
     4300140: SH_Shield_G2
     4300142: Skeleton_Body
+    4300144: SH_Sword_B4
+    4300146: SH_Shield_C4
+    4300148: SH_Shield_F4
+    4300150: SH_Shield_G4
+    7400000: Left Hand Empty
+    7400002: Left_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Hold
+    7400004: Left_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Fire_Animation
+    7400006: Left_Hand_Pirate_Knife_and_Axe_Hold
+    7400008: Left_Hand_Musketoon_Short_Hold
+    7400010: Left_Hand_Sword_Hold
+    7400012: Left_Hand_Musketoon_Short_Fire_Animation
+    7400014: Right_Hand_Empty
+    7400016: Right_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Hold
+    7400018: Right_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Fire_Animation
+    7400020: Right_Hand_Pirate_Knife_and_Axe_Hold
+    7400022: Right_Hand_Sword_Hold
+    7400024: Right_Hand_Musketoon_Short_Hold
+    7400026: Right_Hand_Musketoon_Fire_Animation
     9500000: //RootNode
     13700000: Hair
     13700002: SH_Boots_A
@@ -489,6 +581,7 @@ ModelImporter:
     13700124: SH_Sword_G01
     13700126: SH_Sword_G2
     13700128: Skeleton_Body
+    13700130: SH_Sword_B4
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -521,7 +614,399 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Left Hand Empty
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Left_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Hold
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Left_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Fire_Animation
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 10
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Left_Hand_Pirate_Knife_and_Axe_Hold
+      takeName: Take 001
+      firstFrame: 14
+      lastFrame: 14
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Left_Hand_Sword_Hold
+      takeName: Take 001
+      firstFrame: 15
+      lastFrame: 15
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Left_Hand_Musketoon_Short_Hold
+      takeName: Take 001
+      firstFrame: 19
+      lastFrame: 19
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Left_Hand_Musketoon_Short_Fire_Animation
+      takeName: Take 001
+      firstFrame: 19
+      lastFrame: 35
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Right_Hand_Empty
+      takeName: Take 001
+      firstFrame: 50
+      lastFrame: 50
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Right_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Hold
+      takeName: Take 001
+      firstFrame: 51
+      lastFrame: 51
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Right_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Fire_Animation
+      takeName: Take 001
+      firstFrame: 51
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Right_Hand_Pirate_Knife_and_Axe_Hold
+      takeName: Take 001
+      firstFrame: 64
+      lastFrame: 64
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Right_Hand_Sword_Hold
+      takeName: Take 001
+      firstFrame: 65
+      lastFrame: 65
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Right_Hand_Musketoon_Short_Hold
+      takeName: Take 001
+      firstFrame: 68
+      lastFrame: 68
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Right_Hand_Musketoon_Fire_Animation
+      takeName: Take 001
+      firstFrame: 68
+      lastFrame: 84
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
