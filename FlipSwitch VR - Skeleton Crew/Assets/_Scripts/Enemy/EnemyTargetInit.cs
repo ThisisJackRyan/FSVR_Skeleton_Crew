@@ -64,7 +64,7 @@ public class EnemyTargetInit : MonoBehaviour {
         }
     }
 
-    private void RemoveFromList() {
+    public void RemoveFromList() {
         switch (targetType) {
             case TargetType.Mast:
                 if (VariableHolder.instance.mastTargets.Contains(gameObject)) {
