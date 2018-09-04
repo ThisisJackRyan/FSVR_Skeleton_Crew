@@ -13,7 +13,7 @@ public class EnemyTargetInit : MonoBehaviour {
     public TargetType targetType;
 
     private void OnEnable() {
-        Opsive.ThirdPersonController.EventHandler.RegisterEvent<int>("DamagedByMelee", ApplyMeleeDamage);
+        //Opsive.ThirdPersonController.EventHandler.RegisterEvent<int>("DamagedByMelee", ApplyMeleeDamage);
         AddToList();
     }
 
@@ -45,7 +45,7 @@ public class EnemyTargetInit : MonoBehaviour {
         }
     }
 
-    private void ApplyMeleeDamage(int dmg) {
+    public void ApplyMeleeDamage(int dmg) {
         print("apply melee damage called with " + dmg + " coming in");
         if (targetType == TargetType.Cannon) {
             int hp = GetComponent<DamagedObject>().ChangeHealth(dmg);
@@ -93,7 +93,7 @@ public class EnemyTargetInit : MonoBehaviour {
     }
 
     private void OnDisable() {
-        Opsive.ThirdPersonController.EventHandler.UnregisterEvent<int>("DamagedByMelee", ApplyMeleeDamage);
+        //Opsive.ThirdPersonController.EventHandler.UnregisterEvent<int>("DamagedByMelee", ApplyMeleeDamage);
         RemoveFromList();
     }
 

@@ -8,6 +8,7 @@ public class EnableNavMeshAgent : Action {
 
 	// Use this for initialization
 	public override void OnStart () {
-        GetComponent<NavMeshAgent>().enabled = true;	
+        GetComponent<NavMeshAgent>().enabled = true;
+        GetComponent<NavMeshAgent>().autoTraverseOffMeshLink = true;
 	}
 }
