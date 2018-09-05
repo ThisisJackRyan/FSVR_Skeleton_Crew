@@ -42,10 +42,10 @@ public class Host : NetworkBehaviour {
 		//GameObject uiManager = GameObject.Find( "HostUIManager" );
 		//uiManager.SetActive( true );
 
-        for(int i=0; i<GetComponent<NumberOfPlayerHolder>().numberOfPlayers ; i++) {
-            GameObject g = Instantiate(guardPrefab, guardSpawnPos[i], Quaternion.Euler(guardSpawnRot[i]));
-            NetworkServer.Spawn(g);
-        }
+        //for(int i=0; i<GetComponent<NumberOfPlayerHolder>().numberOfPlayers ; i++) {
+        //    GameObject g = Instantiate(guardPrefab, guardSpawnPos[i], Quaternion.Euler(guardSpawnRot[i]));
+        //    NetworkServer.Spawn(g);
+        //}
 
 		//scriptHostUi = uiManager.GetComponent<HostUiManager>();
 		//scriptHostUi.SetHost( this );

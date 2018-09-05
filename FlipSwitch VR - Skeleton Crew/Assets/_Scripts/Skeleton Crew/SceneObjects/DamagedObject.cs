@@ -26,6 +26,25 @@ public class DamagedObject : NetworkBehaviour {
 	public GameObject dmgParticles, healParticles;
 	public AudioClip damageClip, healClip;
 
+    [Button]
+    public void HealMe() {
+        if (!isServer) {
+            return;
+        }
+
+        ChangeHealth(maxHealth, false);
+    }
+
+    [Button]
+    public void KillMe() {
+        if (!isServer) {
+            return;
+        }
+
+        ChangeHealth(maxHealth);
+    }
+
+
 	private void OnPatternIndexChange( int n ) {
 		if (isServer) {
 			return;

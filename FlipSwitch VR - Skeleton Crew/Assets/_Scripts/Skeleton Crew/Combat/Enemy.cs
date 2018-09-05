@@ -4,6 +4,8 @@ using UnityEngine.Networking;
 using BehaviorDesigner.Runtime;
 using System;
 using Random = UnityEngine.Random;
+using Opsive.ThirdPersonController.Wrappers;
+
 
 /// <summary>
 /// Author: Matt Gipson
@@ -100,11 +102,8 @@ public class Enemy : NetworkBehaviour {
 	}
 
 	private void Start() {
-		if (weapon) {
-			if (weapon.type == WeaponData.WeaponType.Melee && weaponCollider.enabled) {
-				ToggleWeaponCollider();
-			}
-		}
+        int itemToEquip = Random.Range(0, GetComponent<Inventory>().DefaultLoadout.Length);
+        GetComponent<Inventory>().EquipItem(itemToEquip);
 	}
 
 	private void OnTriggerEnter(Collider other) {

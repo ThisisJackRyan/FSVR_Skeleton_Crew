@@ -43,7 +43,7 @@ namespace Opsive.ThirdPersonController
         // Internal variables
         private float m_AttackDelay;
         private float m_LastAttackTime;
-        private HashSet<Health> m_HitList = new HashSet<Health>();
+        private HashSet<EnemyTargetInit> m_HitList = new HashSet<EnemyTargetInit>();
         private bool m_InUse;
         private bool m_AllowInterruption;
         private bool m_AttackHit;
@@ -259,7 +259,7 @@ namespace Opsive.ThirdPersonController
                 m_AttackHit = true;
             }
 
-            var hitHealth = hitTransform.GetComponentInParent<Health>();
+            var hitHealth = hitTransform.GetComponentInParent<EnemyTargetInit>();
             Rigidbody hitRigidbody;
             // If the Health component exists it will apply a force to the rigidbody in addition to deducting the health. Otherwise just apply the force to the rigidbody. 
             if (hitHealth != null) {
@@ -268,14 +268,17 @@ namespace Opsive.ThirdPersonController
                     return;
                 }
                 m_HitList.Add(hitHealth);
-                hitHealth.Damage(m_DamageAmount, hitPoint, hitNormal * -m_ImpactForce, m_Character, hitTransform.gameObject);
+                hitHealth.ApplyMeleeDamage((int)m_DamageAmount);
             } else if (m_ImpactForce > 0 && (hitRigidbody = Utility.GetComponentForType<Rigidbody>(hitTransform.gameObject)) != null && !hitRigidbody.isKinematic) {
                 hitRigidbody.AddForceAtPosition(hitNormal * -m_ImpactForce, hitPoint);
             }
 
             // Execute any custom events.
             if (!string.IsNullOrEmpty(m_DamageEvent)) {
+                print("should be executing damage events");
                 EventHandler.ExecuteEvent(hitTransform.gameObject, m_DamageEvent, m_DamageAmount, hitPoint, hitNormal * -m_ImpactForce, m_Character);
+                //EventHandler.ExecuteEvent(m_DamageEvent,(int) m_DamageAmount); // NATHAN ADDED THIS
+
             }
 
             // Add any melee effects. These effects do not need to be added on the server.

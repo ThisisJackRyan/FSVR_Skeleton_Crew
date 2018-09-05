@@ -197,6 +197,10 @@ public class Player : NetworkBehaviour {
 			health = ( health > maxHealth ) ? maxHealth : health;
 		}
 
+        if (VariableHolder.instance.players.Contains(GetComponentInChildren<EnemyTargetInit>().gameObject)) {
+            VariableHolder.instance.players.Remove(GetComponentInChildren<EnemyTargetInit>().gameObject);
+        }
+
 
 		return health;
 	}
