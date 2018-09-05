@@ -172,7 +172,7 @@ namespace Opsive.ThirdPersonController
                 SharedManager.InitializeSharedFields(Utility.FindCamera(gameObject).gameObject, this);
             }
 
-            return CameraMonitor.TargetLookPosition(m_CameraTargetLookRay, m_CameraTargetLock, m_CameraLookDistance, m_ViewMode.Get());
+            return Vector3.zero; // CameraMonitor.TargetLookPosition(m_CameraTargetLookRay, m_CameraTargetLock, m_CameraLookDistance, m_ViewMode.Get());
         }
 
         /// <summary>

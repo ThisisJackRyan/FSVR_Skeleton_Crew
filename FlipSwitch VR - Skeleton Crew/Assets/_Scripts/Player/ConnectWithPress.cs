@@ -56,7 +56,7 @@ public class ConnectWithPress : MonoBehaviour {
     IEnumerator FadeAndLoad() {
         SteamVR_Fade.Start(Color.black, 1, true);
         yield return new WaitForSecondsRealtime(1f);
-        NetworkManager.singleton.networkAddress = NetworkManager.singleton.serverBindAddress;
+        //NetworkManager.singleton.networkAddress = NetworkManager.singleton.serverBindAddress;
         NetworkManager.singleton.StartClient();
 
         yield return new WaitForSecondsRealtime(1f);

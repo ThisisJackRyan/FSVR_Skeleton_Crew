@@ -26,7 +26,7 @@ public class ScriptNetworkManager : NetworkManager {
 			firstSpawn = false;
 		} else {
 			GameObject player = Instantiate( playerPrefab, Vector3.zero, Quaternion.identity );
-			    NetworkServer.AddPlayerForConnection( conn, player, playerControllerId );
+			NetworkServer.AddPlayerForConnection( conn, player, playerControllerId );
 		}
 		//}
 

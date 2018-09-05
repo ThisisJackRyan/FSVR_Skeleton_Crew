@@ -164,7 +164,7 @@ namespace Opsive.ThirdPersonController.Abilities
             if (m_RagdollDeath || layer != m_AnimatorMonitor.BaseLayerIndex) {
                 return string.Empty;
             }
-
+            print("should be calling die anim");
             return "Die.Die";
         }
 

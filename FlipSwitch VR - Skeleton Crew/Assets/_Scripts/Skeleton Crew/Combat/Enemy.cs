@@ -106,33 +106,24 @@ public class Enemy : NetworkBehaviour {
         GetComponent<Inventory>().EquipItem(itemToEquip);
 	}
 
-	private void OnTriggerEnter(Collider other) {
+	private void OnCollisionEnter(Collision other) {
 		if (!isServer)
 			return;
 
-		if (other.tag == "Weapon") {
-			if (other.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
+		if (other.gameObject.tag == "Weapon") {
+			if (other.gameObject.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
 				// todo: test that enemies are only being damaged by melee weapons being held by player
-				if (other.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
+				if (other.gameObject.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
 					canBeDamaged = false;
-					health -= other.GetComponent<Weapon>().data.damage;
-					if (health <= 0) {
-						Destroy(gameObject);
-						RpcSpawnDeathParticles();
-					}
-
-					Invoke("AllowDamage", 3.5f);
+                    GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
+					Invoke("AllowDamage", 1f);
 				}
 			}
-		} else if (other.tag == "BulletPlayer" || other.tag == "CannonBallPlayer") {
-			health -= other.GetComponent<SCProjectile>().damage;
+		} else if (other.gameObject.tag == "BulletPlayer" || other.gameObject.tag == "CannonBallPlayer") {
+            canBeDamaged = false;
 
-			if (health <= 0) {
-				Destroy(gameObject);
-				RpcSpawnDeathParticles();
-
-			}
-		}
+            Invoke("AllowDamage", 1f);
+        }
 	}
 
 	public int ChangeHealth( int amount, bool damage = true ) {
