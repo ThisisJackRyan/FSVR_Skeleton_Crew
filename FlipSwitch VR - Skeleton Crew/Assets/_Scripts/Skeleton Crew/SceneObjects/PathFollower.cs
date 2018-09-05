@@ -49,7 +49,30 @@ public class PathFollower : NetworkBehaviour {
 		speed = (faster) ? maxSpeed : minSpeed;
 	}
 
-	internal void DestroyCrystal( GameObject g ) {
+    bool firstMove = true;
+
+    public bool ChangeSpeed(float increment) {
+        if (firstMove && Mathf.Sign(increment) == 1) {
+            StartMoving();
+            firstMove = false;
+        }
+
+        if (speed == maxSpeed || speed == minSpeed) {
+            return false;
+        }
+
+        speed += increment;
+        if (speed > maxSpeed) {
+            speed = maxSpeed;
+        } else if (speed < minSpeed) {
+            speed = minSpeed;
+        }
+
+        return true;
+    }
+
+
+    internal void DestroyCrystal( GameObject g ) {
 		if ( isServer ) {
 			//NetworkServer.Destroy( g );
 			GameObject go = Instantiate( crystalDeathParticles, g.transform.position, Quaternion.identity );

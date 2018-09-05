@@ -18,9 +18,17 @@ public class SCProjectile : NetworkBehaviour {
 	// Use this for initialization//print(transform.position);
 	void Awake() {
 		Invoke("KillProjectile", 10f);
-		//print("reticle is " + reticle);
-		//print(name +  " is kinematic: " + GetComponent<Rigidbody>().isKinematic );
-	}
+        //print("reticle is " + reticle);
+        //print(name +  " is kinematic: " + GetComponent<Rigidbody>().isKinematic );
+
+        //GetComponent<Collider>().enabled = false;
+
+        //todo network this?
+
+        //if (isServer) {
+        //    GetComponent<Collider>().enabled = true;
+        //}
+    }
 
 	public void SetReticle(GameObject ret) {
 		reticle = ret;

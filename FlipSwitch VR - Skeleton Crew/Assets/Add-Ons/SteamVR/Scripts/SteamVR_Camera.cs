@@ -52,7 +52,10 @@ public class SteamVR_Camera : MonoBehaviour
 		{
 			if (head != null)
 			{
-				head.GetComponent<SteamVR_TrackedObject>().enabled = false;
+                if (head.GetComponent<SteamVR_TrackedObject>()) {
+                    head.GetComponent<SteamVR_TrackedObject>().enabled = false;
+                }
+				
 			}
 
 			enabled = false;

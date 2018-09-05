@@ -25,7 +25,7 @@ public class RepairDeckTrigger : MonoBehaviour {
 
 		if ( timer >= 1 ) {
 			repairPattern.gameObject.SetActive( true ); //
-			repairPattern.Init(); //
+			repairPattern.Init(activator); //
 
 			particles.SetActive( false );
 

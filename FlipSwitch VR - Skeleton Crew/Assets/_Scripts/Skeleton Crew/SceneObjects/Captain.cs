@@ -132,29 +132,22 @@ public class Captain : SerializedNetworkBehaviour {
 	public AudioClip[] tutorialSounds;
 	bool guardsComplete, damagedComplete, ratmenComplete, cannonsComplete;
 
-	#region sequencing
-
-/*			 kill enemies audio--
-			 kill enemies--
-			 repair cannon audio--
-			 swap out cannons--
-			 repair cannons--
-			 cannon shoot audio--
-			 enable prompts--
-			 all pllayers shoot--
-			 release rats audio--
-			 enable rat prompts--
-			 release rats - both sides--
-			 mast audio--
-			 pull mast--
-			*/
-
-	#endregion
-
 	public List<GameObject> tutorialCannons, actualCannons, cannonFirePrompts, tutorialRatHatch, ratHatch, tutorialGuards, mastPrompts; //todo disable mast prompt etc
 
+	public Transform[] guardPositions;
+	public GameObject guardPrefab;
+
 	public void StartTutorial() {
+        if (!isServer) {
+            return;
+        }
 		//print("start tutorial");
+
+		for ( int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++ ) {
+			GameObject g = Instantiate( guardPrefab, guardPositions[i].position, guardPositions[i].rotation );
+			enemiesKilled.Add( g.GetComponent<Enemy>(), false );
+			NetworkServer.Spawn( g );
+		}
 
 		ambientSource.enabled = true;
 		RpcEnableAmbient();
@@ -222,9 +215,9 @@ public class Captain : SerializedNetworkBehaviour {
 	//#endregion
 
 	public void CheckEnemiesKilled() {
-		foreach (var obj in enemiesKilled) {
-			//print(obj.Key.name + " has a value of " + obj.Value);
-		}
+		//foreach (var obj in enemiesKilled) {
+		//	//print(obj.Key.name + " has a value of " + obj.Value);
+		//}
 		if (!enemiesKilled.ContainsValue(false) && !guardsComplete) {
 			guardsComplete = true;
 			CancelInvoke();
