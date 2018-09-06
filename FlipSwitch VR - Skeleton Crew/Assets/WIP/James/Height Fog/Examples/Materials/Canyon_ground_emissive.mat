@@ -87,8 +87,8 @@ Material:
     - _FogSpeedY: 7.74
     - _FogSpeedZ: 1
     - _FogWaveAmplitude: 0
-    - _FogWaveAmplitudeX: 0.5
-    - _FogWaveAmplitudeZ: 0.25
+    - _FogWaveAmplitudeX: 0.3
+    - _FogWaveAmplitudeZ: 0.3
     - _FogWaveFreq: 0
     - _FogWaveFreqX: 2
     - _FogWaveFreqZ: 2
