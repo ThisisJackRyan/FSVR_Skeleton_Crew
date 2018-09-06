@@ -77,17 +77,17 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EmissionPower: 0
-    - _FogEmissionFalloff: 2.07
+    - _FogEmissionFalloff: 5
     - _FogEmissionPower: 50
-    - _FogFalloff: 8.6
-    - _FogMax: 0
+    - _FogFalloff: 10
+    - _FogMax: -1
     - _FogMin: -1500
     - _FogRelativeWorldOrLocal: 0
     - _FogSpeedX: 0.14
     - _FogSpeedY: 7.74
     - _FogSpeedZ: 1
     - _FogWaveAmplitude: 0
-    - _FogWaveAmplitudeX: 1
+    - _FogWaveAmplitudeX: 0.5
     - _FogWaveAmplitudeZ: 0.25
     - _FogWaveFreq: 0
     - _FogWaveFreqX: 2
