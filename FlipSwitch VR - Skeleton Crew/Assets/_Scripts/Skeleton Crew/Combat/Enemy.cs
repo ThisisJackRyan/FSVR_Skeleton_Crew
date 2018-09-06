@@ -31,6 +31,7 @@ public class Enemy : NetworkBehaviour {
 
 	public GameObject deathParticles;
 	public bool tutorialGuard = false;
+    public bool rangedUnit = false;
 	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
 
 
@@ -105,6 +106,12 @@ public class Enemy : NetworkBehaviour {
         int itemToEquip = Random.Range(0, GetComponent<Inventory>().DefaultLoadout.Length);
         GetComponent<Inventory>().EquipItem(itemToEquip);
 	}
+
+    public void EnemyUnitDeath() {
+        if (rangedUnit) {
+            VariableHolder.instance.RemoveRangedUnit();
+        }
+    }
 
 	private void OnCollisionEnter(Collision other) {
 		if (!isServer)
