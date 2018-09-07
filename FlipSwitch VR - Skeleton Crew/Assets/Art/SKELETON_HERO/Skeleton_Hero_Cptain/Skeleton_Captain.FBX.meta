@@ -69,6 +69,8 @@ ModelImporter:
     100098: SH_Shoulders_E
     100100: SH_Sword_E
     100102: SH_Sword_E01
+    100104: Captain_Mask
+    100106: SH_Sword_E1
     400000: Bip01 R Toe0
     400002: Bip01 R Foot
     400004: Bip01 L Forearm
@@ -121,18 +123,22 @@ ModelImporter:
     400098: SH_Shoulders_E
     400100: SH_Sword_E
     400102: SH_Sword_E01
+    400104: Captain_Mask
+    400106: SH_Sword_E1
     2300000: SH_Chest_E
     2300002: SH_Helmet_E
     2300004: SH_Shield_E01
     2300006: SH_Shield_E02
     2300008: SH_Sword_E
     2300010: SH_Sword_E01
+    2300012: SH_Sword_E1
     3300000: SH_Chest_E
     3300002: SH_Helmet_E
     3300004: SH_Shield_E01
     3300006: SH_Shield_E02
     3300008: SH_Sword_E
     3300010: SH_Sword_E01
+    3300012: SH_Sword_E1
     4300000: skeleton_footman
     4300002: Hair
     4300004: SH_Helmet_E
@@ -145,6 +151,8 @@ ModelImporter:
     4300018: SH_Boots_E
     4300020: SH_Gloves_E
     4300022: SH_LegsArmor_E
+    4300024: Captain_Mask
+    4300026: SH_Sword_E1
     7400000: Skeleton_HERO_LOD_A
     7400002: SH_anger
     7400004: SH_arm_kick_right
@@ -293,6 +301,7 @@ ModelImporter:
     13700006: SH_Gloves_E
     13700008: SH_LegsArmor_E
     13700010: SH_Shoulders_E
+    13700012: Captain_Mask
     2186277476908879412: ImportLogs
   externalObjects:
   - first:
@@ -308,12 +317,27 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: SH_Chest_E1
+    second: {fileID: 2100000, guid: 617920f0ac1468244806c1872ba77460, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: SH_Gloves_E
     second: {fileID: 2100000, guid: 37a05dce9281f8d43ba04ac2162bd052, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: SH_Helmet_E
+    second: {fileID: 2100000, guid: 701e9f8bf6bae2d438bd2281ef65af3d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SH_Helmet_E1
+    second: {fileID: 2100000, guid: 701e9f8bf6bae2d438bd2281ef65af3d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SH_Helmet_E2
     second: {fileID: 2100000, guid: 701e9f8bf6bae2d438bd2281ef65af3d, type: 2}
   - first:
       type: UnityEngine:Material
@@ -359,9 +383,9 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Skeleton_HERO' has import animation warnings
-      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Bip01 Spine' has translation animation that
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
+      improve retargeting quality.\n\t'Bip01 Spine' has translation animation that
       will be discarded.\n\t'Bip01 Spine2' is inbetween humanoid transforms and has
       rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
