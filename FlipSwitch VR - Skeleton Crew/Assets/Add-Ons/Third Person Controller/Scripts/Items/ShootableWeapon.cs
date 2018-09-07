@@ -500,6 +500,8 @@ namespace Opsive.ThirdPersonController
         /// </summary>
         public override void Used()
         {
+
+            print("calling used");
             if ((m_FireType == FireType.Instant && (m_FireEvent == null || m_AIAgent.Invoke())) || m_Inventory.GetItemCount(m_ItemType) == 0) {
                 if (m_FireOnUsedEvent && m_Inventory.GetItemCount(m_ItemType) > 0) {
                     DoFire();
@@ -510,6 +512,7 @@ namespace Opsive.ThirdPersonController
             } else {
                 m_ReadyToFire = true;
                 if (m_FireType == FireType.ChargeAndFire) {
+                    print("calling DoFire from used");
                     DoFire();
                 }
             }
@@ -556,6 +559,7 @@ namespace Opsive.ThirdPersonController
 
             // Fire as many projectiles or hitscan bullets as the fire count specifies.
             for (int i = 0; i < m_FireCount; ++i) {
+                print("do fire called with i = " + i + " the fire count is " + m_FireCount);
                 Fire();
             }
 
@@ -676,6 +680,7 @@ namespace Opsive.ThirdPersonController
         {
             // Fire a projectile if it exists, otherwise fire a raycast.
             if (m_Projectile) {
+                print("firing a projectile");
                 ProjectileFire();
             } else {
                 HitscanFire();
@@ -694,7 +699,7 @@ namespace Opsive.ThirdPersonController
                 projectileGameObject = m_RestProjectile;
                 projectileGameObject.transform.parent = null;
                 projectileGameObject.transform.position = m_FirePoint.position;
-                projectileGameObject.transform.rotation = rotation * m_Projectile.transform.rotation;
+                projectileGameObject.transform.rotation = rotation * m_Projectile.transform.rotation; // MODIFYING ROTATION HERE TO FIX ARROW BEING SHOT
                 m_RestProjectile = null;
             } else {
                 projectileGameObject = ObjectPool.Spawn(m_Projectile, m_FirePoint.position, rotation * m_Projectile.transform.rotation);
