@@ -71,6 +71,7 @@ ModelImporter:
     100102: SH_Sword_E01
     100104: Captain_Mask
     100106: SH_Sword_E1
+    100108: SH_Sword_E2
     400000: Bip01 R Toe0
     400002: Bip01 R Foot
     400004: Bip01 L Forearm
@@ -125,6 +126,7 @@ ModelImporter:
     400102: SH_Sword_E01
     400104: Captain_Mask
     400106: SH_Sword_E1
+    400108: SH_Sword_E2
     2300000: SH_Chest_E
     2300002: SH_Helmet_E
     2300004: SH_Shield_E01
@@ -132,6 +134,8 @@ ModelImporter:
     2300008: SH_Sword_E
     2300010: SH_Sword_E01
     2300012: SH_Sword_E1
+    2300014: Captain_Mask
+    2300016: SH_Sword_E2
     3300000: SH_Chest_E
     3300002: SH_Helmet_E
     3300004: SH_Shield_E01
@@ -139,6 +143,8 @@ ModelImporter:
     3300008: SH_Sword_E
     3300010: SH_Sword_E01
     3300012: SH_Sword_E1
+    3300014: Captain_Mask
+    3300016: SH_Sword_E2
     4300000: skeleton_footman
     4300002: Hair
     4300004: SH_Helmet_E
@@ -153,6 +159,7 @@ ModelImporter:
     4300022: SH_LegsArmor_E
     4300024: Captain_Mask
     4300026: SH_Sword_E1
+    4300028: SH_Sword_E2
     7400000: Skeleton_HERO_LOD_A
     7400002: SH_anger
     7400004: SH_arm_kick_right
@@ -307,6 +314,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Mask
+    second: {fileID: 2100000, guid: cd106effd994e3e4b8fcd767f202d000, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: SH_Boots_E
     second: {fileID: 2100000, guid: a2c6d50a549660849a43c76bee453768, type: 2}
   - first:
@@ -318,6 +330,11 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: SH_Chest_E1
+    second: {fileID: 2100000, guid: 617920f0ac1468244806c1872ba77460, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SH_Chest_E2
     second: {fileID: 2100000, guid: 617920f0ac1468244806c1872ba77460, type: 2}
   - first:
       type: UnityEngine:Material
@@ -342,6 +359,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: SH_Helmet_E3
+    second: {fileID: 2100000, guid: 701e9f8bf6bae2d438bd2281ef65af3d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: SH_LegsArmor_E
     second: {fileID: 2100000, guid: 604ade1f1f81c4d46b3733442b10025b, type: 2}
   - first:
@@ -352,7 +374,17 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: SH_Shield_E1
+    second: {fileID: 2100000, guid: 077e4fadeaab9e64db0692567390deff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: SH_Shouldrers_E
+    second: {fileID: 2100000, guid: c655c12b687bf9749bdc51463d417120, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SH_Shouldrers_E1
     second: {fileID: 2100000, guid: c655c12b687bf9749bdc51463d417120, type: 2}
   - first:
       type: UnityEngine:Material
@@ -362,18 +394,33 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: SH_Sword_E1
+    second: {fileID: 2100000, guid: 3c8879e6a16344e479ea0ba66a81f5d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: hair
+    second: {fileID: 2100000, guid: c3c6674b6edfe40448f05ddc3d6440ce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hair1
     second: {fileID: 2100000, guid: c3c6674b6edfe40448f05ddc3d6440ce, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: skeleton_body
     second: {fileID: 2100000, guid: 0f38ccc88df0ae74091a1863528941bc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: skeleton_body1
+    second: {fileID: 2100000, guid: 0f38ccc88df0ae74091a1863528941bc, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 0
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
