@@ -59,13 +59,13 @@ public class DamagedObject : NetworkBehaviour {
 
 	private void OnHealthChange( int n ) {
 		if ( !isServer ) {
-			//return;
-
+            //return;
+            print("health change");
 			if ( health > n && n > 0) {
-                if (Time.timeSinceLevelLoad > 10) {
+               
                     GetComponent<AudioSource>().PlayOneShot( damageClip );
 				    Instantiate( dmgParticles, transform.position, Quaternion.identity ); 
-                }  
+                
 				
 			} else if (health < n) {
 				GetComponent<AudioSource>().PlayOneShot( healClip );
@@ -250,10 +250,14 @@ public class DamagedObject : NetworkBehaviour {
 		if (damage) {
 			health -= Mathf.Abs(amount);
 			health = (health < 0) ? 0 : health;
-			if (health > 0) {
-				GetComponent<AudioSource>().PlayOneShot(damageClip);
-				Instantiate(dmgParticles, transform.position, Quaternion.identity);
-			}
+            //print(health);
+            if (health > 0) {
+                if (Time.timeSinceLevelLoad > 2) {
+                    //print("time since level loaded is " + Time.timeSinceLevelLoad);
+                    GetComponent<AudioSource>().PlayOneShot(damageClip);
+                    Instantiate(dmgParticles, transform.position, Quaternion.identity);
+                }
+            }
 		} else {
 			health += Mathf.Abs(amount);
 			health = (health > maxHealth) ? maxHealth : health;

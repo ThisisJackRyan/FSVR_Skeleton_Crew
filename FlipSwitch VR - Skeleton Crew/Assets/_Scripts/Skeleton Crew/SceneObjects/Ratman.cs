@@ -97,7 +97,11 @@ public class Ratman : NetworkBehaviour {
 		return health;
 	}
 
-	public int ChangeHealth( int amount, bool damage = true ) { 
+	public int ChangeHealth( int amount, bool damage = true ) {
+        if (!isServer) {
+            return health;
+        }
+
 		if ( damage ) {
 			health -= Mathf.Abs( amount );
 			health = ( health < 0 ) ? 0 : health;
@@ -124,7 +128,11 @@ public class Ratman : NetworkBehaviour {
 
 			return;
 		}
+
+        if (Time.timeSinceLevelLoad > 5) {
+
 		var g = Instantiate( deathParticles, new Vector3( rat.transform.position.x, rat.transform.position.y + 0.5f, rat.transform.position.z ), Quaternion.identity );
 		NetworkServer.Spawn(g);
+        }
 	}
 }

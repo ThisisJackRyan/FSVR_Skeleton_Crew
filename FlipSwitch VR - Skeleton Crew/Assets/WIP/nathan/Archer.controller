@@ -48057,15 +48057,15 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
-  - first: {fileID: 110710869}
-    second: []
-  - first: {fileID: 110711482}
-    second: []
   - first: {fileID: 110712910}
     second: []
   - first: {fileID: 110757426}
     second: []
+  - first: {fileID: 110710869}
+    second: []
   - first: {fileID: 110795098}
+    second: []
+  - first: {fileID: 110711482}
     second: []
   - first: {fileID: 110776506}
     second: []
@@ -53322,8 +53322,6 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
-  - first: {fileID: 110773144}
-    second: []
   - first: {fileID: 110713981}
     second: []
   - first: {fileID: 110781946}
@@ -53337,6 +53335,8 @@ AnimatorStateMachine:
   - first: {fileID: 110769682}
     second: []
   - first: {fileID: 110775188}
+    second: []
+  - first: {fileID: 110773144}
     second: []
   - first: {fileID: 110762234}
     second: []
