@@ -478,11 +478,15 @@ namespace Opsive.ThirdPersonController
         /// Can the item be used?
         /// </summary>
         /// <returns>True if the item can be used.</returns>
-        public override bool CanUse()
-        {
+        public override bool CanUse() {
             if (!base.CanUse()) {
+                print("base returned !CanUse()");
                 return false;
             }
+
+            print("can use is " + m_CanFire);
+
+
             return m_CanFire;
         }
 
@@ -491,7 +495,7 @@ namespace Opsive.ThirdPersonController
         /// </summary>
         /// <returns>True if the weapon is firing.</returns>
         public override bool InUse()
-        { 
+        {
             return m_IsFiring; 
         }
 
@@ -500,7 +504,6 @@ namespace Opsive.ThirdPersonController
         /// </summary>
         public override void Used()
         {
-
             print("calling used");
             if ((m_FireType == FireType.Instant && (m_FireEvent == null || m_AIAgent.Invoke())) || m_Inventory.GetItemCount(m_ItemType) == 0) {
                 if (m_FireOnUsedEvent && m_Inventory.GetItemCount(m_ItemType) > 0) {
