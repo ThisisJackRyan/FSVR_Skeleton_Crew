@@ -62,8 +62,11 @@ public class DamagedObject : NetworkBehaviour {
 			//return;
 
 			if ( health > n && n > 0) {
-				GetComponent<AudioSource>().PlayOneShot( damageClip );
-				Instantiate( dmgParticles, transform.position, Quaternion.identity );
+                if (Time.timeSinceLevelLoad > 10) {
+                    GetComponent<AudioSource>().PlayOneShot( damageClip );
+				    Instantiate( dmgParticles, transform.position, Quaternion.identity ); 
+                }  
+				
 			} else if (health < n) {
 				GetComponent<AudioSource>().PlayOneShot( healClip );
 				Instantiate( healParticles, transform.position, Quaternion.identity );

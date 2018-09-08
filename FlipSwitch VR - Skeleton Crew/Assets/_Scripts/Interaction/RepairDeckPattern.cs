@@ -17,7 +17,7 @@ public class RepairDeckPattern : MonoBehaviour {
 
 		
 
-		FaceActivator(activator);
+		//FaceActivator(activator);
 
 		deckDmg.FacePattern(transform);
 		
@@ -25,17 +25,17 @@ public class RepairDeckPattern : MonoBehaviour {
 		//print("awerrrrrrrrrrrrrrrrrrrrrrrgwer");
 	}
 
-	void FaceActivator(Transform activator) {
-		transform.position = new Vector3( transform.position.x,
-										 activator.GetComponentInChildren<HipMarker>().transform.position.y,
-										 transform.position.z );
+	//void FaceActivator(Transform activator) {
+	//	transform.position = new Vector3( transform.position.x,
+	//									 activator.GetComponentInChildren<HipMarker>().transform.position.y,
+	//									 transform.position.z );
 
-		Vector3 v = activator.GetComponentInChildren<HipMarker>().transform.position - transform.position;
+	//	Vector3 v = activator.GetComponentInChildren<HipMarker>().transform.position - transform.position;
 
-		v.x = v.z = 0.0f;
-		transform.LookAt( Camera.main.transform.position - v );
-		transform.Rotate( 0, 180, 0 );
-	}
+	//	v.x = v.z = 0.0f;
+	//	transform.LookAt( Camera.main.transform.position - v );
+	//	transform.Rotate( 0, 180, 0 );
+	//}
 	// Use this for initialization
 	public virtual void Increment() {
 		//print( "incrememnt called with index of " + index );

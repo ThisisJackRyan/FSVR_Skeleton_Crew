@@ -29,13 +29,22 @@ public class RepairDeckTrigger : MonoBehaviour {
 
 			particles.SetActive( false );
 
-			transform.position = new Vector3( transform.position.x,
-												other.transform.root.GetComponentInChildren<HipMarker>().transform.position.y,
-												transform.position.z );
 
-			deckDmg.EnablePatternOnClients(); // <-- Enables pattern & disables particles on clients
 
-			active = false;
+            Vector3 hipPos = activator.GetComponentInChildren<HipMarker>().transform.position;
+
+            transform.LookAt(new Vector3( hipPos.x, transform.position.y, hipPos.z));
+            transform.Rotate(0, 180, 0);
+            //transform.rotation = Quaternion.Euler(-transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, -transform.rotation.eulerAngles.z);
+            print(transform.rotation.eulerAngles);
+
+            transform.position = new Vector3(transform.position.x,
+                                    other.transform.root.GetComponentInChildren<HipMarker>().transform.position.y,
+                                    transform.position.z);
+
+            deckDmg.EnablePatternOnClients(); // <-- Enables pattern & disables particles on clients
+
+            active = false;
 			activator = null;
 		}
 	}
