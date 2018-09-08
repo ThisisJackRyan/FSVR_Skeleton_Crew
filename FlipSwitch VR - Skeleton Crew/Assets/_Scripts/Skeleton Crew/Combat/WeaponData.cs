@@ -21,6 +21,7 @@ public class WeaponData : ScriptableObject {
 	public GameObject projectile;
 	public GameObject particles;
 	public float power = 10;
+    public float spread = 0.01f;
 
 	public Vector3 heldPosition, holsteredPosition;
 	public Quaternion heldRotation, holsteredRotation;

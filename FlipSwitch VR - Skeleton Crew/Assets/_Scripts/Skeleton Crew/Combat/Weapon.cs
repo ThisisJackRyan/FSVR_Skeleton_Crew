@@ -38,7 +38,14 @@ public class Weapon : NetworkBehaviour {
 		if (ammo-- <= 0) {  //decrements after check
 			GetComponent<AudioSource>().clip = data.outOfAmmoSound;
 		} else {
-			var bullet = Instantiate(data.projectile, projectileSpawnPos.position, Quaternion.identity);
+            Vector3 rot = Quaternion.identity.eulerAngles;
+            if (data.spread > 0) {
+                var variance = Quaternion.AngleAxis(Random.Range(0, 360), rot) * Vector3.up * Random.Range(0, data.spread);
+                rot += variance;
+            }
+
+
+            var bullet = Instantiate(data.projectile, projectileSpawnPos.position, rot);
 			bullet.GetComponent<Rigidbody>().AddForce(projectileSpawnPos.forward * data.power, ForceMode.Impulse);
 			bullet.GetComponent<SCProjectile>().damage = data.damage;
 			Instantiate(data.particles, projectileSpawnPos.position, Quaternion.Euler(transform.forward));

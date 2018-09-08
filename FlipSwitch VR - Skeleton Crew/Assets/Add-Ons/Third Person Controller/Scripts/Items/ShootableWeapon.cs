@@ -406,6 +406,7 @@ namespace Opsive.ThirdPersonController
         public override bool TryUse()
         {
             if (!m_IsFiring && m_CanFire && !m_Reloading && m_LastShootTime + m_ShootDelay < Time.time && m_OverheatEvent == null) {
+                print("past first if check on " + name);
                 if (m_Inventory.GetItemCount(m_ItemType) > 0) {
                     m_IsFiring = true;
                     // Prevent the weapon from continuously firing if it not a fully automatic. AI agents do not have to follow this because they don't manually stop firing.
@@ -428,6 +429,7 @@ namespace Opsive.ThirdPersonController
                             EventHandler.ExecuteEvent(m_Character, "OnUpdateAnimator");
                         }
                     } else {
+                        print(name + " is calling OnUpdateAnimator event because firetype is not instant");
                         m_ReadyToFire = false;
                         EventHandler.ExecuteEvent(m_Character, "OnUpdateAnimator");
                     }
@@ -704,6 +706,7 @@ namespace Opsive.ThirdPersonController
                 projectileGameObject.transform.position = m_FirePoint.position;
                 projectileGameObject.transform.rotation = rotation * m_Projectile.transform.rotation; // MODIFYING ROTATION HERE TO FIX ARROW BEING SHOT
                 m_RestProjectile = null;
+                print("fired arrow from restProjectile");
             } else {
                 projectileGameObject = ObjectPool.Spawn(m_Projectile, m_FirePoint.position, rotation * m_Projectile.transform.rotation);
             }

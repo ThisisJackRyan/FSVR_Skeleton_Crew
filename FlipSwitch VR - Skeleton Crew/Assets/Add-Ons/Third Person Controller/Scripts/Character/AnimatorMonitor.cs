@@ -237,6 +237,7 @@ namespace Opsive.ThirdPersonController
         /// </summary>
         public void DetermineStates()
         {
+            print(name + " called DetermineStates (no parameter)");
             DetermineStates(true);
         }
 
@@ -249,6 +250,8 @@ namespace Opsive.ThirdPersonController
             if (!m_GameObject.activeSelf) {
                 return;
             }
+
+            print(name + " called DetermineStates with parameter true");
 
             m_IgnoreLowerPriority = false;
             var baseChanged = DetermineState(BaseLayerIndex, m_BaseState, checkAbilities, true);

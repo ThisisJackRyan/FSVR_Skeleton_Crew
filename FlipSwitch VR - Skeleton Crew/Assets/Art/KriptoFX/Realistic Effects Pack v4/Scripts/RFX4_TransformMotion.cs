@@ -99,6 +99,7 @@ public class RFX4_TransformMotion : MonoBehaviour
         {
             if (frameMoveOffset.magnitude + RayCastTolerance > hit.distance)
             {
+                print("has collided");
                 isCollided = true;
                 t.position = hit.point;
                 oldPos = t.position;
