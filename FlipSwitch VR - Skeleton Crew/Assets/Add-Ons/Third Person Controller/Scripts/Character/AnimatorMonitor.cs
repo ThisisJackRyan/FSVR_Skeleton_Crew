@@ -56,6 +56,8 @@ namespace Opsive.ThirdPersonController
         private Dictionary<string, int> m_StateNamesHash = new Dictionary<string, int>();
         private int[] m_ActiveStateHash;
         private bool m_IgnoreLowerPriority;
+        private int m_LastUsedFrame;
+
 #if ENABLE_MULTIPLAYER
         private bool m_AnimatorInit;
 #endif
@@ -876,6 +878,12 @@ namespace Opsive.ThirdPersonController
         /// <param name="itemTypeIndex">The corresponding index of the item used.</param>
         public void ItemUsed(int itemTypeIndex)
         {
+            if(m_LastUsedFrame == Time.frameCount) {
+                return;
+            }
+
+            m_LastUsedFrame = Time.frameCount;
+
             System.Type itemType;
             if (itemTypeIndex == 0) {
                 itemType = typeof(PrimaryItemType);
