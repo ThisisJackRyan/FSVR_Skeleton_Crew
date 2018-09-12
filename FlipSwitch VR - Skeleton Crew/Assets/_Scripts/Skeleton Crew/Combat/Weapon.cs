@@ -45,7 +45,7 @@ public class Weapon : NetworkBehaviour {
             }
 
 
-            var bullet = Instantiate(data.projectile, projectileSpawnPos.position, rot);
+            var bullet = Instantiate(data.projectile, projectileSpawnPos.position, Quaternion.Euler(rot));
 			bullet.GetComponent<Rigidbody>().AddForce(projectileSpawnPos.forward * data.power, ForceMode.Impulse);
 			bullet.GetComponent<SCProjectile>().damage = data.damage;
 			Instantiate(data.particles, projectileSpawnPos.position, Quaternion.Euler(transform.forward));
