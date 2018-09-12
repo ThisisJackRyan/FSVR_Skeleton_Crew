@@ -10,8 +10,9 @@ public class Ratman : NetworkBehaviour {
 	public GameObject rat;
 	public bool isOnTheLeft;
 	int maxHealth = 100;
+    public GameObject[] hitParticles;
 
-	public AudioClip deathSound;
+    public AudioClip deathSound;
 	[ClientRpc]
 	private void RpcPlayDeathSound() {
 		if ( isServer ) {
@@ -30,7 +31,18 @@ public class Ratman : NetworkBehaviour {
 					RpcPlayHitSound( rng );
 				}
 			}
-		}
+
+            for (int i = 0; i < hitParticles.Length; i++) {
+                hitParticles[i].SetActive(true);
+                var particles = hitParticles[i].GetComponent<ParticleSystem>();
+                particles.Simulate(0, true, true);
+                //foreach ( ParticleSystem ps in particles.GetComponentsInChildren<ParticleSystem>() ) {
+                //	particles.Simulate( 0, true, true );
+                //}
+                particles.Play();
+                //print( particles.name + " should be emiitng" );
+            }
+        }
 		//else if ( n <= 0 ) {
 		//	if ( isServer ) {
 		//		GetComponent<AudioSource>().PlayOneShot( deathSound );
