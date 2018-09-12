@@ -42,7 +42,7 @@ namespace BehaviorDesigner.Runtime.Tasks.ThirdPersonController
                                                 (useItemType == UseItemType.DualWield ? typeof(DualWieldItemType) : typeof(SecondaryItemType))) ? TaskStatus.Success : TaskStatus.Failure;
             }
 
-            Debug.Log("past all null checks, calling TryUseItem");
+            //Debug.Log("past all null checks, calling TryUseItem");
             return itemHandler.TryUseItem(itemType.Value.GetType()) ? TaskStatus.Success : TaskStatus.Failure;
         }
 

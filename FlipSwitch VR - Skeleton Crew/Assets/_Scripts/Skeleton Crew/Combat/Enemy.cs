@@ -4,8 +4,7 @@ using UnityEngine.Networking;
 using BehaviorDesigner.Runtime;
 using System;
 using Random = UnityEngine.Random;
-using Opsive.ThirdPersonController.Wrappers;
-
+using Opsive.ThirdPersonController.Wrappers;       
 
 /// <summary>
 /// Author: Matt Gipson
@@ -76,7 +75,18 @@ public class Enemy : NetworkBehaviour {
 		}
 	}
 
-	public AudioClip[] hitSounds;
+    private void OnEnable() {
+        if (!isServer) {
+            return;
+        }
+        Opsive.ThirdPersonController.EventHandler.RegisterEvent(gameObject, "OnDeath", OnDeath);
+    }
+
+    private void OnDeath() {
+        Invoke("DestroyMe", 5f);
+    }                                  
+
+    public AudioClip[] hitSounds;
 
 	[ClientRpc]
 	private void RpcPlayHitSound( int rng ) {
@@ -103,9 +113,29 @@ public class Enemy : NetworkBehaviour {
 	}
 
 	private void Start() {
-        int itemToEquip = Random.Range(0, GetComponent<Inventory>().DefaultLoadout.Length);
+
+        if (!isServer) {
+            return;
+        }
+
+
+        int itemToEquip;
+                            
+        itemToEquip = Random.Range(0, GetComponent<Inventory>().DefaultLoadout.Length);    
         GetComponent<Inventory>().EquipItem(itemToEquip);
+
+        RpcEquipItem(itemToEquip);
 	}
+
+    [ClientRpc]          
+    private void RpcEquipItem(int toEquip) {
+        if (isServer) {
+            return;
+        }
+
+        GetComponent<Inventory>().EquipItem(toEquip);
+
+    }
 
     public void EnemyUnitDeath() {
         if (rangedUnit) {
