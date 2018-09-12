@@ -163,8 +163,8 @@ namespace Opsive.ThirdPersonController.Abilities
             // Only the base layer can play a death animation. Ragdolls do not play a specific animation.
             if (m_RagdollDeath || layer != m_AnimatorMonitor.BaseLayerIndex) {
                 return string.Empty;
-            }
-            print("should be calling die anim");
+            }                                         
+
             return "Die.Die";
         }
 
@@ -203,9 +203,10 @@ namespace Opsive.ThirdPersonController.Abilities
                 EventHandler.UnregisterEvent<Vector3, Vector3, GameObject>(gameObject, "OnDeathDetails", OnDeath);
             }
             EventHandler.RegisterEvent(gameObject, "OnRespawn", OnRespawn);
+            print("should be calling ondeath on enemy component");
+            GetComponent<Enemy>().OnDeath();
 
             StartAbility();
-
             if (m_RagdollDeath) {
                 for (int i = 0; i < m_Rigidbodies.Count; ++i) {
                     m_Rigidbodies[i].AddForceAtPosition(force, position);

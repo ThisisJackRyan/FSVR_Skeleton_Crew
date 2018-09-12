@@ -75,16 +75,21 @@ public class Enemy : NetworkBehaviour {
 		}
 	}
 
-    private void OnEnable() {
+    public void OnDeath() {
+        print("on death called, invoking in 5");
+        Invoke("DestroyMe", 5f);
+    }            
+    
+    private void DestroyMe() {
         if (!isServer) {
             return;
         }
-        Opsive.ThirdPersonController.EventHandler.RegisterEvent(gameObject, "OnDeath", OnDeath);
-    }
+        print("should be destroying gameobject");
 
-    private void OnDeath() {
-        Invoke("DestroyMe", 5f);
-    }                                  
+        EnemyUnitDeath();
+        RpcSpawnDeathParticles();
+        NetworkServer.Destroy(gameObject);
+    }
 
     public AudioClip[] hitSounds;
 
@@ -158,7 +163,7 @@ public class Enemy : NetworkBehaviour {
 			}
 		} else if (other.gameObject.tag == "BulletPlayer" || other.gameObject.tag == "CannonBallPlayer") {
             canBeDamaged = false;
-
+            GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));   
             Invoke("AllowDamage", 1f);
         }
 	}
@@ -205,13 +210,5 @@ public class Enemy : NetworkBehaviour {
 
 	public bool GetCanBeDamaged() {
 		return canBeDamaged;
-	}
-
-	public void EnableEnemy() {
-		GlobalVariables.Instance.SetVariableValue("EnemiesEnabled", true);
-	}
-
-	public void ToggleWeaponCollider() {
-		weaponCollider.enabled = !weaponCollider.enabled;
 	}
 }

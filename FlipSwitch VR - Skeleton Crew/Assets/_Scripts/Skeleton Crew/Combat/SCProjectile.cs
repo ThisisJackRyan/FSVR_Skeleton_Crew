@@ -62,7 +62,15 @@ public class SCProjectile : NetworkBehaviour {
 
 	}
 
-	public void KillProjectile() {
+    private void OnCollisionEnter(Collision collision) {
+        if (!isServer) {
+            return;
+        }
+        KillProjectile();
+    }
+
+
+    public void KillProjectile() {
 		//if ( !isServer ) {
 		//	return;
 		//}

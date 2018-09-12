@@ -145,6 +145,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 		for ( int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++ ) {
 			GameObject g = Instantiate( guardPrefab, guardPositions[i].position, guardPositions[i].rotation );
+            g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("target", VariableHolder.instance.players[i]);
 			enemiesKilled.Add( g.GetComponent<Enemy>(), false );
 			NetworkServer.Spawn( g );
 		}

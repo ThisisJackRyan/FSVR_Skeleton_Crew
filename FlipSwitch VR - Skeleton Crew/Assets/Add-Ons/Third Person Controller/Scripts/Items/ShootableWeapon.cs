@@ -705,10 +705,13 @@ namespace Opsive.ThirdPersonController
                 projectileGameObject.transform.parent = null;
                 projectileGameObject.transform.position = m_FirePoint.position;
                 projectileGameObject.transform.rotation = rotation * m_Projectile.transform.rotation; // MODIFYING ROTATION HERE TO FIX ARROW BEING SHOT
+                projectileGameObject.transform.Rotate(new Vector3(0, 0, -110));
                 m_RestProjectile = null;
                 //print("fired arrow from restProjectile");
             } else {
                 projectileGameObject = ObjectPool.Spawn(m_Projectile, m_FirePoint.position, rotation * m_Projectile.transform.rotation);
+                projectileGameObject.transform.Rotate(new Vector3(0, 0, -110));
+
             }
             var projectile = Utility.GetComponentForType<Projectile>(projectileGameObject);
             projectile.Initialize(rotation * Vector3.forward, Vector3.zero, m_Character);

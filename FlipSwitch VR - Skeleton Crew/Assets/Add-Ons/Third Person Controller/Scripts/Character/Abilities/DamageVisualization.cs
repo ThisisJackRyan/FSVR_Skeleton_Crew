@@ -42,7 +42,7 @@ namespace Opsive.ThirdPersonController.Abilities
             }
 
             string ret = m_DamageType == DamageType.Front ? "Front Damage" : "Back Damage";
-            print("should be setting the animator to " + ret);
+            //print("should be setting the animator to " + ret);
             return m_DamageType == DamageType.Front ? "Front Damage" : "Back Damage";
         }
 
@@ -65,7 +65,7 @@ namespace Opsive.ThirdPersonController.Abilities
         private void TookDamage(float amount, Vector3 position, Vector3 force, GameObject attacker)
         {
 
-            print("damage visualization called took damage");
+            //print("damage visualization called took damage");
             var relativePosition = m_Transform.InverseTransformPoint(position);
             // Do not show any damage if the position is less then the center of the capsule collider. The legs do not animation when getting hit.
             if (relativePosition.y < m_Controller.CapsuleCollider.center.y) {

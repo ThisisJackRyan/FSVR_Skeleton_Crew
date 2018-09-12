@@ -251,6 +251,8 @@ namespace Opsive.ThirdPersonController
         /// <param name="hitNormal">The normal of the collision.</param>
         protected virtual void Attack(Transform hitTransform, Vector3 hitPoint, Vector3 hitNormal)
         {
+            print("entering attack");
+
             // Don't pass on the hit if the attack has already hit an object.
             if (m_SingleHitAttack) {
                 if (m_AttackHit) {
@@ -260,6 +262,9 @@ namespace Opsive.ThirdPersonController
             }
 
             var hitHealth = hitTransform.GetComponentInParent<EnemyTargetInit>();
+
+            Debug.LogWarning(hitTransform.name + " was hit, " + hitTransform.GetComponentInParent<EnemyTargetInit>() + " is init in parent" );
+
             Rigidbody hitRigidbody;
             // If the Health component exists it will apply a force to the rigidbody in addition to deducting the health. Otherwise just apply the force to the rigidbody. 
             if (hitHealth != null) {
@@ -368,6 +373,7 @@ namespace Opsive.ThirdPersonController
                 }
 #endif
                 if (Utility.InLayerMask(collision.gameObject.layer, m_AttackLayer.value)) {
+                    print("should be attacking " + collision.gameObject.name);
                     Attack(collision.transform, collision.contacts[0].point, collision.contacts[0].normal);
                 }
 
