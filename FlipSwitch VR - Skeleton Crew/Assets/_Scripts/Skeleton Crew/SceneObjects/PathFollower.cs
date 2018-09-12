@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 using Random = UnityEngine.Random;
 
 public class PathFollower : NetworkBehaviour {
+#pragma warning disable 0219
 
 	public NodePath path;
 	int currentNode, nextNode;
@@ -21,10 +22,25 @@ public class PathFollower : NetworkBehaviour {
 
 	Vector3 startPos;
 	Vector3 endPos;
+	public float xOffset = 50;
+	public float meteorSpawnTimer = .5f;
+	public float meteorRadius = 40;
+	public GameObject[] meteors;
+	Quaternion currRot, nextRot;
+	EncounterStage currentStage;
+	GameObject prefabToSpawn;
 
 	public int encounterOneTotalTime = 180, breakTimer = 60;
 
 	bool canMove = false;
+    bool firstMove = true;
+	[Header("Spawning stuff")]
+	public float spawnDistFromRock = 2;
+	public float spawnRadiusMin, spawnRadiusMax;
+	public Transform shipTransform;
+	[Tooltip("second encounters will be the object that spawns the meteor prefab, not the prefab itself. third encounters is for ratmen." +
+		"it again will have a specific object that tells rats to spawn. will prolly be changed tho. ")]
+	public GameObject[] firstEncounters, secondEncounters, thirdEncounters, tutorialSpawns;
 
 	protected void Start() {
 		if ( !isServer ) {
@@ -41,7 +57,7 @@ public class PathFollower : NetworkBehaviour {
 			return;
 		}
 		canMove = true;
-		currentStage = EncounterStage.First;
+		currentStage = EncounterStage.Tutorial;
 		Invoke( "ChangeToPhaseTwo", encounterOneTotalTime );
 	}
 
@@ -49,9 +65,7 @@ public class PathFollower : NetworkBehaviour {
 		speed = (faster) ? maxSpeed : minSpeed;
 	}
 
-    bool firstMove = true;
-
-    public bool ChangeSpeed(float increment) {
+	public bool ChangeSpeed(float increment) {
         if (firstMove && Mathf.Sign(increment) == 1) {
             StartMoving();
             firstMove = false;
@@ -70,8 +84,7 @@ public class PathFollower : NetworkBehaviour {
 
         return true;
     }
-
-
+	
     internal void DestroyCrystal( GameObject g ) {
 		if ( isServer ) {
 			//NetworkServer.Destroy( g );
@@ -81,7 +94,7 @@ public class PathFollower : NetworkBehaviour {
 	}
 
 	void ChangeToPhaseTwo() {
-		currentStage = EncounterStage.firstBreak;
+		currentStage = EncounterStage.FirstBreak;
 		Invoke( "StartSecondPhase", breakTimer );
 	}
 
@@ -92,7 +105,7 @@ public class PathFollower : NetworkBehaviour {
 	}
 
 	void StartSecondBreak() {
-		currentStage = EncounterStage.secondBreak;
+		currentStage = EncounterStage.SecondBreak;
 		CancelInvoke( "SpawnMeteors" );
 		//add timer for boss battle
 	}
@@ -116,10 +129,6 @@ public class PathFollower : NetworkBehaviour {
 		}
 	}
 
-	public float xOffset = 50;
-	public float meteorSpawnTimer = .5f;
-	public float meteorRadius = 40;
-	public GameObject[] meteors;
 	void SpawnMeteors() {
 		bool hitDeck = false;
 		Vector2 spawnVector;
@@ -165,9 +174,7 @@ public class PathFollower : NetworkBehaviour {
 			IncrementNode();
 		}
 	}
-
-	Quaternion currRot, nextRot;
-
+	
 	Quaternion CalcRotation( Transform target ) {
 		Vector3 vectorToTarget = target.transform.position - transform.position;
 		Vector3 facingDirection = transform.forward; // just for clarity!
@@ -208,29 +215,24 @@ public class PathFollower : NetworkBehaviour {
 			case EncounterStage.Third:
 				Spawn( thirdEncounters );
 				break;
+			case EncounterStage.Tutorial:
+				print("calling spawn with index " + ( currentNode - 1 ) );
+
+				Spawn(tutorialSpawns, currentNode - 1);
+				if (tutorialSpawns.Length == currentNode) {
+					print("hit last node in tutorial, moving to first encounter");
+					currentStage = EncounterStage.First;
+				}
+
+				break;
 			default:
-				print("hit node during break");
+				print("hit node during break or tutorial: " + currentStage.ToString());
 				break;
 		}
 	}
 	
-	#region spawn stuff
-
-	EncounterStage currentStage;
-	GameObject prefabToSpawn;
-
-	[Header("Spawning stuff")]
-	public float spawnDistFromRock = 2;
-	public float spawnRadiusMin, spawnRadiusMax;
-	public Transform shipTransform;
-	[Tooltip("second encounters will be the object that spawns the meteor prefab, not the prefab itself. third encounters is for ratmen." +
-		"it again will have a specific object that tells rats to spawn. will prolly be changed tho. ")]
-	public GameObject[] firstEncounters, secondEncounters, thirdEncounters;
-
-	enum EncounterStage {
-		First, Second, Third, firstBreak, secondBreak
-	}
-
+	#region spawn stuff	
+	
 	public static GameObject[] Floaters {
 		get {
 			return floaters ?? ( floaters = GameObject.FindGameObjectsWithTag( "Floater" ) );
@@ -239,13 +241,12 @@ public class PathFollower : NetworkBehaviour {
 
 	static GameObject[] floaters;
 
-	public void Spawn( GameObject[] toSpawnList ) {
+	public void Spawn( GameObject[] toSpawnList, int specifiedIndex = -1 ) {
 		if ( !isServer ) {
 			return;
 		}
 
-
-		int spawnIndex = Random.Range( 0, toSpawnList.Length );
+		int spawnIndex =  (specifiedIndex != -1) ? specifiedIndex : Random.Range( 0, toSpawnList.Length );
 		prefabToSpawn = toSpawnList[spawnIndex];
 		
 		//print( name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name  );
@@ -282,9 +283,7 @@ public class PathFollower : NetworkBehaviour {
 			NetworkServer.Spawn(g);
 		}
 	}
-
-#pragma warning disable 0219
-
+	
 	[ClientRpc]
 	private void RpcSpawnEnemy( GameObject g, Vector3 spawnPos ) {
 		if ( isServer ) {
@@ -296,4 +295,7 @@ public class PathFollower : NetworkBehaviour {
 
 	#endregion
 
+	enum EncounterStage {
+		Tutorial, First, Second, Third, FirstBreak, SecondBreak
+	}
 }

@@ -18,6 +18,8 @@ public class MastSwitch : NetworkBehaviour {
     public AudioClip aimClip, maxClip;
     public GameObject[] aimingNodes;
 
+	bool firstRun = true;
+
     AudioSource source;
 
 	private void Start() {
@@ -35,20 +37,20 @@ public class MastSwitch : NetworkBehaviour {
             int raiseSign = (indexOfNode > indexOfFirstGrabbed) ? -1 : 1; //if index is greater (closer to back of cannon) then you are raising the cannon
 
             bool playSound = pathFollower.ChangeSpeed(speedIncrement * raiseSign);
-
            
-            PlayAimSound(playSound);
-            
+            PlayAimSound(playSound);            
 
             indexOfFirstGrabbed = indexOfNode;
 
             RpcAdjustSails(pathFollower.speed );
 
             sailAnimator.SetFloat("Speed",pathFollower.speed);
-
-            //todo add animator code here
-
         }
+
+		if (firstRun) {
+			firstRun = false;
+			Captain.instance.MastHasBeenPulled();
+		}
     }
 
     [ClientRpc]
@@ -58,7 +60,6 @@ public class MastSwitch : NetworkBehaviour {
         }
         //do local animation set here, may not need if using network animator
     }
-
 
     [ClientRpc]
     public void RpcPlayAimSound(bool notMax) {
