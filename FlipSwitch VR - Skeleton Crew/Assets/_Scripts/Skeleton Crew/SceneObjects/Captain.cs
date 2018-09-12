@@ -102,6 +102,8 @@ public class Captain : SerializedNetworkBehaviour {
 		foreach (var g in mastRopes) {
 			g.enabled = false;
 		}
+
+		//PlayDialogue(tutorialSounds[0]);
 	}
 
 	public void Init() {
@@ -114,6 +116,18 @@ public class Captain : SerializedNetworkBehaviour {
 		DisableRatHatches();
 		DisableRopes();
 		//DisableGuards();
+	}
+
+	public void PlayDialogue(string clip) {
+		for ( int i = 0; i < tutorialSounds.Length; i++ ) {
+			if ( tutorialSounds[i].name == clip ) {
+				mySource.PlayOneShot( tutorialSounds[i] );
+				RpcPlaySoundClip( clip );
+				return;
+			}
+		}
+
+		Debug.Log(clip + " does not exist in tutorial dialogue collection" );
 	}
 
 	#region Tutorial shit
@@ -456,12 +470,9 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void MastHasBeenPulled() {
 		if (!mastHasBeenPulled) {
-			//talkie talkie
+			RpcPlaySoundClip("MastPulled");
 		}
 		mastHasBeenPulled = true;
-
-		RpcPlaySoundClip("MastPulled");
-		//print("mast has been pulled");
 	}
 
 	[ClientRpc]
