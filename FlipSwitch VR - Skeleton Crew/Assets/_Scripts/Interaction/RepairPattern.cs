@@ -21,9 +21,9 @@ public class RepairPattern : MonoBehaviour {
 
 	// Use this for initialization
 	public virtual void Increment () {
-		//print( "incrememnt called with index of " + index );
+        //print("incrememnt called with index of " + index);
 
-		dmgObj.DisableRepairNode( index );
+        dmgObj.DisableRepairNode( index );
 		index++;
 		if (index < transform.childCount) {
 			//print("index in range");

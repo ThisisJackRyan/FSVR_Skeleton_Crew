@@ -43,7 +43,7 @@ public class Enemy : NetworkBehaviour {
     }
 
     public void PlayHitParticles() {
-        print("play hit particles called");
+        //print("play hit particles called");
 
         foreach(var p in hitParticles) {
             p.SetActive(true);
