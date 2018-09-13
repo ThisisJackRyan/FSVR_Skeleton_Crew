@@ -46,7 +46,7 @@ public class EnemyTargetInit : MonoBehaviour {
     }
 
     public void ApplyMeleeDamage(int dmg) {
-        print("apply melee damage called with " + dmg + " coming in");
+        //print("apply melee damage called with " + dmg + " coming in");
         if (targetType == TargetType.Cannon) {
             int hp = GetComponent<DamagedObject>().ChangeHealth(dmg);
             if (hp <= 0) {

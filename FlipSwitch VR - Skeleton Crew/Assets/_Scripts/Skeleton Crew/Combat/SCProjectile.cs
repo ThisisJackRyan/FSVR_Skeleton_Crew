@@ -43,8 +43,6 @@ public class SCProjectile : NetworkBehaviour {
 		if (oneShotKill) {
 			if ( other.tag == "PlayerCollider" ) {
 				other.GetComponentInParent<Player>().ChangeHealth(150);
-			} else if ( other.tag == "Enemy" ) {
-				other.GetComponent<Enemy>().ChangeHealth(150);
 			} else if (other.tag == "Ratman") {
 				other.GetComponentInParent<Ratman>().ChangeHealth(150);
 			}
@@ -66,6 +64,8 @@ public class SCProjectile : NetworkBehaviour {
         if (!isServer) {
             return;
         }
+
+        //print("collision enter on " + name);
         KillProjectile();
     }
 
@@ -83,7 +83,9 @@ public class SCProjectile : NetworkBehaviour {
 			particles.transform.parent = null;
 			Destroy(particles, particleKillTimer );
 		}
-		Destroy(gameObject);
+
+        //print("Should be destroying the bullet");
+		NetworkServer.Destroy(gameObject);
 	}
 
 	[ClientRpc]

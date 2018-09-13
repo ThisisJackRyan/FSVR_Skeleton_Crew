@@ -251,7 +251,7 @@ namespace Opsive.ThirdPersonController
         /// <param name="hitNormal">The normal of the collision.</param>
         protected virtual void Attack(Transform hitTransform, Vector3 hitPoint, Vector3 hitNormal)
         {
-            print("entering attack");
+            //print("entering attack");
 
             // Don't pass on the hit if the attack has already hit an object.
             if (m_SingleHitAttack) {
@@ -263,7 +263,7 @@ namespace Opsive.ThirdPersonController
 
             var hitHealth = hitTransform.GetComponentInParent<EnemyTargetInit>();
 
-            Debug.LogWarning(hitTransform.name + " was hit, " + hitTransform.GetComponentInParent<EnemyTargetInit>() + " is init in parent" );
+            //Debug.LogWarning(hitTransform.name + " was hit, " + hitTransform.GetComponentInParent<EnemyTargetInit>() + " is init in parent" );
 
             Rigidbody hitRigidbody;
             // If the Health component exists it will apply a force to the rigidbody in addition to deducting the health. Otherwise just apply the force to the rigidbody. 
@@ -280,7 +280,7 @@ namespace Opsive.ThirdPersonController
 
             // Execute any custom events.
             if (!string.IsNullOrEmpty(m_DamageEvent)) {
-                print("should be executing damage events");
+                //print("should be executing damage events");
                 EventHandler.ExecuteEvent(hitTransform.gameObject, m_DamageEvent, m_DamageAmount, hitPoint, hitNormal * -m_ImpactForce, m_Character);
                 //EventHandler.ExecuteEvent(m_DamageEvent,(int) m_DamageAmount); // NATHAN ADDED THIS
 
@@ -373,7 +373,7 @@ namespace Opsive.ThirdPersonController
                 }
 #endif
                 if (Utility.InLayerMask(collision.gameObject.layer, m_AttackLayer.value)) {
-                    print("should be attacking " + collision.gameObject.name);
+                    //print("should be attacking " + collision.gameObject.name);
                     Attack(collision.transform, collision.contacts[0].point, collision.contacts[0].normal);
                 }
 

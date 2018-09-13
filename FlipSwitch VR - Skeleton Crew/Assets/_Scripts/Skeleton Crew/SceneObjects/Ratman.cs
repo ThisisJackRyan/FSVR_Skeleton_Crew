@@ -36,19 +36,13 @@ public class Ratman : NetworkBehaviour {
                 hitParticles[i].SetActive(true);
                 var particles = hitParticles[i].GetComponent<ParticleSystem>();
                 particles.Simulate(0, true, true);
-                //foreach ( ParticleSystem ps in particles.GetComponentsInChildren<ParticleSystem>() ) {
-                //	particles.Simulate( 0, true, true );
-                //}
+
                 particles.Play();
-                //print( particles.name + " should be emiitng" );
+
             }
+
+            Invoke("TurnOffHit", 1.0f);
         }
-		//else if ( n <= 0 ) {
-		//	if ( isServer ) {
-		//		GetComponent<AudioSource>().PlayOneShot( deathSound );
-		//		RpcPlayDeathSound();
-		//	}
-		//}
 
 		health = n;
 
@@ -56,7 +50,13 @@ public class Ratman : NetworkBehaviour {
 			KillRatman();
 	}
 
-	void Start() {
+    private void TurnOffHit() {
+        for (int i = 0; i < hitParticles.Length; i++) {
+            hitParticles[i].SetActive(false);
+        }
+    }
+
+    void Start() {
 		VariableHolder.instance.ratmenPositions.Add( gameObject, isOnTheLeft );
 		if ( isServer ) {
 			//  print(name + " enabled server check");

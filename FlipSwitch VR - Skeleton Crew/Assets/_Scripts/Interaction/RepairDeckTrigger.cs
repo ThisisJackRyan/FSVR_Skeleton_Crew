@@ -36,7 +36,7 @@ public class RepairDeckTrigger : MonoBehaviour {
             transform.LookAt(new Vector3( hipPos.x, transform.position.y, hipPos.z));
             transform.Rotate(0, 180, 0);
             //transform.rotation = Quaternion.Euler(-transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, -transform.rotation.eulerAngles.z);
-            print(transform.rotation.eulerAngles);
+            //print(transform.rotation.eulerAngles);
 
             transform.position = new Vector3(transform.position.x,
                                     other.transform.root.GetComponentInChildren<HipMarker>().transform.position.y,

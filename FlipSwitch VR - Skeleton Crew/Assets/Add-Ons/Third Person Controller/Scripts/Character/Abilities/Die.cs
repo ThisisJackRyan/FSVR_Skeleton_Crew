@@ -203,8 +203,6 @@ namespace Opsive.ThirdPersonController.Abilities
                 EventHandler.UnregisterEvent<Vector3, Vector3, GameObject>(gameObject, "OnDeathDetails", OnDeath);
             }
             EventHandler.RegisterEvent(gameObject, "OnRespawn", OnRespawn);
-            print("should be calling ondeath on enemy component");
-            GetComponent<Enemy>().OnDeath();
 
             StartAbility();
             if (m_RagdollDeath) {

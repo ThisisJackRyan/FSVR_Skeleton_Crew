@@ -15,16 +15,7 @@ using Opsive.ThirdPersonController.Wrappers;
 /// </summary>
 public class Enemy : NetworkBehaviour {
 	#region Fields
-
-	[SyncVar(hook = "OnHealthChange")]
-	public int health;
-	public int soulCount;
-	[Tooltip("souls per second")]
-	public int drainRate;
-	public WeaponData weapon;
-	public Collider weaponCollider;
-	public BehaviorTree tree;
-
+    
 	private bool canBeDamaged = true;
 	public GameObject lastWeaponDamagedMe;
 
@@ -36,93 +27,41 @@ public class Enemy : NetworkBehaviour {
 
 	#endregion
 
-	private void OnHealthChange(int n) {
-		if (n < health) {
-
-			for ( int i = 0; i < hitParticles.Length; i++ ) {
-				hitParticles[i].SetActive( true );
-				var particles = hitParticles[i].GetComponent<ParticleSystem>();
-				particles.Simulate( 0, true, true );
-				//foreach ( ParticleSystem ps in particles.GetComponentsInChildren<ParticleSystem>() ) {
-				//	particles.Simulate( 0, true, true );
-				//}
-				particles.Play();
-				//print( particles.name + " should be emiitng" );
-			}
-			Invoke( "TurnOffHit", 2.0f );
-
-			if ( n >= 0 ) {
-				if ( isServer ) {
-					int rng = Random.Range( 0, hitSounds.Length );
-					GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
-					RpcPlayHitSound( rng );
-				}
-			} 
-		}
-
-		health = n;
-
-		if (health <= 0) {
-			if ( tutorialGuard ) {
-				//print( "tut guard killed" );
-				Captain.enemiesKilled[this] = true;
-				Captain.instance.CheckEnemiesKilled();
-			}
-
-			Destroy( gameObject );
-			Instantiate( deathParticles, new Vector3( transform.position.x, transform.position.y + 0.5f, transform.position.z ), Quaternion.identity );
-
-		}
-	}
-
-    public void OnDeath() {
-        print("on death called, invoking in 5");
-        Invoke("DestroyMe", 5f);
-    }            
-    
     private void DestroyMe() {
         if (!isServer) {
             return;
         }
-        print("should be destroying gameobject");
+        if (tutorialGuard) {
+            //print( "tut guard killed" );
+            Captain.enemiesKilled[this] = true;
+            Captain.instance.CheckEnemiesKilled();
+        }
 
-        EnemyUnitDeath();
         RpcSpawnDeathParticles();
+        EnemyUnitDeath();
         NetworkServer.Destroy(gameObject);
     }
 
-    public AudioClip[] hitSounds;
+    public void PlayHitParticles() {
+        print("play hit particles called");
 
-	[ClientRpc]
-	private void RpcPlayHitSound( int rng ) {
-		if (isServer) {
-			return;
-		}
+        foreach(var p in hitParticles) {
+            p.SetActive(true);
+            var par = p.GetComponent<ParticleSystem>();
+            par.Simulate(0, true, true);
+            par.Play();
+        }
 
-		GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
-	}
-
-	public AudioClip deathSound;
-	[ClientRpc]
-	private void RpcPlayDeathSound() {
-		if ( isServer ) {
-			return;
-		}
-
-		GetComponent<AudioSource>().PlayOneShot( deathSound );
-	}
-
-	public void KillMe() {
-		if ( isServer )
-			ChangeHealth( maxHealth );
-	}
+        Invoke("TurnOffHit", 1.0f);
+    }
 
 	private void Start() {
+
+        //Opsive.ThirdPersonController.EventHandler.RegisterEvent("OnHealthAmountChange", PlayHitParticles);
 
         if (!isServer) {
             return;
         }
-
 
         int itemToEquip;
                             
@@ -130,7 +69,8 @@ public class Enemy : NetworkBehaviour {
         GetComponent<Inventory>().EquipItem(itemToEquip);
 
         RpcEquipItem(itemToEquip);
-	}
+
+    }
 
     [ClientRpc]          
     private void RpcEquipItem(int toEquip) {
@@ -168,24 +108,7 @@ public class Enemy : NetworkBehaviour {
         }
 	}
 
-	public int ChangeHealth( int amount, bool damage = true ) {
-		if ( !isServer )
-			return health;
-
-		if ( damage ) {
-			health -= Mathf.Abs( amount );
-			health = ( health < 0 ) ? 0 : health;
-
-
-		} else {
-			health += Mathf.Abs( amount );
-			health = ( health > maxHealth ) ? maxHealth : health;
-		}
-
-		return health;
-	}
-
-	void TurnOffHit() {
+	private void TurnOffHit() {
 		for ( int i = 0; i < hitParticles.Length; i++ ) {
 			hitParticles[i].SetActive( false );
 		}

@@ -147,8 +147,6 @@ public class ImpactReticle : NetworkBehaviour {
 				hits[i].GetComponent<DamagedObject>().ChangeHealth( damage );
 			} else if ( hits[i].GetComponentInParent<Player>() ) {
 				hits[i].GetComponentInParent<Player>().ChangeHealth( damage );
-			} else if ( hits[i].GetComponent<Enemy>() ) {
-				hits[i].GetComponent<Enemy>().ChangeHealth( damage );
 			} else if ( hits[i].GetComponentInParent<Ratman>() ) {
 				hits[i].GetComponentInParent<Ratman>().ChangeHealth( damage );
 			}
