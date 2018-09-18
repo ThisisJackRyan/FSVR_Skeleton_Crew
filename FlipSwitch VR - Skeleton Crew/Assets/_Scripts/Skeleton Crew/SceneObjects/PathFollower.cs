@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -241,57 +242,54 @@ public class PathFollower : NetworkBehaviour {
 
 	static GameObject[] floaters;
 
-	public void Spawn( GameObject[] toSpawnList, int specifiedIndex = -1 ) {
-		if ( !isServer ) {
-			return;
-		}
+    [Button]
+    public void WorkAroundSpawn() {
+        Spawn(firstEncounters);
 
-		int spawnIndex =  (specifiedIndex != -1) ? specifiedIndex : Random.Range( 0, toSpawnList.Length );
-		prefabToSpawn = toSpawnList[spawnIndex];
-		
-		//print( name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name  );
-		//find rock
-		List<GameObject> rocks = new List<GameObject>();
+    }
 
-		foreach ( GameObject go in Floaters ) {
-			float dist = Vector3.Distance( shipTransform.position, go.transform.position );
-			//print( "distance to " + go.name + " is " + dist );
-			if ( dist > spawnRadiusMin && dist < spawnRadiusMax ) {
-				rocks.Add( go );
-			}
-		}
-		//print( "number of floaters " + Floaters.Length );
-		//print( "rocks in range " + rocks.Count );
+    public void Spawn(GameObject[] toSpawnList, int specifiedIndex = -1) {
+        if (!isServer) {
+            return;
+        }
 
-		if ( rocks.Count > 0 ) {
-			int chosenOne = Random.Range( 0, rocks.Count );
-			//calc other side
-			Vector3 spawnVector = rocks[chosenOne].transform.position - shipTransform.position;
-			spawnVector = rocks[chosenOne].transform.position + ( spawnVector.normalized * spawnDistFromRock );
+        int spawnIndex = (specifiedIndex != -1) ? specifiedIndex : Random.Range(0, toSpawnList.Length);
+        prefabToSpawn = toSpawnList[spawnIndex];
 
-			float rng = Random.Range(yLimiter.x, yLimiter.y);
-			spawnVector.y = rng;
-			//spawn
-			GameObject g = Instantiate( prefabToSpawn, spawnVector, Quaternion.identity );
+        //print( name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name  );
+        //find rock
+        List<GameObject> rocks = new List<GameObject>();
 
-			if (g.GetComponent<ImpactReticuleSpawner>()) {
-				g.GetComponent<ImpactReticuleSpawner>().deckMesh = shipDeck;
-			}
+        foreach (GameObject go in Floaters) {
+            float dist = Vector3.Distance(shipTransform.position, go.transform.position);
+            //print( "distance to " + go.name + " is " + dist );
+            if (dist > spawnRadiusMin && dist < spawnRadiusMax) {
+                rocks.Add(go);
+            }
+        }
+        //print( "number of floaters " + Floaters.Length );
+        //print( "rocks in range " + rocks.Count );
 
-			print( g.name + " spawned, calling rpc" );
-			//RpcSpawnEnemy( g, spawnVector );
-			NetworkServer.Spawn(g);
-		}
-	}
-	
-	[ClientRpc]
-	private void RpcSpawnEnemy( GameObject g, Vector3 spawnPos ) {
-		if ( isServer ) {
-			print("server says G is " + g.name);
-			return;
-		}
-		Instantiate( g, spawnPos, Quaternion.identity );
-	}
+        if (rocks.Count > 0) {
+            int chosenOne = Random.Range(0, rocks.Count);
+            //calc other side
+            Vector3 spawnVector = rocks[chosenOne].transform.position - shipTransform.position;
+            spawnVector = rocks[chosenOne].transform.position + (spawnVector.normalized * spawnDistFromRock);
+
+            float rng = Random.Range(yLimiter.x, yLimiter.y);
+            spawnVector.y = rng;
+            //spawn
+            GameObject g = Instantiate(prefabToSpawn, spawnVector, Quaternion.identity);
+
+            if (g.GetComponent<ImpactReticuleSpawner>()) {
+                g.GetComponent<ImpactReticuleSpawner>().deckMesh = shipDeck;
+            }
+
+            //print( g.name + " spawned, calling rpc" );
+            //RpcSpawnEnemy( g, spawnVector );
+            NetworkServer.Spawn(g);
+        }
+    }
 
 	#endregion
 

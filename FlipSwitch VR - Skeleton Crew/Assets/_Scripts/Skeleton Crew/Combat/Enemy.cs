@@ -23,9 +23,36 @@ public class Enemy : NetworkBehaviour {
 	public bool tutorialGuard = false;
     public bool rangedUnit = false;
 	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
-
+    [SyncVar] public GameObject boardingPartyShip;
 
 	#endregion
+
+    private void OnBoardingShipChange(GameObject n) {
+
+        if (isServer) {
+            return;
+        }
+        boardingPartyShip = n;
+        transform.parent = boardingPartyShip.transform;
+    }
+
+    public void UnParentMe() {
+        if (!isServer) {
+            return;
+        }
+
+        transform.parent = null;
+        RpcUnParentMe();
+    }
+
+    [ClientRpc]
+    private void RpcUnParentMe() {
+        if (isServer) {
+            return;
+        }
+
+        transform.parent = null;
+    }
 
     private void DestroyMe() {
         if (!isServer) {
@@ -60,6 +87,10 @@ public class Enemy : NetworkBehaviour {
         //Opsive.ThirdPersonController.EventHandler.RegisterEvent("OnHealthAmountChange", PlayHitParticles);
 
         if (!isServer) {
+            if (boardingPartyShip) {
+                transform.parent = boardingPartyShip.transform;
+            }
+
             return;
         }
 

@@ -17,7 +17,7 @@ public class TeleportOneAtATime : Action {
 
     private IEnumerator TeleportCrewmen() {
         foreach(var crewman in crewmen.Value) {
-            crewman.transform.parent = null;
+            //crewman.transform.parent = null;
             GameObject teleTarget = new GameObject();
 
             if (crewman.name.Contains("Archer") || crewman.name.Contains("Mage")) {
@@ -33,11 +33,13 @@ public class TeleportOneAtATime : Action {
             }
 
             crewman.transform.position = teleTarget.transform.position;
+            crewman.GetComponent<Enemy>().UnParentMe();
             crewman.GetComponent<Behavior>().SetVariableValue("Teleported", true);
             yield return new WaitForSeconds(timeBetweenTeleports.Value);
         }
 
         transform.parent = null;
+        GetComponent<Enemy>().UnParentMe();
         transform.position = teleportTargets.Value.ToArray()[Random.Range(0, teleportTargets.Value.Count)].transform.position;
     }
 }

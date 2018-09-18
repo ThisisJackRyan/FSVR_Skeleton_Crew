@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayCaptainDialogueOnStartOrWhenInRange : MonoBehaviour {
+
+public class PlayCaptainDialogueOnStartOrWhenInRange : NetworkBehaviour {
 
 	public bool playOnStart = true, playWhenInRange = false;
 	public float range = 25f;
@@ -11,6 +13,10 @@ public class PlayCaptainDialogueOnStartOrWhenInRange : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        if (!isServer) {
+            return;
+        }
+
 		if (!playOnStart) {
 			return;
 		}
@@ -20,9 +26,9 @@ public class PlayCaptainDialogueOnStartOrWhenInRange : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (inRange) {
-			return;
-		}
+        if (!isServer || inRange || !playWhenInRange) {
+            return;
+        }
 
 		if (Mathf.Abs(Vector3.Distance(transform.position, Captain.instance.transform.position)) < range) {
 			Captain.instance.PlayDialogue( rangeClip.name );

@@ -63,10 +63,10 @@ public class DamagedObject : NetworkBehaviour {
             //print("health change");
 			if ( health > n && n > 0) {               
                 GetComponent<AudioSource>().PlayOneShot( damageClip );
-				Instantiate( dmgParticles, transform.position, Quaternion.identity );   
+				//Instantiate( dmgParticles, transform.position, Quaternion.identity );   
 			} else if (health < n) {
 				GetComponent<AudioSource>().PlayOneShot( healClip );
-				Instantiate( healParticles, transform.position, Quaternion.identity );
+				//Instantiate( healParticles, transform.position, Quaternion.identity );
 			}
 		}
 
@@ -252,15 +252,17 @@ public class DamagedObject : NetworkBehaviour {
                 if (Time.timeSinceLevelLoad > 2) {
                     //print("time since level loaded is " + Time.timeSinceLevelLoad);
                     GetComponent<AudioSource>().PlayOneShot(damageClip);
-                    Instantiate(dmgParticles, transform.position, Quaternion.identity);
+                    var g = Instantiate(dmgParticles, transform.position, Quaternion.identity);
+                    NetworkServer.Spawn(g);
                 }
             }
 		} else {
 			health += Mathf.Abs(amount);
 			health = (health > maxHealth) ? maxHealth : health;
 			GetComponent<AudioSource>().PlayOneShot(healClip);
-			Instantiate(healParticles, transform.position, Quaternion.identity);
-		}
+            var g = Instantiate(healParticles, transform.position, Quaternion.identity);
+            NetworkServer.Spawn(g);
+        }    
 
 		if ( health >= maxHealth ) {
 			Captain.damagedObjectsRepaired[this] = true;

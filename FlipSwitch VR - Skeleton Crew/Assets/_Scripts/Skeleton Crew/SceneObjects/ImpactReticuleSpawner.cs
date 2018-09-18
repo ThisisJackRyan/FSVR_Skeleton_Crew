@@ -12,7 +12,7 @@ public class ImpactReticuleSpawner : NetworkBehaviour {
 	int curSpawn;
 	public float timeBeforeStart = 1.5f, timeBetweenSpawns = 5, checkRadius = 0.5f;
 	Vector3 gizmo = Vector3.zero;
-	public bool debug = false;
+    public bool debug = false, killOnComplete = true;
 
 	[Button]
 	private Vector3 GeneratePoint() {
@@ -60,9 +60,15 @@ public class ImpactReticuleSpawner : NetworkBehaviour {
 		GameObject reticle = Instantiate(reticlePrefab, GeneratePoint(), Quaternion.identity);
 		NetworkServer.Spawn(reticle);
 		curSpawn++;
-		if(curSpawn >= totalSpawns ) {
-			NetworkServer.Destroy( gameObject );
-		}
+        if (curSpawn >= totalSpawns ) {
+
+            if (killOnComplete) {
+                NetworkServer.Destroy(gameObject);
+            } else {
+                CancelInvoke();
+            }
+
+        }
 	}
 
 	private void OnDrawGizmos() {

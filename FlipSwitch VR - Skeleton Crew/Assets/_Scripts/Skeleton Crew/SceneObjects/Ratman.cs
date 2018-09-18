@@ -66,7 +66,12 @@ public class Ratman : NetworkBehaviour {
 			OnHealthChange( health );
 			rat.GetComponent<BehaviorTree>().enabled = false;
 		}
-	}
+
+        for (int i = 0; i < hitParticles.Length; i++) {
+            hitParticles[i].SetActive(false);
+        }
+
+    }
 
 	public AudioClip[] hitSounds;
 
