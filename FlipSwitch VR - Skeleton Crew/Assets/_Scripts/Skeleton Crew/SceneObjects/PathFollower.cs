@@ -281,8 +281,10 @@ public class PathFollower : NetworkBehaviour {
             //spawn
             GameObject g = Instantiate(prefabToSpawn, spawnVector, Quaternion.identity);
 
-            if (g.GetComponent<ImpactReticuleSpawner>()) {
-                g.GetComponent<ImpactReticuleSpawner>().deckMesh = shipDeck;
+            if (g.GetComponent<ImpactReticuleSpawner>()) {               
+                foreach(var v in g.GetComponents<ImpactReticuleSpawner>()) {
+                    v.deckMesh = shipDeck;
+                }
             }
 
             //print( g.name + " spawned, calling rpc" );
