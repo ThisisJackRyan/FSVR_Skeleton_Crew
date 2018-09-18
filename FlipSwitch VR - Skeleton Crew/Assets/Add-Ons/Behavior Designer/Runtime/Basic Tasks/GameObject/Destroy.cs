@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityGameObject
 {
@@ -15,7 +16,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityGameObject
         {
             var destroyGameObject = GetDefaultGameObject(targetGameObject.Value);
             if (time == 0) {
-                GameObject.Destroy(destroyGameObject);
+                NetworkServer.Destroy(destroyGameObject);
             } else {
                 GameObject.Destroy(destroyGameObject, time);
             }

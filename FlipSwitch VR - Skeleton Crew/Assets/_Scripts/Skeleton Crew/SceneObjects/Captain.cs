@@ -300,9 +300,9 @@ public class Captain : SerializedNetworkBehaviour {
 	#region fire prompts 
 
 	void EnableFirePrompt() {
-		print("enable fire prompts");
+		//print("enable fire prompts");
 		for (int i = 0; i < cannonFirePrompts.Count; i++) {
-			print( cannonFirePrompts[i].name +  " being enabled" );
+			//print( cannonFirePrompts[i].name +  " being enabled" );
 
 			cannonFirePrompts[i].SetActive(true);
 		}

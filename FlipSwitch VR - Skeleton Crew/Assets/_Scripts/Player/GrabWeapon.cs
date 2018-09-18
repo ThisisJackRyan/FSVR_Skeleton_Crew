@@ -51,7 +51,7 @@ public class GrabWeapon : NetworkBehaviour {
 		}
 
 		if ( weaponInRightHolster ) {
-			print( "weapon in right holster: " + weaponInRightHolster.name );
+			//print( "weapon in right holster: " + weaponInRightHolster.name );
 			weaponInRightHolster.GetComponent<ObjectPositionLock>().posPoint = null;
 			weaponInRightHolster.GetComponent<ObjectPositionLock>().posOffset = Vector3.zero;
 			weaponInRightHolster.GetComponent<ObjectPositionLock>().rotOffset = Quaternion.Euler( Vector3.zero );

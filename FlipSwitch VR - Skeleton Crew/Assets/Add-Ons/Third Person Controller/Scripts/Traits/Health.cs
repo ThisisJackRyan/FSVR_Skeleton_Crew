@@ -402,6 +402,7 @@ namespace Opsive.ThirdPersonController
             for (int i = 0; i < m_SpawnedObjectsOnDeath.Length; ++i) {
                 var spawnedObject = ObjectPool.Instantiate(m_SpawnedObjectsOnDeath[i], transform.position, transform.rotation);
                 Explosion explosion;
+                print("SHOULD NOT GET HERE IN THE SPAWNED OBJECTS ON DEATH LOOP");
                 if ((explosion = Utility.GetComponentForType<Explosion>(spawnedObject)) != null) {
                     explosion.Originator = gameObject;
                 }

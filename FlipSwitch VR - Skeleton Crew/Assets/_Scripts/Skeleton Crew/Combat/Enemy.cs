@@ -58,14 +58,22 @@ public class Enemy : NetworkBehaviour {
         if (!isServer) {
             return;
         }
+
         if (tutorialGuard) {
             //print( "tut guard killed" );
             Captain.enemiesKilled[this] = true;
             Captain.instance.CheckEnemiesKilled();
         }
 
-        RpcSpawnDeathParticles();
-        EnemyUnitDeath();
+        if (rangedUnit) {
+            VariableHolder.instance.RemoveRangedUnit();
+        }
+        print("DestroyMe called on " + name);
+
+
+        var g = Instantiate(deathParticles, transform.position, Quaternion.identity);
+
+        NetworkServer.Spawn(g);
         NetworkServer.Destroy(gameObject);
     }
 
@@ -113,12 +121,6 @@ public class Enemy : NetworkBehaviour {
 
     }
 
-    public void EnemyUnitDeath() {
-        if (rangedUnit) {
-            VariableHolder.instance.RemoveRangedUnit();
-        }
-    }
-
 	private void OnCollisionEnter(Collision other) {
 		if (!isServer)
 			return;
@@ -146,16 +148,6 @@ public class Enemy : NetworkBehaviour {
 	}
 
 	public int maxHealth = 100;
-
-
-	[ClientRpc]
-	void RpcSpawnDeathParticles() {
-		if (isServer) {
-			return;
-		}
-
-		Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
-	}
 
 	public void AllowDamage() {
 		CancelInvoke();

@@ -204,12 +204,12 @@ public class PathFollower : NetworkBehaviour {
 	void SpawnEncounter( EncounterStage stage ) {
 		switch ( stage ) {
 			case EncounterStage.First:
-				print( "hit node during first" );
+				//print( "hit node during first" );
 
 				Spawn( firstEncounters );
 				break;
 			case EncounterStage.Second:
-				print( "hit node during second" );
+				//print( "hit node during second" );
 
 				Spawn( secondEncounters );
 				break;
@@ -217,17 +217,17 @@ public class PathFollower : NetworkBehaviour {
 				Spawn( thirdEncounters );
 				break;
 			case EncounterStage.Tutorial:
-				print("calling spawn with index " + ( currentNode - 1 ) );
+				//print("calling spawn with index " + ( currentNode - 1 ) );
 
 				Spawn(tutorialSpawns, currentNode - 1);
 				if (tutorialSpawns.Length == currentNode) {
-					print("hit last node in tutorial, moving to first encounter");
+					//print("hit last node in tutorial, moving to first encounter");
 					currentStage = EncounterStage.First;
 				}
 
 				break;
 			default:
-				print("hit node during break or tutorial: " + currentStage.ToString());
+				//print("hit node during break or tutorial: " + currentStage.ToString());
 				break;
 		}
 	}
