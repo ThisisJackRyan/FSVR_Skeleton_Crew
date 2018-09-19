@@ -68,13 +68,22 @@ public class Enemy : NetworkBehaviour {
         if (rangedUnit) {
             VariableHolder.instance.RemoveRangedUnit();
         }
-        print("DestroyMe called on " + name);
+
+        //print("DestroyMe called on " + name);
 
 
         var g = Instantiate(deathParticles, transform.position, Quaternion.identity);
 
         NetworkServer.Spawn(g);
         NetworkServer.Destroy(gameObject);
+    }
+
+    internal void TellCaptainHasBoarded() {
+        if (!isServer) {
+            return;
+        }
+
+        Captain.instance.ShipBoardedTutorial();
     }
 
     public void PlayHitParticles() {

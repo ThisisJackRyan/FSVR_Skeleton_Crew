@@ -8,6 +8,7 @@ public class RangedTeleportTarget : NetworkBehaviour {
 	void Start () {
         if (isServer) {
             VariableHolder.instance.enemyRangedPositions.Add(gameObject, false);
+            print("added " + name + " to range tele target dictionary");
         }
 	}
 }
