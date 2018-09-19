@@ -165,12 +165,12 @@ public class MastInteraction : NetworkBehaviour {
 	[ClientRpc]
 	private void RpcStopInteractingOnClient( GameObject mastTrigger, GameObject player, bool isLeft, bool showMarkerNodes ) {
 		if ( player != gameObject && !isServer ) {
-            //print("RPC stop interacting called but returned");
+            print("RPC stop interacting called but returned");
 
             return;
 		}
 
-        //print("RPC stop interacting called");
+        print("RPC stop interacting called");
 
 
         foreach ( MastAimNode node in mastTrigger.GetComponentsInChildren<MastAimNode>() ) {
@@ -190,7 +190,7 @@ public class MastInteraction : NetworkBehaviour {
 
 	[Command]
 	public void CmdStopInteracting(bool isLeft, bool showMarkerNodes) {
-        //print("stop interacting called");
+        print("stop interacting called");
 		for ( int index = 0; index < mast.aimingNodes.Length; index++ ) {
 			Transform node = mast.aimingNodes[index].transform;
 			//node.GetComponent<Renderer>().enabled = false;

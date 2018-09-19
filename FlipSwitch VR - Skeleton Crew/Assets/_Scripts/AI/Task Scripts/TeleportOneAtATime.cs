@@ -25,7 +25,6 @@ public class TeleportOneAtATime : Action {
                     if(VariableHolder.instance.enemyRangedPositions[key] == false) {
                         teleTarget = key;
                         VariableHolder.instance.enemyRangedPositions[key] = true;
-                        break;
                     }
                 }
             } else {
@@ -42,7 +41,5 @@ public class TeleportOneAtATime : Action {
         transform.parent = null;
         GetComponent<Enemy>().UnParentMe();
         transform.position = teleportTargets.Value.ToArray()[Random.Range(0, teleportTargets.Value.Count)].transform.position;
-
-        GetComponent<Enemy>().TellCaptainHasBoarded();
     }
 }

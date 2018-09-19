@@ -76,17 +76,6 @@ public class Captain : SerializedNetworkBehaviour {
 	private float timeElapsed = 0f;
 
 	private bool audioTriggered = false;
-    bool boardedTutHasPlayed = false;
-    public AudioClip boardedTutClip;
-
-    public void ShipBoardedTutorial() {
-        if (!isServer || boardedTutHasPlayed) {
-            return;
-        }
-
-        PlayDialogue(boardedTutClip.name);
-        boardedTutHasPlayed = true;
-    }
 
 	public AudioSource mySource, ambientSource;
 	private List<AudioClip> audioQueue;
@@ -311,9 +300,9 @@ public class Captain : SerializedNetworkBehaviour {
 	#region fire prompts 
 
 	void EnableFirePrompt() {
-		//print("enable fire prompts");
+		print("enable fire prompts");
 		for (int i = 0; i < cannonFirePrompts.Count; i++) {
-			//print( cannonFirePrompts[i].name +  " being enabled" );
+			print( cannonFirePrompts[i].name +  " being enabled" );
 
 			cannonFirePrompts[i].SetActive(true);
 		}

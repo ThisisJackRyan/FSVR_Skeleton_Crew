@@ -1,5 +1,4 @@
-﻿using Opsive.ThirdPersonController.Wrappers;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +7,6 @@ using UnityEngine.Networking;
 
 public class SCProjectile : NetworkBehaviour {
 
-    
 	public int damage;
 	public bool oneShotKill = false, isDestructible = false;
 	public GameObject deathParticles;
@@ -36,37 +34,38 @@ public class SCProjectile : NetworkBehaviour {
 		reticle = ret;
 	}
 
-	//private void OnTriggerEnter(Collider other) {
- //       Debug.LogWarning(name + " is a projectile that is a trigger, needs fixed.");
-	//}
+	private void OnTriggerEnter(Collider other) {
+		//print("projectile triggered by : " + other.gameObject.name);
+		if (other.gameObject.tag == "Weapon" || other.gameObject.tag == "Cannon" || other.gameObject.tag == "WeaponPickup") {
+			return;
+		}
 
-    private void OnCollisionEnter(Collision other) {
+		if (oneShotKill) {
+			if ( other.tag == "PlayerCollider" ) {
+				other.GetComponentInParent<Player>().ChangeHealth(150);
+			} else if (other.tag == "Ratman") {
+				other.GetComponentInParent<Ratman>().ChangeHealth(150);
+			}
+		}
+
+		if ( other.tag == "BulletPlayer" ) {
+			//destroy gameobject
+			//print("in the bullet player if");
+			HitByMusket( other.gameObject );
+		}
+
+		//if ( !other.GetComponent<ImpactReticle>() ) {
+		//}
+			KillProjectile();
+
+	}
+
+    private void OnCollisionEnter(Collision collision) {
         if (!isServer) {
             return;
         }
-        //print("projectile triggered by : " + other.gameObject.name);
-        if (other.gameObject.tag == "Weapon" || other.gameObject.tag == "Cannon" || other.gameObject.tag == "WeaponPickup") {
-            return;
-        }
 
-        if (oneShotKill) {
-            if (other.gameObject.tag == "PlayerCollider") {
-                other.gameObject.GetComponentInParent<Player>().ChangeHealth(150);
-            } else if (other.gameObject.tag == "Ratman") {
-                other.gameObject.GetComponentInParent<Ratman>().ChangeHealth(150);
-            }else if (other.gameObject.GetComponentInParent<CharacterHealth>()) {
-                other.gameObject.GetComponentInParent<CharacterHealth>().Damage(150, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
-            }
-        }
-
-        if (other.gameObject.tag == "BulletPlayer") {
-            //destroy gameobject
-            //print("in the bullet player if");
-            HitByMusket(other.gameObject);
-        }
-
-        //if ( !other.GetComponent<ImpactReticle>() ) {
-        //}
+        //print("collision enter on " + name);
         KillProjectile();
     }
 

@@ -273,7 +273,6 @@ namespace Opsive.ThirdPersonController
                     return;
                 }
                 m_HitList.Add(hitHealth);
-                print("should be dealing " + m_DamageAmount + " to " + hitTransform.name);
                 hitHealth.ApplyMeleeDamage((int)m_DamageAmount);
             } else if (m_ImpactForce > 0 && (hitRigidbody = Utility.GetComponentForType<Rigidbody>(hitTransform.gameObject)) != null && !hitRigidbody.isKinematic) {
                 hitRigidbody.AddForceAtPosition(hitNormal * -m_ImpactForce, hitPoint);
@@ -374,7 +373,7 @@ namespace Opsive.ThirdPersonController
                 }
 #endif
                 if (Utility.InLayerMask(collision.gameObject.layer, m_AttackLayer.value)) {
-                    print("should be attacking " + collision.gameObject.name);
+                    //print("should be attacking " + collision.gameObject.name);
                     Attack(collision.transform, collision.contacts[0].point, collision.contacts[0].normal);
                 }
 

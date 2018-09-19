@@ -90,16 +90,18 @@ public class ImpactReticle : NetworkBehaviour {
 
 		int RNG = Random.Range(0, projectiles.Length);
 		ball = Instantiate(projectiles[RNG], spawnPos.transform.position, Quaternion.identity);
+		//ball.name = "fuck this shit";
+		//ClientScene.RegisterPrefab( ball );
+		//ball.GetComponent<Rigidbody>().isKinematic = true;
 		NetworkServer.Spawn(ball);
 		StartCoroutine("SyncAfterFrame");
+		//RpcAssignBall( ball.GetComponent<NetworkIdentity>() );
 	}
 
 	IEnumerator SyncAfterFrame() {
 		yield return new WaitForEndOfFrame();
 		if (isServer) {
-            if (ball) {
-			    RpcAssignBall( ball.GetComponent<NetworkIdentity>() );
-            }
+			RpcAssignBall( ball.GetComponent<NetworkIdentity>() );
 		}
 		yield return new WaitForEndOfFrame();
 		if (ball) {
