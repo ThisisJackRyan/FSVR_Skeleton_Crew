@@ -18,7 +18,9 @@ public class GrabWeapon : NetworkBehaviour {
 	private GameObject rightWeaponGameObj;
 	private GameObject leftHighlightedWeaponObj;
 	private GameObject rightHighlightedWeaponObj;
-	private bool isDead;
+    private GameObject leftHighlightedHolsterObj;
+    private GameObject rightHighlightedHolsterObj;
+    private bool isDead;
 
 	// Use this for initialization
 	void Start() {
@@ -130,12 +132,16 @@ public class GrabWeapon : NetworkBehaviour {
 		if ( isLeft ) {
 			if ( !leftWeaponGameObj && canGrabLeft ) {
 				FindAndHighlightNearestWeapon( "left", gameObject );
-			}
+            } else if(leftWeaponGameObj) {
+                FindAndHighlightNearestHolster(isLeft, gameObject);
+            }
 		} else {
 			if ( !rightWeaponGameObj && canGrabRight ) {
 				FindAndHighlightNearestWeapon( "right", gameObject );
-			}
-		}
+            } else if (rightWeaponGameObj) {
+                FindAndHighlightNearestHolster(isLeft, gameObject);
+            }
+        }
 	}
 
 	public void SendCommandToUnHighlight( bool isLeft ) {
@@ -154,36 +160,36 @@ public class GrabWeapon : NetworkBehaviour {
 
 	private void FindAndHighlightNearestWeapon( string side, GameObject player ) {
 		Transform hand = side.Equals( "left" ) ? leftHand : rightHand;
-
+        
 		Collider[] hits = Physics.OverlapSphere( hand.position, radius );
 		GameObject closest = null;
 		bool hitWeapon = false;
 
 		if ( hits.Length > 0 ) {
-			//////print("hits > 0 with " + hits.Length);
-			for ( int i = 0; i < hits.Length; i++ ) {
-				if ( hits[i].transform.tag == "WeaponPickup" ) {
-					if ( hits[i].transform.GetComponentInParent<Weapon>().isBeingHeldByPlayer ) {
-						continue;
-					}
+            //////print("hits > 0 with " + hits.Length);
+            for (int i = 0; i < hits.Length; i++) {
+                if (hits[i].transform.tag == "WeaponPickup") {
+                    if (hits[i].transform.GetComponentInParent<Weapon>().isBeingHeldByPlayer) {
+                        continue;
+                    }
 
-					if ( hits[i].transform.GetComponentInParent<Weapon>().playerWhoHolstered != player && hits[i].transform.GetComponentInParent<Weapon>().playerWhoHolstered != null ) {
-						continue;
-					}
+                    if (hits[i].transform.GetComponentInParent<Weapon>().playerWhoHolstered != player && hits[i].transform.GetComponentInParent<Weapon>().playerWhoHolstered != null) {
+                        continue;
+                    }
 
-					hitWeapon = true;
-					if ( !closest ) {
-						closest = hits[i].transform.gameObject;
-					} else {
-						if ( Mathf.Abs( Vector3.Distance( hand.position, hits[i].transform.position ) ) <
-							Mathf.Abs( Vector3.Distance( hand.position, closest.transform.position ) ) ) {
-							//////print("wjbwefkjgb");
-							closest = hits[i].transform.gameObject;
-						}
-					}
-				}
-			}
-		}
+                    hitWeapon = true;
+                    if (!closest) {
+                        closest = hits[i].transform.gameObject;
+                    } else {
+                        if (Mathf.Abs(Vector3.Distance(hand.position, hits[i].transform.position)) <
+                            Mathf.Abs(Vector3.Distance(hand.position, closest.transform.position))) {
+                            //////print("wjbwefkjgb");
+                            closest = hits[i].transform.gameObject;
+                        }
+                    }
+                }
+            }
+        }
 
 		if ( closest ) {
 			if ( Mathf.Abs( Vector3.Distance( closest.transform.position, hand.position ) ) >= radius || hitWeapon == false ) {
@@ -481,9 +487,139 @@ public class GrabWeapon : NetworkBehaviour {
 		weaponInteraction.UnassignWeapon( side );
 	}
 
-	#endregion
+    #endregion
 
-	void HandleDropping( string side, GameObject player ) {
+    #region holster highlighting
+    private void FindAndHighlightNearestHolster(bool isLeft, GameObject player) {
+        Transform hand = isLeft ? leftHand : rightHand;
+
+        Collider[] hits = Physics.OverlapSphere(hand.position, radius);
+        GameObject closest = null;
+        bool hitHolster = false;
+        bool holsterIsLeft = null;
+
+        if (hits.Length > 0) {
+            //////print("hits > 0 with " + hits.Length);
+            for (int i = 0; i < hits.Length; i++) {
+                if (hits[i].transform == leftHolster) {
+                    if (weaponInLeftHolster) {
+                        continue;
+                    }
+
+                    hitHolster = true;
+                    holsterIsLeft = true;
+                    if (!closest) {
+                        closest = hits[i].transform.gameObject;
+                    } else {
+                        if (Mathf.Abs(Vector3.Distance(hand.position, hits[i].transform.position)) <
+                            Mathf.Abs(Vector3.Distance(hand.position, closest.transform.position))) {
+                            //////print("wjbwefkjgb");
+                            closest = hits[i].transform.gameObject;
+                        }
+                    }
+                } else if (hits[i].transform == rightHolster) {
+                    if (weaponInRightHolster) {
+                        continue;
+                    }
+
+                    hitHolster = true;
+                    holsterIsLeft = false;
+                    if (!closest) {
+                        closest = hits[i].transform.gameObject;
+                    } else {
+                        if (Mathf.Abs(Vector3.Distance(hand.position, hits[i].transform.position)) <
+                            Mathf.Abs(Vector3.Distance(hand.position, closest.transform.position))) {
+                            //////print("wjbwefkjgb");
+                            closest = hits[i].transform.gameObject;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (closest) {
+            if (Mathf.Abs(Vector3.Distance(closest.transform.position, hand.position)) >= radius || hitHolster == false) {
+                ////print("no weapon in range");
+                closest = null;
+
+                if (isLeft) {
+                    leftHighlightedHolsterObj = null;
+                } else  {
+                    rightHighlightedHolsterObj = null;
+                }
+
+                RpcUnhighlightHolster(isLeft, player);
+            } else {
+                GameObject holsterGo = (holsterIsLeft) ? leftHolster : rightHolster;
+
+                if (isLeft) {
+                    leftHighlightedHolsterObj = holsterGo;
+                } else {
+                    rightHighlightedHolsterObj = holsterGo;
+                }
+
+                RpcHighlightHolster(isLeft,holsterIsLeft, player);
+            }
+        }
+    }
+
+    [ClientRpc]
+    private void RpcUnhighlightHolster(bool isLeft, GameObject player) {
+        if (isServer)
+            return;
+
+        if (isLocalPlayer && player == gameObject) {
+            if (isLeft) {
+                if (leftHighlightedHolsterObj) {
+                    leftHighlightedHolsterObj.GetComponent<Outline>().enabled = false;
+                    leftHighlightedHolsterObj = null;
+                }
+            } else {
+                if (rightHighlightedHolsterObj) {
+                    rightHighlightedHolsterObj.GetComponent<Outline>().enabled = false;
+                    rightHighlightedHolsterObj = null;
+                }
+            }
+        }
+    }
+
+    [ClientRpc]
+    private void RpcHighlightHolster(bool isLeft, bool holsterIsLeft, GameObject player) {
+        if (isServer) {
+            return;
+        }
+
+        GameObject holsterGo = (holsterIsLeft) ? leftHolster: rightHolster;
+        if (isLocalPlayer && player == gameObject) {
+
+            if (isLeft) {
+                if (leftHighlightedHolsterObj) {
+                    leftHighlightedHolsterObj.GetComponent<Outline>().enabled = false;
+                }
+              
+                holsterGo.GetComponent<Outline>().OutlineColor = Color.blue;
+                holsterGo.GetComponent<Outline>().enabled = true;
+                leftHighlightedHolsterObj = holsterGo;
+            } else {
+                if (rightHighlightedHolsterObj) {
+                    rightHighlightedHolsterObj.GetComponent<Outline>().enabled = false;
+                }
+
+                holsterGo.GetComponent<Outline>().OutlineColor = Color.red;
+                holsterGo.GetComponent<Outline>().enabled = true;
+                rightHighlightedHolsterObj = holsterGo;
+            }
+        } else if (player == gameObject) {
+            if (isLeft) {
+                leftHighlightedHolsterObj = holsterGo;
+            } else {
+                rightHighlightedHolsterObj = holsterGo;
+            }
+        }
+    }
+    #endregion
+
+    void HandleDropping( string side, GameObject player ) {
 		//Debug.LogWarning("drop called for " + side);
 
 		if ( side.Equals( "left" ) ) {

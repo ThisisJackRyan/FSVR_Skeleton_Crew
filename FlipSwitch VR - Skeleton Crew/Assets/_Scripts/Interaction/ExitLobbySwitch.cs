@@ -20,18 +20,18 @@ public class ExitLobbySwitch : NetworkBehaviour {
 			timer += Time.deltaTime;
 
 			if (timer >= timeToTrans) {
-				if (ExitLobbyPlayerTrigger.playerDict.ContainsValue(false)) {
-					//print("not enough players in the lobby trigger");
-					foreach (var obj in ExitLobbyPlayerTrigger.playerDict) {
-						//print(obj.Key.name + " has a value of " + obj.Value);
-					}
-					timeToTrans++;
-				} else {
+				//if (ExitLobbyPlayerTrigger.playerDict.ContainsValue(false)) {
+				//	//print("not enough players in the lobby trigger");
+				//	foreach (var obj in ExitLobbyPlayerTrigger.playerDict) {
+				//		//print(obj.Key.name + " has a value of " + obj.Value);
+				//	}
+				//	timeToTrans++;
+				//} else {
 
-					if ( NumberOfPlayerHolder.instance.numberOfPlayers != ExitLobbyPlayerTrigger.playerDict.Count ) {
-						//print( "all connected players are in place, but not all players are connected." );
-						return;
-					}
+					//if ( NumberOfPlayerHolder.instance.numberOfPlayers != ExitLobbyPlayerTrigger.playerDict.Count ) {
+					//	//print( "all connected players are in place, but not all players are connected." );
+					//	return;
+					//}
 					//transition
 					//print("should be teleporting player");
 
@@ -39,7 +39,7 @@ public class ExitLobbySwitch : NetworkBehaviour {
 					StartFade();
 					other.GetComponentInParent<Player>().TellCaptainToStartTutorial();
 					
-				}
+				//}
 			}
 		}
 	}
@@ -83,7 +83,7 @@ public class ExitLobbySwitch : NetworkBehaviour {
 		}
 
 		//print(other.name);
-		if (other.gameObject.GetComponentInParent<ChangeAvatar>()) {
+		if (other.gameObject.GetComponentInParent<ChangeAvatar>() && !active) {
 			timer = 0;
 			active = true;
 		}
@@ -94,7 +94,7 @@ public class ExitLobbySwitch : NetworkBehaviour {
 			return;
 		}
 
-		if (other.gameObject.GetComponentInParent<ChangeAvatar>()) {
+		if (other.gameObject.GetComponentInParent<ChangeAvatar>() && active) {
 			active = false;
 		}
 	}

@@ -123,6 +123,7 @@ public class HatchActivator : NetworkBehaviour {
 
 	}
 
+    //todo add activator logic
 	private void OnTriggerEnter(Collider other) {
 		if (!isServer)
 			return;
