@@ -120,9 +120,13 @@ public class PathFollower : NetworkBehaviour {
 			return;
 		}
 
+        //if (Input.GetKeyDown(KeyCode.Space)) {
+        //    SpawnWithPortal(firstEncounters);
+        //}
 		if ( !canMove ) {
 			return;
 		}
+
 
 		if ( nextNode < path.Nodes.Length ) {
 			MovePosition();
@@ -207,7 +211,7 @@ public class PathFollower : NetworkBehaviour {
 			case EncounterStage.First:
 				//print( "hit node during first" );
 
-				Spawn( firstEncounters );
+				SpawnWithPortal( firstEncounters );
 				break;
 			case EncounterStage.Second:
 				//print( "hit node during second" );
@@ -220,7 +224,7 @@ public class PathFollower : NetworkBehaviour {
 			case EncounterStage.Tutorial:
 				//print("calling spawn with index " + ( currentNode - 1 ) );
 
-				Spawn(tutorialSpawns, currentNode - 1);
+				SpawnWithPortal(tutorialSpawns, currentNode - 1);
 				if (tutorialSpawns.Length == currentNode) {
 					//print("hit last node in tutorial, moving to first encounter");
 					currentStage = EncounterStage.First;
@@ -245,8 +249,7 @@ public class PathFollower : NetworkBehaviour {
 
     [Button]
     public void WorkAroundSpawn() {
-        Spawn(firstEncounters);
-
+        SpawnWithPortal(firstEncounters);
     }
 
     public void Spawn(GameObject[] toSpawnList, int specifiedIndex = -1) {
@@ -294,9 +297,39 @@ public class PathFollower : NetworkBehaviour {
         }
     }
 
-	#endregion
+    public List<Transform> portalPosPoints;
+    public GameObject portal;
+    public void SpawnWithPortal(GameObject[] toSpawnList, int specifiedIndex = -1) {
+        if (!isServer) {
+            return;
+        }
 
-	enum EncounterStage {
+        int spawnIndex = (specifiedIndex != -1) ? specifiedIndex : Random.Range(0, toSpawnList.Length);
+        prefabToSpawn = toSpawnList[spawnIndex];
+
+        int chosenOne = Random.Range(0, portalPosPoints.Count);
+        //calc other side
+        Vector3 spawnVector = portalPosPoints[chosenOne].position;
+
+        GameObject g = Instantiate(prefabToSpawn, spawnVector, Quaternion.identity);
+
+        spawnVector += (spawnVector - shipTransform.position).normalized * -2;
+
+        GameObject p = Instantiate(portal, spawnVector, Quaternion.LookRotation((spawnVector - shipTransform.position), Vector3.up));
+
+        if (g.GetComponent<ImpactReticuleSpawner>()) {
+            foreach (var v in g.GetComponents<ImpactReticuleSpawner>()) {
+                v.deckMesh = shipDeck;
+            }
+        }
+
+        NetworkServer.Spawn(g);
+        NetworkServer.Spawn(p);
+    }
+
+    #endregion
+
+    enum EncounterStage {
 		Tutorial, First, Second, Third, FirstBreak, SecondBreak
 	}
 }
