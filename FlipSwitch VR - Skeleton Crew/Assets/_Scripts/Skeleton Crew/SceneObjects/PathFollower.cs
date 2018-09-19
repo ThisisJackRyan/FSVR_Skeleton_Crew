@@ -42,8 +42,10 @@ public class PathFollower : NetworkBehaviour {
 	[Tooltip("second encounters will be the object that spawns the meteor prefab, not the prefab itself. third encounters is for ratmen." +
 		"it again will have a specific object that tells rats to spawn. will prolly be changed tho. ")]
 	public GameObject[] firstEncounters, secondEncounters, thirdEncounters, tutorialSpawns;
+       
+    public GameObject[] ratkinSpawnPositions;
 
-	protected void Start() {
+    protected void Start() {
 		if ( !isServer ) {
 			return;
 		}
@@ -72,7 +74,7 @@ public class PathFollower : NetworkBehaviour {
             firstMove = false;
         }
 
-        if (speed == maxSpeed || speed == minSpeed) {
+        if (speed + increment == maxSpeed || speed + increment == minSpeed) {
             return false;
         }
 
@@ -105,10 +107,9 @@ public class PathFollower : NetworkBehaviour {
 		InvokeRepeating("SpawnMeteors", meteorSpawnTimer, meteorSpawnTimer);
 	}
 
-	void StartSecondBreak() {
-		currentStage = EncounterStage.SecondBreak;
-		CancelInvoke( "SpawnMeteors" );
-		//add timer for boss battle
+	void StartThirdPhase() {
+		currentStage = EncounterStage.Third;
+		CancelInvoke( "SpawnMeteors" );		
 	}
 
 	protected void Update() {

@@ -76,6 +76,17 @@ public class Captain : SerializedNetworkBehaviour {
 	private float timeElapsed = 0f;
 
 	private bool audioTriggered = false;
+    bool boardedTutHasPlayed = false;
+    public AudioClip boardedTutClip;
+
+    public void ShipBoardedTutorial() {
+        if (!isServer || boardedTutHasPlayed) {
+            return;
+        }
+
+        PlayDialogue(boardedTutClip.name);
+        boardedTutHasPlayed = true;
+    }
 
 	public AudioSource mySource, ambientSource;
 	private List<AudioClip> audioQueue;
