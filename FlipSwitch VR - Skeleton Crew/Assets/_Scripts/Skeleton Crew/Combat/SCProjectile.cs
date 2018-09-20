@@ -19,7 +19,7 @@ public class SCProjectile : NetworkBehaviour {
             return;
         }
 
-		Invoke("KillProjectile", 10f);
+		Invoke("KillProjectile", 5);
     }
 
     private void OnTriggerEnter(Collider other) {
