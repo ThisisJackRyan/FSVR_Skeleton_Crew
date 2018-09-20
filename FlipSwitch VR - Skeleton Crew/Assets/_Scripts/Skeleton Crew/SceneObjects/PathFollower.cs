@@ -245,7 +245,7 @@ public class PathFollower : NetworkBehaviour {
 
     [Button]
     public void WorkAroundSpawn() {
-        Spawn(firstEncounters);
+        Spawn(thirdEncounters);
 
     }
 

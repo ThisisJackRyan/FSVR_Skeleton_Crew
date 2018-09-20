@@ -57,6 +57,7 @@ public class SCProjectile : NetworkBehaviour {
         }
 	}
 
+    [ClientRpc]
     public void RpcDestroy() {
         Destroy(gameObject);
     }

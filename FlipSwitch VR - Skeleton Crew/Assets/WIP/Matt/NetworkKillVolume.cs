@@ -19,7 +19,7 @@ public class NetworkKillVolume : NetworkBehaviour {
 
         }
 
-        print("killing " + other.name + " with networkkillvolume");
+        //print("killing " + other.name + " with networkkillvolume");
         if (other.GetComponent<NetworkIdentity>()) {
             NetworkServer.Destroy(other.gameObject);
         } else {
