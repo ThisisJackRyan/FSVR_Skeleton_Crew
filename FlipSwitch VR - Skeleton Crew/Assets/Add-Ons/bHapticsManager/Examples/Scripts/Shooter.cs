@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+#pragma warning disable 0414
+
 namespace Bhaptics.Tact.Unity
 {
     public class Shooter : MonoBehaviour
@@ -42,6 +44,7 @@ namespace Bhaptics.Tact.Unity
         {
             laserLineRenderer = GetComponent<LineRenderer>();
             laserLineRenderer.enabled = true;
+#pragma warning disable 0618
             Vector3[] initLaserPositions = new Vector3[2] {Vector3.zero, Vector3.zero};
             laserLineRenderer.SetPositions(initLaserPositions);
             laserLineRenderer.SetWidth(laserWidth, laserWidth);

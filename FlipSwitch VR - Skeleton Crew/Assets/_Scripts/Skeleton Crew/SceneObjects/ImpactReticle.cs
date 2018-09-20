@@ -105,7 +105,7 @@ public class ImpactReticle : NetworkBehaviour {
 		}
 		yield return new WaitForEndOfFrame();
 		if (ball) {
-			ball.GetComponent<SCProjectile>().SetReticle( gameObject );
+			ball.GetComponent<ImpactProjectile>().SetReticle( gameObject );
 		}
 
 	}

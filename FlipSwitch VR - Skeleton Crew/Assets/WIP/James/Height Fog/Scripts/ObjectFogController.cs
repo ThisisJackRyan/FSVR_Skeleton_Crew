@@ -41,6 +41,7 @@ public class ObjectFogController : MonoBehaviour
     public float fogWaveFreqX;
     public float fogWaveFreqZ;
 
+#pragma warning disable 0108
     [HideInInspector] public MeshRenderer          renderer;
     [HideInInspector] public MaterialPropertyBlock mpb;
 

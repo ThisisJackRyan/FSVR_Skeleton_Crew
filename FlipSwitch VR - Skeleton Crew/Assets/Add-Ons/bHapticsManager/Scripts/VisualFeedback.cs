@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+#pragma warning disable 0649
+
 namespace Bhaptics.Tact.Unity
 {
     public class VisualFeedback : MonoBehaviour

@@ -41,6 +41,7 @@ namespace Opsive.ThirdPersonController.Abilities
                 return string.Empty;
             }
 
+#pragma warning disable 0219
             string ret = m_DamageType == DamageType.Front ? "Front Damage" : "Back Damage";
             //print("should be setting the animator to " + ret);
             return m_DamageType == DamageType.Front ? "Front Damage" : "Back Damage";

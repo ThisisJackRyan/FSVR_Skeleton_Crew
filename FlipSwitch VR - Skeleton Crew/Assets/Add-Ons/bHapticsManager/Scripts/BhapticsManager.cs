@@ -398,6 +398,7 @@ namespace Bhaptics.Tact.Unity
             // nothing to do
         }
 
+#pragma warning disable 0067
         public event Action<PlayerResponse> StatusReceived;
     }
 }

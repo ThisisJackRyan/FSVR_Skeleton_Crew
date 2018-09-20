@@ -68,9 +68,9 @@ public class MastSwitch : NetworkBehaviour {
         }
 
         if (notMax) {
-            GetComponent<AudioSource>().PlayOneShot(aimClip);
+            source.PlayOneShot(aimClip);
         } else {
-            GetComponent<AudioSource>().PlayOneShot(maxClip);
+            source.PlayOneShot(maxClip);
         }
     }
 
@@ -80,9 +80,9 @@ public class MastSwitch : NetworkBehaviour {
         }
 
         if (notMax) {
-            GetComponent<AudioSource>().PlayOneShot(aimClip);
+            source.PlayOneShot(aimClip);
         } else {
-            GetComponent<AudioSource>().PlayOneShot(maxClip);
+            source.PlayOneShot(maxClip);
         }
         
         RpcPlayAimSound(notMax);
