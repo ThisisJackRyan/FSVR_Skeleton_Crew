@@ -125,20 +125,35 @@ public class GrabWeapon : NetworkBehaviour {
 	}
 
 	public void SendCommandToHighlight( bool isLeft ) {
-		//if (isServer) {
-		//	return;
-		//}
+        //if (isServer) {
+        //	return;
+        //}
 
-		if ( isLeft ) {
-			if ( !leftWeaponGameObj && canGrabLeft ) {
-				FindAndHighlightNearestWeapon( "left", gameObject );
+        print(name + " highlight command received");
+
+
+        if ( isLeft ) {
+            print(name + " is left");
+
+            if ( !leftWeaponGameObj && canGrabLeft ) {
+                print(name + " highlight left weapon");
+
+                FindAndHighlightNearestWeapon( "left", gameObject );
             } else if(leftWeaponGameObj) {
+                print(name + " highlight holster for left");
+
                 FindAndHighlightNearestHolster(isLeft, gameObject);
             }
 		} else {
-			if ( !rightWeaponGameObj && canGrabRight ) {
-				FindAndHighlightNearestWeapon( "right", gameObject );
+            print(name + " is right");
+
+            if ( !rightWeaponGameObj && canGrabRight ) {
+                print(name + " highlight right weapon");
+
+                FindAndHighlightNearestWeapon( "right", gameObject );
             } else if (rightWeaponGameObj) {
+                print(name + " highlight holster for right");
+
                 FindAndHighlightNearestHolster(isLeft, gameObject);
             }
         }
@@ -152,11 +167,17 @@ public class GrabWeapon : NetworkBehaviour {
 		if ( isLeft ) {
 			leftHighlightedWeaponObj = null;
 			RpcUnhighlightWeapon( "left", gameObject );
-		} else {
+            leftHighlightedHolsterObj = null;
+            RpcUnhighlightHolster(true, gameObject);
+
+        } else {
 			rightHighlightedWeaponObj = null;
 			RpcUnhighlightWeapon( "right", gameObject );
-		}
-	}
+            rightHighlightedHolsterObj = null;
+            RpcUnhighlightHolster(false, gameObject);
+
+        }
+    }
 
 	private void FindAndHighlightNearestWeapon( string side, GameObject player ) {
 		Transform hand = side.Equals( "left" ) ? leftHand : rightHand;
@@ -496,13 +517,15 @@ public class GrabWeapon : NetworkBehaviour {
         Collider[] hits = Physics.OverlapSphere(hand.position, radius);
         GameObject closest = null;
         bool hitHolster = false;
-        bool holsterIsLeft = null;
+        bool holsterIsLeft = false;
 
         if (hits.Length > 0) {
-            //////print("hits > 0 with " + hits.Length);
+            print("hits > 0 with " + hits.Length);
             for (int i = 0; i < hits.Length; i++) {
-                if (hits[i].transform == leftHolster) {
+                if (hits[i].transform == leftHolster.transform) {
                     if (weaponInLeftHolster) {
+                        print(name + "weapon in left holster");
+
                         continue;
                     }
 
@@ -513,12 +536,14 @@ public class GrabWeapon : NetworkBehaviour {
                     } else {
                         if (Mathf.Abs(Vector3.Distance(hand.position, hits[i].transform.position)) <
                             Mathf.Abs(Vector3.Distance(hand.position, closest.transform.position))) {
-                            //////print("wjbwefkjgb");
+                            print("changing closest");
                             closest = hits[i].transform.gameObject;
                         }
                     }
-                } else if (hits[i].transform == rightHolster) {
+                } else if (hits[i].transform == rightHolster.transform) {
                     if (weaponInRightHolster) {
+                        print(name + "weapon in right holster");
+
                         continue;
                     }
 
@@ -529,7 +554,8 @@ public class GrabWeapon : NetworkBehaviour {
                     } else {
                         if (Mathf.Abs(Vector3.Distance(hand.position, hits[i].transform.position)) <
                             Mathf.Abs(Vector3.Distance(hand.position, closest.transform.position))) {
-                            //////print("wjbwefkjgb");
+                            print("changing closest");
+
                             closest = hits[i].transform.gameObject;
                         }
                     }
@@ -539,7 +565,7 @@ public class GrabWeapon : NetworkBehaviour {
 
         if (closest) {
             if (Mathf.Abs(Vector3.Distance(closest.transform.position, hand.position)) >= radius || hitHolster == false) {
-                ////print("no weapon in range");
+                print("no holster in range");
                 closest = null;
 
                 if (isLeft) {
@@ -553,8 +579,12 @@ public class GrabWeapon : NetworkBehaviour {
                 GameObject holsterGo = (holsterIsLeft) ? leftHolster : rightHolster;
 
                 if (isLeft) {
+                    print("is left, setting left highlighted obj to " + leftHighlightedHolsterObj);
+
                     leftHighlightedHolsterObj = holsterGo;
                 } else {
+                    print("is right, setting right highlighted obj to " + rightHighlightedWeaponObj);
+
                     rightHighlightedHolsterObj = holsterGo;
                 }
 
@@ -721,6 +751,8 @@ public class GrabWeapon : NetworkBehaviour {
 						//check if right holster has a weapon
 						if ( weaponInRightHolster ) {
 							////print("right holster not empty");
+                            //RpcUnhighlightHolster(false, player);
+                            ///
 							continue; //breaks out and continues loop. should drop if didnt find another holster
 						}
 						////print("right holster IS empty, holster weapon");
@@ -746,6 +778,8 @@ public class GrabWeapon : NetworkBehaviour {
 						//check if right holster has a weapon
 						if ( weaponInLeftHolster ) {
 							////print("left holster not empty");
+                            //RpcUnhighlightHolster(true, player);
+                            ///
 							continue; //breaks out and continues loop. should drop if didnt find another holster
 						}
 
