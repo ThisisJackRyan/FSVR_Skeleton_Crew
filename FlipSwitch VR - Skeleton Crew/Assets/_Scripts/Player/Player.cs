@@ -117,27 +117,35 @@ public class Player : NetworkBehaviour {
 	bool hasStartedTutorial = false;
 
 	public void RevivePlayer() {
-		ChangeHealth( maxHealth, false );
-		VariableHolder.instance.players.Add( GetComponentInChildren<EnemyTargetInit>().gameObject );
-		EnableBody();
-		RpcEnableBody();
+        if (isDead) {
+		    ChangeHealth( maxHealth, false );
+	    	VariableHolder.instance.players.Add( GetComponentInChildren<EnemyTargetInit>().gameObject );
+		    EnableBody();
+		    RpcEnableBody();
+            isDead = false;
+        }
 	}
 
 	void DisableBody() {
-		foreach ( GameObject g in playerBody ) {
-			g.SetActive( false );
-		}
-		foreach ( Collider c in playerColliders ) {
-			c.enabled = false;
-		}
+        if (!isDead) {
 
-		GetComponent<ChangeAvatar>().DisableArmor();
-		GetComponent<GrabWeapon>().Death();
+	    	foreach ( GameObject g in playerBody ) {
+	    		g.SetActive( false );
+	    	}
+	    	foreach ( Collider c in playerColliders ) {
+	    		c.enabled = false;
+	    	}
 
-		if (isServer) {
-			var g = Instantiate( deathExplosion[GetComponent<ChangeAvatar>().GetColor()], explosionPosition.position, Quaternion.identity );//todo add server spawning
-			NetworkServer.Spawn(g);
-		}
+	    	GetComponent<ChangeAvatar>().DisableArmor();
+	    	GetComponent<GrabWeapon>().Death();
+
+	    	if (isServer) {
+	    		var g = Instantiate( deathExplosion[GetComponent<ChangeAvatar>().GetColor()], explosionPosition.position, Quaternion.identity );//todo add server spawning
+	    		NetworkServer.Spawn(g);
+	    	}
+
+            isDead = true;
+        }
 	}
 
 	public void TurnOffColliders() { //todo rename for nathans sake

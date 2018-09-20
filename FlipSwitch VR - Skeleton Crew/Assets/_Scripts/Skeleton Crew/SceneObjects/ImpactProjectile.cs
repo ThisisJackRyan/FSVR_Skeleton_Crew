@@ -24,7 +24,6 @@ public class ImpactProjectile : NetworkBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-
         if (other.tag == "PlayerCollider") {
             other.GetComponentInParent<Player>().ChangeHealth(150);
         } else if (other.tag == "Ratman") {
@@ -81,6 +80,8 @@ public class ImpactProjectile : NetworkBehaviour {
         if (!isServer) {
             return;
         }
+
+        OnTriggerEnter(collision.collider);
 
         //print("collision enter on " + name);
         KillProjectile();
