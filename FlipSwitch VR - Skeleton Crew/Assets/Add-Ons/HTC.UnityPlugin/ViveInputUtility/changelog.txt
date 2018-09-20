@@ -1,5 +1,26 @@
-﻿# Vive Input Utility for Unity - v1.8.3
+﻿# Vive Input Utility for Unity - v1.9.0
 Copyright (c) 2016-2018, HTC Corporation. All rights reserved.
+
+
+## Changes for v1.9.0:
+
+* New Features
+  - Wave VR Plugin v2.1.0 support
+  - Add Oculus Go support (requires Oculus VR plugin)
+
+* Improvement
+  - [WaveVRModule] Add 6 DoF Controller Simulator (Experimental)
+    - [More...](https://github.com/ViveSoftware/ViveInputUtility-Unity/wiki/Wave-VR-6-DoF-Controller-Simulator)
+  - [RenderModelHook] Now able to load Wave VR generic controller model
+  - [Example2] Add drop area that using physics collider
+  - [Example3] Make scroll delta tunable from the Editor
+    - [issue#49](https://github.com/ViveSoftware/ViveInputUtility-Unity/issues/49)
+  - [VIUSettings] Add WVR virtual arms properties
+  - [BindingUI] Make un-recognized device visible in the device view (shown in VIVE device icon)
+    - [issue#51](https://github.com/ViveSoftware/ViveInputUtility-Unity/issues/51)
+
+* Bug Fix
+  - [VRModule] Fix sometimes SteamVRModule activated but not polling any device pose/input
 
 
 ## Changes for v1.8.3:
