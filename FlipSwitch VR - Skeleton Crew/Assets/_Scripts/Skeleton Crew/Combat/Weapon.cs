@@ -45,15 +45,16 @@ public class Weapon : NetworkBehaviour {
 
 			GetComponent<AudioSource>().clip = data.firesound;
 
-            //if (isServer) {  
+            if (isServer) {
                 var bullet = Instantiate(data.projectile, projectileSpawnPos.position, Quaternion.Euler(rot));
 			    bullet.GetComponent<Rigidbody>().AddForce(projectileSpawnPos.forward * data.power, ForceMode.Impulse);
 			    bullet.GetComponent<SCProjectile>().damage = data.damage;
-			    Instantiate(data.particles, projectileSpawnPos.position, Quaternion.Euler(transform.forward));
 
                 //NetworkServer.Spawn(smoke);
-                //NetworkServer.Spawn(bullet);
-            //}
+                NetworkServer.Spawn(bullet);
+            }
+
+			    Instantiate(data.particles, projectileSpawnPos.position, Quaternion.Euler(transform.forward));
 
         }
 

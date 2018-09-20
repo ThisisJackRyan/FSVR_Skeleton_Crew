@@ -88,15 +88,15 @@ public class Captain : SerializedNetworkBehaviour {
 	void Start() {
 		if (isServer) {
 			if (instance == null) {
-				//print("is server, setting as instance");
+				////print("is server, setting as instance");
 				instance = this;
 			} else {
-				//print("is server with instance, destroying");
+				////print("is server with instance, destroying");
 
 				Destroy(gameObject);
 			}
 		} else {
-			//print("not server");
+			////print("not server");
 		}
 
 		foreach (var g in mastRopes) {
@@ -155,7 +155,7 @@ public class Captain : SerializedNetworkBehaviour {
         if (!isServer) {
             return;
         }
-		//print("start tutorial");
+		////print("start tutorial");
 
 		for ( int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++ ) {
 			GameObject g = Instantiate( guardPrefab, guardPositions[i].position, guardPositions[i].rotation );
@@ -203,7 +203,7 @@ public class Captain : SerializedNetworkBehaviour {
 	//		return;
 	//	}
 
-	//	print("count is " + count);
+	//	//print("count is " + count);
 	//	for (int i = 0; i < tutorialGuards.Count && i < count; i++) {
 	//		tutorialGuards[i].SetActive(true);
 	//	}
@@ -231,7 +231,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckEnemiesKilled() {
 		//foreach (var obj in enemiesKilled) {
-		//	//print(obj.Key.name + " has a value of " + obj.Value);
+		//	////print(obj.Key.name + " has a value of " + obj.Value);
 		//}
 		if (!enemiesKilled.ContainsValue(false) && !guardsComplete) {
 			guardsComplete = true;
@@ -288,7 +288,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckDamagedObjects() {
 		//foreach (var obj in damagedObjectsRepaired) {
-		//	print(obj.Key.name + " has a value of " + obj.Value);
+		//	//print(obj.Key.name + " has a value of " + obj.Value);
 		//}
 		if (!damagedObjectsRepaired.ContainsValue(false) && !damagedComplete) {
 			damagedComplete = true;
@@ -300,9 +300,9 @@ public class Captain : SerializedNetworkBehaviour {
 	#region fire prompts 
 
 	void EnableFirePrompt() {
-		print("enable fire prompts");
+		//print("enable fire prompts");
 		for (int i = 0; i < cannonFirePrompts.Count; i++) {
-			print( cannonFirePrompts[i].name +  " being enabled" );
+			//print( cannonFirePrompts[i].name +  " being enabled" );
 
 			cannonFirePrompts[i].SetActive(true);
 		}
@@ -342,7 +342,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckPlayersCannonFiring() {
 		//foreach (var obj in playersFiredCannons) {
-		//	print(obj.Key.name + " has a value of " + obj.Value);
+		//	//print(obj.Key.name + " has a value of " + obj.Value);
 		//}
 		if (!playersFiredCannons.ContainsValue(false) && !cannonsComplete) {
 			cannonsComplete = true;
@@ -405,7 +405,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckRatmenRespawns() {
 		//foreach (var obj in ratmenRespawned) {
-		//	print(obj.Key.name + " has a value of " + obj.Value);
+		//	//print(obj.Key.name + " has a value of " + obj.Value);
 		//}
 		if (!ratmenRespawned.ContainsValue(false) && !ratmenComplete) {
 			ratmenComplete = true;
@@ -481,7 +481,7 @@ public class Captain : SerializedNetworkBehaviour {
 		if (isServer)
 			return;
 
-		//print("playing sound clip " + clip);
+		////print("playing sound clip " + clip);
 
 		for (int i = 0; i < tutorialSounds.Length; i++) {
 			if (tutorialSounds[i].name == clip) {
