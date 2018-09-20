@@ -34,8 +34,7 @@ public class Weapon : NetworkBehaviour {
 	}
 
 	public void SpawnBullet() {
-		//needs ammo check, do we want ammo based on weapon or player? prolly weapon
-		if (ammo-- <= 0) {  //decrements after check
+        if (ammo-- <= 0) {  //decrements after check
 			GetComponent<AudioSource>().clip = data.outOfAmmoSound;
 		} else {
             Vector3 rot = Quaternion.identity.eulerAngles;
@@ -44,14 +43,19 @@ public class Weapon : NetworkBehaviour {
                 rot += variance;
             }
 
-
-            var bullet = Instantiate(data.projectile, projectileSpawnPos.position, Quaternion.Euler(rot));
-			bullet.GetComponent<Rigidbody>().AddForce(projectileSpawnPos.forward * data.power, ForceMode.Impulse);
-			bullet.GetComponent<SCProjectile>().damage = data.damage;
-			Instantiate(data.particles, projectileSpawnPos.position, Quaternion.Euler(transform.forward));
-
 			GetComponent<AudioSource>().clip = data.firesound;
-		}
+
+            //if (isServer) {  
+                var bullet = Instantiate(data.projectile, projectileSpawnPos.position, Quaternion.Euler(rot));
+			    bullet.GetComponent<Rigidbody>().AddForce(projectileSpawnPos.forward * data.power, ForceMode.Impulse);
+			    bullet.GetComponent<SCProjectile>().damage = data.damage;
+			    Instantiate(data.particles, projectileSpawnPos.position, Quaternion.Euler(transform.forward));
+
+                //NetworkServer.Spawn(smoke);
+                //NetworkServer.Spawn(bullet);
+            //}
+
+        }
 
 		GetComponent<AudioSource>().Play();
 	}
@@ -93,7 +97,7 @@ public class Weapon : NetworkBehaviour {
 	private void OnDrawGizmos() {
 		if (projectileSpawnPos) {
 			Gizmos.DrawLine(projectileSpawnPos.transform.position,
-				projectileSpawnPos.transform.position + projectileSpawnPos.transform.forward * .5f);
+			projectileSpawnPos.transform.position + projectileSpawnPos.transform.forward * .5f);
 		}
 	}
 }
