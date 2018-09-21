@@ -15,6 +15,11 @@ public class DeckDamage : NetworkBehaviour {
 
 
 	private void OnEnable() {
+        if (isServer) {
+            Captain.instance.AddEventToQueue(Captain.AudioEventType.RepairDeck);
+        }
+
+
 		Collider[] cols = Physics.OverlapSphere( transform.position, 0.5f );
 		foreach ( var item in cols ) {
 			if ( item.GetComponent<DeckDamage>() && item.transform.root.gameObject != gameObject) {

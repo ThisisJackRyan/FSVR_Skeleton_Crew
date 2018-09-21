@@ -81,7 +81,10 @@ public class DamagedObject : NetworkBehaviour {
 		} else if ( health >= quarterAmount ) {
 			myState = DamageState.Quarter;
 		} else {
-			myState = DamageState.None;
+            if (isServer) {
+                Captain.instance.AddEventToQueue(Captain.AudioEventType.Cannon);
+            }
+            myState = DamageState.None;
 		}
 
 		if(health < maxHealth ) {
@@ -234,6 +237,9 @@ public class DamagedObject : NetworkBehaviour {
 				halfState.gameObject.SetActive( false );
 				quarterState.gameObject.SetActive( false );
 				deadState.gameObject.SetActive( true );
+
+
+
 				break;
 		}
 

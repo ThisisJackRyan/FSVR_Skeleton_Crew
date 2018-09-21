@@ -129,7 +129,11 @@ public class Player : NetworkBehaviour {
 	void DisableBody() {
         if (!isDead) {
 
-	    	foreach ( GameObject g in playerBody ) {
+            if (isServer) {
+                Captain.instance.AddEventToQueue(Captain.AudioEventType.Respawn);
+            }
+
+            foreach ( GameObject g in playerBody ) {
 	    		g.SetActive( false );
 	    	}
 	    	foreach ( Collider c in playerColliders ) {

@@ -150,6 +150,9 @@ public class Ratman : NetworkBehaviour {
 
 		var g = Instantiate( deathParticles, new Vector3( rat.transform.position.x, rat.transform.position.y + 0.5f, rat.transform.position.z ), Quaternion.identity );
 		NetworkServer.Spawn(g);
+
+        Captain.instance.AddEventToQueue(Captain.AudioEventType.Ratmen);
+
         }
-	}
+    }
 }

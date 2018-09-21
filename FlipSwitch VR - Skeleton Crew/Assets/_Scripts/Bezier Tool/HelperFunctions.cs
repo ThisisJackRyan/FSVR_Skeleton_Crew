@@ -80,5 +80,20 @@ public static class HelperFunctions {
 		return false;
 	}
 
-	#endregion
+    #endregion
+
+    #region Dictionary helper functions
+
+    public static rt TryGetValue<t, rt>(this Dictionary<t, rt> dictionary, t key) {
+        rt value;
+
+        if (dictionary.TryGetValue(key, out value)) {
+            return value;
+        } else {
+            return default(rt);
+        }
+        
+    }
+
+    #endregion
 }
