@@ -527,7 +527,7 @@ public class Captain : SerializedNetworkBehaviour {
     #region Captain audio
 
     public enum AudioEventType {
-        Cannon = 0, Ratmen = 1, Respawn = 2, RepairDeck = 3, OneShot = 4
+        Cannon = 1, Ratmen = 2, RepairDeck = 3, Respawn = 0, OneShot = 4
     }
 
     Dictionary<AudioEventType, float> eventTimes;
@@ -541,7 +541,7 @@ public class Captain : SerializedNetworkBehaviour {
 
     private void Update() {
         if (!isServer || !hasInitialized) {
-            print("returning");
+            //print("returning");
             return;
         }
 
@@ -550,28 +550,43 @@ public class Captain : SerializedNetworkBehaviour {
             return;
         }
 
-
         //play priority clip
         if (audioEvents.Count > 0) {
             print("events list has entries");
 
             //check counts, return highest
-            AudioEventType ae = CheckHighestEntryCount();
-
+            AudioEventType ae = audioEvents.MostCommon();
 
             //check last time
-            //check validity
-            //get severity
-            //queue up clip
-            //update last played time
 
+            if ((Time.timeSinceLevelLoad - eventTimes.TryGetValue(ae)) > timeBetweenReminders) {
+				print("pre loop count " + audioEvents.Count());
 
+				for (int i = 0; i < audioEvents.Count; i++) {
+					AudioEventType item = audioEvents[i];
+					if (item == ae) {
+						audioEvents.RemoveAll( aet => aet.Equals(ae));
+					}
+				}
 
-            //mySource.PlayOneShot(priorityAudioQueue.First());
-            //RpcPlayDialogue(priorityAudioQueue.Dequeue().name);
-            //lastPlayedTime = Time.timeSinceLevelLoad;
+				print("post loop count " + audioEvents.Count());
+
+				//check validity
+				int severity;
+                if (CheckIfReminderIsValid(ae, out severity)) {
+                    //get severity
+                    //queue up clip
+
+                    //update last played time
+                    CheckAndUpdateEventTimePriority(ae);
+                    mySource.PlayOneShot(priorityAudioQueue.First());
+                    RpcPlayDialogue(priorityAudioQueue.Dequeue().name);
+                    lastPlayedTime = Time.timeSinceLevelLoad;
+                }
+
+            }
+
         }
-
 
         //play reminder clip
         if (lastPlayedTime + timeBetweenReminders <= Time.timeSinceLevelLoad) { //its been atleast aslong as the remindertimer
@@ -580,46 +595,12 @@ public class Captain : SerializedNetworkBehaviour {
             if (reminderQueue.Count > 0) {
                 print("reminder needs to play");
 
-
-
                 mySource.PlayOneShot(reminderQueue.First());
                 RpcPlayDialogue(reminderQueue.Dequeue().name);
 
                 lastPlayedTime = Time.timeSinceLevelLoad;
             }
         }
-    }
-
-    [Button]
-    public void TestCountChecker() {
-
-        audioEvents.Clear();
-
-        for (int i = 0; i < 30; i++) {
-            int rng = Random.Range(0, 5);                       
-            AddEventToQueue((AudioEventType)rng);
-        }
-
-        CheckHighestEntryCount();
-    }
-
-    private AudioEventType CheckHighestEntryCount() {
-        int cannonEvents = audioEvents.GetCountOfEntriesForType(AudioEventType.Cannon);
-        int ratEvents = audioEvents.GetCountOfEntriesForType(AudioEventType.Ratmen);
-        int respawnEvents = audioEvents.GetCountOfEntriesForType(AudioEventType.Respawn);
-        int deckEvents = audioEvents.GetCountOfEntriesForType(AudioEventType.RepairDeck);
-
-        AudioEventType toReturn;
-
-
-        toReturn = (cannonEvents > 0) ? AudioEventType.Cannon : AudioEventType.OneShot;
-        toReturn = (ratEvents > cannonEvents) ? AudioEventType.Ratmen : toReturn;
-        toReturn = (respawnEvents > ratEvents) ? AudioEventType.Respawn : toReturn;
-        toReturn = (deckEvents > respawnEvents) ? AudioEventType.RepairDeck : toReturn;
-
-        //temp for highlighting
-        print("cannon " + cannonEvents + "rat " + ratEvents + "respawn " + respawnEvents + "deck " + deckEvents + " returning " + toReturn );
-        return toReturn;
     }
 
     [ClientRpc]
@@ -693,9 +674,10 @@ public class Captain : SerializedNetworkBehaviour {
         CheckAndUpdateEventTimePriority(typeToQueue);
     }
 
-    bool CheckIfReminderIsValid(AudioEventType type) {
+    bool CheckIfReminderIsValid(AudioEventType type, out int severity) {
         //checkl queue, if event type exist then move it up in queue?
         bool stillValid = false;
+        severity = 0;
         switch (type) {
             case AudioEventType.Cannon:
                 int brokenCannonCount = 0;
@@ -706,7 +688,17 @@ public class Captain : SerializedNetworkBehaviour {
                     }
                 }
 
-                if (brokenCannonCount > 0) { 
+                if (brokenCannonCount > 0) {
+                    if (brokenCannonCount == 1 || brokenCannonCount == 2) {
+                        severity = 1;
+
+                    } else if (brokenCannonCount == 3 || brokenCannonCount == 4) {
+                        severity = 2;
+
+                    } else if (brokenCannonCount == 5 || brokenCannonCount == 6) {
+                        severity = 3;
+
+                    }
                     stillValid = true;
                 }
                 break;
@@ -718,6 +710,18 @@ public class Captain : SerializedNetworkBehaviour {
                 }
 
                 if (ratmenDeadCount > 0) {
+                    if (ratmenDeadCount == 1 || ratmenDeadCount == 2) {
+                        severity = 1;
+
+                    } else if (ratmenDeadCount == 3 || ratmenDeadCount == 4) {
+                        severity = 2;
+
+                    } else if (ratmenDeadCount == 5 || ratmenDeadCount == 6) {
+                        severity = 3;
+
+                    }
+
+
                     stillValid = true;
 
                 }
@@ -734,7 +738,19 @@ public class Captain : SerializedNetworkBehaviour {
                 }
                 break;
             case AudioEventType.RepairDeck:
+                int dmgCount = FindObjectsOfType<DeckDamage>().Count();
                 if (FindObjectsOfType<DeckDamage>().Count() > 0) {
+
+                    if (dmgCount >=1 && dmgCount <= 4) {
+                        severity = 1;
+
+                    } else if (dmgCount >= 5 && dmgCount <= 8) {
+                        severity = 2;
+
+                    } else if (dmgCount >= 9) {
+                        severity = 3;
+                    }
+
                     stillValid = true;
                 }
                 break;
@@ -752,7 +768,7 @@ public class Captain : SerializedNetworkBehaviour {
         audioEvents.Add(type);
     }
 
-    List<AudioEventType> audioEvents;
+    public List<AudioEventType> audioEvents;
 
     /// <summary>
     /// checks if the last time the event was played was long enough ago, if so adds to queue and returns true. oneshots return only if queue is empty
