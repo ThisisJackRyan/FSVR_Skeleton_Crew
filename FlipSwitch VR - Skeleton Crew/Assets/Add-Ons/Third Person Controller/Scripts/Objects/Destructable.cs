@@ -90,10 +90,12 @@ namespace Opsive.ThirdPersonController
 
                 // Do not take any damage if the collision hits an item.
                 if (Utility.GetComponentForType<Item>(collisionTransform.gameObject) == null) {
-                    // If the Health component exists it will apply a force to the rigidbody in addition to deducting the health. Otherwise just apply the force to the rigidbody. 
-                    Health hitHealth;
-                    if ((hitHealth = collisionTransform.GetComponentInParent<Health>()) != null) {
-                        hitHealth.Damage(m_DamageAmount, collisionPoint, m_Transform.forward * -m_ImpactForce, originator, collisionTransform.gameObject);
+					// If the Health component exists it will apply a force to the rigidbody in addition to deducting the health. Otherwise just apply the force to the rigidbody. 
+
+					var hitHealth = collisionTransform.GetComponentInParent<EnemyTargetInit>();
+
+					if (hitHealth != null) {
+                        hitHealth.ApplyMeleeDamage((int)m_DamageAmount);
                     } else {
                         var m_CollisionRigidbody = collisionTransform.GetComponent<Rigidbody>();
                         if (m_ImpactForce > 0 && m_CollisionRigidbody != null && !m_CollisionRigidbody.isKinematic) {
