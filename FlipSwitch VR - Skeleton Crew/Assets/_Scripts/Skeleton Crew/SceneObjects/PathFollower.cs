@@ -28,7 +28,6 @@ public class PathFollower : NetworkBehaviour {
     public float meteorRadius = 40;
     public GameObject[] meteors;
     Quaternion currRot, nextRot;
-    EncounterStage currentStage;
     GameObject prefabToSpawn;
 
     public int encounterOneTotalTime = 180, breakTimer = 60;
@@ -44,6 +43,14 @@ public class PathFollower : NetworkBehaviour {
     public GameObject[] firstEncounters, secondEncounters, thirdEncounters, tutorialSpawns;
 
     public GameObject[] ratkinSpawnPositions;
+
+    [SerializeField]
+    EncounterStage currentStage;
+    [Button]
+    public void WorkAroundSpawn() {
+        SpawnEncounter(currentStage);
+
+    }
 
     protected void Start() {
         if (!isServer) {
@@ -243,11 +250,7 @@ public class PathFollower : NetworkBehaviour {
 
     static GameObject[] floaters;
 
-    [Button]
-    public void WorkAroundSpawn() {
-        Spawn(thirdEncounters);
-
-    }
+  
 
     public void Spawn(GameObject[] toSpawnList, int specifiedIndex = -1) {
         if (!isServer) {
