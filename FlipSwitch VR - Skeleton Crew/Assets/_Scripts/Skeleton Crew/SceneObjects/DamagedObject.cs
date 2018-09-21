@@ -82,7 +82,10 @@ public class DamagedObject : NetworkBehaviour {
 			myState = DamageState.Quarter;
 		} else {
             if (isServer) {
-                Captain.instance.AddEventToQueue(Captain.AudioEventType.Cannon);
+                if (Captain.instance) {
+
+                    Captain.instance.AddEventToQueue(Captain.AudioEventType.Cannon);
+                }
             }
             myState = DamageState.None;
 		}
@@ -237,9 +240,6 @@ public class DamagedObject : NetworkBehaviour {
 				halfState.gameObject.SetActive( false );
 				quarterState.gameObject.SetActive( false );
 				deadState.gameObject.SetActive( true );
-
-
-
 				break;
 		}
 
