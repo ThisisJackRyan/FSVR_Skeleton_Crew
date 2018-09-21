@@ -107,7 +107,9 @@ public class Captain : SerializedNetworkBehaviour {
         //PlayDialogue(tutorialSounds[0]);
     }
 
+    bool hasInitialized = false;
     public void Init() {
+        hasInitialized = true;
         AssignClipsToDictionary();
 
         priorityAudioQueue = new Queue<AudioClip>();
@@ -534,7 +536,7 @@ public class Captain : SerializedNetworkBehaviour {
     public AudioClip repairCannonClip, ratmenDeadClip, playerRespawnClip, repairDeckClip;
 
     private void Update() {
-        if (!isServer) {
+        if (!isServer || !hasInitialized) {
             print("returning");
             return;
         }
