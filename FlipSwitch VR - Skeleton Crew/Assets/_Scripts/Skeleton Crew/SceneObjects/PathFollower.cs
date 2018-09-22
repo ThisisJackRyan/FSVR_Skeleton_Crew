@@ -303,6 +303,7 @@ public class PathFollower : NetworkBehaviour {
 
     public List<Transform> portalPosPoints;
     public GameObject portal;
+	public float distanceBehindPortal = 4;
     public void SpawnWithPortal(GameObject[] toSpawnList, int specifiedIndex = -1) {
         if (!isServer) {
             return;
@@ -317,7 +318,7 @@ public class PathFollower : NetworkBehaviour {
 
         GameObject g = Instantiate(prefabToSpawn, spawnVector, Quaternion.identity);
 
-        spawnVector += (spawnVector - shipTransform.position).normalized * -2;
+        spawnVector += (spawnVector - shipTransform.position).normalized * -distanceBehindPortal;
 
         GameObject p = Instantiate(portal, spawnVector, Quaternion.LookRotation((spawnVector - shipTransform.position), Vector3.up));
 
