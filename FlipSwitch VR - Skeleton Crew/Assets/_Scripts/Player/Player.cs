@@ -20,6 +20,12 @@ public class Player : NetworkBehaviour {
 	public Transform explosionPosition;
 	bool isDead;
 
+    public bool IsDead {
+        get {
+            return isDead;
+        }
+    }
+
 	public AudioClip deathSound;
 	[ClientRpc]
 	private void RpcPlayDeathSound() {
