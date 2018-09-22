@@ -28,7 +28,10 @@ public static class Controller {
 
 		SteamVR_Controller.Device con = (leftController) ? LeftController : RightController;
 
-		con.TriggerHapticPulse(time);
+		if (con != null) {
+			con.TriggerHapticPulse(time);
+			
+		}
 	}
 
 	static bool initialized = false;

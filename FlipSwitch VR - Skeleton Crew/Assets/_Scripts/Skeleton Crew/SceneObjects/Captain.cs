@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Sirenix.OdinInspector;
 using System.Reflection;
+using System;
 
 public enum Side {
     left,
@@ -53,7 +54,18 @@ public class Captain : SerializedNetworkBehaviour {
     public AudioClip enemyBoardingLeft;
     [ToggleGroup("FirstToggle")]
     public AudioClip enemyBoardingRight;
-    [ToggleGroup("FirstToggle")]
+
+	bool firstBoard = true;
+	public AudioClip firstBoardClip;
+	internal void CrewmanHaveBoarded() {
+		if (firstBoard) {
+			firstBoard = false;
+
+			PlayDialogue(firstBoardClip.name);
+		}
+	}
+
+	[ToggleGroup("FirstToggle")]
     public AudioClip enemyBoardingBoth;
 
     // End of encounter audio clips
@@ -74,9 +86,9 @@ public class Captain : SerializedNetworkBehaviour {
     private int numLeftCannonsDamaged;
     private int numRightCannonsDamaged;
     private int numRatmenDead;
-    private float timeElapsed = 0f;
+    //private float timeElapsed = 0f;
 
-    private bool audioTriggered = false;
+    //private bool audioTriggered = false;
 
     public AudioSource mySource, ambientSource;
     //private List<AudioClip> audioQueue;
@@ -134,17 +146,187 @@ public class Captain : SerializedNetworkBehaviour {
 
     }
 
-    public void PlayDialogue(string clip) {
-        for (int i = 0; i < tutorialSounds.Length; i++) {
-            if (tutorialSounds[i].name == clip) {
-                mySource.PlayOneShot(tutorialSounds[i]);
-                RpcPlaySoundClip(clip);
-                return;
-            }
+
+    #region Captain audio
+
+    public enum AudioEventType {
+        Cannon, Ratmen, Respawn, RepairDeck, OneShot
+    }
+
+    Dictionary<AudioEventType, float> eventTimes;
+    Dictionary<string, AudioClip> clipNames;
+    //Dictionary<AudioClip, string> clipNamesLookup;
+
+    Queue<AudioClip> priorityAudioQueue, reminderQueue;
+    public float timeBetweenReminders = 10, lastPlayedTime;
+
+    public AudioClip repairCannonClip, ratmenDeadClip, playerRespawnClip, repairDeckClip;
+
+    private void Update() {
+        if (!isServer || !hasInitialized) {
+            //print("returning");
+            return;
         }
 
-        Debug.Log(clip + " does not exist in tutorial dialogue collection");
+        if (mySource.isPlaying) {
+            print("source is playing");
+
+            return;
+        }
+
+        if (priorityAudioQueue.Count > 0) {
+            print("priority needs to play");
+
+            mySource.PlayOneShot(priorityAudioQueue.First());
+            RpcPlayDialogue(priorityAudioQueue.Dequeue().name);
+            lastPlayedTime = Time.timeSinceLevelLoad;
+        }
+
+        if (lastPlayedTime + timeBetweenReminders <= Time.timeSinceLevelLoad) { //its been atleast aslong as the remindertimer
+            print("time for reminder");
+
+            if (reminderQueue.Count > 0) {
+                print("reminder needs to play");
+
+                mySource.PlayOneShot(reminderQueue.First());
+                RpcPlayDialogue(reminderQueue.Dequeue().name);
+
+                lastPlayedTime = Time.timeSinceLevelLoad;
+            }
+        }
     }
+
+    [ClientRpc]
+    private void RpcPlayDialogue(string clipName) {
+        if (isServer) {
+            return;
+        }
+
+        print("rpc called with " + clipName);
+
+        mySource.PlayOneShot(clipNames[clipName]);
+    }
+
+    void AssignClipsToDictionary() {
+        clipNames = new Dictionary<string, AudioClip>();
+        clipNames.Add(repairCannonClip.name, repairCannonClip);
+        clipNames.Add(ratmenDeadClip.name, ratmenDeadClip);
+        clipNames.Add(repairDeckClip.name, repairDeckClip);
+        clipNames.Add(playerRespawnClip.name, playerRespawnClip);
+
+        //clipNamesLookup = new Dictionary<AudioClip, string>();
+        //clipNamesLookup.Add( repairCannonClip, "Cannon");
+        //clipNamesLookup.Add( ratmenDeadClip,"Ratmen");
+        //clipNamesLookup.Add(repairDeckClip,"Deck" );
+        //clipNamesLookup.Add(playerRespawnClip,"Respawn" );
+    }
+
+    bool CheckAndUpdateEventTimePriority(AudioEventType eventType) {
+        bool toReturn = false;
+
+        switch (eventType) {
+            case AudioEventType.Cannon:
+
+                eventTimes[AudioEventType.Cannon] = Time.timeSinceLevelLoad;
+                priorityAudioQueue.Enqueue(repairCannonClip);
+
+                break;
+            case AudioEventType.Ratmen:
+
+                eventTimes[AudioEventType.Ratmen] = Time.timeSinceLevelLoad;
+                priorityAudioQueue.Enqueue(ratmenDeadClip);
+
+                break;
+            case AudioEventType.Respawn:
+
+                eventTimes[AudioEventType.Respawn] = Time.timeSinceLevelLoad;
+                priorityAudioQueue.Enqueue(playerRespawnClip);
+
+                break;
+            case AudioEventType.RepairDeck:
+
+                eventTimes[AudioEventType.RepairDeck] = Time.timeSinceLevelLoad;
+                priorityAudioQueue.Enqueue(repairDeckClip);
+
+                break;
+            case AudioEventType.OneShot:
+                if (priorityAudioQueue.Count >= 0) {
+                    toReturn = false;
+                } else {
+                    toReturn = true;
+                }
+                break;
+            default:
+                Debug.LogWarning("Captain is checking a nonexistent audio event type");
+                break;
+        }
+
+        return toReturn;
+    }
+
+    public AudioEventType typeToQueue;
+    [Button]
+    public void Tester() {
+        CheckAndUpdateEventTimePriority(typeToQueue);
+    }
+
+    void UpdateReminderQueue(AudioEventType type) {
+        //checkl queue, if event type exist then move it up in queue?
+    }
+
+    public void AddEventToQueue(AudioEventType type) {
+        CheckAndUpdateEventTimePriority(type);
+    }
+
+    bool CheckAndUpdateEventTimeReminder(AudioEventType eventType) {
+        bool toReturn = false;
+
+        switch (eventType) {
+            case AudioEventType.Cannon:
+                if ((Time.time - eventTimes.TryGetValue(AudioEventType.Cannon)) > timeBetweenReminders) {
+                    //its been long enough
+                    eventTimes[AudioEventType.Cannon] = Time.timeSinceLevelLoad;
+                    reminderQueue.Enqueue(repairCannonClip);
+                }
+                break;
+            case AudioEventType.Ratmen:
+                if ((Time.time - eventTimes.TryGetValue(AudioEventType.Ratmen)) > timeBetweenReminders) {
+                    //its been long enough
+                    eventTimes[AudioEventType.Ratmen] = Time.timeSinceLevelLoad;
+                    reminderQueue.Enqueue(ratmenDeadClip);
+                }
+                break;
+            case AudioEventType.Respawn:
+
+                if ((Time.time - eventTimes.TryGetValue(AudioEventType.Respawn)) > timeBetweenReminders) {
+                    //its been long enough
+                    eventTimes[AudioEventType.Respawn] = Time.timeSinceLevelLoad;
+                    reminderQueue.Enqueue(playerRespawnClip);
+                }
+                break;
+            case AudioEventType.RepairDeck:
+
+                if ((Time.time - eventTimes.TryGetValue(AudioEventType.RepairDeck)) > timeBetweenReminders) {
+                    //its been long enough
+                    eventTimes[AudioEventType.RepairDeck] = Time.timeSinceLevelLoad;
+                    reminderQueue.Enqueue(repairDeckClip);
+                }
+                break;
+            case AudioEventType.OneShot:
+                if (priorityAudioQueue.Count >= 0) {
+                    toReturn = false;
+                } else {
+                    toReturn = true;
+                }
+                break;
+            default:
+                Debug.LogWarning("Captain is checking a nonexistent audio event type");
+                break;
+        }
+
+        return toReturn;
+    }
+    #endregion
 
     #region Tutorial shit
 
@@ -202,50 +384,21 @@ public class Captain : SerializedNetworkBehaviour {
         Invoke("TutorialIntro", 35f);
     }
 
-    //#region guards 
+	public void PlayDialogue( string clip ) {
+		//todo make thisa check if playing, and if so make it play next i e first in queue
+		for ( int i = 0; i < tutorialSounds.Length; i++ ) {
+			if ( tutorialSounds[i].name == clip ) {
+				mySource.PlayOneShot( tutorialSounds[i] );
+				RpcPlaySoundClip( clip );
+				return;
+			}
+		}
 
-    //void EnableGuardsByPlayerCount() {
-    //	for (int i = 0; i < tutorialGuards.Count && i < VariableHolder.instance.numPlayers; i++) {
-    //		tutorialGuards[i].SetActive(true);
-    //		enemiesKilled.Add(tutorialGuards[i].GetComponent<Enemy>(), false);
-    //	}
+		Debug.Log( clip + " does not exist in tutorial dialogue collection" );
+	}
 
-    //	RpcEnableGuards(VariableHolder.instance.numPlayers);
-    //}
 
-    //[ClientRpc]
-    //void RpcEnableGuards(int count) {
-    //	if (isServer) {
-    //		return;
-    //	}
-
-    //	//print("count is " + count);
-    //	for (int i = 0; i < tutorialGuards.Count && i < count; i++) {
-    //		tutorialGuards[i].SetActive(true);
-    //	}
-    //}
-
-    //void DisableGuards() {
-    //	for (int i = 0; i < tutorialGuards.Count; i++) {
-    //		tutorialGuards[i].SetActive(false);
-    //	}
-
-    //	RpcDisableGuards();
-    //}
-
-    //[ClientRpc]
-    //void RpcDisableGuards() {
-    //	if (isServer) {
-    //		return;
-    //	}
-    //	for (int i = 0; i < tutorialGuards.Count; i++) {
-    //		tutorialGuards[i].SetActive(false);
-    //	}
-    //}
-
-    //#endregion
-
-    public void CheckEnemiesKilled() {
+	public void CheckEnemiesKilled() {
         //foreach (var obj in enemiesKilled) {
         //	////print(obj.Key.name + " has a value of " + obj.Value);
         //}
@@ -519,186 +672,4 @@ public class Captain : SerializedNetworkBehaviour {
     }
 
     #endregion
-
-    #region Captain audio
-
-    public enum AudioEventType {
-        Cannon, Ratmen, Respawn, RepairDeck, OneShot
-    }
-
-    Dictionary<AudioEventType, float> eventTimes;
-    Dictionary<string, AudioClip> clipNames;
-    //Dictionary<AudioClip, string> clipNamesLookup;
-
-    Queue<AudioClip> priorityAudioQueue, reminderQueue;
-    public float timeBetweenReminders = 10, lastPlayedTime;
-
-    public AudioClip repairCannonClip, ratmenDeadClip, playerRespawnClip, repairDeckClip;
-
-    private void Update() {
-        if (!isServer || !hasInitialized) {
-            //print("returning");
-            return;
-        }
-
-        if (mySource.isPlaying) {
-            print("source is playing");
-
-            return;
-        }
-
-        if (priorityAudioQueue.Count > 0) {
-            print("priority needs to play");
-
-            mySource.PlayOneShot(priorityAudioQueue.First());
-            RpcPlayDialogue(priorityAudioQueue.Dequeue().name);
-            lastPlayedTime = Time.timeSinceLevelLoad;
-        }
-
-        if (lastPlayedTime + timeBetweenReminders <= Time.timeSinceLevelLoad) { //its been atleast aslong as the remindertimer
-            print("time for reminder");
-
-            if (reminderQueue.Count > 0) {
-                print("reminder needs to play");
-
-                mySource.PlayOneShot(reminderQueue.First());
-                RpcPlayDialogue(reminderQueue.Dequeue().name);
-
-                lastPlayedTime = Time.timeSinceLevelLoad;
-            }
-        }
-    }
-
-    [ClientRpc]
-    private void RpcPlayDialogue(string clipName) {
-        if (isServer) {
-            return;
-        }
-
-        print("rpc called with " + clipName);
-
-        mySource.PlayOneShot(clipNames[clipName]);
-    }
-
-    void AssignClipsToDictionary() {
-        clipNames = new Dictionary<string, AudioClip>();
-        clipNames.Add(repairCannonClip.name, repairCannonClip);
-        clipNames.Add(ratmenDeadClip.name, ratmenDeadClip);
-        clipNames.Add(repairDeckClip.name, repairDeckClip);
-        clipNames.Add(playerRespawnClip.name, playerRespawnClip);
-
-        //clipNamesLookup = new Dictionary<AudioClip, string>();
-        //clipNamesLookup.Add( repairCannonClip, "Cannon");
-        //clipNamesLookup.Add( ratmenDeadClip,"Ratmen");
-        //clipNamesLookup.Add(repairDeckClip,"Deck" );
-        //clipNamesLookup.Add(playerRespawnClip,"Respawn" );
-    }
-
-    bool CheckAndUpdateEventTimePriority(AudioEventType eventType) {
-        bool toReturn = false;
-
-        switch (eventType) {
-            case AudioEventType.Cannon:
-
-                eventTimes[AudioEventType.Cannon] = Time.timeSinceLevelLoad;
-                priorityAudioQueue.Enqueue(repairCannonClip);
-
-                break;
-            case AudioEventType.Ratmen:
-
-                eventTimes[AudioEventType.Ratmen] = Time.timeSinceLevelLoad;
-                priorityAudioQueue.Enqueue(ratmenDeadClip);
-
-                break;
-            case AudioEventType.Respawn:
-
-                eventTimes[AudioEventType.Respawn] = Time.timeSinceLevelLoad;
-                priorityAudioQueue.Enqueue(playerRespawnClip);
-
-                break;
-            case AudioEventType.RepairDeck:
-
-                eventTimes[AudioEventType.RepairDeck] = Time.timeSinceLevelLoad;
-                priorityAudioQueue.Enqueue(repairDeckClip);
-
-                break;
-            case AudioEventType.OneShot:
-                if (priorityAudioQueue.Count >= 0) {
-                    toReturn = false;
-                } else {
-                    toReturn = true;
-                }
-                break;
-            default:
-                Debug.LogWarning("Captain is checking a nonexistent audio event type");
-                break;
-        }
-
-        return toReturn;
-    }
-
-    public AudioEventType typeToQueue;
-    [Button]
-    public void Tester() {
-        CheckAndUpdateEventTimePriority(typeToQueue);
-    }
-
-    void UpdateReminderQueue(AudioEventType type) {
-        //checkl queue, if event type exist then move it up in queue?
-    }
-
-    public void AddEventToQueue(AudioEventType type) {
-        CheckAndUpdateEventTimePriority(type);
-    }
-
-    bool CheckAndUpdateEventTimeReminder(AudioEventType eventType) {
-        bool toReturn = false;
-
-        switch (eventType) {
-            case AudioEventType.Cannon:
-                if ((Time.time - eventTimes.TryGetValue(AudioEventType.Cannon)) > timeBetweenReminders) {
-                    //its been long enough
-                    eventTimes[AudioEventType.Cannon] = Time.timeSinceLevelLoad;
-                    reminderQueue.Enqueue(repairCannonClip);
-                }
-                break;
-            case AudioEventType.Ratmen:
-                if ((Time.time - eventTimes.TryGetValue(AudioEventType.Ratmen)) > timeBetweenReminders) {
-                    //its been long enough
-                    eventTimes[AudioEventType.Ratmen] = Time.timeSinceLevelLoad;
-                    reminderQueue.Enqueue(ratmenDeadClip);
-                }
-                break;
-            case AudioEventType.Respawn:
-
-                if ((Time.time - eventTimes.TryGetValue(AudioEventType.Respawn)) > timeBetweenReminders) {
-                    //its been long enough
-                    eventTimes[AudioEventType.Respawn] = Time.timeSinceLevelLoad;
-                    reminderQueue.Enqueue(playerRespawnClip);
-                }
-                break;
-            case AudioEventType.RepairDeck:
-
-                if ((Time.time - eventTimes.TryGetValue(AudioEventType.RepairDeck)) > timeBetweenReminders) {
-                    //its been long enough
-                    eventTimes[AudioEventType.RepairDeck] = Time.timeSinceLevelLoad;
-                    reminderQueue.Enqueue(repairDeckClip);
-                }
-                break;
-            case AudioEventType.OneShot:
-                if (priorityAudioQueue.Count >= 0) {
-                    toReturn = false;
-                } else {
-                    toReturn = true;
-                }
-                break;
-            default:
-                Debug.LogWarning("Captain is checking a nonexistent audio event type");
-                break;
-        }
-
-        return toReturn;
-    }
-    #endregion
-
 }

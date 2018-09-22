@@ -69,7 +69,13 @@ public class Enemy : NetworkBehaviour {
         NetworkServer.Destroy(gameObject);
     }
 
-    public void PlayHitParticles() {
+	internal void TellCaptainIveBoarded() {
+		if (!isServer) {
+			Captain.instance.CrewmanHaveBoarded();
+		}
+	}
+
+	public void PlayHitParticles() {
         //print("play hit particles called");
 
         foreach(var p in hitParticles) {

@@ -39,6 +39,7 @@ public class TeleportOneAtATime : Action {
 			crewman.transform.position = teleTarget.transform.position;
 			crewman.GetComponent<Enemy>().UnParentMe();
 			crewman.GetComponent<Behavior>().SetVariableValue( "Teleported", true );
+			crewman.GetComponent<Enemy>().TellCaptainIveBoarded();
 			
             yield return new WaitForSeconds(timeBetweenTeleports.Value);
 

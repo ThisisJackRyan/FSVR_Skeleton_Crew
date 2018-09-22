@@ -16,7 +16,7 @@ public class AmmoCache : NetworkBehaviour{
 			return;
 
 		if ( other.gameObject.GetComponent<Weapon>() ) { 
-			if ( other.gameObject.GetComponent<Weapon>().isBeingHeldByPlayer && other.gameObject.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Gun && !active ) {
+			if ( other.gameObject.GetComponent<Weapon>().isBeingHeldByPlayer && other.gameObject.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Gun && !active && !other.gameObject.GetComponent<Weapon>().IsFullOnAmmo ) {
 				timer = 0;
 				active = true;
 				activator = other.gameObject;

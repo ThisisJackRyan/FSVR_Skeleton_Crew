@@ -10,6 +10,14 @@ public class Weapon : NetworkBehaviour {
 	public bool isBeingHeldByPlayer = false;
 	public GameObject playerWhoHolstered = null;
 	[SyncVar(hook = "OnAmmoNumChange")] int ammo = -1;
+	float lastShottime = 0;
+
+	public bool IsFullOnAmmo {
+		get {
+			//if ammo is the same as data.ammo then return true
+			return ( ammo == data.ammo ) ? true : false;
+		}
+	}
 
 	private void OnAmmoNumChange(int num) {
 		ammo = num;
@@ -33,10 +41,23 @@ public class Weapon : NetworkBehaviour {
 		ammo = data.ammo;
 	}
 
-	public void SpawnBullet() {
+	public void SpawnBullet(bool isLeft, ushort hapticSize) {
+		if (lastShottime + data.timeBetweenShots > Time.time) {
+			return;
+		}
+
         if (ammo-- <= 0) {  //decrements after check
 			GetComponent<AudioSource>().clip = data.outOfAmmoSound;
+				Controller.PlayHaptics( isLeft, hapticSize );
+			
+
 		} else {
+			if ( !isServer ) {
+				Controller.PlayHaptics( isLeft, hapticSize );
+
+			}
+
+			lastShottime = Time.time;
             Vector3 rot = Quaternion.identity.eulerAngles;
             if (data.spread > 0) {
                 var variance = Quaternion.AngleAxis(Random.Range(0, 360), rot) * Vector3.up * Random.Range(0, data.spread);

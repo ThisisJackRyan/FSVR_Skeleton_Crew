@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-
 public class PlayCaptainDialogueOnStartOrWhenInRange : NetworkBehaviour {
 
 	public bool playOnStart = true, playWhenInRange = false;
