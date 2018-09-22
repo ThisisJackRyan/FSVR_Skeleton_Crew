@@ -11,6 +11,12 @@ public class DamagedObject : NetworkBehaviour {
 		Full, ThreeQuarter, Half, Quarter, None
 	}
 
+    public DamageState CurrentHealthState {
+        get {
+            return myState;
+        }
+    }
+
 	DamageState myState;
 	[SyncVar( hook = "OnHealthChange" )] int health = 100;
 	[SyncVar( hook = "OnPatternIndexChange" )] int rng = -1;

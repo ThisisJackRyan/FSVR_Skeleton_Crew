@@ -537,7 +537,7 @@ public class Captain : SerializedNetworkBehaviour {
 
     private void Update() {
         if (!isServer || !hasInitialized) {
-            print("returning");
+            //print("returning");
             return;
         }
 
