@@ -222,7 +222,7 @@ public class PathFollower : NetworkBehaviour {
                 Spawn(secondEncounters);
                 break;
             case EncounterStage.Third:
-                //Spawn(thirdEncounters);
+                Spawn(thirdEncounters);
                 break;
             case EncounterStage.Tutorial:
                 //print("calling spawn with index " + ( currentNode - 1 ) );
