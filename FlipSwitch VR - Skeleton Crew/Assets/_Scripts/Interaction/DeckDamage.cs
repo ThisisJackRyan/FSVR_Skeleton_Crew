@@ -15,8 +15,11 @@ public class DeckDamage : NetworkBehaviour {
 
 
 	private void OnEnable() {
+		print("called");
         if (isServer) {
-            Captain.instance.AddEventToQueue(Captain.AudioEventType.RepairDeck);
+			print("isserver");
+
+			Captain.instance.AddEventToQueue(Captain.AudioEventType.RepairDeck);
         }
 
 

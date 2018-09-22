@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using System;
 
@@ -112,6 +112,13 @@ public static class HelperFunctions {
 
 
         return toReturn;
+    }
+
+    public static T MostCommon<T>(this IEnumerable<T> list) {
+        return (from i in list
+                group i by i into grp
+                orderby grp.Count() descending
+                select grp.Key).First();
     }
 
     #endregion
