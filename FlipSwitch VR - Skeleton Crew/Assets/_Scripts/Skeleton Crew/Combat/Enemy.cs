@@ -4,7 +4,8 @@ using UnityEngine.Networking;
 using BehaviorDesigner.Runtime;
 using System;
 using Random = UnityEngine.Random;
-using Opsive.ThirdPersonController.Wrappers;       
+using Opsive.ThirdPersonController.Wrappers;
+using UnityEngine.AI;
 
 /// <summary>
 /// Author: Matt Gipson
@@ -17,6 +18,7 @@ public class Enemy : NetworkBehaviour {
 	#region Fields
     
 	private bool canBeDamaged = true;
+	private int myAvoidance;
 	public GameObject lastWeaponDamagedMe;
 
 	public GameObject deathParticles;
@@ -137,6 +139,18 @@ public class Enemy : NetworkBehaviour {
             GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));   
             Invoke("AllowDamage", 1f);
         }
+
+		if(other.gameObject.GetComponent<NavMeshAgent>()) {
+			if(other.transform.GetSiblingIndex() > transform.GetSiblingIndex()) {
+				myAvoidance = GetComponent<NavMeshAgent>().avoidancePriority;
+				GetComponent<NavMeshAgent>().avoidancePriority = 0;
+				Invoke("RevertAvoidance", 1.5f);
+			}
+		}
+	}
+
+	private void RevertAvoidance() {
+		GetComponent<NavMeshAgent>().avoidancePriority = myAvoidance;
 	}
 
 	private void TurnOffHit() {
