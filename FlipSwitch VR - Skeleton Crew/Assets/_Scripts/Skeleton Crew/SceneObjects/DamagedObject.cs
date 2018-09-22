@@ -259,15 +259,19 @@ public class DamagedObject : NetworkBehaviour {
 		if (damage) {
 			health -= Mathf.Abs(amount);
 			health = (health < 0) ? 0 : health;
-            //print(health);
-            if (health > 0) {
-                if (Time.timeSinceLevelLoad > 2) {
-                    //print("time since level loaded is " + Time.timeSinceLevelLoad);
-                    GetComponent<AudioSource>().PlayOneShot(damageClip);
-                    var g = Instantiate(dmgParticles, transform.position, Quaternion.identity);
-                    NetworkServer.Spawn(g);
-                }
-            }
+			//print(health);
+			if (health > 0) {
+				if (Time.timeSinceLevelLoad > 2) {
+					//print("time since level loaded is " + Time.timeSinceLevelLoad);
+					GetComponent<AudioSource>().PlayOneShot(damageClip);
+					var g = Instantiate(dmgParticles, transform.position, Quaternion.identity);
+					NetworkServer.Spawn(g);
+				}
+			} else if (health <= 0) {
+				if (VariableHolder.instance.cannons.Contains(gameObject)) {
+					VariableHolder.instance.cannons.Remove(gameObject);
+				}
+			}
 		} else {
 			health += Mathf.Abs(amount);
 			health = (health > maxHealth) ? maxHealth : health;
