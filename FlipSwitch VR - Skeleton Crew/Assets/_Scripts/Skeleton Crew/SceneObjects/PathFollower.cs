@@ -97,10 +97,14 @@ public class PathFollower : NetworkBehaviour {
 
     internal void DestroyCrystal(GameObject g) {
         if (isServer) {
-            //NetworkServer.Destroy( g );
-            GameObject go = Instantiate(crystalDeathParticles, g.transform.position, Quaternion.identity);
+			//NetworkServer.Destroy( g );
+			print( "i am the server, destroy crystal was called, should have spawned fragments" );
+
+			GameObject go = Instantiate(crystalDeathParticles, g.transform.position, Quaternion.identity);
             NetworkServer.Spawn(go);
-        }
+		} else {
+			print("im not the server, but destroy crystal was called, should have spawned fragments");
+		}
     }
 
     void ChangeToPhaseTwo() {
