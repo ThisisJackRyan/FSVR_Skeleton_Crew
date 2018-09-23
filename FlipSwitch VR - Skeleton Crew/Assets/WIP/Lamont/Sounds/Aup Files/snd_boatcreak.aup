@@ -1,0 +1,205 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="snd_boatcreak_data" version="1.3.0" audacityversion="2.2.2" sel0="-0.6158049887" sel1="6.9778684807" vpos="0" h="0.1091307376" zoom="256.5729932936" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags/>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="-0.61580499" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="215653">
+				<waveblock start="0">
+					<simpleblockfile filename="e080128b.au" len="215653" min="-0.593324" max="0.595903" rms="0.099531"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="-0.61580499" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="215653">
+				<waveblock start="0">
+					<simpleblockfile filename="e0801935.au" len="215653" min="-0.758894" max="0.531136" rms="0.089081"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="3.66757370" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="14896">
+				<waveblock start="0">
+					<simpleblockfile filename="e0801cc7.au" len="14896" min="-0.528846" max="0.453398" rms="0.110735"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="3.66757370" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="14896">
+				<waveblock start="0">
+					<simpleblockfile filename="e0801c73.au" len="14896" min="-0.40039" max="0.421252" rms="0.103276"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="4.00535147" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="13523">
+				<waveblock start="0">
+					<simpleblockfile filename="e0801308.au" len="13523" min="-0.540901" max="0.461276" rms="0.143057"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="4.00535147" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="13523">
+				<waveblock start="0">
+					<simpleblockfile filename="e0801847.au" len="13523" min="-0.696821" max="0.583271" rms="0.150612"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="4.31199546" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="10771">
+				<waveblock start="0">
+					<simpleblockfile filename="e080183c.au" len="10771" min="-0.409939" max="0.538562" rms="0.115919"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="4.31199546" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="10771">
+				<waveblock start="0">
+					<simpleblockfile filename="e080113e.au" len="10771" min="-0.468411" max="0.399267" rms="0.119285"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="4.55623583" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="6647">
+				<waveblock start="0">
+					<simpleblockfile filename="e0801bb3.au" len="6647" min="-0.47885" max="0.554365" rms="0.179908"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="4.55623583" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="6647">
+				<waveblock start="0">
+					<simpleblockfile filename="e080138b.au" len="6647" min="-0.483016" max="0.611249" rms="0.148809"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="4.70696145" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="8708">
+				<waveblock start="0">
+					<simpleblockfile filename="e0801767.au" len="8708" min="-0.584069" max="0.495633" rms="0.14778"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="4.70696145" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="8708">
+				<waveblock start="0">
+					<simpleblockfile filename="e0801e80.au" len="8708" min="-0.55225" max="0.545997" rms="0.147652"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="4.90442177" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="7792">
+				<waveblock start="0">
+					<simpleblockfile filename="e0801aaf.au" len="7792" min="-0.381481" max="0.419379" rms="0.151419"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="4.90442177" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="7792">
+				<waveblock start="0">
+					<simpleblockfile filename="e0801d3b.au" len="7792" min="-0.401683" max="0.429662" rms="0.131006"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="5.08111111" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="10313">
+				<waveblock start="0">
+					<simpleblockfile filename="e08015b4.au" len="10313" min="-0.380277" max="0.357881" rms="0.121473"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="5.08111111" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="10313">
+				<waveblock start="0">
+					<simpleblockfile filename="e08013a4.au" len="10313" min="-0.318116" max="0.354256" rms="0.127961"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="5.31496599" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="9625">
+				<waveblock start="0">
+					<simpleblockfile filename="e08014a2.au" len="9625" min="-0.388039" max="0.349602" rms="0.163678"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="5.31496599" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="9625">
+				<waveblock start="0">
+					<simpleblockfile filename="e08016a5.au" len="9625" min="-0.393299" max="0.328627" rms="0.133853"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="5.53321995" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="63709">
+				<waveblock start="0">
+					<simpleblockfile filename="e0801976.au" len="63709" min="-0.313953" max="0.351353" rms="0.055988"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="338286__werra__slow-creaky-piano-pedal-press" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="5.53321995" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="63709">
+				<waveblock start="0">
+					<simpleblockfile filename="e0801708.au" len="63709" min="-0.262177" max="0.262132" rms="0.040291"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>
