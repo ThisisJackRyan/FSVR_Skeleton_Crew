@@ -21,7 +21,7 @@ public class SCProjectile : NetworkBehaviour {
             return;
         }
 
-        print("invoking");
+        //print("invoking");
         Invoke("KillProjectile", 5);
     }
 
@@ -54,9 +54,9 @@ public class SCProjectile : NetworkBehaviour {
 
 
     public void KillProjectile() {
-        print("kill called");
+        //print("kill called");
         if (isServer) {
-            print("server scp");
+            //print("server scp");
 
             //RpcDestroy();
             //Destroy(gameObject);

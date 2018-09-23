@@ -169,13 +169,13 @@ public class Captain : SerializedNetworkBehaviour {
         }
 
         if (mySource.isPlaying) {
-            print("source is playing");
+            //print("source is playing");
 
             return;
         }
 
         if (priorityAudioQueue.Count > 0) {
-            print("priority needs to play");
+            //print("priority needs to play");
 
             mySource.PlayOneShot(priorityAudioQueue.First());
             RpcPlayDialogue(priorityAudioQueue.Dequeue().name);
@@ -183,10 +183,10 @@ public class Captain : SerializedNetworkBehaviour {
         }
 
         if (lastPlayedTime + timeBetweenReminders <= Time.timeSinceLevelLoad) { //its been atleast aslong as the remindertimer
-            print("time for reminder");
+            //print("time for reminder");
 
             if (reminderQueue.Count > 0) {
-                print("reminder needs to play");
+                //print("reminder needs to play");
 
                 mySource.PlayOneShot(reminderQueue.First());
                 RpcPlayDialogue(reminderQueue.Dequeue().name);
@@ -202,7 +202,7 @@ public class Captain : SerializedNetworkBehaviour {
             return;
         }
 
-        print("rpc called with " + clipName);
+        //print("rpc called with " + clipName);
 
         mySource.PlayOneShot(clipNames[clipName]);
     }

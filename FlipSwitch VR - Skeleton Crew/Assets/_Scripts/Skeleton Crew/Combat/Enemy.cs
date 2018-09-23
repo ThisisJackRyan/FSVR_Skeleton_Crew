@@ -66,10 +66,12 @@ public class Enemy : NetworkBehaviour {
             Captain.instance.CheckEnemiesKilled();
         }
 
-        RpcSpawnDeathParticles();
-        EnemyUnitDeath();
-        NetworkServer.Destroy(gameObject);
-    }
+		//RpcSpawnDeathParticles();
+		var g = Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
+		NetworkServer.Spawn(g);
+		EnemyUnitDeath();
+		NetworkServer.Destroy(gameObject);
+	}
 
 	internal void TellCaptainIveBoarded() {
 		if (!isServer) {
@@ -168,14 +170,6 @@ public class Enemy : NetworkBehaviour {
 	public int maxHealth = 100;
 
 
-	[ClientRpc]
-	void RpcSpawnDeathParticles() {
-		if (isServer) {
-			return;
-		}
-
-		Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
-	}
 
 	public void AllowDamage() {
 		CancelInvoke();

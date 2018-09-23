@@ -6,7 +6,7 @@ public class FloatingRock : MonoBehaviour {
 
 	public Transform rock;
 	public GameObject spellPattern;
-	public float minTimeToFall = 1.5f, maxTimeToFall = 5f, raiseFallSpeed = 2f;
+	public float minTimeToFall = 1.5f, maxTimeToFall = 5f, raiseFallSpeed = 2f, timeBeforeReraise = 5f;
 	float timeToFall;
 	float currentLerpTime;
 	float moveDistance = 10f;
@@ -30,7 +30,7 @@ public class FloatingRock : MonoBehaviour {
 			StartCoroutine("MoveRockDown");
 
 			//show pattern here
-			spellPattern.SetActive(true);
+			//spellPattern.SetActive(true);
 		}
 	}
 
@@ -76,5 +76,8 @@ public class FloatingRock : MonoBehaviour {
 			rock.transform.position = Vector3.Lerp( startPos, endPos, perc );
 			yield return new WaitForFixedUpdate();
 		}
+
+		yield return new WaitForSecondsRealtime(timeBeforeReraise);
+		RaiseRock();
 	}
 }
