@@ -103,6 +103,16 @@ torch_whoosh_20.wav
 	-cc0
 	-Soundrangers.com
 	
+sea cave
+	-andy_gardner
+	-cc0
+	-https://freesound.org/people/Andy_Gardner/sounds/196713/
+	
+piano wood - organic wood sounds
+	-werra
+	-cc0
+	-https://freesound.org/people/Werra/sounds/338286/
+	
 ---------------------------------------------------------------------------------------------------------	
 34091__dangerbabe__drum -> Snd_WarDrum1
 	-dangerbabe
