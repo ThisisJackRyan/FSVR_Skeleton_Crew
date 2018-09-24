@@ -40,9 +40,9 @@ public class RepairDeckPattern : MonoBehaviour {
 	public virtual void Increment() {
 		//print( "incrememnt called with index of " + index );
 
-		deckDmg.DisableRepairNode( index );
 		index++;
 		if ( index < transform.childCount ) {
+			deckDmg.DisableRepairNode( index - 1 );
 			//print("index in range");
 			transform.GetChild( index ).gameObject.SetActive( true );
 			deckDmg.EnableRepairNode( index );

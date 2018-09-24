@@ -87,13 +87,13 @@ public class DamagedObject : NetworkBehaviour {
 		} else if ( health >= quarterAmount ) {
 			myState = DamageState.Quarter;
 		} else {
+            myState = DamageState.None;
+
             if (isServer) {
                 if (Captain.instance) {
-
                     Captain.instance.AddEventToQueue(Captain.AudioEventType.Cannon);
                 }
             }
-            myState = DamageState.None;
 		}
 
 		if(health < maxHealth ) {

@@ -114,7 +114,7 @@ public class PathFollower : NetworkBehaviour {
 
     void StartSecondPhase() {
         currentStage = EncounterStage.Second;
-        Invoke("StartSecondBreak", encounterOneTotalTime);
+        Invoke("StartThirdPhase", encounterOneTotalTime);
         InvokeRepeating("SpawnMeteors", meteorSpawnTimer, meteorSpawnTimer);
     }
 

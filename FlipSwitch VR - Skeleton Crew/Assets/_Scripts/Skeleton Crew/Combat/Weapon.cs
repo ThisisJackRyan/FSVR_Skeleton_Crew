@@ -47,14 +47,15 @@ public class Weapon : NetworkBehaviour {
 		}
 
         if (ammo-- <= 0) {  //decrements after check
+			print("out of ammo");
 			GetComponent<AudioSource>().clip = data.outOfAmmoSound;
-				Controller.PlayHaptics( isLeft, hapticSize );
-			
+			if (!isServer) {
+				Controller.PlayHaptics(isLeft, hapticSize);
+			}
 
 		} else {
 			if ( !isServer ) {
 				Controller.PlayHaptics( isLeft, hapticSize );
-
 			}
 
 			lastShottime = Time.time;
@@ -75,7 +76,7 @@ public class Weapon : NetworkBehaviour {
                 NetworkServer.Spawn(bullet);
             }
 
-			    Instantiate(data.particles, projectileSpawnPos.position, Quaternion.Euler(transform.forward));
+			Instantiate(data.particles, projectileSpawnPos.position, Quaternion.Euler(transform.forward));
 
         }
 

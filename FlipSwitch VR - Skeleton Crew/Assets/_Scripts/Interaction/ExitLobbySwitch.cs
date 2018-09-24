@@ -46,6 +46,7 @@ public class ExitLobbySwitch : NetworkBehaviour {
 
 	public void StartFade() {
 		//print( "asdfkj;asdf: SERVER pre call" );
+		FindObjectOfType<LobbyDisabler>().TurnOffAfterDelay();
 
 		RpcStartFade();
 		//print( "asdfkj;asdf: SERVER" );
@@ -73,7 +74,7 @@ public class ExitLobbySwitch : NetworkBehaviour {
 		}
 
 		FindObjectOfType<GhostFreeRoamCamera>().transform.root.position = spawnPos.position;
-
+		FindObjectOfType<LobbyDisabler>().TurnOffAfterDelay();
 		SteamVR_Fade.Start(Color.clear, 2f);
 	}
 

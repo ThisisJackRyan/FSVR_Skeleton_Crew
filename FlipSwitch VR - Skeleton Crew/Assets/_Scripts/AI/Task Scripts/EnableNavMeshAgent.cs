@@ -11,6 +11,6 @@ public class EnableNavMeshAgent : Action {
 	public override void OnStart () {
         GetComponent<NavMeshAgent>().enabled = true;
         GetComponent<NavMeshAgent>().autoTraverseOffMeshLink = true;
-        GetComponent<NavMeshAgentBridge>().enabled = true;
+        //GetComponent<NavMeshAgentBridge>().enabled = true;
 	}
 }

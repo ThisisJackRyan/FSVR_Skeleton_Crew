@@ -275,6 +275,7 @@ public class Captain : SerializedNetworkBehaviour {
     }
 
     public void AddEventToQueue(AudioEventType type) {
+	
         CheckAndUpdateEventTimePriority(type);
     }
 

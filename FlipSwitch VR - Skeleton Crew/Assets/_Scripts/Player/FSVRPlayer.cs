@@ -68,6 +68,10 @@ public class FSVRPlayer : NetworkBehaviour {
 	IEnumerator FadeIn() {
 		yield return new WaitForSecondsRealtime(1f);
 		SteamVR_Fade.Start( Color.clear, 1 );
+		if (FindObjectOfType<DoNotDestroyOnLoad>()) {
+
+			Destroy(FindObjectOfType<DoNotDestroyOnLoad>().gameObject);
+		}
 	}
 	
 	void SetTrackerIDs() {

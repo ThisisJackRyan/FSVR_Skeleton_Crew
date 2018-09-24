@@ -12,6 +12,8 @@ public class ConnectWithPress : MonoBehaviour {
 
     public TrackerIdSetter[] setters;
 
+	public GameObject standStill;
+
     // Use this for initialization
     void OnEnable() {
         //if (NetworkHelper.GetLocalIPAddress().Equals(NetworkHelper.hostIpAddress))
@@ -55,6 +57,7 @@ public class ConnectWithPress : MonoBehaviour {
 
     IEnumerator FadeAndLoad() {
         SteamVR_Fade.Start(Color.black, 1, true);
+		standStill.SetActive(true);
         yield return new WaitForSecondsRealtime(1f);
         //NetworkManager.singleton.networkAddress = NetworkManager.singleton.serverBindAddress;
         NetworkManager.singleton.StartClient();

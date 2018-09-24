@@ -43,7 +43,7 @@ public class KillWeaponAfterTime : NetworkBehaviour {
 			return;
 		}
 
-		if ( other.GetComponent<Weapon>().isBeingHeldByPlayer ) {
+		if ( other.GetComponent<Weapon>().isBeingHeldByPlayer || other.GetComponent<Weapon>().playerWhoHolstered) {
 			return;
 		}
 
