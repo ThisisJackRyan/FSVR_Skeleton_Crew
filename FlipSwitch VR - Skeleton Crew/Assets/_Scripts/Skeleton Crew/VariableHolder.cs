@@ -7,9 +7,10 @@ public class VariableHolder : MonoBehaviour {
 	public List<GameObject> mastTargets;
 	public List<GameObject> cannons;
 	public Dictionary<GameObject, bool> ratmenPositions = new Dictionary<GameObject, bool>();
-	
+    public Dictionary<GameObject, bool> enemyRangedPositions = new Dictionary<GameObject, bool>();
 	public int numPlayers;
-
+    public int numRangedUnits;
+    public int maxNumRangedUnits = 6;
 	public static VariableHolder instance;
 
 	private void Awake()
@@ -19,6 +20,21 @@ public class VariableHolder : MonoBehaviour {
 		else
 			instance = this;
 	}
+
+    public void RemoveRangedUnit() {
+        if(numRangedUnits - 1 >= 0) {
+            numRangedUnits--; 
+        }
+    }
+
+    public bool AddRangedUnit() {
+        if(numRangedUnits + 1 < maxNumRangedUnits) {
+            numRangedUnits++;
+            return true;
+        }
+
+        return false;
+    }
 
 	public void NumPlayerChanged(string n)
 	{

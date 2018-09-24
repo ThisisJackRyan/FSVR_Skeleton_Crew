@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using Opsive.ThirdPersonController.Abilities;
 using Opsive.ThirdPersonController.Input;
 
+
+
 namespace Opsive.ThirdPersonController
 {
     /// <summary>

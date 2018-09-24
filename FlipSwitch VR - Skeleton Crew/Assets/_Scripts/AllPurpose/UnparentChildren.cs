@@ -5,15 +5,11 @@ using UnityEngine;
 public class UnparentChildren : MonoBehaviour {
 
 	// Use this for initialization
-	void OnEnable () {
+	void Awake () {
 
             transform.DetachChildren();
         Destroy(gameObject);
         
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

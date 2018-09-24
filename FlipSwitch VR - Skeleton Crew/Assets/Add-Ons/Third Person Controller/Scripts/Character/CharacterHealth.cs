@@ -67,6 +67,7 @@ namespace Opsive.ThirdPersonController
         {
             // Optionally play any damage sounds
             if (m_AudioSource != null && m_DamageSound.Length > 0) {
+                //print("should be playing damage sound");
                 m_AudioSource.clip = m_DamageSound[Random.Range(0, m_DamageSound.Length)];
                 m_AudioSource.Play();
             }

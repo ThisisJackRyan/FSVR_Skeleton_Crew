@@ -20,6 +20,12 @@ public class Player : NetworkBehaviour {
 	public Transform explosionPosition;
 	bool isDead;
 
+    public bool IsDead {
+        get {
+            return isDead;
+        }
+    }
+
 	public AudioClip deathSound;
 	[ClientRpc]
 	private void RpcPlayDeathSound() {
@@ -117,27 +123,39 @@ public class Player : NetworkBehaviour {
 	bool hasStartedTutorial = false;
 
 	public void RevivePlayer() {
-		ChangeHealth( maxHealth, false );
-		VariableHolder.instance.players.Add( GetComponentInChildren<EnemyTargetInit>().gameObject );
-		EnableBody();
-		RpcEnableBody();
+        if (isDead) {
+		    ChangeHealth( maxHealth, false );
+	    	VariableHolder.instance.players.Add( GetComponentInChildren<EnemyTargetInit>().gameObject );
+		    EnableBody();
+		    RpcEnableBody();
+            isDead = false;
+        }
 	}
 
 	void DisableBody() {
-		foreach ( GameObject g in playerBody ) {
-			g.SetActive( false );
-		}
-		foreach ( Collider c in playerColliders ) {
-			c.enabled = false;
-		}
+        if (!isDead) {
 
-		GetComponent<ChangeAvatar>().DisableArmor();
-		GetComponent<GrabWeapon>().Death();
+            if (isServer) {
+                Captain.instance.AddEventToQueue(Captain.AudioEventType.Respawn);
+            }
 
-		if (isServer) {
-			var g = Instantiate( deathExplosion[GetComponent<ChangeAvatar>().GetColor()], explosionPosition.position, Quaternion.identity );//todo add server spawning
-			NetworkServer.Spawn(g);
-		}
+            foreach ( GameObject g in playerBody ) {
+	    		g.SetActive( false );
+	    	}
+	    	foreach ( Collider c in playerColliders ) {
+	    		c.enabled = false;
+	    	}
+
+	    	GetComponent<ChangeAvatar>().DisableArmor();
+	    	GetComponent<GrabWeapon>().Death();
+
+	    	if (isServer) {
+	    		var g = Instantiate( deathExplosion[GetComponent<ChangeAvatar>().GetColor()], explosionPosition.position, Quaternion.identity );//todo add server spawning
+	    		NetworkServer.Spawn(g);
+	    	}
+
+            isDead = true;
+        }
 	}
 
 	public void TurnOffColliders() { //todo rename for nathans sake
@@ -196,6 +214,10 @@ public class Player : NetworkBehaviour {
 			health += Mathf.Abs( amount );
 			health = ( health > maxHealth ) ? maxHealth : health;
 		}
+
+        if (VariableHolder.instance.players.Contains(GetComponentInChildren<EnemyTargetInit>().gameObject)) {
+            VariableHolder.instance.players.Remove(GetComponentInChildren<EnemyTargetInit>().gameObject);
+        }
 
 
 		return health;

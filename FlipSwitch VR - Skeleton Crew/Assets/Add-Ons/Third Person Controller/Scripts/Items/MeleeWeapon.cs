@@ -43,7 +43,7 @@ namespace Opsive.ThirdPersonController
         // Internal variables
         private float m_AttackDelay;
         private float m_LastAttackTime;
-        private HashSet<Health> m_HitList = new HashSet<Health>();
+        private HashSet<EnemyTargetInit> m_HitList = new HashSet<EnemyTargetInit>();
         private bool m_InUse;
         private bool m_AllowInterruption;
         private bool m_AttackHit;
@@ -251,6 +251,8 @@ namespace Opsive.ThirdPersonController
         /// <param name="hitNormal">The normal of the collision.</param>
         protected virtual void Attack(Transform hitTransform, Vector3 hitPoint, Vector3 hitNormal)
         {
+            //print("entering attack");
+
             // Don't pass on the hit if the attack has already hit an object.
             if (m_SingleHitAttack) {
                 if (m_AttackHit) {
@@ -259,7 +261,10 @@ namespace Opsive.ThirdPersonController
                 m_AttackHit = true;
             }
 
-            var hitHealth = hitTransform.GetComponentInParent<Health>();
+            var hitHealth = hitTransform.GetComponentInParent<EnemyTargetInit>();
+
+            //Debug.LogWarning(hitTransform.name + " was hit, " + hitTransform.GetComponentInParent<EnemyTargetInit>() + " is init in parent" );
+
             Rigidbody hitRigidbody;
             // If the Health component exists it will apply a force to the rigidbody in addition to deducting the health. Otherwise just apply the force to the rigidbody. 
             if (hitHealth != null) {
@@ -268,14 +273,17 @@ namespace Opsive.ThirdPersonController
                     return;
                 }
                 m_HitList.Add(hitHealth);
-                hitHealth.Damage(m_DamageAmount, hitPoint, hitNormal * -m_ImpactForce, m_Character, hitTransform.gameObject);
+                hitHealth.ApplyMeleeDamage((int)m_DamageAmount);
             } else if (m_ImpactForce > 0 && (hitRigidbody = Utility.GetComponentForType<Rigidbody>(hitTransform.gameObject)) != null && !hitRigidbody.isKinematic) {
                 hitRigidbody.AddForceAtPosition(hitNormal * -m_ImpactForce, hitPoint);
             }
 
             // Execute any custom events.
             if (!string.IsNullOrEmpty(m_DamageEvent)) {
+                //print("should be executing damage events");
                 EventHandler.ExecuteEvent(hitTransform.gameObject, m_DamageEvent, m_DamageAmount, hitPoint, hitNormal * -m_ImpactForce, m_Character);
+                //EventHandler.ExecuteEvent(m_DamageEvent,(int) m_DamageAmount); // NATHAN ADDED THIS
+
             }
 
             // Add any melee effects. These effects do not need to be added on the server.
@@ -365,6 +373,7 @@ namespace Opsive.ThirdPersonController
                 }
 #endif
                 if (Utility.InLayerMask(collision.gameObject.layer, m_AttackLayer.value)) {
+                    //print("should be attacking " + collision.gameObject.name);
                     Attack(collision.transform, collision.contacts[0].point, collision.contacts[0].normal);
                 }
 

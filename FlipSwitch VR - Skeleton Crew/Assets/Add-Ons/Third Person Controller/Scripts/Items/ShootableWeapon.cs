@@ -406,6 +406,7 @@ namespace Opsive.ThirdPersonController
         public override bool TryUse()
         {
             if (!m_IsFiring && m_CanFire && !m_Reloading && m_LastShootTime + m_ShootDelay < Time.time && m_OverheatEvent == null) {
+                //print("past first if check on " + name);
                 if (m_Inventory.GetItemCount(m_ItemType) > 0) {
                     m_IsFiring = true;
                     // Prevent the weapon from continuously firing if it not a fully automatic. AI agents do not have to follow this because they don't manually stop firing.
@@ -428,6 +429,7 @@ namespace Opsive.ThirdPersonController
                             EventHandler.ExecuteEvent(m_Character, "OnUpdateAnimator");
                         }
                     } else {
+                        //print(name + " is calling OnUpdateAnimator event because firetype is not instant");
                         m_ReadyToFire = false;
                         EventHandler.ExecuteEvent(m_Character, "OnUpdateAnimator");
                     }
@@ -478,11 +480,15 @@ namespace Opsive.ThirdPersonController
         /// Can the item be used?
         /// </summary>
         /// <returns>True if the item can be used.</returns>
-        public override bool CanUse()
-        {
+        public override bool CanUse() {
             if (!base.CanUse()) {
+                //print("base returned !CanUse()");
                 return false;
             }
+
+            //print("can use is " + m_CanFire);
+
+
             return m_CanFire;
         }
 
@@ -491,7 +497,7 @@ namespace Opsive.ThirdPersonController
         /// </summary>
         /// <returns>True if the weapon is firing.</returns>
         public override bool InUse()
-        { 
+        {
             return m_IsFiring; 
         }
 
@@ -500,6 +506,7 @@ namespace Opsive.ThirdPersonController
         /// </summary>
         public override void Used()
         {
+            //print(name + "calling used");
             if ((m_FireType == FireType.Instant && (m_FireEvent == null || m_AIAgent.Invoke())) || m_Inventory.GetItemCount(m_ItemType) == 0) {
                 if (m_FireOnUsedEvent && m_Inventory.GetItemCount(m_ItemType) > 0) {
                     DoFire();
@@ -510,6 +517,7 @@ namespace Opsive.ThirdPersonController
             } else {
                 m_ReadyToFire = true;
                 if (m_FireType == FireType.ChargeAndFire) {
+                    //print("calling DoFire from used");
                     DoFire();
                 }
             }
@@ -556,6 +564,7 @@ namespace Opsive.ThirdPersonController
 
             // Fire as many projectiles or hitscan bullets as the fire count specifies.
             for (int i = 0; i < m_FireCount; ++i) {
+                //print(name + " do fire called with i = " + i + " the fire count is " + m_FireCount);
                 Fire();
             }
 
@@ -676,6 +685,7 @@ namespace Opsive.ThirdPersonController
         {
             // Fire a projectile if it exists, otherwise fire a raycast.
             if (m_Projectile) {
+                //print(name + " firing a projectile");
                 ProjectileFire();
             } else {
                 HitscanFire();
@@ -694,10 +704,14 @@ namespace Opsive.ThirdPersonController
                 projectileGameObject = m_RestProjectile;
                 projectileGameObject.transform.parent = null;
                 projectileGameObject.transform.position = m_FirePoint.position;
-                projectileGameObject.transform.rotation = rotation * m_Projectile.transform.rotation;
+                projectileGameObject.transform.rotation = rotation * m_Projectile.transform.rotation; // MODIFYING ROTATION HERE TO FIX ARROW BEING SHOT
+                projectileGameObject.transform.Rotate(new Vector3(0, 0, -110));
                 m_RestProjectile = null;
+                //print("fired arrow from restProjectile");
             } else {
                 projectileGameObject = ObjectPool.Spawn(m_Projectile, m_FirePoint.position, rotation * m_Projectile.transform.rotation);
+                projectileGameObject.transform.Rotate(new Vector3(0, 0, -110));
+
             }
             var projectile = Utility.GetComponentForType<Projectile>(projectileGameObject);
             projectile.Initialize(rotation * Vector3.forward, Vector3.zero, m_Character);

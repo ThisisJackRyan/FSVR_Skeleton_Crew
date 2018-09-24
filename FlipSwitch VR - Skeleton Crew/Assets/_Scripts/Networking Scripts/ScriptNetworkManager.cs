@@ -11,14 +11,6 @@ public class ScriptNetworkManager : NetworkManager {
 	public GameObject hostPrefab;
 	bool firstSpawn = true;
 	public bool testing = true;
-	void Start() {
-        if (!testing)
-            singleton.networkAddress = NetworkHelper.hostIpAddress;
-        else
-            GetComponent<NetworkManagerHUD>().enabled = true;
-                
-        singleton.networkPort = 7777;
-    }
 
     public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
@@ -34,7 +26,7 @@ public class ScriptNetworkManager : NetworkManager {
 			firstSpawn = false;
 		} else {
 			GameObject player = Instantiate( playerPrefab, Vector3.zero, Quaternion.identity );
-			    NetworkServer.AddPlayerForConnection( conn, player, playerControllerId );
+			NetworkServer.AddPlayerForConnection( conn, player, playerControllerId );
 		}
 		//}
 

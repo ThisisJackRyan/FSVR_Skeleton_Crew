@@ -73,6 +73,10 @@ public class PlayerRespawn : NetworkBehaviour {
 
 	[ClientRpc]
 	private void RpcStartRespawnAnimation(GameObject player) {
+		if (isServer) {
+			return;
+		}
+
 		animInstance = Instantiate( animObject, transform.position, Quaternion.identity );
 		animInstance.GetComponent<ObjectPositionLock>().posPoint =
 			player.GetComponentInChildren<HipMarker>().gameObject;

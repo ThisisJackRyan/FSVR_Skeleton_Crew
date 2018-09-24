@@ -4,6 +4,8 @@ using UnityEngine.Networking;
 using BehaviorDesigner.Runtime;
 using System;
 using Random = UnityEngine.Random;
+using Opsive.ThirdPersonController.Wrappers;
+using UnityEngine.AI;
 
 /// <summary>
 /// Author: Matt Gipson
@@ -14,144 +16,152 @@ using Random = UnityEngine.Random;
 /// </summary>
 public class Enemy : NetworkBehaviour {
 	#region Fields
-
-	[SyncVar(hook = "OnHealthChange")]
-	public int health;
-	public int soulCount;
-	[Tooltip("souls per second")]
-	public int drainRate;
-	public WeaponData weapon;
-	public Collider weaponCollider;
-	public BehaviorTree tree;
-
+    
 	private bool canBeDamaged = true;
+	private int myAvoidance;
 	public GameObject lastWeaponDamagedMe;
 
 	public GameObject deathParticles;
 	public bool tutorialGuard = false;
+    public bool rangedUnit = false;
 	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
-
+    [SyncVar] public GameObject boardingPartyShip;
 
 	#endregion
 
-	private void OnHealthChange(int n) {
-		if (n < health) {
+    private void OnBoardingShipChange(GameObject n) {
 
-			for ( int i = 0; i < hitParticles.Length; i++ ) {
-				hitParticles[i].SetActive( true );
-				var particles = hitParticles[i].GetComponent<ParticleSystem>();
-				//particles.Simulate( 0, true, true );
-				foreach ( ParticleSystem ps in particles.GetComponentsInChildren<ParticleSystem>() ) {
-					particles.Simulate( 0, true, true );
-				}
-				particles.Play();
-				//print( particles.name + " should be emiitng" );
-			}
-			Invoke( "TurnOffHit", 2.0f );
+        if (isServer) {
+            return;
+        }
+        boardingPartyShip = n;
+        transform.parent = boardingPartyShip.transform;
+    }
 
-			if ( n >= 0 ) {
-				if ( isServer ) {
-					int rng = Random.Range( 0, hitSounds.Length );
-					GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
-					RpcPlayHitSound( rng );
-				}
-			} 
-		}
+    public void UnParentMe() {
+        if (!isServer) {
+            return;
+        }
 
-		health = n;
+        transform.parent = null;
+        RpcUnParentMe();
+    }
 
-		if (health <= 0) {
-			if ( tutorialGuard ) {
-				//print( "tut guard killed" );
-				Captain.enemiesKilled[this] = true;
-				Captain.instance.CheckEnemiesKilled();
-			}
+    [ClientRpc]
+    private void RpcUnParentMe() {
+        if (isServer) {
+            return;
+        }
 
-			Destroy( gameObject );
-			Instantiate( deathParticles, new Vector3( transform.position.x, transform.position.y + 0.5f, transform.position.z ), Quaternion.identity );
+        transform.parent = null;
+    }
 
+    private void DestroyMe() {
+        if (!isServer) {
+            return;
+        }
+        if (tutorialGuard) {
+            //print( "tut guard killed" );
+            Captain.enemiesKilled[this] = true;
+            Captain.instance.CheckEnemiesKilled();
+        }
+
+		//RpcSpawnDeathParticles();
+		var g = Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
+		NetworkServer.Spawn(g);
+		EnemyUnitDeath();
+		NetworkServer.Destroy(gameObject);
+	}
+
+	internal void TellCaptainIveBoarded() {
+		if (!isServer) {
+			Captain.instance.CrewmanHaveBoarded();
 		}
 	}
 
-	public AudioClip[] hitSounds;
+	public void PlayHitParticles() {
+        //print("play hit particles called");
 
-	[ClientRpc]
-	private void RpcPlayHitSound( int rng ) {
-		if (isServer) {
-			return;
-		}
+        foreach(var p in hitParticles) {
+            p.SetActive(true);
+            var par = p.GetComponent<ParticleSystem>();
+            par.Simulate(0, true, true);
+            par.Play();
+        }
 
-		GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
-	}
-
-	public AudioClip deathSound;
-	[ClientRpc]
-	private void RpcPlayDeathSound() {
-		if ( isServer ) {
-			return;
-		}
-
-		GetComponent<AudioSource>().PlayOneShot( deathSound );
-	}
-
-	public void KillMe() {
-		if ( isServer )
-			ChangeHealth( maxHealth );
-	}
+        Invoke("TurnOffHit", 1.0f);
+    }
 
 	private void Start() {
-		if (weapon) {
-			if (weapon.type == WeaponData.WeaponType.Melee && weaponCollider.enabled) {
-				ToggleWeaponCollider();
-			}
-		}
-	}
 
-	private void OnTriggerEnter(Collider other) {
+        //Opsive.ThirdPersonController.EventHandler.RegisterEvent("OnHealthAmountChange", PlayHitParticles);
+
+        if (!isServer) {
+            if (boardingPartyShip) {
+                transform.parent = boardingPartyShip.transform;
+            }
+
+            return;
+        }
+
+        int itemToEquip;
+                            
+        itemToEquip = Random.Range(0, GetComponent<Inventory>().DefaultLoadout.Length);    
+        GetComponent<Inventory>().EquipItem(itemToEquip);
+
+        RpcEquipItem(itemToEquip);
+
+    }
+
+    [ClientRpc]          
+    private void RpcEquipItem(int toEquip) {
+        if (isServer) {
+            return;
+        }
+
+        GetComponent<Inventory>().EquipItem(toEquip);
+
+    }
+
+    public void EnemyUnitDeath() {
+        if (rangedUnit) {
+            VariableHolder.instance.RemoveRangedUnit();
+        }
+    }
+
+	private void OnCollisionEnter(Collision other) {
 		if (!isServer)
 			return;
 
-		if (other.tag == "Weapon") {
-			if (other.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
+		if (other.gameObject.tag == "Weapon") {
+			if (other.gameObject.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
 				// todo: test that enemies are only being damaged by melee weapons being held by player
-				if (other.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
+				if (other.gameObject.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
 					canBeDamaged = false;
-					health -= other.GetComponent<Weapon>().data.damage;
-					if (health <= 0) {
-						Destroy(gameObject);
-						RpcSpawnDeathParticles();
-					}
-
-					Invoke("AllowDamage", 3.5f);
+                    GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
+					Invoke("AllowDamage", 1f);
 				}
 			}
-		} else if (other.tag == "BulletPlayer" || other.tag == "CannonBallPlayer") {
-			health -= other.GetComponent<SCProjectile>().damage;
+		} else if (other.gameObject.tag == "BulletPlayer" || other.gameObject.tag == "CannonBallPlayer") {
+            canBeDamaged = false;
+            GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));   
+            Invoke("AllowDamage", 1f);
+        }
 
-			if (health <= 0) {
-				Destroy(gameObject);
+		if(other.gameObject.GetComponent<NavMeshAgent>()) {
+			if(other.transform.GetSiblingIndex() > transform.GetSiblingIndex()) {
+				myAvoidance = GetComponent<NavMeshAgent>().avoidancePriority;
+				GetComponent<NavMeshAgent>().avoidancePriority = 0;
+				Invoke("RevertAvoidance", 1.5f);
 			}
 		}
 	}
 
-	public int ChangeHealth( int amount, bool damage = true ) {
-		if ( !isServer )
-			return health;
-
-		if ( damage ) {
-			health -= Mathf.Abs( amount );
-			health = ( health < 0 ) ? 0 : health;
-
-
-		} else {
-			health += Mathf.Abs( amount );
-			health = ( health > maxHealth ) ? maxHealth : health;
-		}
-
-		return health;
+	private void RevertAvoidance() {
+		GetComponent<NavMeshAgent>().avoidancePriority = myAvoidance;
 	}
 
-	void TurnOffHit() {
+	private void TurnOffHit() {
 		for ( int i = 0; i < hitParticles.Length; i++ ) {
 			hitParticles[i].SetActive( false );
 		}
@@ -160,14 +170,6 @@ public class Enemy : NetworkBehaviour {
 	public int maxHealth = 100;
 
 
-	[ClientRpc]
-	void RpcSpawnDeathParticles() {
-		if (isServer) {
-			return;
-		}
-
-		Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
-	}
 
 	public void AllowDamage() {
 		CancelInvoke();
@@ -176,13 +178,5 @@ public class Enemy : NetworkBehaviour {
 
 	public bool GetCanBeDamaged() {
 		return canBeDamaged;
-	}
-
-	public void EnableEnemy() {
-		GlobalVariables.Instance.SetVariableValue("EnemiesEnabled", true);
-	}
-
-	public void ToggleWeaponCollider() {
-		weaponCollider.enabled = !weaponCollider.enabled;
 	}
 }

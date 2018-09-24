@@ -178,6 +178,60 @@ ModelImporter:
     4300008: ratkin_body
     4300010: Slave_Pick01
     4300012: Ratkin_Skeleton
+    7400000: Ratkin_1H_Dodge_Jump_Backward
+    7400002: Ratkin_1H_COMBAT_mode
+    7400004: Ratkin_1H_Heavy Smash
+    7400006: Ratkin_1H_Dodge_Jump_Left
+    7400008: Ratkin_1H_Dodge_Jump_Right
+    7400010: Ratkin_1H_Jump_Swing
+    7400012: Ratkin_1H_sword_parry_from_stright_down
+    7400014: Ratkin_1H_sword_parry_high_left
+    7400016: Ratkin_1H_sword_parry_high_right
+    7400018: Ratkin_1H_sword_parry_low_front
+    7400020: Ratkin_1H_sword_swing_high_left
+    7400022: Ratkin_1H_sword_swing_high_right
+    7400024: Ratkin_1H_sword_swing_high_straight_down
+    7400026: Ratkin_1H_sword_swing_low_left
+    7400028: Ratkin_1H_sword_swing_low_right
+    7400030: Ratkin_1H_Knocked_backward
+    7400032: Ratkin_1H_Down_back
+    7400034: Ratkin_1H_Recover_from_knocked_backward
+    7400036: Ratkin_1H_Knocked_forward
+    7400038: Ratkin_1H_Down_forward
+    7400040: Ratkin_1H_Recover_from_knocked_forward
+    7400042: Ratkin_1H_Moving_left
+    7400044: Ratkin_1H_Moving_right
+    7400046: Ratkin_1H_Tracking
+    7400048: Ratkin_1H_warning
+    7400050: Ratkin_1H_Hit_from_back
+    7400052: Ratkin_1H_Hit_from_front
+    7400054: Ratkin_1H_Hit_from_left
+    7400056: Ratkin_1H_Hit_from_righ
+    7400058: Ratkin_1H_Dying_A
+    7400060: Ratkin_1H_Dying_B
+    7400062: Ratkin_1H_Die_knocked_backward
+    7400064: Ratkin_1H_Die_knocked_forward
+    7400066: Ratkin_1H_Casual_walk
+    7400068: Ratkin_1H_Cautious_walk
+    7400070: Ratkin_1H_combat_run
+    7400072: Ratkin_1H_run
+    7400074: Ratkin_1H_Jump_runing
+    7400076: Ratkin_Walking_back_A
+    7400078: Ratkin_Digging_A
+    7400080: Ratkin_IDLE
+    7400082: Ratkin_anger
+    7400084: Ratkin_Eating
+    7400086: Ratkin_Looking_around
+    7400088: Ratkin_Pick_object
+    7400090: Ratkin_pointing_A
+    7400092: Ratkin_Shrugs
+    7400094: Ratkin_Stretching
+    7400096: Ratkin_Talking_A
+    7400098: Ratkin_Talking_B
+    7400100: Ratkin_Climbing_wall
+    7400102: Ratkin_Crawling
+    7400104: Ratkin_falling_down
+    7400106: Ratkin_Jump_standing
     7400110: Ratkin_1H_COMBAT_mode
     7400112: Ratkin_1H_Dodge_Jump_Backward
     7400114: Ratkin_1H_Dodge_Jump_Left
@@ -277,7 +331,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 0
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -287,10 +341,10 @@ ModelImporter:
     clipAnimations:
     - serializedVersion: 16
       name: Ratkin_1H_COMBAT_mode
-      takeName: 
+      takeName: Take 001
       firstFrame: 2
       lastFrame: 50
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -310,43 +364,43 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Dodge_Jump_Backward
-      takeName: 
+      takeName: Take 001
       firstFrame: 55
       lastFrame: 80
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 1
-      loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
-      keepOriginalOrientation: 1
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Dodge_Jump_Left
-      takeName: 
+      takeName: Take 001
       firstFrame: 85
       lastFrame: 110
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -366,15 +420,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Dodge_Jump_Right
-      takeName: 
+      takeName: Take 001
       firstFrame: 115
       lastFrame: 140
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -394,15 +448,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Heavy Smash
-      takeName: 
+      takeName: Take 001
       firstFrame: 145
       lastFrame: 185
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -422,15 +476,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Jump_Swing
-      takeName: 
+      takeName: Take 001
       firstFrame: 190
       lastFrame: 235
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -450,15 +504,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_sword_parry_from_stright_down
-      takeName: 
+      takeName: Take 001
       firstFrame: 240
       lastFrame: 275
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -478,15 +532,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_sword_parry_high_left
-      takeName: 
+      takeName: Take 001
       firstFrame: 280
       lastFrame: 315
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -506,15 +560,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_sword_parry_high_right
-      takeName: 
+      takeName: Take 001
       firstFrame: 320
       lastFrame: 355
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -534,15 +588,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_sword_parry_low_front
-      takeName: 
+      takeName: Take 001
       firstFrame: 360
       lastFrame: 395
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -562,15 +616,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_sword_swing_high_left
-      takeName: 
+      takeName: Take 001
       firstFrame: 400
       lastFrame: 435
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -590,15 +644,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_sword_swing_high_right
-      takeName: 
+      takeName: Take 001
       firstFrame: 440
       lastFrame: 475
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -618,15 +672,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_sword_swing_high_straight_down
-      takeName: 
+      takeName: Take 001
       firstFrame: 480
       lastFrame: 515
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -646,15 +700,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_sword_swing_low_left
-      takeName: 
+      takeName: Take 001
       firstFrame: 520
       lastFrame: 555
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -674,15 +728,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_sword_swing_low_right
-      takeName: 
+      takeName: Take 001
       firstFrame: 560
       lastFrame: 595
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -702,15 +756,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Knocked_backward
-      takeName: 
+      takeName: Take 001
       firstFrame: 600
       lastFrame: 641
-      wrapMode: 1
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -730,15 +784,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Down_back
-      takeName: 
+      takeName: Take 001
       firstFrame: 646
       lastFrame: 686
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -758,15 +812,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Recover_from_knocked_backward
-      takeName: 
+      takeName: Take 001
       firstFrame: 691
       lastFrame: 731
-      wrapMode: 1
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -786,15 +840,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Knocked_forward
-      takeName: 
+      takeName: Take 001
       firstFrame: 736
       lastFrame: 764
-      wrapMode: 1
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -814,15 +868,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Down_forward
-      takeName: 
+      takeName: Take 001
       firstFrame: 769
       lastFrame: 809
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -842,15 +896,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Recover_from_knocked_forward
-      takeName: 
+      takeName: Take 001
       firstFrame: 814
       lastFrame: 846
-      wrapMode: 1
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -870,15 +924,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Moving_left
-      takeName: 
+      takeName: Take 001
       firstFrame: 851
       lastFrame: 871
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -898,15 +952,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Moving_right
-      takeName: 
+      takeName: Take 001
       firstFrame: 876
       lastFrame: 896
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -926,15 +980,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Tracking
-      takeName: 
+      takeName: Take 001
       firstFrame: 901
       lastFrame: 1076
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -954,15 +1008,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_warning
-      takeName: 
+      takeName: Take 001
       firstFrame: 1081
       lastFrame: 1141
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -982,15 +1036,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Hit_from_back
-      takeName: 
+      takeName: Take 001
       firstFrame: 1146
       lastFrame: 1181
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1010,15 +1064,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Hit_from_front
-      takeName: 
+      takeName: Take 001
       firstFrame: 1186
       lastFrame: 1221
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1038,15 +1092,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Hit_from_left
-      takeName: 
+      takeName: Take 001
       firstFrame: 1226
       lastFrame: 1261
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1066,15 +1120,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Hit_from_righ
-      takeName: 
+      takeName: Take 001
       firstFrame: 1266
       lastFrame: 1301
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1094,15 +1148,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Dying_A
-      takeName: 
+      takeName: Take 001
       firstFrame: 1306
       lastFrame: 1371
-      wrapMode: 1
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1122,15 +1176,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Dying_B
-      takeName: 
+      takeName: Take 001
       firstFrame: 1376
       lastFrame: 1416
-      wrapMode: 1
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1150,15 +1204,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Die_knocked_backward
-      takeName: 
+      takeName: Take 001
       firstFrame: 1421
       lastFrame: 1438
-      wrapMode: 1
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1178,15 +1232,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Die_knocked_forward
-      takeName: 
+      takeName: Take 001
       firstFrame: 1443
       lastFrame: 1460
-      wrapMode: 1
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1206,15 +1260,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Casual_walk
-      takeName: 
+      takeName: Take 001
       firstFrame: 1465
       lastFrame: 1501
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1234,15 +1288,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Cautious_walk
-      takeName: 
+      takeName: Take 001
       firstFrame: 1507
       lastFrame: 1546
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1262,15 +1316,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_combat_run
-      takeName: 
+      takeName: Take 001
       firstFrame: 1551
       lastFrame: 1573
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1290,15 +1344,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_run
-      takeName: 
+      takeName: Take 001
       firstFrame: 1578
       lastFrame: 1604
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1318,15 +1372,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_1H_Jump_runing
-      takeName: 
+      takeName: Take 001
       firstFrame: 1610
       lastFrame: 1649
-      wrapMode: 1
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1346,15 +1400,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_Walking_back_A
-      takeName: 
+      takeName: Take 001
       firstFrame: 1655
       lastFrame: 1689
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1374,15 +1428,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_Digging_A
-      takeName: 
+      takeName: Take 001
       firstFrame: 1695
       lastFrame: 1729
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1402,15 +1456,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_IDLE
-      takeName: 
+      takeName: Take 001
       firstFrame: 1735
       lastFrame: 1834
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1430,15 +1484,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_anger
-      takeName: 
+      takeName: Take 001
       firstFrame: 1839
       lastFrame: 1889
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1458,15 +1512,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_Eating
-      takeName: 
+      takeName: Take 001
       firstFrame: 1894
       lastFrame: 2014
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1486,15 +1540,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_Looking_around
-      takeName: 
+      takeName: Take 001
       firstFrame: 2019.0001
       lastFrame: 2195
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1514,15 +1568,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_Pick_object
-      takeName: 
+      takeName: Take 001
       firstFrame: 2200
       lastFrame: 2240
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1542,15 +1596,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_pointing_A
-      takeName: 
+      takeName: Take 001
       firstFrame: 2245
       lastFrame: 2305
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1570,15 +1624,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_Shrugs
-      takeName: 
+      takeName: Take 001
       firstFrame: 2310
       lastFrame: 2355
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1598,15 +1652,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_Stretching
-      takeName: 
+      takeName: Take 001
       firstFrame: 2360
       lastFrame: 2460
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1626,15 +1680,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_Talking_A
-      takeName: 
+      takeName: Take 001
       firstFrame: 2465
       lastFrame: 2505
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1654,15 +1708,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_Talking_B
-      takeName: 
+      takeName: Take 001
       firstFrame: 2510
       lastFrame: 2660
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1682,15 +1736,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_Climbing_wall
-      takeName: 
+      takeName: Take 001
       firstFrame: 2665
       lastFrame: 2695
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1710,15 +1764,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_Crawling
-      takeName: 
+      takeName: Take 001
       firstFrame: 2701
       lastFrame: 2730
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1738,15 +1792,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_falling_down
-      takeName: 
+      takeName: Take 001
       firstFrame: 2735
       lastFrame: 2775
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1766,15 +1820,15 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Ratkin_Jump_standing
-      takeName: 
+      takeName: Take 001
       firstFrame: 2781
       lastFrame: 2855
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -1794,7 +1848,7 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
-      maskType: 0
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     isReadable: 1
@@ -2623,7 +2677,7 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 3

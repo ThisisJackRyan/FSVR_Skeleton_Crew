@@ -7,9 +7,9 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Crystal 5
-  m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 47, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _EMISSION _NORMALMAP
-  m_LightmapFlags: 1
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -106,10 +106,10 @@ Material:
     - _FresnelScale: 0.75
     - _GerstnerIntensity: 1
     - _GlossMapScale: 0.375
-    - _Glossiness: 0.684
+    - _Glossiness: 0.444
     - _GlossyReflections: 1
     - _LightingEnabled: 0
-    - _Metallic: 0.515
+    - _Metallic: 1
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
@@ -132,7 +132,7 @@ Material:
     - _Color: {r: 0.6606889, g: 0.76623666, b: 0.9528302, a: 1}
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _DistortParams: {r: 1, g: 1, b: 2, a: 1.15}
-    - _EmissionColor: {r: 0, g: 0.13619454, b: 0.23584908, a: 1}
+    - _EmissionColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
     - _Foam: {r: 0.1, g: 0.375, b: 0, a: 0}
     - _GAmplitude: {r: 0.3, g: 0.35, b: 0.25, a: 0.25}
     - _GDirectionAB: {r: 0.3, g: 0.85, b: 0.85, a: 0.25}

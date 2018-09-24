@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Opsive.ThirdPersonController.Wrappers;
 public class HealthDisplay : MonoBehaviour {
 
 	public Text text;
 
 	public DamagedObject dmgObj;
-	public Enemy enemy;
+	public CharacterHealth enemy;
 	public Player player;
 	public Ratman rat;
 
@@ -22,7 +22,7 @@ public class HealthDisplay : MonoBehaviour {
 		}
 
 		if (enemy) {
-			text.text = enemy.health.ToString();
+			text.text = enemy.CurrentHealth.ToString();
 		}
 
 		if (player) {

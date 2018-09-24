@@ -6,6 +6,8 @@ public class Crystal : MonoBehaviour {
 
 	public Transform[] otherCrystals;
 	public int health = 1;
+    [Tooltip("needs to have audiosource play on awake for soud effect")]
+    public GameObject deathParticles;
 
 	private void OnTriggerEnter(Collider other) {
 		//Debug.LogWarning(other.tag + " hit crystal");
@@ -28,6 +30,9 @@ public class Crystal : MonoBehaviour {
 		if (health <= 0) {
 			//print("called rpc bullet");
 			transform.root.GetComponent<PathFollower>().DestroyCrystal(gameObject);
+
+			Destroy( gameObject ); //todo fully network this
+
 		}
 	}
 
@@ -41,6 +46,8 @@ public class Crystal : MonoBehaviour {
 		transform.root.GetComponent<PathFollower>().DestroyCrystal( gameObject );
 
 		Destroy( gameObject ); //todo fully network this
-
 	}
+
+    //private void OnDestroy() {
+    //}
 }

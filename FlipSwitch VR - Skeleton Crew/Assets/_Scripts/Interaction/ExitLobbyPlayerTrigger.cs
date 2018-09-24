@@ -14,7 +14,6 @@ public class ExitLobbyPlayerTrigger : MonoBehaviour {
 		if (playerDict.ContainsKey(other.gameObject)) {
 			playerDict[other.gameObject] = true;
 		}
-
 	}
 
 	private void OnTriggerExit( Collider other ) {

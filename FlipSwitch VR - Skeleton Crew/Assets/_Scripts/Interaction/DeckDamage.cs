@@ -15,6 +15,14 @@ public class DeckDamage : NetworkBehaviour {
 
 
 	private void OnEnable() {
+		//print("called");
+        if (isServer) {
+			//print("isserver");
+
+			Captain.instance.AddEventToQueue(Captain.AudioEventType.RepairDeck);
+        }
+
+
 		Collider[] cols = Physics.OverlapSphere( transform.position, 0.5f );
 		foreach ( var item in cols ) {
 			if ( item.GetComponent<DeckDamage>() && item.transform.root.gameObject != gameObject) {
@@ -130,5 +138,28 @@ public class DeckDamage : NetworkBehaviour {
 		}
 		repairPattern.gameObject.SetActive( true ); // turns on the pattern gameobject
 		repairSphere.transform.GetChild( 0 ).gameObject.SetActive( false ); //  disables the particles
+	}
+
+	public void PatternInit() {
+
+	}
+
+	[ClientRpc]
+	public void RpcFacePattern(Vector3 pos, Quaternion rot) {
+		if (isServer) {
+			return;
+		}
+
+		repairPattern.transform.position = pos;
+		repairPattern.transform.rotation = rot;
+
+	}
+
+	public void FacePattern(Transform transform1) {
+		if(!isServer) {
+			return;
+		}
+
+		RpcFacePattern(transform1.position, transform1.rotation);
 	}
 }

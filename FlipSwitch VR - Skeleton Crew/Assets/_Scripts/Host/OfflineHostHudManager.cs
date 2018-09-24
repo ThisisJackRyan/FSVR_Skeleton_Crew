@@ -11,7 +11,7 @@ public class OfflineHostHudManager : MonoBehaviour {
 
     private void OnEnable()
     {
-        if (NetworkHelper.hostIpAddress.Equals(NetworkHelper.GetLocalIPAddress()))
+        if (NetworkManager.singleton.serverBindAddress.Equals(NetworkHelper.GetLocalIPAddress()))
         {
             foreach(GameObject obj in thingsToTurnOn)
             {

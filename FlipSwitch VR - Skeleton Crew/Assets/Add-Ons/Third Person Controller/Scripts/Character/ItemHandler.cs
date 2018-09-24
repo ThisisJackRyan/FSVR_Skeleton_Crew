@@ -379,6 +379,7 @@ namespace Opsive.ThirdPersonController
         {
             UseType useType;
             if (typeof(PrimaryItemType).IsAssignableFrom(itemType)) {
+                //print("TryUseItem use type of primary with Type param");
                 useType = UseType.Primary;
             } else if (typeof(DualWieldItemType).IsAssignableFrom(itemType)) {
                 useType = UseType.DualWield;
@@ -395,6 +396,7 @@ namespace Opsive.ThirdPersonController
         /// <returns>True if the item was used.</returns>
         private bool TryUseItem(UseType useType)
         {
+            //print("try use item of type " + useType.ToString() + " with UseType param");
             return TryUseItem(useType, -1);
         }
 
@@ -442,6 +444,8 @@ namespace Opsive.ThirdPersonController
                         if (m_TryUseItem.Invoke(item)) {
                             ReadyForUse();
                         } else {
+                            //print("registers for event OnItemReadyForUse");
+
                             EventHandler.RegisterEvent(m_GameObject, "OnItemReadyForUse", ReadyForUse);
                         }
                     }
@@ -450,6 +454,7 @@ namespace Opsive.ThirdPersonController
                     if (useableItem.TryUse()) {
                         // After the item is used the character may no longer be alive so don't execuate the events.
                         if (enabled || m_IndependentLook.Invoke()) {
+                            print(m_GameObject.name + " executing OnUpdateAnimator with value false");
                             EventHandler.ExecuteEvent<bool>(m_GameObject, "OnUpdateAnimator", false);
                         }
                         return true;
@@ -470,6 +475,7 @@ namespace Opsive.ThirdPersonController
             EventHandler.UnregisterEvent(m_GameObject, "OnItemReadyForUse", ReadyForUse);
             // Try to use the item.
             if (m_ItemUsePending != null) {
+                //print("ReadyForUse event called");
                 m_ItemUsePending.TryUse();
 
                 // The item may have been stopped in the time that it took for the item to be ready. Let the item be used once and then stop the use.

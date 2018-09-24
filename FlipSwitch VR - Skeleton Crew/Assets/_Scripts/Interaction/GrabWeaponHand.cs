@@ -12,11 +12,14 @@ public class GrabWeaponHand : MonoBehaviour {
 	}
 
 	private void OnTriggerStay( Collider other ) {
+        //print(name + " trigger stay");
 		grabWeapon.SendCommandToHighlight( isLeftHand );
 	}
 
 	private void OnTriggerExit( Collider other ) {
-		grabWeapon.SendCommandToUnHighlight( isLeftHand );
+        //print(name + " trigger exit");
+
+        grabWeapon.SendCommandToUnHighlight( isLeftHand );
 	}
 
 }

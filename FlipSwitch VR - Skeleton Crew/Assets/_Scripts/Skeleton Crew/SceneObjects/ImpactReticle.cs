@@ -105,7 +105,7 @@ public class ImpactReticle : NetworkBehaviour {
 		}
 		yield return new WaitForEndOfFrame();
 		if (ball) {
-			ball.GetComponent<SCProjectile>().SetReticle( gameObject );
+			ball.GetComponent<ImpactProjectile>().SetReticle( gameObject );
 		}
 
 	}
@@ -147,8 +147,6 @@ public class ImpactReticle : NetworkBehaviour {
 				hits[i].GetComponent<DamagedObject>().ChangeHealth( damage );
 			} else if ( hits[i].GetComponentInParent<Player>() ) {
 				hits[i].GetComponentInParent<Player>().ChangeHealth( damage );
-			} else if ( hits[i].GetComponent<Enemy>() ) {
-				hits[i].GetComponent<Enemy>().ChangeHealth( damage );
 			} else if ( hits[i].GetComponentInParent<Ratman>() ) {
 				hits[i].GetComponentInParent<Ratman>().ChangeHealth( damage );
 			}

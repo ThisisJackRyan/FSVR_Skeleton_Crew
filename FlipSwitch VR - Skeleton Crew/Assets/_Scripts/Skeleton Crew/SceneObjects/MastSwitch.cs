@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,62 +7,85 @@ using UnityEngine.Events;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class MastSwitch : MonoBehaviour {
+public class MastSwitch : NetworkBehaviour {
 
 	public Animator sailAnimator;
-	public float swapTime = 3;
-	bool raiseMast;
-
-	public GameObject upImage, downImage;
-	bool firstLoad = false;
-	public UnityEvent firstRunEvent;
-	public GameObject pathFollower;
+	public float speedIncrement = 0.3f;
+    public int indexOfFirstGrabbed = -1; //only being set on local player
+    
+	public PathFollower pathFollower;
 	public AudioClip raise, lower;
-	AudioSource source;
+    public AudioClip aimClip, maxClip;
+    public GameObject[] aimingNodes;
+
+	bool firstRun = true;
+
+    AudioSource source;
 
 	private void Start() {
-		downImage.SetActive(true);
-		upImage.SetActive(false);
 		source = GetComponent<AudioSource>();
-		//firstRunEvent.AddListener(EnableEnemy);
 	}
 
-	private void OnMastChange(bool n) {
-		raiseMast = n;
-	}
+    public void AdjustSails(int indexOfNode) {
+        if (!isServer) {
+            return;
+        }
+        //print("index first grabbed " + indexOfFirstGrabbed);
+        //print("index of node " + indexOfNode);
 
-	[Button]
-	public void FirstRun() {
-		if (FindObjectOfType<Host>().isServer)
-			firstRunEvent.Invoke();
-	}
+        if (indexOfFirstGrabbed >= 0) {
+            int raiseSign = (indexOfNode > indexOfFirstGrabbed) ? -1 : 1; //if index is greater (closer to back of cannon) then you are raising the cannon
 
-	[Button]
-	public void SwapMode() {
-		Debug.LogWarning("swap called");
-		if (raiseMast) {
-			downImage.SetActive(true);
-			upImage.SetActive(false);
-			pathFollower.GetComponent<PathFollower>().ChangeSpeed( false );
-			source.PlayOneShot(raise);
+            bool playSound = pathFollower.ChangeSpeed(speedIncrement * raiseSign);
+           
+            PlayAimSound(playSound);            
 
-			sailAnimator.SetBool( "Opening", false );
-			raiseMast = !raiseMast;
-		} else {
-			downImage.SetActive(false);
-			upImage.SetActive(true);
-			pathFollower.GetComponent<PathFollower>().ChangeSpeed( true );
-			source.PlayOneShot( lower );
+            indexOfFirstGrabbed = indexOfNode;
 
-			sailAnimator.SetBool( "Opening", true );
-			raiseMast = !raiseMast;
+            RpcAdjustSails(pathFollower.speed );
+
+            sailAnimator.SetFloat("Speed",pathFollower.speed);
+        }
+
+		if (firstRun) {
+			firstRun = false;
+			Captain.instance.MastHasBeenPulled();
 		}
+    }
 
-		if (!firstLoad) {
-			firstRunEvent.Invoke();
-			BehaviorDesigner.Runtime.GlobalVariables.Instance.GetVariable( "EnemiesEnabled" ).SetValue( true );
-			firstLoad = true;
-		}
-	}
+    [ClientRpc]
+    public void RpcAdjustSails(float newSpeed) {
+        if (isServer) {
+            return;
+        }
+        //do local animation set here, may not need if using network animator
+    }
+
+    [ClientRpc]
+    public void RpcPlayAimSound(bool notMax) {
+        if (isServer) {
+            return;
+        }
+
+        if (notMax) {
+            source.PlayOneShot(aimClip);
+        } else {
+            source.PlayOneShot(maxClip);
+        }
+    }
+
+    public void PlayAimSound(bool notMax) {
+        if (!isServer) {
+            return;
+        }
+
+        if (notMax) {
+            source.PlayOneShot(aimClip);
+        } else {
+            source.PlayOneShot(maxClip);
+        }
+        
+        RpcPlayAimSound(notMax);
+    }
 
 }

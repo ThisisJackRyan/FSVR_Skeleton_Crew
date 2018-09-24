@@ -172,7 +172,7 @@ namespace Opsive.ThirdPersonController
                 SharedManager.InitializeSharedFields(Utility.FindCamera(gameObject).gameObject, this);
             }
 
-            return CameraMonitor.TargetLookPosition(m_CameraTargetLookRay, m_CameraTargetLock, m_CameraLookDistance, m_ViewMode.Get());
+            return Vector3.zero; // CameraMonitor.TargetLookPosition(m_CameraTargetLookRay, m_CameraTargetLock, m_CameraLookDistance, m_ViewMode.Get());
         }
 
         /// <summary>
@@ -279,11 +279,11 @@ namespace Opsive.ThirdPersonController
         public void ExecuteItemEvent(int itemID, string eventName, GameObject arg1, Vector3 arg2, Vector3 arg3)
         {
 #if UNITY_EDITOR || DLL_RELEASE
-            if (arg1.GetComponent<NetworkIdentity>() == null) {
-                Debug.LogError("Error: " + arg1 + " must have the NetworkIdentity component added to it.");
-            }
+            //if (arg1.GetComponent<NetworkIdentity>() == null) {
+            //    Debug.LogError("Error: " + arg1 + " must have the NetworkIdentity component added to it.");
+            //}
 #endif
-            RpcExecuteItemEventGameObjectTwoVector3(itemID, eventName, arg1, arg2, arg3);
+            //RpcExecuteItemEventGameObjectTwoVector3(itemID, eventName, arg1, arg2, arg3);
         }
 
         /// <summary>

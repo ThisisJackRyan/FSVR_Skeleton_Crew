@@ -11,6 +11,12 @@ public class DamagedObject : NetworkBehaviour {
 		Full, ThreeQuarter, Half, Quarter, None
 	}
 
+    public DamageState CurrentHealthState {
+        get {
+            return myState;
+        }
+    }
+
 	DamageState myState;
 	[SyncVar( hook = "OnHealthChange" )] int health = 100;
 	[SyncVar( hook = "OnPatternIndexChange" )] int rng = -1;
@@ -26,6 +32,25 @@ public class DamagedObject : NetworkBehaviour {
 	public GameObject dmgParticles, healParticles;
 	public AudioClip damageClip, healClip;
 
+    [Button]
+    public void HealMe() {
+        if (!isServer) {
+            return;
+        }
+
+        ChangeHealth(maxHealth, false);
+    }
+
+    [Button]
+    public void KillMe() {
+        if (!isServer) {
+            return;
+        }
+
+        ChangeHealth(maxHealth);
+    }
+
+
 	private void OnPatternIndexChange( int n ) {
 		if (isServer) {
 			return;
@@ -40,14 +65,14 @@ public class DamagedObject : NetworkBehaviour {
 
 	private void OnHealthChange( int n ) {
 		if ( !isServer ) {
-			//return;
-
-			if ( health > n && n > 0) {
-				GetComponent<AudioSource>().PlayOneShot( damageClip );
-				Instantiate( dmgParticles, transform.position, Quaternion.identity );
+            //return;
+            //print("health change");
+			if ( health > n && n > 0) {               
+                GetComponent<AudioSource>().PlayOneShot( damageClip );
+				//Instantiate( dmgParticles, transform.position, Quaternion.identity );   
 			} else if (health < n) {
 				GetComponent<AudioSource>().PlayOneShot( healClip );
-				Instantiate( healParticles, transform.position, Quaternion.identity );
+				//Instantiate( healParticles, transform.position, Quaternion.identity );
 			}
 		}
 
@@ -62,7 +87,13 @@ public class DamagedObject : NetworkBehaviour {
 		} else if ( health >= quarterAmount ) {
 			myState = DamageState.Quarter;
 		} else {
-			myState = DamageState.None;
+            myState = DamageState.None;
+
+            if (isServer) {
+                if (Captain.instance) {
+                    Captain.instance.AddEventToQueue(Captain.AudioEventType.Cannon);
+                }
+            }
 		}
 
 		if(health < maxHealth ) {
@@ -228,16 +259,26 @@ public class DamagedObject : NetworkBehaviour {
 		if (damage) {
 			health -= Mathf.Abs(amount);
 			health = (health < 0) ? 0 : health;
+			//print(health);
 			if (health > 0) {
-				GetComponent<AudioSource>().PlayOneShot(damageClip);
-				Instantiate(dmgParticles, transform.position, Quaternion.identity);
+				if (Time.timeSinceLevelLoad > 2) {
+					//print("time since level loaded is " + Time.timeSinceLevelLoad);
+					GetComponent<AudioSource>().PlayOneShot(damageClip);
+					var g = Instantiate(dmgParticles, transform.position, Quaternion.identity);
+					NetworkServer.Spawn(g);
+				}
+			} else if (health <= 0) {
+				if (VariableHolder.instance.cannons.Contains(gameObject)) {
+					VariableHolder.instance.cannons.Remove(gameObject);
+				}
 			}
 		} else {
 			health += Mathf.Abs(amount);
 			health = (health > maxHealth) ? maxHealth : health;
 			GetComponent<AudioSource>().PlayOneShot(healClip);
-			Instantiate(healParticles, transform.position, Quaternion.identity);
-		}
+            var g = Instantiate(healParticles, transform.position, Quaternion.identity);
+            NetworkServer.Spawn(g);
+        }    
 
 		if ( health >= maxHealth ) {
 			Captain.damagedObjectsRepaired[this] = true;

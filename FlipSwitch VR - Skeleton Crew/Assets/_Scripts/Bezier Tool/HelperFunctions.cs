@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// Author: Matt Gipson
@@ -80,5 +81,45 @@ public static class HelperFunctions {
 		return false;
 	}
 
-	#endregion
+    #endregion
+
+    #region Dictionary helper functions
+
+    public static rt TryGetValue<t, rt>(this Dictionary<t, rt> dictionary, t key) {
+        rt value;
+
+        if (dictionary.TryGetValue(key, out value)) {
+            return value;
+        } else {
+            return default(rt);
+        }
+        
+    }
+
+    #endregion
+
+    #region List Helper Functions
+
+    public static int GetCountOfEntriesForType<T>(this List<T> list, T entryType) where T : IComparable {
+        int toReturn = 0;
+
+        for (int i = 0; i < list.Count; i++) {
+            if (list[i].CompareTo( entryType) == 0) {
+                //same value
+                toReturn++;
+            }
+        }
+
+
+        return toReturn;
+    }
+
+    public static T MostCommon<T>(this IEnumerable<T> list) {
+        return (from i in list
+                group i by i into grp
+                orderby grp.Count() descending
+                select grp.Key).First();
+    }
+
+    #endregion
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class RepairTrigger : MonoBehaviour {
 
 	public DamagedObject dmgObj;
-	public GameObject particles, tracePrompt;
+	public GameObject particles;
 	[HideInInspector]
 	public RepairPattern repairPattern;
 	Transform activator;
@@ -25,7 +25,7 @@ public class RepairTrigger : MonoBehaviour {
 			repairPattern.Init(); //
 
 			particles.SetActive(false);
-			tracePrompt.SetActive(true);
+			//tracePrompt.SetActive(true);
 
 			transform.position = new Vector3(transform.position.x,
 				                                other.transform.root.GetComponentInChildren<HipMarker>().transform.position.y,
@@ -39,7 +39,9 @@ public class RepairTrigger : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter(Collider other) {
+        //print("Triggered by " + other.name);
         if (!GetComponentInParent<DamagedObject>().isServer) {
+            //print("returning as not serer");
             return;
         }
 		if (other.gameObject.GetComponentInParent<MastInteraction>()) { //player check
@@ -50,7 +52,7 @@ public class RepairTrigger : MonoBehaviour {
 			timer = 0;
 			active = true;
 			//particles.SetActive(true);
-			tracePrompt.SetActive(false);
+			//tracePrompt.SetActive(false);
 
 			repairPattern = dmgObj.SelectPattern();
 

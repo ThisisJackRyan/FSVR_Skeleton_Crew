@@ -10,8 +10,9 @@ public class Ratman : NetworkBehaviour {
 	public GameObject rat;
 	public bool isOnTheLeft;
 	int maxHealth = 100;
+    public GameObject[] hitParticles;
 
-	public AudioClip deathSound;
+    public AudioClip deathSound;
 	[ClientRpc]
 	private void RpcPlayDeathSound() {
 		if ( isServer ) {
@@ -30,13 +31,18 @@ public class Ratman : NetworkBehaviour {
 					RpcPlayHitSound( rng );
 				}
 			}
-		}
-		//else if ( n <= 0 ) {
-		//	if ( isServer ) {
-		//		GetComponent<AudioSource>().PlayOneShot( deathSound );
-		//		RpcPlayDeathSound();
-		//	}
-		//}
+
+            for (int i = 0; i < hitParticles.Length; i++) {
+                hitParticles[i].SetActive(true);
+                var particles = hitParticles[i].GetComponent<ParticleSystem>();
+                particles.Simulate(0, true, true);
+
+                particles.Play();
+
+            }
+
+            Invoke("TurnOffHit", 1.0f);
+        }
 
 		health = n;
 
@@ -44,7 +50,13 @@ public class Ratman : NetworkBehaviour {
 			KillRatman();
 	}
 
-	void Start() {
+    private void TurnOffHit() {
+        for (int i = 0; i < hitParticles.Length; i++) {
+            hitParticles[i].SetActive(false);
+        }
+    }
+
+    void Start() {
 		VariableHolder.instance.ratmenPositions.Add( gameObject, isOnTheLeft );
 		if ( isServer ) {
 			//  print(name + " enabled server check");
@@ -54,7 +66,12 @@ public class Ratman : NetworkBehaviour {
 			OnHealthChange( health );
 			rat.GetComponent<BehaviorTree>().enabled = false;
 		}
-	}
+
+        for (int i = 0; i < hitParticles.Length; i++) {
+            hitParticles[i].SetActive(false);
+        }
+
+    }
 
 	public AudioClip[] hitSounds;
 
@@ -97,7 +114,11 @@ public class Ratman : NetworkBehaviour {
 		return health;
 	}
 
-	public int ChangeHealth( int amount, bool damage = true ) { 
+	public int ChangeHealth( int amount, bool damage = true ) {
+        if (!isServer) {
+            return health;
+        }
+
 		if ( damage ) {
 			health -= Mathf.Abs( amount );
 			health = ( health < 0 ) ? 0 : health;
@@ -124,7 +145,14 @@ public class Ratman : NetworkBehaviour {
 
 			return;
 		}
+
+        if (Time.timeSinceLevelLoad > 5) {
+
 		var g = Instantiate( deathParticles, new Vector3( rat.transform.position.x, rat.transform.position.y + 0.5f, rat.transform.position.z ), Quaternion.identity );
 		NetworkServer.Spawn(g);
-	}
+
+        Captain.instance.AddEventToQueue(Captain.AudioEventType.Ratmen);
+
+        }
+    }
 }

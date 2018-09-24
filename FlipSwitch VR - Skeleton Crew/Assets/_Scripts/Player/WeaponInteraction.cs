@@ -57,7 +57,7 @@ public class WeaponInteraction : NetworkBehaviour {
 		cannonInteraction = GetComponent<CannonInteraction>();
 	}
 
-  
+	public ushort hapticSizeShoot = 1500, hapticSizeEmpty = 500;
 
 	private void Update() {
 		if ( !isLocalPlayer )
@@ -74,8 +74,10 @@ public class WeaponInteraction : NetworkBehaviour {
 		if ( rightHandIsInteractable && Controller.RightController.GetPressDown( Controller.Trigger ) ) {
 			if ( rightWeaponScript.data.type == WeaponData.WeaponType.Punt ) {
 				CmdToggleFire( "right" );
+
 			} else if ( rightWeaponScript.data.type == WeaponData.WeaponType.Gun ) {
 				CmdFireWeapon( "right" );
+
 			}
 		}
 	}
@@ -83,9 +85,9 @@ public class WeaponInteraction : NetworkBehaviour {
 	[Command]
 	private void CmdFireWeapon(string side ) {
 		if ( side.Equals( "left" ) )
-			leftWeaponScript.SpawnBullet();
+			leftWeaponScript.SpawnBullet(true, hapticSizeShoot);
 		else
-			rightWeaponScript.SpawnBullet();
+			rightWeaponScript.SpawnBullet(false, hapticSizeShoot);
 		RpcFireWeapon( side );
 	}
 
@@ -94,9 +96,9 @@ public class WeaponInteraction : NetworkBehaviour {
 		if (isServer)
 			return;
 		if ( side.Equals( "left" ) )
-			leftWeaponScript.SpawnBullet();
+			leftWeaponScript.SpawnBullet( true, hapticSizeShoot );
 		else
-			rightWeaponScript.SpawnBullet();
+			rightWeaponScript.SpawnBullet( false, hapticSizeShoot );
 	}
 
 	[Command]

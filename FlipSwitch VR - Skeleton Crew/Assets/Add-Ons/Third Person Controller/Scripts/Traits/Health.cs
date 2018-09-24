@@ -135,6 +135,10 @@ namespace Opsive.ThirdPersonController
         public void SetHealthAmount(float value)
         {
             m_CurrentHealth = value;
+
+            if (GetComponent<Enemy>()) {
+                GetComponent<Enemy>().PlayHitParticles();
+            }
             EventHandler.ExecuteEvent<float>(m_GameObject, "OnHealthAmountChange", m_CurrentHealth);
         }
 
@@ -160,6 +164,7 @@ namespace Opsive.ThirdPersonController
         /// <param name="force">The amount of force applied to the object while taking the damage.</param>
         public void Damage(float amount, Vector3 position, Vector3 force)
         {
+            //print("called damage with force " + force.ToString());
             Damage(amount, position, force, 0, null, null);
         }
 
@@ -295,7 +300,8 @@ namespace Opsive.ThirdPersonController
             // Apply a force to the hit rigidbody if the force is greater than 0.
             if (m_Rigidbody != null && !m_Rigidbody.isKinematic && force.sqrMagnitude > 0) {
                 if (radius == 0) {
-                    m_Rigidbody.AddForceAtPosition(force, position);
+                    //print("should be adding a force to the rigidbody");
+                    //m_Rigidbody.AddForceAtPosition(force, position);
                 } else {
                     m_Rigidbody.AddExplosionForce(force.magnitude, position, radius);
                 }
@@ -307,6 +313,8 @@ namespace Opsive.ThirdPersonController
             // The shield should stop regenerating when the object is taking damage.
             Scheduler.Cancel(ref m_ShieldRegenerativeEvent);
 
+
+            //print("is alive? " + IsAlive());
             // The object is dead when there is no more health or shield.
             if (!IsAlive()) {
                 Die(position, force, attacker);
@@ -345,8 +353,10 @@ namespace Opsive.ThirdPersonController
         /// <param name="attacker">The GameObject that killed the character.</param>
         protected virtual void Die(Vector3 position, Vector3 force, GameObject attacker)
         {
+            //print("Die called");
 #if ENABLE_MULTIPLAYER
             if (isServer) {
+                //GetComponent<Enemy>().OnDeath();
                 RpcDie(position, force, attacker);
             }
             // Execute the method on the local instance. Use isClient instead of isServer because the client and server may be the same instance
@@ -369,6 +379,7 @@ namespace Opsive.ThirdPersonController
         [ClientRpc]
         private void RpcDie(Vector3 position, Vector3 force, GameObject attacker)
         {
+            //print("rpc die");
             DieLocal(position, force, attacker);
         }
 #endif
@@ -381,10 +392,12 @@ namespace Opsive.ThirdPersonController
         /// <param name="attacker">The GameObject that killed the character.</param>
         private void DieLocal(Vector3 position, Vector3 force, GameObject attacker)
         {
+
+            //print("die local");
             // Notify those interested.
             EventHandler.ExecuteEvent(m_GameObject, "OnDeath");
             EventHandler.ExecuteEvent<Vector3, Vector3, GameObject>(m_GameObject, "OnDeathDetails", force, position, attacker);
-
+            //print("enemy should be dying");
             // Spawn any objects on death, such as an explosion if the object is an explosive barrell.
             for (int i = 0; i < m_SpawnedObjectsOnDeath.Length; ++i) {
                 var spawnedObject = ObjectPool.Instantiate(m_SpawnedObjectsOnDeath[i], transform.position, transform.rotation);
