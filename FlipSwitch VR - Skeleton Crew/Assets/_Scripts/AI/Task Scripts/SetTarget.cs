@@ -19,6 +19,7 @@ public class SelectTarget : Conditional {
             target = VariableHolder.instance.ratmen.Count > 0 ? VariableHolder.instance.ratmen[Random.Range(0, VariableHolder.instance.ratmen.Count)] : null;
         } else {
             target = VariableHolder.instance.players.Count > 0 ? VariableHolder.instance.players[Random.Range(0, VariableHolder.instance.players.Count)] : null;
+			Debug.Log("local target set to " + target.transform.root.name);
         }
     }
 
@@ -29,6 +30,7 @@ public class SelectTarget : Conditional {
 			return TaskStatus.Failure;
 		} else {
             selectedTarget.SetValue(target);
+			Debug.Log("shared target set to " + selectedTarget.Value.transform.root.name);
 			return TaskStatus.Success;
 		}
 	}
