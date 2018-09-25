@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+
 using UnityEngine.Networking;
 
 public class Weapon : NetworkBehaviour {
@@ -11,6 +13,7 @@ public class Weapon : NetworkBehaviour {
 	public GameObject playerWhoHolstered = null;
 	[SyncVar(hook = "OnAmmoNumChange")] int ammo = -1;
 	float lastShottime = 0;
+	
 
 	public bool IsFullOnAmmo {
 		get {
@@ -35,6 +38,8 @@ public class Weapon : NetworkBehaviour {
 		if (data.type == WeaponData.WeaponType.Gun) {
 			ammo = data.ammo;
 		}
+
+		
 	}
 
 	public void Reload() {
