@@ -23741,7 +23741,7 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Movement
-  m_Speed: 1
+  m_Speed: 0.8
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -48461,6 +48461,8 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
+  - first: {fileID: 110799402}
+    second: []
   - first: {fileID: 110712910}
     second: []
   - first: {fileID: 110757426}
@@ -48478,8 +48480,6 @@ AnimatorStateMachine:
   - first: {fileID: 110719763}
     second: []
   - first: {fileID: 110798212}
-    second: []
-  - first: {fileID: 110799402}
     second: []
   - first: {fileID: 110726908}
     second: []
@@ -53874,6 +53874,8 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
+  - first: {fileID: 110773822}
+    second: []
   - first: {fileID: 110713981}
     second: []
   - first: {fileID: 110781946}
@@ -53891,8 +53893,6 @@ AnimatorStateMachine:
   - first: {fileID: 110773144}
     second: []
   - first: {fileID: 110762234}
-    second: []
-  - first: {fileID: 110773822}
     second: []
   - first: {fileID: 110792586}
     second: []
