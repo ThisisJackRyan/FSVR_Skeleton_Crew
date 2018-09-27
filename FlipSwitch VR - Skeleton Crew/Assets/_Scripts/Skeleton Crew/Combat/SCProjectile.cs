@@ -21,8 +21,8 @@ public class SCProjectile : NetworkBehaviour {
             return;
         }
 
-        //print("invoking");
-        Invoke("KillProjectile", 5);
+		print("invoking");
+		Invoke("KillProjectile", 5);
     }
 
     private void OnTriggerEnter(Collider other) {

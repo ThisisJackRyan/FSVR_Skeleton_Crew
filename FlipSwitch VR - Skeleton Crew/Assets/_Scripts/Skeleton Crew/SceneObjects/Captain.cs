@@ -158,7 +158,7 @@ public class Captain : SerializedNetworkBehaviour {
     //Dictionary<AudioClip, string> clipNamesLookup;
 
     Queue<AudioClip> priorityAudioQueue, reminderQueue;
-    public float timeBetweenReminders = 10, lastPlayedTime;
+    public float timeBetweenReminders = 10, timeBetweenPriorityClips = 3, lastPlayedTime;
 
     public AudioClip repairCannonClip, ratmenDeadClip, playerRespawnClip, repairDeckClip;
 
@@ -174,9 +174,10 @@ public class Captain : SerializedNetworkBehaviour {
             return;
         }
 
-        if (priorityAudioQueue.Count > 0) {
+        if (priorityAudioQueue.Count > 0 && lastPlayedTime + timeBetweenPriorityClips <= Time.timeSinceLevelLoad) {
             //print("priority needs to play");
 
+			//need to check severity still
             mySource.PlayOneShot(priorityAudioQueue.First());
             RpcPlayDialogue(priorityAudioQueue.Dequeue().name);
             lastPlayedTime = Time.timeSinceLevelLoad;
@@ -222,32 +223,38 @@ public class Captain : SerializedNetworkBehaviour {
     }
 
     bool CheckAndUpdateEventTimePriority(AudioEventType eventType) {
-        bool toReturn = false;
+        bool toReturn = false;		
 
         switch (eventType) {
             case AudioEventType.Cannon:
 
-                eventTimes[AudioEventType.Cannon] = Time.timeSinceLevelLoad;
-                priorityAudioQueue.Enqueue(repairCannonClip);
+				if (!priorityAudioQueue.Contains(repairCannonClip)) {
+					eventTimes[AudioEventType.Cannon] = Time.timeSinceLevelLoad;
+					priorityAudioQueue.Enqueue(repairCannonClip);
+				}
 
                 break;
             case AudioEventType.Ratmen:
 
-                eventTimes[AudioEventType.Ratmen] = Time.timeSinceLevelLoad;
-                priorityAudioQueue.Enqueue(ratmenDeadClip);
-
+				if (!priorityAudioQueue.Contains(ratmenDeadClip)) {
+					eventTimes[AudioEventType.Ratmen] = Time.timeSinceLevelLoad;
+					priorityAudioQueue.Enqueue(ratmenDeadClip);
+				}
                 break;
             case AudioEventType.Respawn:
 
-                eventTimes[AudioEventType.Respawn] = Time.timeSinceLevelLoad;
-                priorityAudioQueue.Enqueue(playerRespawnClip);
+				if (!priorityAudioQueue.Contains(playerRespawnClip)) {
 
+					eventTimes[AudioEventType.Respawn] = Time.timeSinceLevelLoad;
+					priorityAudioQueue.Enqueue(playerRespawnClip);
+				}
                 break;
             case AudioEventType.RepairDeck:
 
-                eventTimes[AudioEventType.RepairDeck] = Time.timeSinceLevelLoad;
-                priorityAudioQueue.Enqueue(repairDeckClip);
-
+				if (!priorityAudioQueue.Contains(repairDeckClip)) {
+					eventTimes[AudioEventType.RepairDeck] = Time.timeSinceLevelLoad;
+					priorityAudioQueue.Enqueue(repairDeckClip);
+				}
                 break;
             case AudioEventType.OneShot:
                 if (priorityAudioQueue.Count >= 0) {
@@ -275,8 +282,11 @@ public class Captain : SerializedNetworkBehaviour {
     }
 
     public void AddEventToQueue(AudioEventType type) {
-	
-        CheckAndUpdateEventTimePriority(type);
+
+		if (CheckAndUpdateEventTimePriority(type)) {
+			//oneshot is true and queue is empty
+			//not developing for this atm, keeping here just in case
+		}
     }
 
     bool CheckAndUpdateEventTimeReminder(AudioEventType eventType) {

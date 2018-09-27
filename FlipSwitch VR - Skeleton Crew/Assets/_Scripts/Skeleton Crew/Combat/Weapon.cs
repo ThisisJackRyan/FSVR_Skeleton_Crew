@@ -52,7 +52,7 @@ public class Weapon : NetworkBehaviour {
 		}
 
         if (ammo-- <= 0) {  //decrements after check
-			print("out of ammo");
+			//print("out of ammo");
 			GetComponent<AudioSource>().clip = data.outOfAmmoSound;
 			if (!isServer) {
 				Controller.PlayHaptics(isLeft, hapticSize);
