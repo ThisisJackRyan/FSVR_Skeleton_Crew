@@ -223,12 +223,17 @@ public class Captain : SerializedNetworkBehaviour {
     }
 
     bool CheckAndUpdateEventTimePriority(AudioEventType eventType) {
+		if (!isServer) {
+			return false;
+		}
+
         bool toReturn = false;		
 
         switch (eventType) {
             case AudioEventType.Cannon:
 
 				if (!priorityAudioQueue.Contains(repairCannonClip)) {
+					print("adding clip[ to queue");
 					eventTimes[AudioEventType.Cannon] = Time.timeSinceLevelLoad;
 					priorityAudioQueue.Enqueue(repairCannonClip);
 				}

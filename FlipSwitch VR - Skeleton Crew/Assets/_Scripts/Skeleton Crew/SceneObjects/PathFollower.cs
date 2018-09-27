@@ -108,10 +108,10 @@ public class PathFollower : NetworkBehaviour {
 	}
 
 
-	public AudioClip breakClip;
+	public AudioClip breakClip, mutinyClip, meteorClip;
 	void ChangeToPhaseTwo() {
 		currentStage = EncounterStage.FirstBreak;
-		if (isServer) {
+		if (isServer && breakClip) {
 			Captain.instance.PlayDialogue(breakClip.name);
 		}
 
@@ -120,12 +120,20 @@ public class PathFollower : NetworkBehaviour {
 
 	void StartSecondPhase() {
 		currentStage = EncounterStage.Second;
+
+		if (isServer && meteorClip) {
+			Captain.instance.PlayDialogue(meteorClip.name);
+		}
+
 		Invoke("StartThirdPhase", encounterOneTotalTime);
 		InvokeRepeating("SpawnMeteors", meteorSpawnTimer, meteorSpawnTimer);
 	}
 
 	void StartThirdPhase() {
 		currentStage = EncounterStage.Third;
+		if (isServer && mutinyClip) {
+			Captain.instance.PlayDialogue(mutinyClip.name);
+		}
 		CancelInvoke("SpawnMeteors");
 	}
 
