@@ -1,20 +1,20 @@
 fileFormatVersion: 2
-guid: 8d75786ff50afc04c8687aabdff8b9a7
+guid: bae06aea112d04d46bdd3597718eaa5e
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: Rock_wall_T1
+    2100000: Rock_Wall_Texture
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Rock_wall_1_3
+    4300000: Rock_Wall_4
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Rock_wall_T1
-    second: {fileID: 2100000, guid: 3d3bacb4705b88a46b545402b4cc1823, type: 2}
+      name: Rock_Wall_Texture
+    second: {fileID: 2100000, guid: dd7f67945b3c563468a794898d049f6e, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
