@@ -17,9 +17,6 @@ public class SelectTarget : Conditional {
             target = VariableHolder.instance.ratmen.Count > 0 ? VariableHolder.instance.ratmen[Random.Range(0, VariableHolder.instance.ratmen.Count)] : null;
         } else if(targetType == TargetType.Player) {
             target = VariableHolder.instance.players.Count > 0 ? VariableHolder.instance.players[Random.Range(0, VariableHolder.instance.players.Count)] : null;
-			if (target != null) {
-				Debug.Log("local target set to " + target.transform.root.name);
-			}
         }
     }
 
