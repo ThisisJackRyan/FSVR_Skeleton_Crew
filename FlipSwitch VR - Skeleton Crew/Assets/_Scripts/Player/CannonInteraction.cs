@@ -165,12 +165,16 @@ public class CannonInteraction : NetworkBehaviour {
 		}
 
 		cannonCurrentlyAiming = cannon.GetComponent<Cannon>();
-		indexOfClosest = iOfClosest;
+
+        indexOfClosest = iOfClosest;
 
 		if (isLeft) {
+            cannonCurrentlyAiming.GetComponentInChildren<RotationTester>().toFollow = GetComponent<GrabWeapon>().leftHand;
 			leftHandInteracting = true;
 		} else {
-			rightHandInteracting = true;
+            cannonCurrentlyAiming.GetComponentInChildren<RotationTester>().toFollow = GetComponent<GrabWeapon>().rightHand;
+
+            rightHandInteracting = true;
 		}
 	}
 
@@ -185,6 +189,8 @@ public class CannonInteraction : NetworkBehaviour {
 		}
 
         cannon.GetComponentInChildren<CannonAngleSetterTrigger>().TurnOffNodes();
+        cannonCurrentlyAiming.GetComponentInChildren<RotationTester>().toFollow = null;
+
 
         cannonCurrentlyAiming = null;
 		indexOfClosest = -1;
@@ -205,8 +211,12 @@ public class CannonInteraction : NetworkBehaviour {
 
 		RpcStopInteractingOnClient( cannonCurrentlyAiming.gameObject, gameObject, isLeft, showMarkerNodes );
 		cannonCurrentlyAiming.indexOfFirstGrabbed = -1;
+
+        cannonCurrentlyAiming.GetComponentInChildren<RotationTester>().toFollow = null;
+
 		cannonCurrentlyAiming = null;
 		indexOfClosest = -1;
+
 	}
 
     [ClientRpc]
