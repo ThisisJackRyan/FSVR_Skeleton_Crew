@@ -212,6 +212,7 @@ public class PathFollower : NetworkBehaviour {
 		return rotation * transform.rotation;
 	}
 
+    [Button("increment path")]
 	void IncrementNode() {
 		currentNode = nextNode;
 		if (this.nextNode < path.Nodes.Length - 1) {
