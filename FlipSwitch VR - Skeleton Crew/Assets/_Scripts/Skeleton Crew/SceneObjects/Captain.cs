@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
+
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -179,7 +181,8 @@ public class Captain : SerializedNetworkBehaviour {
 
 			//need to check severity still
             mySource.PlayOneShot(priorityAudioQueue.First());
-            RpcPlayDialogue(priorityAudioQueue.Dequeue().name);
+            RpcPlayDialogue(priorityAudioQueue.First().name);
+			StartCoroutine("DeQueueAfterClip", priorityAudioQueue.First().length);
             lastPlayedTime = Time.timeSinceLevelLoad;
         }
 
@@ -197,7 +200,14 @@ public class Captain : SerializedNetworkBehaviour {
         }
     }
 
-    [ClientRpc]
+	//coroutine here 
+	IEnumerator DeQueueAfterClip(float length) {
+		yield return new WaitForSecondsRealtime(length);
+		priorityAudioQueue.Dequeue();
+		lastPlayedTime = Time.timeSinceLevelLoad;
+	}
+
+	[ClientRpc]
     private void RpcPlayDialogue(string clipName) {
         if (isServer) {
             return;
