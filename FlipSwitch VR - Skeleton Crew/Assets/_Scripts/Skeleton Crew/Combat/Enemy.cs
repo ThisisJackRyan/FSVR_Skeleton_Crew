@@ -24,6 +24,7 @@ public class Enemy : NetworkBehaviour {
 	public GameObject deathParticles;
 	public bool tutorialGuard = false;
     public bool rangedUnit = false;
+    public GameObject rangedTeleTarget;
 	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
     [SyncVar] public GameObject boardingPartyShip;
 
@@ -126,6 +127,7 @@ public class Enemy : NetworkBehaviour {
     public void EnemyUnitDeath() {
         if (rangedUnit) {
             VariableHolder.instance.RemoveRangedUnit();
+            VariableHolder.instance.enemyRangedPositions[rangedTeleTarget] = false;
         }
     }
 
@@ -166,10 +168,6 @@ public class Enemy : NetworkBehaviour {
 			hitParticles[i].SetActive( false );
 		}
 	}
-
-	public int maxHealth = 100;
-
-
 
 	public void AllowDamage() {
 		CancelInvoke();
