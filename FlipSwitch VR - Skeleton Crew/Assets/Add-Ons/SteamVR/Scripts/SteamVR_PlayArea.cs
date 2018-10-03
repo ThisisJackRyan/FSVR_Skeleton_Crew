@@ -21,8 +21,8 @@ public class SteamVR_PlayArea : MonoBehaviour
 	{
 		Calibrated,
 		_850x930,
-		_400x300,
-		_300x225,
+		_950x1030,
+		_150x150,
 		_100x100
 	}
 
