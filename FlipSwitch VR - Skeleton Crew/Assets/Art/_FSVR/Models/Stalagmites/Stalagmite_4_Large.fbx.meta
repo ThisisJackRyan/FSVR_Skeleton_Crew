@@ -1,15 +1,20 @@
 fileFormatVersion: 2
-guid: b185fc8c348d6d441bde537cbbe71f49
+guid: 3e11df8f3963f8347b48fe4d22f8ec1f
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: Rock_Circle_T1
+    2100000: pCylinder1
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Rock_Circle_M5
-  externalObjects: {}
+    4300000: Stalagmite_4_Large
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pCylinder1
+    second: {fileID: 2100000, guid: dd7f67945b3c563468a794898d049f6e, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
