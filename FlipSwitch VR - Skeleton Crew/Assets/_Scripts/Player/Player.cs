@@ -47,13 +47,6 @@ public class Player : NetworkBehaviour {
 			}
 			Invoke( "TurnOffHit", 1.0f );
 
-			if (n >= 0) {
-				if ( isServer ) {
-					int rng = Random.Range( 0, hitSounds.Length );
-					GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
-					RpcPlayHitSound( rng );
-				}
-			} 
 			//else if ( n <= 0 ) {
 			//	if ( isServer ) {
 
@@ -75,17 +68,6 @@ public class Player : NetworkBehaviour {
 		}
 	}
 
-
-	public AudioClip[] hitSounds;
-
-	[ClientRpc]
-	private void RpcPlayHitSound( int rng ) {
-		if ( isServer ) {
-			return;
-		}
-
-		GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
-	}
 
 	void TurnOffHit() {
 		for ( int i = 0; i < hitParticles.Length; i++ ) {
