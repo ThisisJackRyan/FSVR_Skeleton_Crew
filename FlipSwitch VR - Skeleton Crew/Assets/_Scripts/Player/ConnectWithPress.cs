@@ -27,9 +27,9 @@ public class ConnectWithPress : MonoBehaviour {
 
 
     void Update() {
-        if (NetworkHelper.GetLocalIPAddress().Equals(NetworkHelper.hostIpAddress)) {
-            return;
-        }
+        //if (NetworkHelper.GetLocalIPAddress().Equals(NetworkHelper.hostIpAddress)) {
+        //    return;
+        //}
 
         if (canInput) {
             if (Controller.RightController.GetPressDown(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger)) {
