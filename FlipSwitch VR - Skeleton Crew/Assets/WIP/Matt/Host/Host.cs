@@ -35,8 +35,8 @@ public class Host : NetworkBehaviour {
 			return;
 		}
 
-        var comms = FindObjectOfType<VoiceBroadcastTrigger>();
-        comms.BroadcastPosition = false;
+        //var comms = FindObjectOfType<VoiceBroadcastTrigger>();
+        //comms.BroadcastPosition = false;
 		GetComponent<Camera>().enabled = true;
 		GetComponent<AudioListener>().enabled = true;
 		//Resources.FindObjectsOfTypeAll<HostCanvas>()[0].gameObject.SetActive(true);
