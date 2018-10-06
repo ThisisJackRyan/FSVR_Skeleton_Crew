@@ -8,7 +8,7 @@ using HTC.UnityPlugin.Vive;
 //[RequireComponent(typeof(LoadSceneOnStart))]
 public class ConnectWithPress : MonoBehaviour {
 
-    public ViveRoleSetter left, right;
+    //public ViveRoleSetter left, right;
 
     public TrackerIdSetter[] setters;
 
@@ -21,7 +21,7 @@ public class ConnectWithPress : MonoBehaviour {
         //    gameObject.SetActive(false);
         //    return;
         //}
-        Invoke("InitController", 0.5f);
+        //Invoke("InitController", 0.5f);
         //DontDestroyOnLoad(gameObject);
     }
 
@@ -32,6 +32,7 @@ public class ConnectWithPress : MonoBehaviour {
         //}
 
         if (canInput) {
+            //print("input enabled");
             if (Controller.RightController.GetPressDown(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger)) {
                 foreach (var item in setters) {
                     item.SetTrackerId();
@@ -42,13 +43,13 @@ public class ConnectWithPress : MonoBehaviour {
         }
     }
 
-    bool canInput = false;
+    public bool canInput = false;
 
-    void InitController() {
-        canInput = true;
-        Controller.InitControllers(left.viveRole.GetDeviceIndex(), right.viveRole.GetDeviceIndex());
+    //void InitController() {
+    //    canInput = true;
+    //    Controller.InitControllers(left.viveRole.GetDeviceIndex(), right.viveRole.GetDeviceIndex());
 
-    }
+    //}
 
     [Button("loopholes")]
     void Ha() {

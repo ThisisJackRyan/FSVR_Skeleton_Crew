@@ -9,7 +9,7 @@ public class FSVRPlayer : NetworkBehaviour {
 	public MonoBehaviour[] componetsToDisable;
 	public GameObject[] objectsToDisable;
 
-	public SteamVR_TrackedObject leftFoot, rightFoot, hip;
+	public SteamVR_TrackedObject leftFoot, rightFoot, hip, leftHand, rightHand;
 
 	public Camera hostCamView;
 
@@ -47,8 +47,9 @@ public class FSVRPlayer : NetworkBehaviour {
 		foreach ( GameObject obj in objectsToAddToDict ) {
 			ExitLobbyPlayerTrigger.playerDict.Add( obj, false );
 		}
-		
-		if ( NumberOfPlayerHolder.instance.numberOfPlayers == VariableHolder.instance.players.Count ) {
+
+        if (NumberOfPlayerHolder.instance.numberOfPlayers == VariableHolder.instance.players.Count) {
+            //if (true) { 
 			GetComponent<VRIKCalibrateOnStart>().CalibratePlayer();
 
 			var iks = FindObjectsOfType<VRIKCalibrateOnStart>();
@@ -75,12 +76,15 @@ public class FSVRPlayer : NetworkBehaviour {
 	}
 	
 	void SetTrackerIDs() {
+        print("set tracker ids called. isServer? " + isServer);
 		leftFoot.index = TrackerIds.leftFootId;
 		rightFoot.index = TrackerIds.rightFootId;
 		hip.index = TrackerIds.hipId;
-	}
+        //leftHand.index = (SteamVR_TrackedObject.EIndex)Controller.LeftController.index == SteamVR_TrackedObject.EIndex.None ? 0 : (SteamVR_TrackedObject.EIndex)Controller.LeftController.index;
+        //rightHand.index = (SteamVR_TrackedObject.EIndex)Controller.RightController.index == SteamVR_TrackedObject.EIndex.None ? 0 : (SteamVR_TrackedObject.EIndex)Controller.RightController.index;
+    }
 
-	public void SetCameraSettings(int playerNum) {
+    public void SetCameraSettings(int playerNum) {
 		switch (playerNum) {
 			case 1:
 				hostCamView.rect = new Rect(new Vector2(0f, 0.55f), new Vector2(0.5f, 0.45f));
