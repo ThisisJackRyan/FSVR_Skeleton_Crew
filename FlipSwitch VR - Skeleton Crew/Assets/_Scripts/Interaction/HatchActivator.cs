@@ -60,7 +60,6 @@ public class HatchActivator : NetworkBehaviour {
         DisableHatch(isLeftHatch);
     }
 
-
     [ClientRpc]
     public void RpcAnimateHatch(bool opening) {
         if (isServer) {
@@ -71,21 +70,6 @@ public class HatchActivator : NetworkBehaviour {
 
         animator.SetBool("Opening", opening);
         audioSource.PlayOneShot(openClip);
-    }
-
-    private void OnTriggerStay(Collider other) {
-        if (!isServer)
-            return;
-
-        if (other.gameObject.GetComponentInParent<MastInteraction>() && active) {
-            timer += Time.deltaTime;
-
-            if (timer >= 1) {
-                active = false;
-                timer = 0;
-                StartCoroutine("AnimateAndRespawnRatmen");
-            }
-        }
     }
 
     IEnumerator AnimateAndRespawnRatmen() {
@@ -121,6 +105,21 @@ public class HatchActivator : NetworkBehaviour {
     }
 
     //todo add activator logic
+    private void OnTriggerStay(Collider other) {
+        if (!isServer)
+            return;
+
+        if (other.gameObject.GetComponentInParent<MastInteraction>() && active) {
+            timer += Time.deltaTime;
+
+            if (timer >= 1) {
+                active = false;
+                timer = 0;
+                StartCoroutine("AnimateAndRespawnRatmen");
+            }
+        }
+    }
+
     private void OnTriggerEnter(Collider other) {
         if (!isServer)
             return;
@@ -138,13 +137,7 @@ public class HatchActivator : NetworkBehaviour {
         active = false;
     }
 
-    public static void SpawnRatkinRebels(GameObject ratkinRebelPrefab, int countTospawn) {
-        foreach (var h in hatches) {
-            h.StartCoroutine("AnimateAndSpawnRatkinRebels", new SpawnInfo(ratkinRebelPrefab, countTospawn));
-        }
-
-    }
-
+    #region enemy spawning
     struct SpawnInfo {
         public GameObject ratkinRebelPrefab;
         public int count;
@@ -155,11 +148,8 @@ public class HatchActivator : NetworkBehaviour {
         }
     }
 
-
-    #region enemy spawning
-
     IEnumerator AnimateAndSpawnRatkinRebels(SpawnInfo info) {
-        print("coroutine started");
+        //print("coroutine started");
         animator.SetBool("Opening", true);
         audioSource.PlayOneShot(openClip);
         RpcAnimateHatch(true);
@@ -186,7 +176,12 @@ public class HatchActivator : NetworkBehaviour {
         yield return new WaitForSeconds(1);
     }
 
+    public static void SpawnRatkinRebels(GameObject ratkinRebelPrefab, int countTospawn) {
+        foreach (var h in hatches) {
+            h.StartCoroutine("AnimateAndSpawnRatkinRebels", new SpawnInfo(ratkinRebelPrefab, countTospawn));
+        }
 
+    }
     #endregion
 
 }

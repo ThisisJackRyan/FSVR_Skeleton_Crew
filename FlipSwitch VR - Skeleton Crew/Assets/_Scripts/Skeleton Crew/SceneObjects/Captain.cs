@@ -244,7 +244,7 @@ public class Captain : SerializedNetworkBehaviour {
             case AudioEventType.Cannon:
 
 				if (!priorityAudioQueue.Contains(repairCannonClip)) {
-					print("adding clip[ to queue");
+					//print("adding clip[ to queue");
 					eventTimes[AudioEventType.Cannon] = Time.timeSinceLevelLoad;
 					priorityAudioQueue.Enqueue(repairCannonClip);
 				}

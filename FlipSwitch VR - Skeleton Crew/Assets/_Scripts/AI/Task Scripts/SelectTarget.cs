@@ -27,7 +27,7 @@ public class SelectTarget : Conditional {
 			return TaskStatus.Failure;
 		} else {
             selectedTarget.SetValue(target);
-			Debug.Log("shared target set to " + selectedTarget.Value.transform.root.name);
+			//Debug.Log("shared target set to " + selectedTarget.Value.transform.root.name);
 			return TaskStatus.Success;
 		}
 	}

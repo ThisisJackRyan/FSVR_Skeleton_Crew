@@ -55,12 +55,12 @@ public static class Controller {
         if (!initialized) {
 
             if (leftIndex == -1) {
-                 //Debug.Log("assigning left controller to " + leftId);
+                Debug.Log("assigning left controller to " + leftId);
                 leftIndex = (int)leftId;
                 leftInit = true;
                 toReturn= "Left";
             } else if (rightIndex == -1) {
-                //Debug.Log("assigning right controller to " + leftId);
+                Debug.Log("assigning right controller to " + leftId);
                 rightIndex = (int)leftId;
               rightInit = true;
                 toReturn= "Right";
