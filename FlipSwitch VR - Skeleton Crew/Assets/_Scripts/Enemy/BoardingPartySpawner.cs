@@ -79,7 +79,15 @@ public class BoardingPartySpawner : NetworkBehaviour {
         NetworkServer.Spawn(boss);
     }
 
-    private void OnDestroy() {
-        //Debug.Break();
+    private void OnCollisionEnter(Collision other) {
+        if (!isServer) {
+            return;
+        }
+
+        if (other.gameObject.GetComponent<SCProjectile>()) {
+            //other.gameObject.GetComponent<SCProjectile>().playerWhoFired << needed for point assignment
+            Destroy(gameObject);
+            //todo add point stuff here
+        }
     }
 }

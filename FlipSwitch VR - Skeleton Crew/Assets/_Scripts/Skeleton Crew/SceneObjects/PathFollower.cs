@@ -68,7 +68,7 @@ public class PathFollower : NetworkBehaviour {
 		}
 		canMove = true;
 		currentStage = EncounterStage.Tutorial;
-		Invoke("ChangeToPhaseTwo", encounterOneTotalTime);
+		Invoke("EnemyWipeThenFirstBreak", encounterOneTotalTime);
 	}
 
 	public void ChangeSpeed(bool faster) {
@@ -109,7 +109,7 @@ public class PathFollower : NetworkBehaviour {
 
 
 	public AudioClip breakClip, mutinyClip, meteorClip;
-	void ChangeToPhaseTwo() {
+	void StartFirstBreak() {
 		currentStage = EncounterStage.FirstBreak;
 		if (isServer && breakClip) {
 			Captain.instance.PlayDialogue(breakClip.name);
@@ -117,6 +117,13 @@ public class PathFollower : NetworkBehaviour {
 
 		Invoke("StartSecondPhase", breakTimer);
 	}
+
+    void EnemyWipeThenFirstBreak() {
+        if (isServer) {
+            Captain.instance.FullWipeAttack();
+            Invoke("startFirstBreak", 5f);
+        }
+    }
 
 	void StartSecondPhase() {
 		currentStage = EncounterStage.Second;
@@ -240,6 +247,7 @@ public class PathFollower : NetworkBehaviour {
 				//print( "hit node during first" );
 				//test enemy count
 				if (FindObjectsOfType<Enemy>().Length >= maxEnemies) {
+                    ChangeSpeed(false);
 					return;
 				}
 
@@ -252,7 +260,8 @@ public class PathFollower : NetworkBehaviour {
 				break;
 			case EncounterStage.Third:
 				if (FindObjectsOfType<Enemy>().Length >= maxEnemies) {
-					return;
+                    ChangeSpeed(false);
+                    return;
 				}
 
 				Spawn(thirdEncounters);

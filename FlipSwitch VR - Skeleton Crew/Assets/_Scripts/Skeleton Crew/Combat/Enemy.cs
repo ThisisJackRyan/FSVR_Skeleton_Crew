@@ -57,7 +57,7 @@ public class Enemy : NetworkBehaviour {
         transform.parent = null;
     }
 
-    private void DestroyMe() {
+    public void DestroyMe() {
         if (!isServer) {
             return;
         }
@@ -74,10 +74,14 @@ public class Enemy : NetworkBehaviour {
 		NetworkServer.Destroy(gameObject);
 	}
 
+    public GameObject teleportParticles;
 	internal void TellCaptainIveBoarded() {
 		if (!isServer) {
 			Captain.instance.CrewmanHaveBoarded();
-		}
+        } else {
+            var g = Instantiate(teleportParticles, transform.position, Quaternion.identity);
+            NetworkServer.Spawn(g);
+        }
 	}
 
 	public void PlayHitParticles() {

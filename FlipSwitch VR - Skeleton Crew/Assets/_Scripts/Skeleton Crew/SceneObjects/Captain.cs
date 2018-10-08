@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 using Sirenix.OdinInspector;
 using System.Reflection;
 using System;
+using Random = UnityEngine.Random;
 
 public enum Side {
     left,
@@ -353,6 +354,32 @@ public class Captain : SerializedNetworkBehaviour {
         return toReturn;
     }
     #endregion
+
+    public void FullWipeAttack() {
+        if (!isServer) {
+            return;
+        }
+
+        foreach (var enemy in FindObjectsOfType<Enemy>()) {
+            float dist = Vector3.Distance(transform.position, enemy.transform.position);
+
+            bool shouldDelete = (dist < burstDistance) ? true : TestDistanceWithChance(dist);
+
+            if (shouldDelete) {
+                enemy.DestroyMe();
+            }
+        }
+    }
+
+    public float burstDistance = 10f;
+    bool TestDistanceWithChance(float dist) { 
+        int rng = Random.Range(0, 10);
+        if (rng >= dist - burstDistance) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     #region Tutorial shit
 

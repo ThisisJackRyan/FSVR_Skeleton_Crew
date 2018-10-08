@@ -11,6 +11,7 @@ public class SCProjectile : NetworkBehaviour {
 	//public GameObject deathParticles;
 	//public GameObject particles;
 	public float particleKillTimer = 2f;
+    public GameObject playerWhoFired = null;
 
 	// Use this for initialization//print(transform.position);
 	void Awake() {
@@ -56,11 +57,6 @@ public class SCProjectile : NetworkBehaviour {
     public void KillProjectile() {
         //print("kill called");
         if (isServer) {
-            //print("server scp");
-
-            //RpcDestroy();
-            //Destroy(gameObject);
-
             NetworkServer.Destroy(gameObject);
         }
 	}
