@@ -11,6 +11,7 @@ public class FSVR_AssignController : MonoBehaviour {
 	void Start () {
         device = Controller.GetById((int)GetComponent<SteamVR_TrackedObject>().index);
         //canvasText = GetComponentInChildren<Text>();
+        Invoke("DestroyIfNotRendering", 0.5f);
     }
 	
 	
@@ -19,16 +20,20 @@ public class FSVR_AssignController : MonoBehaviour {
             //print(device + " id is " + device.index);
 
             if (device.GetPressDown(Controller.Trigger)) {
-                //print("hit trigger on device i:" + device.index);
+                print("hit trigger on device i:" + device.index);
                 canvasText.transform.parent.gameObject.SetActive(true);
                 canvasText.text = Controller.InitControllers(device.index);
 
                 if (Controller.initialized) {
-                    FindObjectOfType<ConnectWithPress>().canInput = true;
+                    FindObjectOfType<ConnectWithPress>().EnableInput();
                 }
             }
-
-
         }
 	}
+
+    void DestroyIfNotRendering() {
+        if (transform.childCount < 2) {
+            Destroy(gameObject);
+        }
+    }
 }

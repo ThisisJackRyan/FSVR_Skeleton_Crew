@@ -165,6 +165,7 @@ public class CannonInteraction : NetworkBehaviour {
 		}
 
 		cannonCurrentlyAiming = cannon.GetComponent<Cannon>();
+        print(cannonCurrentlyAiming);
 
         indexOfClosest = iOfClosest;
 
@@ -189,7 +190,11 @@ public class CannonInteraction : NetworkBehaviour {
 		}
 
         cannon.GetComponentInChildren<CannonAngleSetterTrigger>().TurnOffNodes();
+
+        if (!isServer) {
+
         cannonCurrentlyAiming.GetComponentInChildren<RotationTester>().toFollow = null;
+        }
 
 
         cannonCurrentlyAiming = null;
@@ -212,7 +217,9 @@ public class CannonInteraction : NetworkBehaviour {
 		RpcStopInteractingOnClient( cannonCurrentlyAiming.gameObject, gameObject, isLeft, showMarkerNodes );
 		cannonCurrentlyAiming.indexOfFirstGrabbed = -1;
 
-        cannonCurrentlyAiming.GetComponentInChildren<RotationTester>().toFollow = null;
+        cannonCurrentlyAiming
+            .GetComponentInChildren<RotationTester>()
+            .toFollow = null;
 
 		cannonCurrentlyAiming = null;
 		indexOfClosest = -1;

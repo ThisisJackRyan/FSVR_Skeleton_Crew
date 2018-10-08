@@ -104,13 +104,10 @@ public class Enemy : NetworkBehaviour {
 
             return;
         }
+        
+        GetComponent<Inventory>().EquipItem(Random.Range(0, GetComponent<Inventory>().DefaultLoadout.Length));
 
-        int itemToEquip;
-                            
-        itemToEquip = Random.Range(0, GetComponent<Inventory>().DefaultLoadout.Length);    
-        GetComponent<Inventory>().EquipItem(itemToEquip);
-
-        RpcEquipItem(itemToEquip);
+        //RpcEquipItem(itemToEquip);
 
     }
 

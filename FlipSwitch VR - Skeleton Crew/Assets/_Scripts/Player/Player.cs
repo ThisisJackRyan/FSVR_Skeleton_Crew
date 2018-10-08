@@ -18,7 +18,8 @@ public class Player : NetworkBehaviour {
 	public Collider[] playerColliders;
 	public GameObject[] deathExplosion;
 	public Transform explosionPosition;
-	bool isDead;
+    [SyncVar]
+    bool isDead = false;
 
     public bool IsDead {
         get {
@@ -46,14 +47,6 @@ public class Player : NetworkBehaviour {
 				particles.Play();
 			}
 			Invoke( "TurnOffHit", 1.0f );
-
-			//else if ( n <= 0 ) {
-			//	if ( isServer ) {
-
-			//		GetComponent<AudioSource>().PlayOneShot( deathSound );
-			//		RpcPlayDeathSound();
-			//	}
-			//}
 		}
 
 		health = n;
@@ -68,13 +61,11 @@ public class Player : NetworkBehaviour {
 		}
 	}
 
-
 	void TurnOffHit() {
 		for ( int i = 0; i < hitParticles.Length; i++ ) {
 			hitParticles[i].SetActive( false );
 		}
 	}
-
 
 	private void UpdateParticles( bool internalActive, bool externalActive, bool deathActive ) {
 		for ( int i = 0; i < internalParticles.Length; i++ ) {
@@ -105,6 +96,8 @@ public class Player : NetworkBehaviour {
 	bool hasStartedTutorial = false;
 
 	public void RevivePlayer() {
+        //print("revive called with isDead: " + isDead);
+
         if (isDead) {
 		    ChangeHealth( maxHealth, false );
 	    	VariableHolder.instance.players.Add( GetComponentInChildren<EnemyTargetInit>().gameObject );
@@ -115,8 +108,8 @@ public class Player : NetworkBehaviour {
 	}
 
 	void DisableBody() {
+        //print("disable body called with isDead: " + isDead);
         if (!isDead) {
-
             if (isServer) {
                 Captain.instance.AddEventToQueue(Captain.AudioEventType.Respawn);
             }
