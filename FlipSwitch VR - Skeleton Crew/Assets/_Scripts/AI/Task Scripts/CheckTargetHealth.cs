@@ -42,9 +42,6 @@ public class CheckTargetHealth : Conditional {
 
 	// Update is called once per frame
 	public override TaskStatus OnUpdate() {
-		if (isDead) {
-			currentTarget.SetValue(null);
-		}
 		return isDead ? TaskStatus.Success : TaskStatus.Failure;
 	}
 }

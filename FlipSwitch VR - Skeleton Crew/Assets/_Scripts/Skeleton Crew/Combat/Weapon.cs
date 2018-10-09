@@ -10,6 +10,7 @@ public class Weapon : NetworkBehaviour {
 	public CannonInteraction owningPlayerCannonScript;
 	public Outline myOutline;
 	public bool isBeingHeldByPlayer = false;
+	public GameObject playerWhoIsHolding;
 	public GameObject playerWhoHolstered = null;
 	[SyncVar(hook = "OnAmmoNumChange")] int ammo = -1;
 	float lastShottime = 0;

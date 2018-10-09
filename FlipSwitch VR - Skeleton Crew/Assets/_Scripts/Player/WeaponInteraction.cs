@@ -15,11 +15,13 @@ public class WeaponInteraction : NetworkBehaviour {
 
 	public MastInteraction mastInteraction;
 	public CannonInteraction cannonInteraction;
+	public GameObject playerColliderForEnemyAttacker;
 
 	public void AssignWeapon(string side, GameObject weapon ) {
 		if ( side.Equals( "left" ) ) {
 			leftHandWeapon = weapon;
 			leftWeaponScript = weapon.GetComponent<Weapon>();
+			leftWeaponScript.playerWhoIsHolding = playerColliderForEnemyAttacker;
 			mastInteraction.emptyLeftHand = false;
 			leftHandIsInteractable = ( leftWeaponScript.data.type == WeaponData.WeaponType.Melee ) ? false : true;
 			if ( leftWeaponScript.data.type == WeaponData.WeaponType.Punt )
@@ -27,6 +29,7 @@ public class WeaponInteraction : NetworkBehaviour {
 		} else {
 			rightHandWeapon = weapon;
 			rightWeaponScript = weapon.GetComponent<Weapon>();
+			rightWeaponScript.playerWhoIsHolding = playerColliderForEnemyAttacker;
 			mastInteraction.emptyRightHand = false;
 			rightHandIsInteractable = ( rightWeaponScript.data.type == WeaponData.WeaponType.Melee ) ? false : true;
 			if ( rightWeaponScript.data.type == WeaponData.WeaponType.Punt )

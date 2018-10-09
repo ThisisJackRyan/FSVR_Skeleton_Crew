@@ -25,6 +25,7 @@ public class Enemy : NetworkBehaviour {
 	public bool tutorialGuard = false;
     public bool rangedUnit = false;
     public GameObject rangedTeleTarget;
+	public PrimaryItemType[] primaryItemTypes;
 	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
     [SyncVar] public GameObject boardingPartyShip;
 
@@ -99,18 +100,18 @@ public class Enemy : NetworkBehaviour {
 
 	private void Start() {
 
-        //Opsive.ThirdPersonController.EventHandler.RegisterEvent("OnHealthAmountChange", PlayHitParticles);
+		//Opsive.ThirdPersonController.EventHandler.RegisterEvent("OnHealthAmountChange", PlayHitParticles);
 
-        if (!isServer) {
-            if (boardingPartyShip) {
-                transform.parent = boardingPartyShip.transform;
-            }
+		if (!isServer) {
+			if (boardingPartyShip) {
+				transform.parent = boardingPartyShip.transform;
+			}
 
-            return;
-        }
-        
-        GetComponent<Inventory>().EquipItem(Random.Range(0, GetComponent<Inventory>().DefaultLoadout.Length));
-
+			return;
+		}
+		int temp = Random.Range(0, primaryItemTypes.Length);
+		GetComponent<Inventory>().EquipItem(primaryItemTypes[temp]);
+		GetComponent<BehaviorTree>().SetVariableValue("weaponType", primaryItemTypes[temp]);
         //RpcEquipItem(itemToEquip);
 
     }
@@ -141,7 +142,7 @@ public class Enemy : NetworkBehaviour {
 				// todo: test that enemies are only being damaged by melee weapons being held by player
 				if (other.gameObject.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
 					canBeDamaged = false;
-                    GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
+                    GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime), other.gameObject.GetComponent<Weapon>().playerWhoIsHolding);
 					Invoke("AllowDamage", 1f);
 				}
 			}
