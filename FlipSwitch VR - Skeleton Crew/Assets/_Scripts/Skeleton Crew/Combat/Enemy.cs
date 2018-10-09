@@ -110,7 +110,7 @@ public class Enemy : NetworkBehaviour {
 			return;
 		}
 		int temp = Random.Range(0, primaryItemTypes.Length);
-		GetComponent<Inventory>().EquipItem(primaryItemTypes[temp]);
+		//GetComponent<Inventory>().EquipItem(primaryItemTypes[temp]);
 		GetComponent<BehaviorTree>().SetVariableValue("weaponType", primaryItemTypes[temp]);
         //RpcEquipItem(itemToEquip);
 

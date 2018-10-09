@@ -102,9 +102,9 @@ public class PathFollower : NetworkBehaviour {
 
 			GameObject go = Instantiate(crystalDeathParticles, g.transform.position, Quaternion.identity);
 			NetworkServer.Spawn(go);
-		} else {
-			print("im not the server, but destroy crystal was called, should have spawned fragments");
-		}
+		} //else {
+		//	print("im not the server, but destroy crystal was called, should have spawned fragments");
+		//}
 	}
 
 

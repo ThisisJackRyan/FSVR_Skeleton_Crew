@@ -109,7 +109,7 @@ public class HatchActivator : NetworkBehaviour {
         if (!isServer)
             return;
 
-        if (other.gameObject.GetComponentInParent<MastInteraction>() && active) {
+        if (other.gameObject.GetComponent<GrabWeaponHand>() && active) {
             timer += Time.deltaTime;
 
             if (timer >= 1) {
@@ -121,10 +121,15 @@ public class HatchActivator : NetworkBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
+        print("trigger entered hatch");
         if (!isServer)
             return;
 
-        if (other.gameObject.GetComponentInParent<MastInteraction>() && !active) {
+        print("server trigger");
+
+        if (other.gameObject.GetComponent<GrabWeaponHand>() && !active) {
+            print("other has grabweaponhand");
+
             timer = 0;
             active = true;
         }
@@ -134,6 +139,7 @@ public class HatchActivator : NetworkBehaviour {
         if (!isServer)
             return;
 
+        timer = 0;
         active = false;
     }
 
