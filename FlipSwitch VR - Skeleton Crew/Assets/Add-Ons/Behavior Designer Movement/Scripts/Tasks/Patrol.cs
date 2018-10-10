@@ -33,6 +33,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
                 }
             }
             waypointReachedTime = -1;
+            Debug.Log("setting initial waypoint");
             SetDestination(Target());
         }
 
@@ -43,6 +44,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
                 return TaskStatus.Failure;
             }
             if (HasArrived()) {
+                Debug.Log("has arrived. should doing logic to set new waypoint");
                 if (waypointReachedTime == -1) {
                     waypointReachedTime = Time.time;
                 }
@@ -60,10 +62,17 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
                             waypointIndex = newWaypointIndex;
                         }
                     } else {
+                        Debug.Log("setting the waypoint index");
                         waypointIndex = (waypointIndex + 1) % waypoints.Value.Count;
                     }
+                    Debug.Log("should be setting new waypoint");
                     SetDestination(Target());
                     waypointReachedTime = -1;
+                }
+            } else {
+                if (navMeshAgent.remainingDistance == float.PositiveInfinity) {
+                    Debug.LogWarning("distance is inifinity, setting new destination");
+                    SetDestination(transform.position + transform.forward);
                 }
             }
 
@@ -83,7 +92,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
         public override void OnReset()
         {
             base.OnReset();
-
+            Debug.Log("has been reset for some reason");
             randomPatrol = false;
             waypointPauseDuration = 0;
             waypoints = null;
