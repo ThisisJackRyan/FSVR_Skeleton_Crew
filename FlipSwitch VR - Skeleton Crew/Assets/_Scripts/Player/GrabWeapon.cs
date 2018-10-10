@@ -416,8 +416,8 @@ public class GrabWeapon : NetworkBehaviour {
 			leftWeaponGameObj.GetComponent<Weapon>().playerWhoHolstered = null;
 
 			leftWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = null;
-			//leftWeaponGameObj.GetComponent<Rigidbody>().isKinematic = false;
-			leftWeaponGameObj = null;
+            leftWeaponGameObj.GetComponent<Rigidbody>().isKinematic = false;
+            leftWeaponGameObj = null;
 			weaponInteraction.UnassignWeapon( side );
 
 			if ( isLocalPlayer ) {
@@ -430,8 +430,8 @@ public class GrabWeapon : NetworkBehaviour {
 			rightWeaponGameObj.GetComponent<Weapon>().playerWhoHolstered = null;
 
 			rightWeaponGameObj.GetComponent<ObjectPositionLock>().posPoint = null;
-			//rightWeaponGameObj.GetComponent<Rigidbody>().isKinematic = false;
-			rightWeaponGameObj = null;
+            rightWeaponGameObj.GetComponent<Rigidbody>().isKinematic = false;
+            rightWeaponGameObj = null;
 			weaponInteraction.UnassignWeapon( side );
 
 			if ( isLocalPlayer ) {
