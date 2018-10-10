@@ -139,7 +139,7 @@ public class Captain : SerializedNetworkBehaviour {
         DisableFirePrompt();
         DisableRatHatches();
         DisableRopes();
-        //DisableGuards();
+        SpawnGuards();
 
         eventTimes = new Dictionary<AudioEventType, float>();
         eventTimes.Add(AudioEventType.Cannon, Time.timeSinceLevelLoad);
