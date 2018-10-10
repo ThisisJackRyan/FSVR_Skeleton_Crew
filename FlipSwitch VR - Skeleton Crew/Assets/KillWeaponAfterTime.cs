@@ -48,8 +48,9 @@ public class KillWeaponAfterTime : NetworkBehaviour {
 		}
 
 		if ( !enterTimes.ContainsKey( other.gameObject ) ) {
-			Debug.LogWarning("Somehow " +  other.gameObject.name + " is tagged weapon, but was not added to the enter times dictionary.");
-			return;
+			Debug.LogWarning("Somehow " +  other.gameObject.name + " is tagged weapon, but was not added to the enter times dictionary. adding it now. should only be weapons that were holstered and player died");
+            enterTimes.Add(other.gameObject, Time.time);
+            return;
 		} else {
 			if((enterTimes[other.gameObject] + timeToKill) <= Time.time ) {
 				NetworkServer.Destroy( other.transform.root.gameObject );

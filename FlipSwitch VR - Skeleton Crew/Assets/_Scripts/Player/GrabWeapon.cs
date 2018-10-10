@@ -57,17 +57,22 @@ public class GrabWeapon : NetworkBehaviour {
 			weaponInRightHolster.GetComponent<ObjectPositionLock>().posPoint = null;
 			weaponInRightHolster.GetComponent<ObjectPositionLock>().posOffset = Vector3.zero;
 			weaponInRightHolster.GetComponent<ObjectPositionLock>().rotOffset = Quaternion.Euler( Vector3.zero );
-			if (isServer) {
+            weaponInRightHolster.GetComponent<Weapon>().playerWhoHolstered = null;
+
+
+            //if (isServer) {
 				weaponInRightHolster.GetComponent<Rigidbody>().isKinematic = false;
-			}
+			//}
 		}
 		if ( weaponInLeftHolster ) {
 			weaponInLeftHolster.GetComponent<ObjectPositionLock>().posPoint = null;
 			weaponInLeftHolster.GetComponent<ObjectPositionLock>().posOffset = Vector3.zero;
 			weaponInLeftHolster.GetComponent<ObjectPositionLock>().rotOffset = Quaternion.Euler( Vector3.zero );
-			if (isServer) {
+            weaponInLeftHolster.GetComponent<Weapon>().playerWhoHolstered = null;
+
+            //if (isServer) {
 				weaponInLeftHolster.GetComponent<Rigidbody>().isKinematic = false;
-			}
+			//}
 		}
 
 		if (isServer) {
