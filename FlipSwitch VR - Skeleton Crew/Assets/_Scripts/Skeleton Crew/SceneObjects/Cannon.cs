@@ -13,6 +13,7 @@ public class Cannon : NetworkBehaviour {
 	public float minAngle, maxAngle;
 	public Transform[] aimingNodes;
 	public AudioClip aimClip;
+    public Animator cannonBarrelAnimator;
 
 	[SyncVar( hook = "OnFiringChange" )]
 	private bool isFiring;
@@ -45,7 +46,6 @@ public class Cannon : NetworkBehaviour {
 		RpcPlayFuse();
 
 	}
-
 
 	[ClientRpc]
 	public void RpcPlayAim() {
@@ -88,6 +88,8 @@ public class Cannon : NetworkBehaviour {
 		Invoke( "ReloadCannon", 3f );
 		GetComponent<AudioSource>().clip = fireSound;
 		GetComponent<AudioSource>().Play();
+        cannonBarrelAnimator.SetTrigger("Fire");
+
 	}
 
 	private void ReloadCannon() {
