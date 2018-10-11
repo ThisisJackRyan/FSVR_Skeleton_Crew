@@ -1,10 +1,11 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Networking;
-
+using Random = UnityEngine.Random;
 
 public class EncounterNode : MonoBehaviour {
-	public GameObject prefabToSpawn;
+	public GameObject rangedPrefabToSpawn;
+    public GameObject meleePrefabToSpawn;
 	[Tooltip("OPTIONAL; if not assigned will use this transform.")]
 	public Transform spawnPos;
 
@@ -12,7 +13,19 @@ public class EncounterNode : MonoBehaviour {
         if (spawnPos == null) {
             spawnPos = transform;
         }
-
-        GetComponentInParent<EncounterSpawner>().SpawnEncounter(prefabToSpawn, spawnPos);
+        if (NumberOfPlayerHolder.instance.numberOfPlayers <= 2) {
+            if (VariableHolder.instance.numRangedUnits > 2) {
+                int rand = Random.Range(0, 100);
+                if (rand <= 49) {
+                    GetComponentInParent<EncounterSpawner>().SpawnEncounter(rangedPrefabToSpawn, spawnPos);
+                } else {
+                    GetComponentInParent<EncounterSpawner>().SpawnEncounter(meleePrefabToSpawn, spawnPos);
+                }
+            } else {
+                GetComponentInParent<EncounterSpawner>().SpawnEncounter(rangedPrefabToSpawn, spawnPos);
+            }
+        } else {
+            GetComponentInParent<EncounterSpawner>().SpawnEncounter(rangedPrefabToSpawn, spawnPos);
+        }
 	}
 }
