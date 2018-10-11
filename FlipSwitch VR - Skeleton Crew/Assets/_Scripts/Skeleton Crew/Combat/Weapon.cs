@@ -54,12 +54,12 @@ public class Weapon : NetworkBehaviour {
         if (ammo-- <= 0) {  //decrements after check
 			//print("out of ammo");
 			GetComponent<AudioSource>().clip = data.outOfAmmoSound;
-			if (owningPlayerCannonScript.isLocalPlayer) {
+			if (playerWhoIsHolding.GetComponentInParent<Player>().isLocalPlayer) {
 				Controller.PlayHaptics(isLeft, hapticSize);
 			}
 
 		} else {
-            if (owningPlayerCannonScript.isLocalPlayer) {
+            if (playerWhoIsHolding.GetComponentInParent<Player>().isLocalPlayer) {
                 Controller.PlayHaptics( isLeft, hapticSize );
 			}
 

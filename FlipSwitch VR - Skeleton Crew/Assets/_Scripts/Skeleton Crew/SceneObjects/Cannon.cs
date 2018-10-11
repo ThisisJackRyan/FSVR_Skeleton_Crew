@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public class Cannon : NetworkBehaviour {
@@ -75,6 +76,7 @@ public class Cannon : NetworkBehaviour {
 		return isFiring;
 	}
 
+    [Button]
 	public void CreateCannonBall() {
 		if ( !isReloaded ) {
 			return;
@@ -92,9 +94,24 @@ public class Cannon : NetworkBehaviour {
 
 	}
 
-	private void ReloadCannon() {
+    public void TriggerReload() {
+        print("received anim event to reload");
+        if (assignedSlave.GetHealth() > 0) {
+            assignedSlave.PlayReload();
+        } else {
+            print("reload called but rat is dead");
+            NeedsReloaded = true;
+        }
+    }
+
+    public bool NeedsReloaded = false;
+
+    public Ratman assignedSlave;
+
+    private void ReloadCannon() {
 		isFiring = false;
 		isReloaded = true;
+        NeedsReloaded = false;
 	}
 
 	public int indexOfFirstGrabbed = -1; //only being set on local player

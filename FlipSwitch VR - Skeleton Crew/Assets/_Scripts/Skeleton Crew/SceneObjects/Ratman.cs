@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using BehaviorDesigner.Runtime;
+using UnityEngine.AI;
 
 public class Ratman : NetworkBehaviour {
 
@@ -11,6 +12,9 @@ public class Ratman : NetworkBehaviour {
 	public bool isOnTheLeft;
 	int maxHealth = 100;
     public GameObject[] hitParticles;
+    public Transform reloadMarker;
+    public Animator cannonBarrel;
+    
 
     public AudioClip deathSound;
 	[ClientRpc]
@@ -21,7 +25,7 @@ public class Ratman : NetworkBehaviour {
 
 		GetComponent<AudioSource>().PlayOneShot( deathSound );
 	}
-
+    
 	void OnHealthChange( int n ) {
 		if ( n < health ) {
 			if ( n >= 0 ) {
@@ -73,6 +77,48 @@ public class Ratman : NetworkBehaviour {
 
     }
 
+    public void PlayReload() {
+        //move to origin
+        StartCoroutine("MoveToPositionThenReload");
+        //play anim and tell cannonbarrel to play
+
+    }
+
+    IEnumerator MoveToPositionThenReload() {
+        GetComponentInChildren<NavMeshAgent>().SetDestination(reloadMarker.position);
+        while (!TestAgent()) {
+            yield return new WaitForEndOfFrame();
+        }
+
+        GetComponent<Animator>().SetTrigger("Reload");
+        cannonBarrel.SetTrigger("Reload");
+    }
+
+    IEnumerator CheckIfReloadNeeded() {
+        while ((bool)rat.GetComponent<BehaviorTree>().GetVariable("MoveToCannon").GetValue()) {
+            yield return new WaitForEndOfFrame();
+        }
+
+        print("move to cannon is false, checking if cannon needs reloaded");
+
+        if(cannonBarrel.GetComponentInParent<Cannon>().NeedsReloaded) {
+            print("cannon needs reloaded, playing reload");
+            PlayReload();
+        }
+    }
+
+    bool TestAgent() {   
+        if (!GetComponentInChildren<NavMeshAgent>().pathPending) {
+            if (GetComponentInChildren<NavMeshAgent>().remainingDistance <= GetComponentInChildren<NavMeshAgent>().stoppingDistance) {
+                if (!GetComponentInChildren<NavMeshAgent>().hasPath || GetComponentInChildren<NavMeshAgent>().velocity.sqrMagnitude == 0f) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 	public AudioClip[] hitSounds;
 
 	[ClientRpc]
@@ -94,6 +140,7 @@ public class Ratman : NetworkBehaviour {
 		rat.transform.position = spawnPos;
 		rat.SetActive( true );
 		rat.GetComponent<BehaviorTree>().SetVariableValue( "MoveToCannon", true );
+        StartCoroutine("CheckIfReloadNeeded");
 		// ratAnim.enabled = true;
 		Captain.ratmenRespawned[this] = true;
 		Captain.instance.CheckRatmenRespawns();
