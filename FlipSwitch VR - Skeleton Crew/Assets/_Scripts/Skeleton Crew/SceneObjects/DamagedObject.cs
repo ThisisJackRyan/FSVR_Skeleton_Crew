@@ -106,7 +106,7 @@ public class DamagedObject : NetworkBehaviour {
 
 	}
 
-	public void Start() {
+	public void InitDamagedObject() {
 		if ( isServer ) {
 			ChangeHealth( maxHealth );
 			Captain.damagedObjectsRepaired.Add( this, false );

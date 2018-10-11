@@ -95,7 +95,9 @@ public class Ratman : NetworkBehaviour {
     }
 
     IEnumerator CheckIfReloadNeeded() {
+        print("che4ck if reload started");
         while ((bool)rat.GetComponent<BehaviorTree>().GetVariable("MoveToCannon").GetValue()) {
+            print("move to cannon is true");
             yield return new WaitForEndOfFrame();
         }
 
@@ -104,6 +106,8 @@ public class Ratman : NetworkBehaviour {
         if(cannonBarrel.GetComponentInParent<Cannon>().NeedsReloaded) {
             print("cannon needs reloaded, playing reload");
             PlayReload();
+        } else {
+            print("cannon barrel says: " + cannonBarrel.GetComponentInParent<Cannon>().NeedsReloaded);
         }
     }
 

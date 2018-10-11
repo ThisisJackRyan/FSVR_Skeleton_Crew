@@ -147,6 +147,10 @@ public class Captain : SerializedNetworkBehaviour {
         eventTimes.Add(AudioEventType.RepairDeck, Time.timeSinceLevelLoad);
         eventTimes.Add(AudioEventType.Respawn, Time.timeSinceLevelLoad);
 
+        foreach (var d in actualCannons) {
+            d.GetComponent<DamagedObject>().InitDamagedObject();
+        }
+
     }
 
 
