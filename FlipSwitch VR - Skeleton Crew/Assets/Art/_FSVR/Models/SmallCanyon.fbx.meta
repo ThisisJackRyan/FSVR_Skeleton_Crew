@@ -1,26 +1,15 @@
 fileFormatVersion: 2
-guid: 33d769e150df3fb41ba0bc92f38d64f8
+guid: ca0e6ea0ca0a6ed42b70736a717c89fc
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Low_Poly_Ground
     400000: //RootNode
-    400002: Low_Poly_Ground
-    2100000: Bottomless_Canyon
-    2100002: Bottomless_Canyon1
+    2100000: Bottomless_Canyon1
     2300000: //RootNode
-    2300002: Low_Poly_Ground
     3300000: //RootNode
-    3300002: Low_Poly_Ground
     4300000: Bottemless_Canyon
-    4300002: Low_Poly_Ground
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Bottomless_Canyon
-    second: {fileID: 2100000, guid: 45cd950f6ec662f4a9e98fd1450d868f, type: 2}
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
