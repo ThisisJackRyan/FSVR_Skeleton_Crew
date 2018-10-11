@@ -43,6 +43,7 @@ public class PathFollower : NetworkBehaviour {
 	public GameObject[] firstEncounters, secondEncounters, thirdEncounters, tutorialSpawns;
 
 	public GameObject[] ratkinSpawnPositions;
+    public Transform crystalRoot;
 
 	[SerializeField]
 	EncounterStage currentStage;
@@ -95,18 +96,31 @@ public class PathFollower : NetworkBehaviour {
 		return true;
 	}
 
-	internal void DestroyCrystal(GameObject g) {
+	internal void DestroyCrystal(int i) {
 		if (isServer) {
 			//NetworkServer.Destroy( g );
 			print("i am the server, destroy crystal was called, should have spawned fragments");
 
-			GameObject go = Instantiate(crystalDeathParticles, g.transform.position, Quaternion.identity);
+			GameObject go = Instantiate(crystalDeathParticles, crystalRoot.GetChild(i).position, Quaternion.identity);
 			NetworkServer.Spawn(go);
+
+            Destroy(crystalRoot.GetChild(i).gameObject);
+            RpcDestroyCrystalOnClient(i);
+
 		} //else {
 		//	print("im not the server, but destroy crystal was called, should have spawned fragments");
 		//}
 	}
 
+    [ClientRpc]
+    internal void RpcDestroyCrystalOnClient(int i) {
+        if (isServer) {
+            return;
+        }
+
+        Destroy(crystalRoot.GetChild(i).gameObject);
+
+    }
 
 	public AudioClip breakClip, mutinyClip, meteorClip;
 	void StartFirstBreak() {

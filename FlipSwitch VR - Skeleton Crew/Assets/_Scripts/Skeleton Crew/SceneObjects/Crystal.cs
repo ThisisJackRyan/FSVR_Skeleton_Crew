@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,11 +45,13 @@ public class Crystal : MonoBehaviour {
 		//foreach (var t in otherCrystals) {
 		//	transform.root.GetComponent<PathFollower>().DestroyCrystal( t.gameObject );
 		//}
-		transform.root.GetComponent<PathFollower>().DestroyCrystal( gameObject );
+		transform.root.GetComponent<PathFollower>().DestroyCrystal( transform.GetSiblingIndex() );
 
-		Destroy( gameObject ); //todo fully network this
+		//Destroy( gameObject ); //todo fully network this
 	}
 
-    //private void OnDestroy() {
-    //}
+    [Button]
+    private void DestroyMe() {
+        transform.root.GetComponent<PathFollower>().DestroyCrystal(transform.GetSiblingIndex());
+    }
 }
