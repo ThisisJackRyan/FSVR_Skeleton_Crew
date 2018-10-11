@@ -15,7 +15,6 @@ public class Weapon : NetworkBehaviour {
 	[SyncVar(hook = "OnAmmoNumChange")] int ammo = -1;
 	float lastShottime = 0;
 	
-
 	public bool IsFullOnAmmo {
 		get {
 			//if ammo is the same as data.ammo then return true
@@ -55,13 +54,13 @@ public class Weapon : NetworkBehaviour {
         if (ammo-- <= 0) {  //decrements after check
 			//print("out of ammo");
 			GetComponent<AudioSource>().clip = data.outOfAmmoSound;
-			if (!isServer) {
+			if (owningPlayerCannonScript.isLocalPlayer) {
 				Controller.PlayHaptics(isLeft, hapticSize);
 			}
 
 		} else {
-			if ( !isServer ) {
-				Controller.PlayHaptics( isLeft, hapticSize );
+            if (owningPlayerCannonScript.isLocalPlayer) {
+                Controller.PlayHaptics( isLeft, hapticSize );
 			}
 
 			lastShottime = Time.time;
