@@ -87,7 +87,7 @@ public class Cannon : NetworkBehaviour {
 		GameObject bullet = Instantiate( projectile, spawnPos.position, Quaternion.identity );
 		Instantiate( smoke, spawnPos.position, Quaternion.identity );
 		bullet.GetComponent<Rigidbody>().velocity = spawnPos.forward * power;
-		Invoke( "ReloadCannon", 3f );
+		//Invoke( "ReloadCannon", 3f );
 		GetComponent<AudioSource>().clip = fireSound;
 		GetComponent<AudioSource>().Play();
         cannonBarrelAnimator.SetTrigger("Fire");
