@@ -139,7 +139,7 @@ public class Captain : SerializedNetworkBehaviour {
         DisableFirePrompt();
         DisableRatHatches();
         DisableRopes();
-        //DisableGuards();
+        SpawnGuards();
 
         eventTimes = new Dictionary<AudioEventType, float>();
         eventTimes.Add(AudioEventType.Cannon, Time.timeSinceLevelLoad);
@@ -406,18 +406,21 @@ public class Captain : SerializedNetworkBehaviour {
     public Transform[] guardPositions;
     public GameObject guardPrefab;
 
-    public void StartTutorial() {
-        if (!isServer) {
-            return;
-        }
-        ////print("start tutorial");
-
+    public void SpawnGuards() {
         for (int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++) {
             GameObject g = Instantiate(guardPrefab, guardPositions[i].position, guardPositions[i].rotation);
             g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("target", VariableHolder.instance.players[i]);
             enemiesKilled.Add(g.GetComponent<Enemy>(), false);
             NetworkServer.Spawn(g);
         }
+    }
+
+    public void StartTutorial() {
+        if (!isServer) {
+            return;
+        }
+        ////print("start tutorial");
+
 
         ambientSource.enabled = true;
         RpcEnableAmbient();

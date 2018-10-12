@@ -40,7 +40,7 @@ public class PathFollower : NetworkBehaviour {
 	public Transform shipTransform;
 	[Tooltip("second encounters will be the object that spawns the meteor prefab, not the prefab itself. third encounters is for ratmen." +
 		"it again will have a specific object that tells rats to spawn. will prolly be changed tho. ")]
-	public GameObject[] firstEncounters, secondEncounters, thirdEncounters, tutorialSpawns;
+	public GameObject[] firstEncountersRanged, firstEncountersMelee, secondEncounters, thirdEncounters, tutorialSpawns;
 
 	public GameObject[] ratkinSpawnPositions;
     public Transform crystalRoot;
@@ -264,8 +264,20 @@ public class PathFollower : NetworkBehaviour {
                     ChangeSpeed(false);
 					return;
 				}
-
-				SpawnWithPortal(firstEncounters);
+                if (NumberOfPlayerHolder.instance.numberOfPlayers <= 2) {
+                    if (VariableHolder.instance.numRangedUnits > 2) {
+                        int rand = Random.Range(0, 100);
+                        if (rand <= 49) {
+                            SpawnWithPortal(firstEncountersRanged);
+                        } else {
+                            SpawnWithPortal(firstEncountersMelee);
+                        }
+                    } else {
+                        SpawnWithPortal(firstEncountersRanged);
+                    }
+                } else {
+                    SpawnWithPortal(firstEncountersRanged);
+                }
 				break;
 			case EncounterStage.Second:
 				//print( "hit node during second" );
