@@ -59,8 +59,8 @@ public class FSVRPlayer : NetworkBehaviour {
 				item.CalibratePlayer();
 			}
 
-            FindObjectOfType<CaptainDialogueLobby>().enabled = true;
-            FindObjectOfType<Captain>().Init();
+            //FindObjectOfType<CaptainDialogueLobby>().enabled = true;
+            //FindObjectOfType<Captain>().Init();
             StartCoroutine("FadeIn");
 		}
 
