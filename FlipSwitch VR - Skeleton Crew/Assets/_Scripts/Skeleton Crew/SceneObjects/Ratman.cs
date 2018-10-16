@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using BehaviorDesigner.Runtime;
 using UnityEngine.AI;
+//using System;
 
 public class Ratman : NetworkBehaviour {
 
@@ -54,6 +55,15 @@ public class Ratman : NetworkBehaviour {
 			KillRatman();
 	}
 
+    public float reloadTimer = 0.5f;
+    internal void StartWaitToReload() {
+        Invoke("StartReload", reloadTimer);
+    }
+
+    void StartReload() {
+        GetComponent<Animator>().SetTrigger("Reload");
+    }
+
     private void TurnOffHit() {
         for (int i = 0; i < hitParticles.Length; i++) {
             hitParticles[i].SetActive(false);
@@ -77,6 +87,15 @@ public class Ratman : NetworkBehaviour {
 
     }
 
+    public GameObject magicParticles;
+    public void EnableMagicParticles() {
+        magicParticles.SetActive(true);
+    }
+
+    public void FireMagicParticles() {
+        //turn off magic and spawn spell
+    }
+
     public void PlayReload() {
         //move to origin
         StartCoroutine("MoveToPositionThenReload");
@@ -90,8 +109,8 @@ public class Ratman : NetworkBehaviour {
             yield return new WaitForEndOfFrame();
         }
 
-        GetComponent<Animator>().SetTrigger("Reload");
-        cannonBarrel.SetTrigger("Reload");
+        GetComponent<Animator>().SetTrigger("CannonFired");
+        //cannonBarrel.SetTrigger("Reload");
     }
 
     IEnumerator CheckIfReloadNeeded() {

@@ -104,6 +104,7 @@ public class Cannon : NetworkBehaviour {
         }
     }
 
+    [SyncVar]
     public bool NeedsReloaded = false;
 
     public Ratman assignedSlave;

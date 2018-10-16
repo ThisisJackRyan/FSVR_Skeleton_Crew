@@ -296,12 +296,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Ratkin_Skeleton
-    second: {fileID: 2100000, guid: 0745fd56101fb904c8310c0a938b194a, type: 2}
+    second: {fileID: 2100000, guid: 2f3f61945278d26428ee6d46b9acf449, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Skaven_slave_weapon
-    second: {fileID: 2100000, guid: 886aee62f9a181249afd1f370a00441e, type: 2}
+    second: {fileID: 2100000, guid: fb47e2f15287e6e4a9e5be5c8be875ef, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -1034,7 +1034,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: EnableMagicParticles
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
