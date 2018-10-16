@@ -49,6 +49,7 @@ public class TeleportOneAtATime : Action {
 			crewman.GetComponent<Enemy>().UnParentMe();
 			crewman.GetComponent<Behavior>().SetVariableValue( "Teleported", true );
 			crewman.GetComponent<Enemy>().TellCaptainIveBoarded();
+            crewman.GetComponent<Rigidbody>().useGravity = true;
             Debug.Log("crewman should be teleported");
             yield return new WaitForSeconds(timeBetweenTeleports.Value);
 
@@ -57,6 +58,7 @@ public class TeleportOneAtATime : Action {
         transform.parent = null;
         GetComponent<Enemy>().UnParentMe();
         transform.position = teleportTargets.Value.ToArray()[Random.Range(0, teleportTargets.Value.Count)].transform.position;
+        GetComponent<Rigidbody>().useGravity = true;
         //Debug.Log("captain should be teleported");
     }
 }
