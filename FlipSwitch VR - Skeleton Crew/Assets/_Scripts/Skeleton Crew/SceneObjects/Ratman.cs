@@ -101,8 +101,8 @@ public class Ratman : NetworkBehaviour {
     public void FireMagicParticles() {
         //turn off magic and spawn spell
         magicParticles.SetActive(false);
-            var g = Instantiate(spellParticles, magicParticles.transform.position, Quaternion.identity);
         if (isServer) {
+            var g = Instantiate(spellParticles, magicParticles.transform.position, Quaternion.identity);
             NetworkServer.Spawn(g);
         }
     }

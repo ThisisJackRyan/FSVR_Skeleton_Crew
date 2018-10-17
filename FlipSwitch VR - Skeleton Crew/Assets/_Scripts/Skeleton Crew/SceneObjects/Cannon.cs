@@ -121,8 +121,8 @@ public class Cannon : NetworkBehaviour {
     public void ReloadCannon() {
         print("Reloading");
         //spawn effect
-            var g = Instantiate(reloadEffect, reloadEffectPlacement.position, Quaternion.identity);
         if (isServer) {
+            var g = Instantiate(reloadEffect, reloadEffectPlacement.position, Quaternion.identity);
             NetworkServer.Spawn(g);            
         }
 
