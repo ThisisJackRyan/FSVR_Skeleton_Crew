@@ -15,9 +15,10 @@ public class Ratman : NetworkBehaviour {
     public GameObject[] hitParticles;
     public Transform reloadMarker;
     public Animator cannonBarrel;
-    
-
+	public GameObject deathParticles;
     public AudioClip deathSound;
+    public AudioClip[] hitSounds;
+
 	[ClientRpc]
 	private void RpcPlayDeathSound() {
 		if ( isServer ) {
@@ -87,19 +88,28 @@ public class Ratman : NetworkBehaviour {
 
     }
 
-    public GameObject magicParticles;
+    public GameObject magicParticles, spellParticles;
     public void EnableMagicParticles() {
         magicParticles.SetActive(true);
+
+        foreach (var p in magicParticles.GetComponentsInChildren<ParticleSystem>()) {
+            p.Simulate(0, true, true);
+            p.Play();
+        }
     }
 
     public void FireMagicParticles() {
         //turn off magic and spawn spell
+        magicParticles.SetActive(false);
+            var g = Instantiate(spellParticles, magicParticles.transform.position, Quaternion.identity);
+        if (isServer) {
+            NetworkServer.Spawn(g);
+        }
     }
 
     public void PlayReload() {
-        //move to origin
-        StartCoroutine("MoveToPositionThenReload");
-        //play anim and tell cannonbarrel to play
+        //StartCoroutine("MoveToPositionThenReload");
+        GetComponent<Animator>().SetTrigger("CannonFired");
 
     }
 
@@ -142,9 +152,7 @@ public class Ratman : NetworkBehaviour {
         return false;
     }
 
-	public AudioClip[] hitSounds;
-
-	[ClientRpc]
+    [ClientRpc]
 	private void RpcPlayHitSound( int rng ) {
 		if ( isServer ) {
 			return;
@@ -204,9 +212,7 @@ public class Ratman : NetworkBehaviour {
 		return health;
 	}
 
-	public GameObject deathParticles;
-
-	void KillRatman() {
+    void KillRatman() {
 		rat.SetActive( false );
 		//ratAnim.enabled = false;
 		HatchActivator.EnableHatch( isOnTheLeft );

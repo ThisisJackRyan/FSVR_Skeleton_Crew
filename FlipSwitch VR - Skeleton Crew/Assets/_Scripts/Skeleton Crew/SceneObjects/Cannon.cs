@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -16,7 +17,8 @@ public class Cannon : NetworkBehaviour {
 	public AudioClip aimClip;
     public Animator cannonBarrelAnimator;
 
-	[SyncVar( hook = "OnFiringChange" )]
+
+    [SyncVar( hook = "OnFiringChange" )]
 	private bool isFiring;
 	[SyncVar( hook = "OnReload" )]
 	private bool isReloaded = true;
@@ -104,12 +106,26 @@ public class Cannon : NetworkBehaviour {
         }
     }
 
+    internal void Reload() {
+        throw new NotImplementedException();
+    }
+
     [SyncVar]
     public bool NeedsReloaded = false;
 
     public Ratman assignedSlave;
 
-    private void ReloadCannon() {
+
+    public GameObject reloadEffect;
+    public Transform reloadEffectPlacement;
+    public void ReloadCannon() {
+        print("Reloading");
+        //spawn effect
+            var g = Instantiate(reloadEffect, reloadEffectPlacement.position, Quaternion.identity);
+        if (isServer) {
+            NetworkServer.Spawn(g);            
+        }
+
 		isFiring = false;
 		isReloaded = true;
         NeedsReloaded = false;
