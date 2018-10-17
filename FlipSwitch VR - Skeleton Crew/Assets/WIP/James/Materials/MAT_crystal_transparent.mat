@@ -8,8 +8,8 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: MAT_crystal_transparent
   m_Shader: {fileID: 47, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _NORMALMAP _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-  m_LightmapFlags: 4
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _EMISSION _NORMALMAP _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
@@ -107,10 +107,10 @@ Material:
     - _FresnelScale: 0.75
     - _GerstnerIntensity: 1
     - _GlossMapScale: 0.375
-    - _Glossiness: 0.15
+    - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _LightingEnabled: 0
-    - _Metallic: 0.5
+    - _Metallic: 0.75
     - _Mode: 3
     - _OcclusionStrength: 1
     - _Parallax: 0.02
@@ -130,10 +130,10 @@ Material:
     - _BumpDirection: {r: 1, g: 1, b: -1, a: 1}
     - _BumpTiling: {r: 1, g: 1, b: -2, a: 3}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 0.5660378, g: 0.03470988, b: 0.13535479, a: 0.22352941}
+    - _Color: {r: 0.5660378, g: 0.03470988, b: 0.13535473, a: 0.49019608}
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _DistortParams: {r: 1, g: 1, b: 2, a: 1.15}
-    - _EmissionColor: {r: 0.5, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0.5660378, g: 0.03470988, b: 0.13535485, a: 0.85882354}
     - _Foam: {r: 0.1, g: 0.375, b: 0, a: 0}
     - _GAmplitude: {r: 0.3, g: 0.35, b: 0.25, a: 0.25}
     - _GDirectionAB: {r: 0.3, g: 0.85, b: 0.85, a: 0.25}
