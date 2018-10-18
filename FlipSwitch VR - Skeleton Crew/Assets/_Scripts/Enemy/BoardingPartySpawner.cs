@@ -77,7 +77,7 @@ public class BoardingPartySpawner : NetworkBehaviour {
         //print("set boss enemy boarding party ship to " + boss.GetComponent<Enemy>().boardingPartyShip);
 
         NetworkServer.Spawn(boss);
-        print("network server spawned the boss.");
+        //print("network server spawned the boss.");
     }
 
     private void OnCollisionEnter(Collision other) {

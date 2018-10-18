@@ -151,7 +151,7 @@ public class Enemy : NetworkBehaviour {
             Invoke("AllowDamage", 1f);
         }
 
-		if(other.gameObject.GetComponent<NavMeshAgent>()) {
+		if(other.gameObject.GetComponent<NavMeshAgent>() && GetComponent<NavMeshAgent>()) {
 			if(other.transform.GetSiblingIndex() > transform.GetSiblingIndex()) {
 				myAvoidance = GetComponent<NavMeshAgent>().avoidancePriority;
 				GetComponent<NavMeshAgent>().avoidancePriority = 0;
