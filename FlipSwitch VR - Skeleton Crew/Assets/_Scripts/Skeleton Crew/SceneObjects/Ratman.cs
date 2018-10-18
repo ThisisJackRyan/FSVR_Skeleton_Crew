@@ -75,7 +75,7 @@ public class Ratman : NetworkBehaviour {
     void Start() {
 		VariableHolder.instance.ratmenPositions.Add( gameObject, isOnTheLeft );
 		if ( isServer ) {
-			//  print(name + " enabled server check");
+			//  //print(name + " enabled server check");
 			Captain.ratmenRespawned.Add( this, false );
 			ChangeHealth( health );
 		} else {
@@ -141,19 +141,19 @@ public class Ratman : NetworkBehaviour {
     }
 
     IEnumerator CheckIfReloadNeeded() {
-        print("che4ck if reload started");
+        //print("che4ck if reload started");
         while ((bool)rat.GetComponent<BehaviorTree>().GetVariable("MoveToCannon").GetValue()) {
-            print("move to cannon is true");
+            //print("move to cannon is true");
             yield return new WaitForEndOfFrame();
         }
 
-        print("move to cannon is false, checking if cannon needs reloaded");
+        //print("move to cannon is false, checking if cannon needs reloaded");
 
         if(cannonBarrel.GetComponentInParent<Cannon>().NeedsReloaded) {
-            print("cannon needs reloaded, playing reload");
+            //print("cannon needs reloaded, playing reload");
             CastReload();
         } else {
-            print("cannon barrel says: " + cannonBarrel.GetComponentInParent<Cannon>().NeedsReloaded);
+            //print("cannon barrel says: " + cannonBarrel.GetComponentInParent<Cannon>().NeedsReloaded);
         }
     }
 

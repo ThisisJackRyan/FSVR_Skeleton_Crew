@@ -12,7 +12,7 @@ public class SetInitialVelocity : MonoBehaviour {
 	}
 
     private void OnTriggerEnter(Collider other) {
-        print("hit barrel");
+        //print("hit barrel");
         if (other.tag == "CannonBarrel") {
             other.GetComponentInParent<Cannon>().ReloadCannon();
             Destroy(gameObject);
