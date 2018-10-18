@@ -27,7 +27,7 @@ public class WeaponData : ScriptableObject {
 	public Vector3 heldPosition, holsteredPosition;
 	public Quaternion heldRotation, holsteredRotation;
 
-	public AudioClip firesound, outOfAmmoSound;
+	public AudioClip firesound, outOfAmmoSound, reloadClip;
 
 	#endregion
 

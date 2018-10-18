@@ -83,7 +83,33 @@ public class WeaponInteraction : NetworkBehaviour {
 
 			}
 		}
-	}
+
+        //if (leftHandIsInteractable && Controller.LeftController.GetPressDown(Controller.TouchPad)) {
+        //     if (leftWeaponScript.data.type == WeaponData.WeaponType.Gun) {
+        //        CmdReloadWeapon("left");
+        //    }
+        //}
+
+        //if (rightHandIsInteractable && Controller.RightController.GetPressDown(Controller.TouchPad)) {
+        //    if (rightWeaponScript.data.type == WeaponData.WeaponType.Gun) {
+        //        CmdReloadWeapon("right");
+        //    }
+        //}
+    }
+
+    [Command]
+    private void CmdReloadWeapon(string side) {
+        if (side.Equals("left"))
+            leftWeaponScript.Reload();
+        else
+            rightWeaponScript.Reload();
+        //RpcReloadWeapon(side);
+    }
+
+    //[ClientRpc]
+    //private void RpcReloadWeapon(string side) {
+
+    //}
 
 	[Command]
 	private void CmdFireWeapon(string side ) {

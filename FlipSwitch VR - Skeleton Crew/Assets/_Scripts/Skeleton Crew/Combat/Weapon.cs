@@ -44,9 +44,10 @@ public class Weapon : NetworkBehaviour {
 
 	public void Reload() {
 		ammo = data.ammo;
-	}
+        GetComponent<AudioSource>().PlayOneShot(data.reloadClip);
+    }
 
-	public void SpawnBullet(bool isLeft, ushort hapticSize) {
+    public void SpawnBullet(bool isLeft, ushort hapticSize) {
 		if (lastShottime + data.timeBetweenShots > Time.time) {
 			return;
 		}
