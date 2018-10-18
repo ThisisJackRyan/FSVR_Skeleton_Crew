@@ -130,7 +130,7 @@ public class Cannon : NetworkBehaviour {
     public GameObject reloadEffect;
     public Transform reloadEffectPlacement;
     public void ReloadCannon() {
-        print("Reloading");
+        //print("Reloading");
         //spawn effect
         if (isServer) {
             var g = Instantiate(reloadEffect, reloadEffectPlacement.position, Quaternion.identity);
@@ -146,10 +146,12 @@ public class Cannon : NetworkBehaviour {
 	int angleIncrement = 5;
 
 	public void RotateBarrel( int indexOfNode ) {
-		if ( !isServer )
-			return;
-		//aiming is weird, -5 is the lowest, -45 is the highest. take in as positive and convert min and max to negative for best results
-		if ( indexOfFirstGrabbed >= 0 ) {
+        if (!isServer) {
+            return;
+        }
+
+        //aiming is weird, -5 is the lowest, -45 is the highest. take in as positive and convert min and max to negative for best results
+        if ( indexOfFirstGrabbed >= 0 ) {
 			int raiseSign = ( indexOfNode > indexOfFirstGrabbed ) ? -1 : 1; //if index is greater (closer to back of cannon) then you are raising the cannon
 
 			float barrelRotation = cannonBarrel.localEulerAngles.x;
@@ -158,7 +160,7 @@ public class Cannon : NetworkBehaviour {
 
 			//if (targetAngel <= maxAngle && targetAngel >= minAngle) {
 			//perform rotation
-			print( targetAngle + " is within range, rotate barrel" );
+			//print( targetAngle + " is within range, rotate barrel" );
 			//targetAngle += 360;
 
 			if ( targetAngle >= minAngle && targetAngle <= maxAngle ) {
