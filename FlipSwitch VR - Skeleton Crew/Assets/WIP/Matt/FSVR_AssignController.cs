@@ -11,7 +11,7 @@ public class FSVR_AssignController : MonoBehaviour {
 	void Start () {
         device = Controller.GetById((int)GetComponent<SteamVR_TrackedObject>().index);
         //canvasText = GetComponentInChildren<Text>();
-        Invoke("DestroyIfNotRendering", 0.5f);
+        //Invoke("DestroyIfNotRendering", 0.5f);
     }
 	
 	
