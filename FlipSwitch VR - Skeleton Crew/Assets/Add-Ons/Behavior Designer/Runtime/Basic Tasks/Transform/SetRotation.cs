@@ -30,6 +30,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
                 return TaskStatus.Failure;
             }
 
+            Debug.Log("Should be setting rotation to: " + rotation.Value + " on " + targetTransform.name);
             targetTransform.rotation = rotation.Value;
 
             return TaskStatus.Success;

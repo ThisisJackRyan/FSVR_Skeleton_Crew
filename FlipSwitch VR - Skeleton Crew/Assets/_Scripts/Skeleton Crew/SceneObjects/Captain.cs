@@ -405,6 +405,7 @@ public class Captain : SerializedNetworkBehaviour {
 
     public Transform[] guardPositions;
     public GameObject guardPrefab;
+    public float timeForGuardsToStartAttacking = 4f;
 
     public void SpawnGuards() {
         for (int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++) {
@@ -426,7 +427,11 @@ public class Captain : SerializedNetworkBehaviour {
         RpcEnableAmbient();
 
         TutorialIntro();
-        //EnableGuardsByPlayerCount();
+        Invoke("EnableGuardBehaviors", timeForGuardsToStartAttacking);
+    }
+
+    private void EnableGuardBehaviors() {
+        BehaviorDesigner.Runtime.GlobalVariables.Instance.SetVariableValue("playersOnDeck", true);
     }
 
     [ClientRpc]
