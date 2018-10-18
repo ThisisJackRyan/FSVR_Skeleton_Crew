@@ -89,15 +89,27 @@ public class Cannon : NetworkBehaviour {
 		GameObject bullet = Instantiate( projectile, spawnPos.position, Quaternion.identity );
 		Instantiate( smoke, spawnPos.position, Quaternion.identity );
 		bullet.GetComponent<Rigidbody>().velocity = spawnPos.forward * power;
-		//Invoke( "ReloadCannon", 3f );
-		GetComponent<AudioSource>().clip = fireSound;
+
+        if (isMagicCannon) {
+            Invoke("ReloadCannon", 3f);
+        }
+
+        GetComponent<AudioSource>().clip = fireSound;
 		GetComponent<AudioSource>().Play();
-        cannonBarrelAnimator.SetTrigger("Fire");
+
+        //cannonBarrelAnimator.SetTrigger("Fire");
+
+        GetComponent<NetworkAnimator>().SetTrigger("Fire");
 
 	}
+    public bool isMagicCannon = false;
 
     public void TriggerReload() {
-        print("received anim event to reload");
+        if (!isServer) {
+            return;
+        }
+
+        print("received anim event to reload on server");
         if (assignedSlave.GetHealth() > 0) {
             assignedSlave.PlayReload();
         } else {
@@ -106,15 +118,10 @@ public class Cannon : NetworkBehaviour {
         }
     }
 
-    internal void Reload() {
-        throw new NotImplementedException();
-    }
-
     [SyncVar]
     public bool NeedsReloaded = false;
 
     public Ratman assignedSlave;
-
 
     public GameObject reloadEffect;
     public Transform reloadEffectPlacement;

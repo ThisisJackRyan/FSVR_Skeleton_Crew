@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using BehaviorDesigner.Runtime;
 using UnityEngine.AI;
+using Sirenix.OdinInspector;
 //using System;
 
 public class Ratman : NetworkBehaviour {
@@ -100,17 +101,29 @@ public class Ratman : NetworkBehaviour {
 
     public void FireMagicParticles() {
         //turn off magic and spawn spell
-        magicParticles.SetActive(false);
-        if (isServer) {
-            var g = Instantiate(spellParticles, magicParticles.transform.position, Quaternion.identity);
-            NetworkServer.Spawn(g);
+        if (!isServer) {
+            return;
         }
+
+        magicParticles.SetActive(false);
+        RpcTurnOffMagic();
+        var g = Instantiate(spellParticles, magicParticles.transform.position, Quaternion.identity);
+        NetworkServer.Spawn(g);
+        
+    }
+
+    [ClientRpc]
+    void RpcTurnOffMagic() {
+        if (isServer) {
+            return;
+        }
+        magicParticles.SetActive(false);
     }
 
     public void PlayReload() {
         //StartCoroutine("MoveToPositionThenReload");
-        GetComponent<Animator>().SetTrigger("CannonFired");
-
+        //GetComponent<Animator>().SetTrigger("CannonFired");
+        GetComponentInParent<NetworkAnimator>().SetTrigger("CannonFired");
     }
 
     IEnumerator MoveToPositionThenReload() {
@@ -166,6 +179,7 @@ public class Ratman : NetworkBehaviour {
 			ChangeHealth( maxHealth );
 	}
 
+    [Button]
 	public void Respawn( Vector3 spawnPos ) {
 		ChangeHealth( maxHealth, false );
 		rat.transform.position = spawnPos;
