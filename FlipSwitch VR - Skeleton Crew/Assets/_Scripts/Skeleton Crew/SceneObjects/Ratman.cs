@@ -126,6 +126,10 @@ public class Ratman : NetworkBehaviour {
         GetComponentInParent<NetworkAnimator>().SetTrigger("CannonFired");
     }
 
+    public void CastReload() {
+        GetComponentInParent<NetworkAnimator>().SetTrigger("Reload");
+    }
+
     IEnumerator MoveToPositionThenReload() {
         GetComponentInChildren<NavMeshAgent>().SetDestination(reloadMarker.position);
         while (!TestAgent()) {
@@ -147,7 +151,7 @@ public class Ratman : NetworkBehaviour {
 
         if(cannonBarrel.GetComponentInParent<Cannon>().NeedsReloaded) {
             print("cannon needs reloaded, playing reload");
-            PlayReload();
+            CastReload();
         } else {
             print("cannon barrel says: " + cannonBarrel.GetComponentInParent<Cannon>().NeedsReloaded);
         }
@@ -174,12 +178,17 @@ public class Ratman : NetworkBehaviour {
 		GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
 	}
 
+    [Button]
 	public void KillMe() {
 		if ( isServer )
 			ChangeHealth( maxHealth );
 	}
 
     [Button]
+    public void Respawn() {
+        Respawn(transform.position);
+    }
+
 	public void Respawn( Vector3 spawnPos ) {
 		ChangeHealth( maxHealth, false );
 		rat.transform.position = spawnPos;

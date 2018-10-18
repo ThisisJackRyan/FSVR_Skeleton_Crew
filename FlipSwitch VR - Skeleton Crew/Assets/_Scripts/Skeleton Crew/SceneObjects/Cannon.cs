@@ -114,12 +114,16 @@ public class Cannon : NetworkBehaviour {
             assignedSlave.PlayReload();
         } else {
             print("reload called but rat is dead");
-            NeedsReloaded = true;
+            //NeedsReloaded = true;
         }
     }
 
-    [SyncVar]
-    public bool NeedsReloaded = false;
+    //[SyncVar]
+    public bool NeedsReloaded {
+        get {
+            return !isReloaded;
+        }
+    }
 
     public Ratman assignedSlave;
 
@@ -135,7 +139,7 @@ public class Cannon : NetworkBehaviour {
 
 		isFiring = false;
 		isReloaded = true;
-        NeedsReloaded = false;
+        //NeedsReloaded = false;
 	}
 
 	public int indexOfFirstGrabbed = -1; //only being set on local player
