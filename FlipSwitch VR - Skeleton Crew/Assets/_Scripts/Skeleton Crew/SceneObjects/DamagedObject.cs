@@ -182,8 +182,10 @@ public class DamagedObject : NetworkBehaviour {
 			return;
 		}
 
+		if (index != 0) {
+			SpawnBurst( repairPattern.transform.GetChild( index ).position );
+		}
 
-		SpawnBurst( repairPattern.transform.GetChild( index ).position );
 		RpcDisableNode( index );
 	}
 
