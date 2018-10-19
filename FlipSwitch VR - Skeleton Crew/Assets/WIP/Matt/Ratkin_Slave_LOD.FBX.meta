@@ -247,12 +247,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Skaven_body_C
-    second: {fileID: 2100000, guid: bcb470d01273ec142ac61685ac36ca16, type: 2}
+    second: {fileID: 2100000, guid: 08f2aab6f2d3f754d8a00087bbc5682b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Skaven_slave_weapon
-    second: {fileID: 2100000, guid: 0def121111642eb41a3efee40b24c4c0, type: 2}
+    second: {fileID: 2100000, guid: 3c21f53449fbf6c4fb41c147698a13ce, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -1003,7 +1003,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1031,7 +1031,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0

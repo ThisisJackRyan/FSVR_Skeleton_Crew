@@ -35,8 +35,10 @@ public class BoardingPartySpawner : NetworkBehaviour {
                 GameObject ranged1 = Instantiate(rangedMembers[rangedIndex], transform.GetChild(1).position, Quaternion.identity);
                 ranged1.transform.parent = transform;
                 ranged1.GetComponent<Enemy>().boardingPartyShip = gameObject;
+				print("should be adding " + ranged1.name + " to the boarding party");
                 crewmen.Add(ranged1);
                 NetworkServer.Spawn(ranged1);
+				print(ranged1.name + " should be spawned");
             } else { // max ranged reached, can't spawn ranged
                 useRanged = false;
             }

@@ -20,7 +20,7 @@ public class TeleportOneAtATime : Action {
             //crewman.transform.parent = null;
             GameObject teleTarget = gameObject;
 
-            if (crewman.name.Contains("Archer") || crewman.name.Contains("Mage")) {
+            if (crewman.name.Contains("Archer") || crewman.name.Contains("Mage") || crewman.name.Contains("Range")) {
                 foreach(GameObject key in VariableHolder.instance.enemyRangedPositions.Keys) {
                     if(VariableHolder.instance.enemyRangedPositions[key] == false) {
                         teleTarget = key;
