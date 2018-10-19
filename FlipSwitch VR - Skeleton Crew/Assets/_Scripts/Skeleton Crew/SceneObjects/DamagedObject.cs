@@ -20,7 +20,7 @@ public class DamagedObject : NetworkBehaviour {
 	DamageState myState;
 	[SyncVar( hook = "OnHealthChange" )] int health = 100;
 	[SyncVar( hook = "OnPatternIndexChange" )] int rng = -1;
-
+	public GameObject burstEffect;
 
 	[Tooltip( "the number health percent much be at to reach the given damage state. anything below quarter is completely broken." )]
 	public int fullAmount = 90, threeQuarterAmount = 75, halfAmount = 50, quarterAmount = 25, maxHealth = 100;
@@ -50,6 +50,13 @@ public class DamagedObject : NetworkBehaviour {
         ChangeHealth(maxHealth);
     }
 
+	public void SpawnBurst(Vector3 pos) {
+		if (!isServer) {
+			return;
+		}
+		var g = Instantiate(burstEffect, pos, Quaternion.identity);
+		NetworkServer.Spawn( g );
+	}
 
 	private void OnPatternIndexChange( int n ) {
 		if (isServer) {
@@ -175,6 +182,8 @@ public class DamagedObject : NetworkBehaviour {
 			return;
 		}
 
+
+		SpawnBurst( repairPattern.transform.GetChild( index ).position );
 		RpcDisableNode( index );
 	}
 
