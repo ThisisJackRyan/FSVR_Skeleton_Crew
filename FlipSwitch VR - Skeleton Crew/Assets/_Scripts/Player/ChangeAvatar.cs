@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public class ChangeAvatar : NetworkBehaviour
@@ -11,6 +12,7 @@ public class ChangeAvatar : NetworkBehaviour
 	public Material[] colors;
 
 	public SkinnedMeshRenderer skinRenderer;
+	public GameObject[] armorParticles;
 
 	// Use this for initialization
 	void Start()
@@ -73,6 +75,24 @@ public class ChangeAvatar : NetworkBehaviour
 		}
 
 		armorSets[armorSet].SetActive(true);
+
+		PlayParticles();
+	}
+
+	private void PlayParticles() {
+		for ( int i = 0; i < armorParticles.Length; i++ ) {
+			armorParticles[i].SetActive( true );
+			var particles = armorParticles[i].GetComponent<ParticleSystem>();
+			particles.Simulate( 0, true, true );
+			particles.Play();
+		}
+		Invoke( "TurnOffEffect", 1.0f );
+	}
+
+	void TurnOffEffect() {
+		for ( int i = 0; i < armorParticles.Length; i++ ) {
+			armorParticles[i].SetActive( false );
+		}
 	}
 
 	[Command]
@@ -84,8 +104,12 @@ public class ChangeAvatar : NetworkBehaviour
 	[ClientRpc]
 	void RpcChangeColor(int c)
 	{
-		if ( colors.Length > 0)
+		if ( colors.Length > 0 ) {
 			skinRenderer.material = colors[color];
+		}
+
+		PlayParticles();
+
 	}
 
 }
