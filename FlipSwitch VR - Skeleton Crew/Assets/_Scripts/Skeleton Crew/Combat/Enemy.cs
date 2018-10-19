@@ -141,7 +141,7 @@ public class Enemy : NetworkBehaviour {
 				// todo: test that enemies are only being damaged by melee weapons being held by player
 				if (other.gameObject.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
 					canBeDamaged = false;
-                    GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime), other.gameObject.GetComponent<Weapon>().playerWhoIsHolding);
+                    GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime), other.gameObject.GetComponent<Weapon>().playerWhoIsHolding.transform.root.gameObject);
 					Invoke("AllowDamage", 1f);
 				}
 			}

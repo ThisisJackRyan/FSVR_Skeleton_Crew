@@ -261,6 +261,9 @@ namespace Opsive.ThirdPersonController
         [ClientRpc]
         private void RpcDamage(float amount, Vector3 position, Vector3 force, float radius, GameObject attacker, GameObject hitGameObject)
         {
+            if (attacker) {
+                attacker = attacker.GetComponentInChildren<EnemyTargetInit>().transform.gameObject;
+            }
             DamageLocal(amount, position, force, radius, attacker, hitGameObject);
         }
 #endif
