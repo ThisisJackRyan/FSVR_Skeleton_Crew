@@ -190,6 +190,7 @@ public class Ratman : NetworkBehaviour {
     }
 
 	public void Respawn( Vector3 spawnPos ) {
+		isDead = false;
 		ChangeHealth( maxHealth, false );
 		rat.transform.position = spawnPos;
 		rat.SetActive( true );
@@ -235,6 +236,8 @@ public class Ratman : NetworkBehaviour {
 		return health;
 	}
 
+	bool isDead = false;
+
     void KillRatman() {
 		rat.SetActive( false );
 		//ratAnim.enabled = false;
@@ -243,14 +246,21 @@ public class Ratman : NetworkBehaviour {
 		if (!isServer) {
 
 			return;
+		} else {
+			if (isDead) {
+				return;
+			} else {
+				isDead = true;
+			}
+
 		}
 
         if (Time.timeSinceLevelLoad > 5) {
 
-		var g = Instantiate( deathParticles, new Vector3( rat.transform.position.x, rat.transform.position.y + 0.5f, rat.transform.position.z ), Quaternion.identity );
-		NetworkServer.Spawn(g);
+			var g = Instantiate( deathParticles, new Vector3( rat.transform.position.x, rat.transform.position.y + 0.5f, rat.transform.position.z ), Quaternion.identity );
+			NetworkServer.Spawn(g);
 
-        Captain.instance.AddEventToQueue(Captain.AudioEventType.Ratmen);
+			Captain.instance.AddEventToQueue(Captain.AudioEventType.Ratmen);
 
         }
     }

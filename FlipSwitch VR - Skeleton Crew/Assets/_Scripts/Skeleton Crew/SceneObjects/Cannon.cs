@@ -87,7 +87,7 @@ public class Cannon : NetworkBehaviour {
 		isFiring = true;
 		isReloaded = false;
 		GameObject bullet = Instantiate( projectile, spawnPos.position, Quaternion.identity );
-		Instantiate( smoke, spawnPos.position, Quaternion.identity );
+		Instantiate( smoke, spawnPos.position, spawnPos.rotation );
 		bullet.GetComponent<Rigidbody>().velocity = spawnPos.forward * power;
 
         if (isMagicCannon) {
