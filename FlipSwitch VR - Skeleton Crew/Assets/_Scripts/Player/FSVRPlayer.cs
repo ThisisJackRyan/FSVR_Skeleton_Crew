@@ -76,7 +76,7 @@ public class FSVRPlayer : NetworkBehaviour {
 	}
 	
 	void SetTrackerIDs() {
-        print("set tracker ids called. isServer? " + isServer);
+        //print("set tracker ids called. isServer? " + isServer);
 		leftFoot.index = TrackerIds.leftFootId;
 		rightFoot.index = TrackerIds.rightFootId;
 		hip.index = TrackerIds.hipId;

@@ -109,11 +109,11 @@ public class Cannon : NetworkBehaviour {
             return;
         }
 
-        print("received anim event to reload on server");
+        //print("received anim event to reload on server");
         if (assignedSlave.GetHealth() > 0) {
             assignedSlave.PlayReload();
         } else {
-            print("reload called but rat is dead");
+            //print("reload called but rat is dead");
             //NeedsReloaded = true;
         }
     }
@@ -130,7 +130,7 @@ public class Cannon : NetworkBehaviour {
     public GameObject reloadEffect;
     public Transform reloadEffectPlacement;
     public void ReloadCannon() {
-        //print("Reloading");
+        ////print("Reloading");
         //spawn effect
         if (isServer) {
             var g = Instantiate(reloadEffect, reloadEffectPlacement.position, Quaternion.identity);
@@ -156,22 +156,22 @@ public class Cannon : NetworkBehaviour {
 
 			float barrelRotation = cannonBarrel.localEulerAngles.x;
 			float targetAngle = ( barrelRotation + ( raiseSign * angleIncrement ) + 360 ) % 360;
-			//print( "current index " + indexOfFirstGrabbed + " index that called " + indexOfNode + " " + barrelRotation + " plus " + ( raiseSign * angleIncrement ) + " becomes target of " + targetAngle );
+			////print( "current index " + indexOfFirstGrabbed + " index that called " + indexOfNode + " " + barrelRotation + " plus " + ( raiseSign * angleIncrement ) + " becomes target of " + targetAngle );
 
 			//if (targetAngel <= maxAngle && targetAngel >= minAngle) {
 			//perform rotation
-			//print( targetAngle + " is within range, rotate barrel" );
+			////print( targetAngle + " is within range, rotate barrel" );
 			//targetAngle += 360;
 
 			if ( targetAngle >= minAngle && targetAngle <= maxAngle ) {
 				cannonBarrel.localEulerAngles = new Vector3( targetAngle, 0, 0 );
-				//print( "AFTER " + barrelRotation + " is old,  " + cannonBarrel.localRotation + " is new, target was " + targetAngle );
+				////print( "AFTER " + barrelRotation + " is old,  " + cannonBarrel.localRotation + " is new, target was " + targetAngle );
 
 				indexOfFirstGrabbed = indexOfNode;
 			}
 
 			//} else {
-			//	print( targetAngel + " is not within range, do not rotate barrel" );
+			//	//print( targetAngel + " is not within range, do not rotate barrel" );
 			//}
 
 			//RpcRotateBarrel( cannonBarrel.localRotation );

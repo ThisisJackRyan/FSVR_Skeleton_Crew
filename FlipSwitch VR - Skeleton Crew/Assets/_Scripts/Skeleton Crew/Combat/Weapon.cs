@@ -82,7 +82,7 @@ public class Weapon : NetworkBehaviour {
                 NetworkServer.Spawn(bullet);
             }
 
-			Instantiate(data.particles, projectileSpawnPos.position, Quaternion.Euler(transform.forward));
+			Instantiate(data.particles, projectileSpawnPos.position, projectileSpawnPos.rotation);
 
         }
 

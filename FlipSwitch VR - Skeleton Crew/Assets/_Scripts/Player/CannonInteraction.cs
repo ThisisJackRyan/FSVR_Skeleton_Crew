@@ -30,7 +30,7 @@ public class CannonInteraction : NetworkBehaviour {
 
 	private void Start() {
 		if ( isServer ) {
-			//print( name + " enabled server check" );
+			////print( name + " enabled server check" );
 			Captain.playersFiredCannons.Add( this, false );
 		}
 
@@ -54,7 +54,7 @@ public class CannonInteraction : NetworkBehaviour {
 		//closest hasnt been found, grabbing is allowed  //are we changing the -1 sentinel?
 		if ( !leftHandInteracting && mastInteraction.emptyLeftHand && Controller.LeftController.GetPressDown( Controller.Grip ) ) {
 			CmdHandleAiming( true );
-			//print("inside button down left");
+			////print("inside button down left");
 		}
 
 		if (!rightHandInteracting && mastInteraction.emptyRightHand && Controller.RightController.GetPressDown( Controller.Grip ) ) {
@@ -78,13 +78,13 @@ public class CannonInteraction : NetworkBehaviour {
 
 		//player let go
 		if ( leftHandInteracting && Controller.LeftController.GetPressUp( Controller.Grip ) ) {
-			//print( "inside up left" );
+			////print( "inside up left" );
 			leftHandInteracting = false;
 			CmdStopInteracting(true, true);
 		}
 
 		if ( rightHandInteracting && Controller.RightController.GetPressUp( Controller.Grip ) ) {
-			//print( "inside up right" );
+			////print( "inside up right" );
 			rightHandInteracting = false;
 			CmdStopInteracting(false, true);
 		}
@@ -165,7 +165,7 @@ public class CannonInteraction : NetworkBehaviour {
 		}
 
 		cannonCurrentlyAiming = cannon.GetComponent<Cannon>();
-        print(cannonCurrentlyAiming);
+        ////print(cannonCurrentlyAiming);
 
         indexOfClosest = iOfClosest;
 

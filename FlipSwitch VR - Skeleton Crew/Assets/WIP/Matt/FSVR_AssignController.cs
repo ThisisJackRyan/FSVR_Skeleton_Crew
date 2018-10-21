@@ -20,7 +20,7 @@ public class FSVR_AssignController : MonoBehaviour {
             //print(device + " id is " + device.index);
 
             if (device.GetPressDown(Controller.Trigger)) {
-                print("hit trigger on device i:" + device.index);
+                //print("hit trigger on device i:" + device.index);
                 canvasText.transform.parent.gameObject.SetActive(true);
                 canvasText.text = Controller.InitControllers(device.index);
 

@@ -34,17 +34,17 @@ public class RepairPattern : MonoBehaviour {
 
 			//last node hit
 			//run repair code
-			if ( dmgObj.GetHealth() + 20 < dmgObj.maxHealth) {
+			if ( dmgObj.GetHealth() + 40 < dmgObj.maxHealth) {
 				//index = 0;
 				//Increment();
-				dmgObj.ChangeHealth( 20, false );
+				dmgObj.ChangeHealth( 40, false );
 				//print("healing, not full health");
 				Init();
 			} else {				
 				GetComponentInParent<RepairTrigger>().repairPattern = null;
 				gameObject.SetActive( false );
 
-				dmgObj.ChangeHealth( 20, false );
+				dmgObj.ChangeHealth( 40, false );
 			}
 		}
 	}

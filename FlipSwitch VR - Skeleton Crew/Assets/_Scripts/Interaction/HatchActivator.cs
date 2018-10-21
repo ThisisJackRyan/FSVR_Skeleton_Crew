@@ -19,7 +19,7 @@ public class HatchActivator : NetworkBehaviour {
     public static HatchActivator instance;
 
     private void OnEnable() {
-        //print("on enable");
+        ////print("on enable");
         hatches.Add(this);
         GetComponent<Collider>().enabled = false;
         hatchSign.SetActive(false);
@@ -66,7 +66,7 @@ public class HatchActivator : NetworkBehaviour {
             return;
         }
 
-        print("called");
+        ////print("called");
 
         animator.SetBool("Opening", opening);
         audioSource.PlayOneShot(openClip);
@@ -121,14 +121,14 @@ public class HatchActivator : NetworkBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        print("trigger entered hatch");
+        //print("trigger entered hatch");
         if (!isServer)
             return;
 
-        print("server trigger");
+        //print("server trigger");
 
         if (other.gameObject.GetComponent<GrabWeaponHand>() && !active) {
-            print("other has grabweaponhand");
+            //print("other has grabweaponhand");
 
             timer = 0;
             active = true;
@@ -155,7 +155,7 @@ public class HatchActivator : NetworkBehaviour {
     }
 
     IEnumerator AnimateAndSpawnRatkinRebels(SpawnInfo info) {
-        //print("coroutine started");
+        ////print("coroutine started");
         animator.SetBool("Opening", true);
         audioSource.PlayOneShot(openClip);
         RpcAnimateHatch(true);

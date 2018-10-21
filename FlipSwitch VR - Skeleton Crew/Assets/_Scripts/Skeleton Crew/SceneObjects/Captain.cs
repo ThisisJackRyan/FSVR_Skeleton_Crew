@@ -365,32 +365,43 @@ public class Captain : SerializedNetworkBehaviour {
         }
 
         foreach (var enemy in FindObjectsOfType<Enemy>()) {
-            float dist = Vector3.Distance(transform.position, enemy.transform.position);
+            //float dist = Vector3.Distance(transform.position, enemy.transform.position);
 
-            bool shouldDelete = (dist < burstDistance) ? true : TestDistanceWithChance(dist);
+            //bool shouldDelete = (dist < burstDistance) ? true : TestDistanceWithChance(dist);
 
-            if (shouldDelete) {
+            //if (shouldDelete) {
                 enemy.DestroyMe();
-            }
+
+            //}
         }
+
+		foreach (var item in FindObjectsOfType<BoardingPartySpawner>()) {
+			NetworkServer.Destroy(item.gameObject);
+		}
     }
 
-    public float burstDistance = 10f;
-    bool TestDistanceWithChance(float dist) { 
-        int rng = Random.Range(0, 10);
-        if (rng >= dist - burstDistance) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+ //   public float burstDistance = 50f;
+ //   bool TestDistanceWithChance(float dist) { 
+ //       int rng = Random.Range(0, 10);
+ //       if (rng >= dist - burstDistance) {
+ //           return true;
+ //       } else {
+ //           return false;
+ //       }
+ //   }
 
-    #region Tutorial shit
+	//private void OnDrawGizmosSelected() {
+	//	Gizmos.DrawWireSphere(transform.position, burstDistance);
+	//}
 
-    //public bool continueTutorial = true;
-    // ^ test against this before any tutorial speach incase of early completion
-    //need to turn on mast after last part of tutorial
-    public static Captain instance;
+
+
+	#region Tutorial shit
+
+	//public bool continueTutorial = true;
+	// ^ test against this before any tutorial speach incase of early completion
+	//need to turn on mast after last part of tutorial
+	public static Captain instance;
     public static Dictionary<DamagedObject, bool> damagedObjectsRepaired = new Dictionary<DamagedObject, bool>();
     public static Dictionary<Ratman, bool> ratmenRespawned = new Dictionary<Ratman, bool>();
     public static Dictionary<CannonInteraction, bool> playersFiredCannons = new Dictionary<CannonInteraction, bool>();
