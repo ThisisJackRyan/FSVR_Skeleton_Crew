@@ -139,7 +139,16 @@ public class PathFollower : NetworkBehaviour {
         }
     }
 
+	public GameObject[] tutorialPanels;
+	void TurnOffTutorialPanels() {
+		foreach(var t in tutorialPanels ) {
+			t.SetActive( false );
+		}
+	}
+
 	void StartSecondPhase() {
+		TurnOffTutorialPanels();
+
 		currentStage = EncounterStage.Second;
 
 		if (isServer && meteorClip) {
