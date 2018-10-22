@@ -41,10 +41,10 @@ public class GhostFreeRoamCamera : NetworkBehaviour {
     private void Update() {
         if (!isLocalPlayer)
             return;
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            var g = Instantiate(player, Vector3.zero, Quaternion.identity);
-            NetworkServer.Spawn(g);
-        }
+        //if (Input.GetKeyDown(KeyCode.Space)) {
+        //    var g = Instantiate(player, Vector3.zero, Quaternion.identity);
+        //    NetworkServer.Spawn(g);
+        //}
 
         if (allowMovement) {
             bool lastMoving = moving;

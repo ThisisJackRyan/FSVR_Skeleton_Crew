@@ -159,11 +159,13 @@ public class PathFollower : NetworkBehaviour {
 	}
 
 	protected void Update() {
-		//if (Input.GetKeyDown(KeyCode.Space)) {
-		//	StartMoving();
-		//}
+
 		if (!isServer) {
 			return;
+		}
+
+		if (Input.GetKeyDown(KeyCode.Space)) {
+			SpawnWithPortal(firstEncountersMelee);
 		}
 
 		if (!canMove) {
@@ -378,9 +380,17 @@ public class PathFollower : NetworkBehaviour {
 
 		int chosenOne = Random.Range(0, portalPosPoints.Count);
 		//calc other side
-		Vector3 spawnVector = portalPosPoints[chosenOne].position;
+		spawnVector = portalPosPoints[chosenOne].position;
 
+		lookPos = new Vector3(shipDeck.transform.position.x, spawnVector.y, spawnVector.z);
+		facingVector =  lookPos - spawnVector;
 		GameObject g = Instantiate(prefabToSpawn, spawnVector, Quaternion.identity);
+		lookPos.x =  Mathf.Sign(Random.insideUnitCircle.x) * 10;
+		//int y = (int)Mathf.Sign(Random.insideUnitCircle.x) * 5;
+		lookPos.y = Random.Range(3,7);
+
+		g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("TargetPosition", lookPos);
+
 
 		spawnVector += (spawnVector - shipTransform.position).normalized * -distanceBehindPortal;
 		//g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariable("TargetPosition", new Vector3())
@@ -395,6 +405,11 @@ public class PathFollower : NetworkBehaviour {
 
 		NetworkServer.Spawn(g);
 		NetworkServer.Spawn(p);
+	}
+	public Vector3 lookPos, facingVector, spawnVector;
+	private void OnDrawGizmosSelected() {
+		Gizmos.DrawSphere(lookPos, 1f);
+		Gizmos.DrawRay(spawnVector, facingVector);
 	}
 
 	#endregion

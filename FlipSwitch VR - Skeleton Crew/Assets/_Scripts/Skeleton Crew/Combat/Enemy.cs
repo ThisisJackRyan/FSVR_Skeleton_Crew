@@ -24,6 +24,7 @@ public class Enemy : NetworkBehaviour {
 	public GameObject deathParticles;
 	public bool tutorialGuard = false;
     public bool rangedUnit = false;
+	public bool ratkin = false;
     public GameObject rangedTeleTarget;
 	public PrimaryItemType primaryItemType;
 	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
@@ -101,18 +102,18 @@ public class Enemy : NetworkBehaviour {
 	private void Start() {
 
 		//Opsive.ThirdPersonController.EventHandler.RegisterEvent("OnHealthAmountChange", PlayHitParticles);
+		if (!ratkin) {
+			if (!isServer) {
+				if (boardingPartyShip) {
+					transform.parent = boardingPartyShip.transform;
+				}
 
-		if (!isServer) {
-			if (boardingPartyShip) {
-				transform.parent = boardingPartyShip.transform;
+				return;
 			}
-
-			return;
+			//GetComponent<Inventory>().EquipItem(primaryItemTypes[temp]);
+			GetComponent<BehaviorTree>().SetVariableValue("weaponType", primaryItemType);
+			//RpcEquipItem(itemToEquip);
 		}
-		//GetComponent<Inventory>().EquipItem(primaryItemTypes[temp]);
-		GetComponent<BehaviorTree>().SetVariableValue("weaponType", primaryItemType);
-        //RpcEquipItem(itemToEquip);
-
     }
 
     [ClientRpc]          
@@ -138,17 +139,24 @@ public class Enemy : NetworkBehaviour {
 
 		if (other.gameObject.tag == "Weapon") {
 			if (other.gameObject.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
-				// todo: test that enemies are only being damaged by melee weapons being held by player
 				if (other.gameObject.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
-					canBeDamaged = false;
-                    GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime), other.gameObject.GetComponent<Weapon>().playerWhoIsHolding.transform.root.gameObject);
-					Invoke("AllowDamage", 1f);
+					if (!ratkin) {
+						canBeDamaged = false;
+						GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime), other.gameObject.GetComponent<Weapon>().playerWhoIsHolding.transform.root.gameObject);
+						Invoke("AllowDamage", 1f);
+					} else {
+						DestroyMe();
+					}
 				}
 			}
 		} else if (other.gameObject.tag == "BulletPlayer" || other.gameObject.tag == "CannonBallPlayer") {
-            canBeDamaged = false;
-            GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));   
-            Invoke("AllowDamage", 1f);
+			if (!ratkin) {
+				canBeDamaged = false;
+				GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
+				Invoke("AllowDamage", 1f);
+			} else {
+				DestroyMe();
+			}
         }
 
 		if(other.gameObject.GetComponent<NavMeshAgent>() && GetComponent<NavMeshAgent>()) {
