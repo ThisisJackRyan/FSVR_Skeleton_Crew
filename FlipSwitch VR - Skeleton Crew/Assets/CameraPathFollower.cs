@@ -83,6 +83,11 @@ public class CameraPathFollower : NetworkBehaviour {
 		currentNode = nextNode;
 		if ( this.nextNode < path.Nodes.Length - 1 ) {
 			nextNode++;
+		} else {
+			if (loop) {
+				currentNode = 0;
+				nextNode = 1;
+			}
 		}
 
 		currentLerpTime = 0f;
@@ -91,4 +96,6 @@ public class CameraPathFollower : NetworkBehaviour {
 		currRot = nextRot;
 		nextRot = CalcRotation( path.Nodes[nextNode].GetChild(0) );//uses node child as facing target
 	}
+
+	public bool loop = true;
 }
