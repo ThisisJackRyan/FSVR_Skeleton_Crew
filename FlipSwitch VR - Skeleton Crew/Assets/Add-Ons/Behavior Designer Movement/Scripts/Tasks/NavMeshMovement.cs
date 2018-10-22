@@ -113,12 +113,14 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
                 //Debug.Log("getting remaining distance from the navmeshagent");
                 remainingDistance = navMeshAgent.remainingDistance;
             }
-            //Debug.Log("arrival distance: " + arriveDistance);
-            //Debug.Log("remaining distance: " + remainingDistance);
-            //Debug.Log("has arrived? " + (remainingDistance <= arriveDistance.Value));
+            Debug.Log("arrival distance: " + arriveDistance);
+            Debug.Log("remaining distance: " + remainingDistance);
+            Debug.Log("has arrived? " + (remainingDistance <= arriveDistance.Value));
             if((remainingDistance <= arriveDistance.Value)) {
-                //Debug.Log("still has a distance of " + remainingDistance + " to travel");
+				Debug.Log("still has a distance of " + remainingDistance + " to travel with arrival distance of " + arriveDistance.Value + " should be returning " + (remainingDistance <= arriveDistance.Value));
+				return true;
             }
+
             return remainingDistance <= arriveDistance.Value;
         }
 

@@ -44,12 +44,13 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
                 return TaskStatus.Failure;
             }
             if (HasArrived()) {
-                //Debug.Log("has arrived. should doing logic to set new waypoint");
+                Debug.Log("has arrived. should doing logic to set new waypoint");
                 if (waypointReachedTime == -1) {
                     waypointReachedTime = Time.time;
                 }
                 // wait the required duration before switching waypoints.
                 if (waypointReachedTime + waypointPauseDuration.Value <= Time.time) {
+					navMeshAgent.isStopped = false;
                     if (randomPatrol.Value) {
                         if (waypoints.Value.Count == 1) {
                             waypointIndex = 0;
@@ -62,13 +63,16 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
                             waypointIndex = newWaypointIndex;
                         }
                     } else {
-                        //Debug.Log("setting the waypoint index");
+                        Debug.Log("setting the waypoint index");
                         waypointIndex = (waypointIndex + 1) % waypoints.Value.Count;
                     }
-                    //Debug.Log("should be setting new waypoint");
+                    Debug.Log("should be setting new waypoint");
                     SetDestination(Target());
                     waypointReachedTime = -1;
-                }
+                } else {
+					Debug.Log("agent has arrived but time waiting on patrol point not reached");
+					navMeshAgent.isStopped = true;
+				}
             } else {
                 if (navMeshAgent.remainingDistance == float.PositiveInfinity) {
                     //Debug.LogWarning("distance is inifinity, setting new destination");

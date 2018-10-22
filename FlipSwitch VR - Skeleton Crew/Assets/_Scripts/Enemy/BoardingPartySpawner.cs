@@ -14,10 +14,12 @@ public class BoardingPartySpawner : NetworkBehaviour {
 
             return;
         }
-        else{
-            ////print("im the server");
-
-        }
+   //     else{
+			//////print("im the server");
+			////transform.LookAt(FindObjectOfType<PathFollower>().lookPos);
+			//Vector3 targetPos = transform.position + (new Vector3(transform.forward.z + Random.Range(25f, 35f), Random.Range(transform.forward.y - 2, transform.forward.y + 2),transform.forward.x));
+			//GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("TargetPosition", targetPos);
+   //     }
 
         ////print("in start");
 
@@ -32,7 +34,7 @@ public class BoardingPartySpawner : NetworkBehaviour {
 
             if (VariableHolder.instance.AddRangedUnit()) { // Try to add one to the unit count, retuns true if successful, false if max already reached
                 int rangedIndex = Random.Range(0, rangedMembers.Length);
-                GameObject ranged1 = Instantiate(rangedMembers[rangedIndex], transform.GetChild(1).position, Quaternion.identity);
+                GameObject ranged1 = Instantiate(rangedMembers[rangedIndex], transform.GetChild(1).position, Quaternion.Euler(Vector3.zero));
                 ranged1.transform.parent = transform;
                 ranged1.GetComponent<Enemy>().boardingPartyShip = gameObject;
 				//print("should be adding " + ranged1.name + " to the boarding party");
@@ -89,7 +91,7 @@ public class BoardingPartySpawner : NetworkBehaviour {
 
         if (other.gameObject.GetComponent<SCProjectile>()) {
             //other.gameObject.GetComponent<SCProjectile>().playerWhoFired << needed for point assignment
-            Destroy(gameObject);
+            NetworkServer.Destroy(gameObject);
             //todo add point stuff here
         }
     }
