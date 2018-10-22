@@ -1,0 +1,10 @@
+Load "Shockwave_FX.unity" for an example scene, or simply drag Shockwave from the Prefabs folder (in the Project window) into the Hierarchy window.
+
+The shockwave can be scaled to any size, however the range and intensity of the real time light will not be affected by the new scale; you'll notice 3 light parameters on the Shockwave script node (select the Shockwave effect in the Hierarchy window and you'll see it in the Inspector window on the right). "Light Range Size Start" and "Light Range Size End" control the beginning and end size range of the light, with "Light Intensity" controlling the brightness.
+
+Have fun!
+
+Thanks for purchasing this asset - please consider rating or writing a review about it. If you have any questions then don't hesitate to get in touch at bendurrant@rivermillstudios.com 
+
+If you use this or any of Rivermill Studios other assets then we'd love to know (and help you promote them!).
+
