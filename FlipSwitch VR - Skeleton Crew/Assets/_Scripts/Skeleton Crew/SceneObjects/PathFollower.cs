@@ -72,8 +72,10 @@ public class PathFollower : NetworkBehaviour {
 		Invoke("EnemyWipeThenFirstBreak", encounterOneTotalTime);
 	}
 
+	public MastSwitch mast;
 	public void ChangeSpeed(bool faster) {
 		speed = (faster) ? maxSpeed : minSpeed;
+		mast.AdjustSails();
 	}
 
 	public bool ChangeSpeed(float increment) {
@@ -303,6 +305,11 @@ public class PathFollower : NetworkBehaviour {
 				break;
 			case EncounterStage.Tutorial:
 				////print("calling spawn with index " + ( currentNode - 1 ) );
+				///
+				if ( FindObjectsOfType<Enemy>().Length >= maxEnemies ) {
+					ChangeSpeed( false );
+					return;
+				}
 
 				SpawnWithPortal(tutorialSpawns, currentNode - 1);
 				if (tutorialSpawns.Length == currentNode) {

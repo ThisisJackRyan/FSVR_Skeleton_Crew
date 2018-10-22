@@ -31,20 +31,31 @@ public class GhostFreeRoamCamera : NetworkBehaviour {
     private bool togglePressed = false;
 
     private MeshRenderer thisRenderer;
-
+	public GameObject gimbleCamera;
 
     private void Start() {
         thisRenderer = GetComponent<MeshRenderer>();
         thisRenderer.enabled = false;
+
+		gimbleCamera = FindObjectOfType<CameraPathFollower>().gameObject;
     }
 
     private void Update() {
         if (!isLocalPlayer)
             return;
+
         if (Input.GetKeyDown(KeyCode.Space)) {
             var g = Instantiate(player, Vector3.zero, Quaternion.identity);
             NetworkServer.Spawn(g);
         }
+
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			foreach ( var c in GetComponentsInChildren<Camera>() ) {
+				c.enabled = false;
+			}
+			gimbleCamera.SetActive( true );
+			gimbleCamera.GetComponent<CameraPathFollower>().canMove = true;
+		}
 
         if (allowMovement) {
             bool lastMoving = moving;

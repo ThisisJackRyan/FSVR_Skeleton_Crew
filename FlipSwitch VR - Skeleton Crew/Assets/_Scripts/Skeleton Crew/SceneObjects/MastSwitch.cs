@@ -42,7 +42,7 @@ public class MastSwitch : NetworkBehaviour {
 
             indexOfFirstGrabbed = indexOfNode;
 
-            RpcAdjustSails(pathFollower.speed );
+            //RpcAdjustSails(pathFollower.speed );
 
             sailAnimator.SetFloat("Speed",pathFollower.speed);
         }
@@ -53,15 +53,17 @@ public class MastSwitch : NetworkBehaviour {
 		}
     }
 
-    [ClientRpc]
-    public void RpcAdjustSails(float newSpeed) {
-        if (isServer) {
+
+    public void AdjustSails() {
+        if (!isServer) {
             return;
         }
-        //do local animation set here, may not need if using network animator
-    }
+		//do local animation set here, may not need if using network animator
 
-    [ClientRpc]
+		sailAnimator.SetFloat( "Speed", pathFollower.speed );
+	}
+
+	[ClientRpc]
     public void RpcPlayAimSound(bool notMax) {
         if (isServer) {
             return;
