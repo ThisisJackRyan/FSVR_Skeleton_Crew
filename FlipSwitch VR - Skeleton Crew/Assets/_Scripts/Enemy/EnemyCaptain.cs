@@ -18,23 +18,37 @@ public class EnemyCaptain : NetworkBehaviour {
 	public float timeBetweenParticlesAndEnemySpawn;
 	public GameObject meleeDragonkin, rangedDragonkin;
 
+	private int numRanged = 1, numMelee = 1;
+
 	[Header("Teleporting")]
+	// publics
 	public GameObject[] captainTeleportPositionsSafe;
 	public GameObject[] captainTeleportPositionsDrain;
 	public GameObject captainCurrentPositionTeleportParticles;
 	public GameObject captainTargetPositionTeleportParticles;
 
+	// privates
+	private bool teleportingToSafety;
+
 	[Header( "EnergyDraining" )]
+	// publics
 	public GameObject particlesToSpawnOnDragon;
 	public GameObject energyTrail;
 	public Transform skullTransform;
 	public GameObject dragon;
+	public float timeToCaptainWinningInSeconds;
 
+	// privates
+	private float curTime = 0f;
+	private GameObject energyTrailInstance;
+	private GameObject particlesOnDragonInstance;
+	private bool isDraining, canDrain;
+
+	[Header("Other")]
 	public int hitsToDeath;
 
-	private bool isDraining, canDrain;
-	private bool teleportingToSafety;
-	int numRanged = 1, numMelee = 1;
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -98,18 +112,57 @@ public class EnemyCaptain : NetworkBehaviour {
 	}
 
 	public IEnumerator StartTheDrain() {
-		GameObject dragonParticles = Instantiate( particlesToSpawnOnDragon, dragon.transform.position, Quaternion.identity );
-		NetworkServer.Spawn( dragonParticles );
+		particlesOnDragonInstance = Instantiate( particlesToSpawnOnDragon, dragon.transform.position, Quaternion.identity );
+		NetworkServer.Spawn( particlesOnDragonInstance );
 		yield return new WaitForSecondsRealtime( 2.5f );
-		GameObject et = Instantiate( energyTrail, transform.position, Quaternion.identity );
-		foreach ( var v in et.GetComponentsInChildren<LineRenderer>() ) {
+		energyTrailInstance = Instantiate( energyTrail, transform.position, Quaternion.identity );
+		foreach ( var v in energyTrailInstance.GetComponentsInChildren<LineRenderer>() ) {
 			v.SetPosition( 0, dragon.transform.position );
 			v.SetPosition( 1, skullTransform.position );
 		}
-		NetworkServer.Spawn( et );
+		NetworkServer.Spawn( energyTrailInstance );
+		isDraining = true;
+	}
+
+	private void OnCollisionEnter( Collision collision ) {
+		if ( !isServer ) {
+			return;
+		}
+
+		if(collision.transform.tag == "CannonBallPlayer") {
+			if ( isDraining ) {
+				StopDrainingAbility();
+				NetworkServer.Destroy( energyTrailInstance );
+				NetworkServer.Destroy( particlesOnDragonInstance );
+
+				isDraining = false;
+			}
+		}
+
+	}
+
+	private void Update() {
+		if ( isDraining ) {
+			curTime += Time.deltaTime;
+
+			if(curTime >= timeToCaptainWinningInSeconds ) {
+				Debug.LogWarning( "Players have lost the game. Put in shit when that happens here" );
+			}
+		}
 	}
 
 	#endregion
+
+	private void StopDrainingAbility() {
+		string abName = "DrainEnergy";
+
+		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
+		var abilities = controller.GetComponents( TaskUtility.GetTypeWithinAssembly( abName ) );
+
+		Ability ab = abilities[0] as Ability;
+
+		GetComponent<ControllerHandler>().TryStopAbility( ab );
+	}
 
 
 	#region Teleport Testing
