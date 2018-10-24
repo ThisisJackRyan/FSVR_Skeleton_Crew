@@ -130,7 +130,7 @@ Material:
     - _BumpDirection: {r: 1, g: 1, b: -1, a: 1}
     - _BumpTiling: {r: 1, g: 1, b: -2, a: 3}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 0.5660378, g: 0.03470988, b: 0.1353544, a: 0.78431374}
+    - _Color: {r: 0.5660378, g: 0.03470988, b: 0.13535434, a: 0.7411765}
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _DistortParams: {r: 1, g: 1, b: 2, a: 1.15}
     - _EmissionColor: {r: 0.28235295, g: 0.015686275, b: 0.07058824, a: 0.85882354}
