@@ -17,7 +17,8 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject meleeDragonkin, rangedDragonkin;
 
 	public GameObject[] captainTeleportPositions;
-	public GameObject captainTeleportParticles;
+	public GameObject captainCurrentPositionTeleportParticles;
+	public GameObject captainTargetPositionTeleportParticles;
 	public GameObject[] rangedSpawnPositions;
 	public GameObject[] meleeSpawnPositions;
 
@@ -25,27 +26,26 @@ public class EnemyCaptain : NetworkBehaviour {
 	public int hitsToDeath;
 
 	public bool isDraining;
-	int numRanged, numMelee;
+	int numRanged = 1, numMelee = 1;
 
 	// Use this for initialization
 	void Start () {
-		print( "start called on captain pre server" );
 		if ( !isServer ) {
 			return;
 		}
 
-		print( "start called on captain post server" );
+		VariableHolder.instance.enemyRangedPositions = new Dictionary<GameObject, bool>();
+		VariableHolder.instance.enemyMeleePositions = new Dictionary<GameObject, bool>();
+		
 
 		VariableHolder.instance.enemyRangedPositions.Clear();
 		VariableHolder.instance.enemyMeleePositions.Clear();
 
 		foreach(var r in rangedSpawnPositions ) {
-			print( "adding " + r.name + " to the ranged dictionary" );
 			VariableHolder.instance.enemyRangedPositions.Add( r, false );
 		}
 
 		foreach(var m in meleeSpawnPositions ) {
-			print( "adding " + m.name + " to the melee dictionary" );
 			VariableHolder.instance.enemyMeleePositions.Add( m, false );
 		}
 
@@ -55,12 +55,48 @@ public class EnemyCaptain : NetworkBehaviour {
 			instance = this;
 	}
 
+	#region Teleport Testing Stuff
 	[Button]
-	public void StartSpawnAbility() {
-		StartCoroutine( "Blah" );
+	public void StartTeleportAbility() {
+		StartCoroutine( "CaptainTeleport" );
 	}
 
-	IEnumerator Blah() {
+	IEnumerator CaptainTeleport() {
+		string abName = "CaptainTeleport";
+
+		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
+		var abilities = controller.GetComponents( TaskUtility.GetTypeWithinAssembly( abName ) );
+
+		Ability ab = abilities[0] as Ability;
+
+		GetComponent<ControllerHandler>().TryStartAbility( ab );
+		yield return new WaitForSecondsRealtime( 2.5f );
+		GetComponent<ControllerHandler>().TryStopAbility( ab );
+	}
+	#endregion
+
+	#region Teleport Stuff
+
+	public void TeleportCaptain() {
+		GameObject tpCurPos = Instantiate( captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity );
+		tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
+		NetworkServer.Spawn( tpCurPos );
+		GameObject tpTarget = Instantiate( captainTargetPositionTeleportParticles, captainTeleportPositions[Random.Range( 0, captainTeleportPositions.Length )].transform.position, Quaternion.identity );
+		NetworkServer.Spawn( tpTarget );
+
+		transform.position = tpTarget.transform.position;		
+	}
+
+	#endregion
+
+
+	#region Dragonkin Testing Stuff
+	[Button]
+	public void StartSpawnAbility() {
+		StartCoroutine( "DragonkinSummon" );
+	}
+
+	IEnumerator DragonkinSummon() {
 		string abName = "SummonDragonkin";
 
 		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
@@ -69,10 +105,13 @@ public class EnemyCaptain : NetworkBehaviour {
 		Ability ab = abilities[0] as Ability;
 
 		GetComponent<ControllerHandler>().TryStartAbility( ab );
-		yield return new WaitForSecondsRealtime( 2f );
+		yield return new WaitForSecondsRealtime( 2.5f );
 		GetComponent<ControllerHandler>().TryStopAbility( ab );
 	}
 
+	#endregion
+
+	#region Dragonkin Stuff
 	public void DragonkinDeath(bool ranged) {
 		if ( ranged ) {
 			numRanged--;
@@ -82,12 +121,10 @@ public class EnemyCaptain : NetworkBehaviour {
 	}
 
 	public void SpawnDragonkin() {
-		if ( !isServer ) {
+
+		if ( !isServer) {
 			return;
 		}
-		print( "number of ranged pre spawn: " + numRanged );
-		print( "number of melee pre spawn: " + numMelee );
-		print( "dragonkin spawned" );
 
 		if(numRanged % 3 != 0 && VariableHolder.instance.enemyRangedPositions.ContainsValue(false)) {
 			foreach (GameObject key in VariableHolder.instance.enemyRangedPositions.Keys) {
@@ -96,6 +133,7 @@ public class EnemyCaptain : NetworkBehaviour {
 					NetworkServer.Spawn( p );
 					VariableHolder.instance.enemyRangedPositions[key] = true;
 					StartCoroutine(GenerateEnemy(key, true, timeBetweenParticlesAndEnemySpawn));
+					break;
 				}
 			}
 		} else if (VariableHolder.instance.enemyMeleePositions.ContainsValue(false)) {
@@ -105,14 +143,12 @@ public class EnemyCaptain : NetworkBehaviour {
 					NetworkServer.Spawn( p );
 					VariableHolder.instance.enemyMeleePositions[key] = true;
 					StartCoroutine( GenerateEnemy( key, false, timeBetweenParticlesAndEnemySpawn ) );
+					break;
 				}
 			}
 		} else {
 			Debug.LogWarning( "Tried to spawn enemy with no positions available. Should never get here" );
 		}
-
-		print( "number of ranged post spawn: " + numRanged );
-		print( "number of melee post spawn: " + numMelee );
 
 	}
 
@@ -130,4 +166,6 @@ public class EnemyCaptain : NetworkBehaviour {
 			NetworkServer.Spawn( g );
 		}
 	}
+
+	#endregion
 }

@@ -14,7 +14,7 @@ public class CaptainTeleport : Ability {
 	}
 
 	public override string GetDestinationState( int layer ) {
-		if(layer != m_AnimatorMonitor.BaseLayerIndex && layer != m_AnimatorMonitor.UpperLayerIndex ) {
+		if(layer != m_AnimatorMonitor.BaseLayerIndex){// && layer != m_AnimatorMonitor.UpperLayerIndex ) {
 			return string.Empty;
 		}
 
