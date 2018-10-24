@@ -8,6 +8,7 @@ public class VariableHolder : MonoBehaviour {
 	public List<GameObject> cannons;
 	public Dictionary<GameObject, bool> ratmenPositions = new Dictionary<GameObject, bool>();
     public Dictionary<GameObject, bool> enemyRangedPositions = new Dictionary<GameObject, bool>();
+	public Dictionary<GameObject, bool> enemyMeleePositions = new Dictionary<GameObject, bool>();
 	public int numPlayers;
     public int numRangedUnits;
     public int maxNumRangedUnits = 6;
