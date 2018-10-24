@@ -130,10 +130,10 @@ Material:
     - _BumpDirection: {r: 1, g: 1, b: -1, a: 1}
     - _BumpTiling: {r: 1, g: 1, b: -2, a: 3}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 0.5660378, g: 0.03470988, b: 0.13535449, a: 0.6862745}
+    - _Color: {r: 0.5660378, g: 0.03470988, b: 0.13535443, a: 0.5882353}
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _DistortParams: {r: 1, g: 1, b: 2, a: 1.15}
-    - _EmissionColor: {r: 0.5660378, g: 0.03470988, b: 0.13535485, a: 0.85882354}
+    - _EmissionColor: {r: 0.28235295, g: 0.015686275, b: 0.07058824, a: 0.85882354}
     - _Foam: {r: 0.1, g: 0.375, b: 0, a: 0}
     - _GAmplitude: {r: 0.3, g: 0.35, b: 0.25, a: 0.25}
     - _GDirectionAB: {r: 0.3, g: 0.85, b: 0.85, a: 0.25}
@@ -144,6 +144,6 @@ Material:
     - _InvFadeParemeter: {r: 0.15, g: 0.15, b: 0.5, a: 1}
     - _ReflectionColor: {r: 0.54, g: 0.95, b: 0.99, a: 0.5}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
-    - _SpecColor: {r: 0.5660378, g: 0.03470988, b: 0.13535482, a: 1}
+    - _SpecColor: {r: 0.5660378, g: 0.03470988, b: 0.13535485, a: 1}
     - _SpecularColor: {r: 0.72, g: 0.72, b: 0.72, a: 1}
     - _WorldLightDir: {r: 0, g: 0.1, b: -0.5, a: 0}
