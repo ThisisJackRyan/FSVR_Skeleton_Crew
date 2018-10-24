@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FSVR_Calibration_Tool.Properties {
+namespace WpfApp1.Properties {
 
 
 	/// <summary>
@@ -38,7 +38,7 @@ namespace FSVR_Calibration_Tool.Properties {
 		internal static global::System.Resources.ResourceManager ResourceManager {
 			get {
 				if ((resourceMan == null)) {
-					global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FSVR_Calibration_Tool.Properties.Resources", typeof(Resources).Assembly);
+					global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WpfApp1.Properties.Resources", typeof(Resources).Assembly);
 					resourceMan = temp;
 				}
 				return resourceMan;
