@@ -7,15 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="362.398" Width="303.893">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="96,16,0,0" VerticalAlignment="Top" Width="75"/>
         <Label Content="Player 1" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="81"/>
         <Label Content="Player 2" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="81"/>
         <Label Content="Player 3" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="81"/>
         <Label Content="Player 4" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="81"/>
+        <Button  Name="P1Button" Content="Button" HorizontalAlignment="Left" Margin="96,16,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="96,47,0,0" VerticalAlignment="Top" Width="75"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="96,78,0,0" VerticalAlignment="Top" Width="75"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="96,106,0,0" VerticalAlignment="Top" Width="75"/>
-        <Label Content="192.168.1." HorizontalAlignment="Left" Margin="176,10,0,0" VerticalAlignment="Top" Width="63"/>
+        <Label Name="p1IpLabel" Content="192.168.1." HorizontalAlignment="Left" Margin="176,10,0,0" VerticalAlignment="Top" Width="63"/>
         <Label Content="192.168.1." HorizontalAlignment="Left" Margin="176,41,0,0" VerticalAlignment="Top" Width="81"/>
         <Label Content="192.168.1." HorizontalAlignment="Left" Margin="176,72,0,0" VerticalAlignment="Top" Width="81"/>
         <Label Content="192.168.1." HorizontalAlignment="Left" Margin="176,103,0,0" VerticalAlignment="Top" Width="81"/>
@@ -23,6 +23,7 @@
         <TextBox HorizontalAlignment="Left" Height="23" Margin="244,44,0,0" TextWrapping="Wrap" Text="##" VerticalAlignment="Top" Width="41" TextChanged="TextBox_TextChanged"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="244,76,0,0" TextWrapping="Wrap" Text="##" VerticalAlignment="Top" Width="41" TextChanged="TextBox_TextChanged"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="244,106,0,0" TextWrapping="Wrap" Text="##" VerticalAlignment="Top" Width="41" TextChanged="TextBox_TextChanged"/>
+        <Label Name="Console" Content="Label" HorizontalAlignment="Left" Margin="70,208,0,0" VerticalAlignment="Top" Width="156"/>
 
     </Grid>
 </Window>

@@ -25,5 +25,15 @@ namespace WpfApp1 {
 		private void TextBox_TextChanged(object sender, TextChangedEventArgs e) {
 
 		}
+
+		private void Button_Click(object sender, RoutedEventArgs e) {
+			var b = (Button)sender;
+
+			var t = (Label)FindName("Console");
+			t.Content = b.Name;
+			//Console.Write(b.Name);
+
+
+		}
 	}
 }
