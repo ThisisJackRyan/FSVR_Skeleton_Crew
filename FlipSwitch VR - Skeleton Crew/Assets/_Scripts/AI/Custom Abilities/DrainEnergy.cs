@@ -6,7 +6,7 @@ using Opsive.ThirdPersonController.Abilities;
 public class DrainEnergy : Ability {
 
 	public override bool CanStartAbility() {
-		return VariableHolder.instance.enemyMeleePositions.ContainsValue(false) || VariableHolder.instance.enemyRangedPositions.ContainsValue(false);
+		return GetComponent<EnemyCaptain>().CanDrainFromDragon();
 	}
 
 	public override bool CanHaveItemEquipped() {
@@ -14,10 +14,10 @@ public class DrainEnergy : Ability {
 	}
 
 	public override string GetDestinationState( int layer ) {
-		if(layer != m_AnimatorMonitor.BaseLayerIndex && layer != m_AnimatorMonitor.UpperLayerIndex ) {
+		if(layer != m_AnimatorMonitor.BaseLayerIndex){// && layer != m_AnimatorMonitor.UpperLayerIndex ) {
 			return string.Empty;
 		}
 
-		return "Drain Energy.Drain";
+		return "Drain Energy.Drain Start";
 	}
 }

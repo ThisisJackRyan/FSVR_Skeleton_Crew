@@ -11,21 +11,29 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	public static EnemyCaptain instance;
 
-
+	[Header( "Dragonkin Summoning" )]
+	public GameObject[] rangedSpawnPositions;
+	public GameObject[] meleeSpawnPositions;
 	public GameObject dragonkinSpawnParticles;
 	public float timeBetweenParticlesAndEnemySpawn;
 	public GameObject meleeDragonkin, rangedDragonkin;
 
-	public GameObject[] captainTeleportPositions;
+	[Header("Teleporting")]
+	public GameObject[] captainTeleportPositionsSafe;
+	public GameObject[] captainTeleportPositionsDrain;
 	public GameObject captainCurrentPositionTeleportParticles;
 	public GameObject captainTargetPositionTeleportParticles;
-	public GameObject[] rangedSpawnPositions;
-	public GameObject[] meleeSpawnPositions;
 
+	[Header( "EnergyDraining" )]
+	public GameObject particlesToSpawnOnDragon;
+	public GameObject energyTrail;
+	public Transform skullTransform;
+	public GameObject dragon;
 
 	public int hitsToDeath;
 
-	public bool isDraining;
+	private bool isDraining, canDrain;
+	private bool teleportingToSafety;
 	int numRanged = 1, numMelee = 1;
 
 	// Use this for initialization
@@ -55,7 +63,67 @@ public class EnemyCaptain : NetworkBehaviour {
 			instance = this;
 	}
 
-	#region Teleport Testing Stuff
+	#region Drain Testing
+
+	[Button]
+	public void StartDrainAbility() {
+		StartCoroutine( "DrainEnergy" );
+	}
+
+	IEnumerator DrainEnergy() {
+		string abName = "DrainEnergy";
+
+		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
+		var abilities = controller.GetComponents( TaskUtility.GetTypeWithinAssembly( abName ) );
+
+		Ability ab = abilities[0] as Ability;
+
+		GetComponent<ControllerHandler>().TryStartAbility( ab );
+		yield return new WaitForSecondsRealtime( 1000f );
+		print( "have waitforseconds in coroutine" );
+		GetComponent<ControllerHandler>().TryStopAbility( ab );
+	}
+
+	#endregion
+
+
+	#region Drain Energy From Dragon
+
+	public bool CanDrainFromDragon() {
+		return canDrain;
+	}
+
+	public void DrainEnergyFromDragon() {
+		StartCoroutine( "StartTheDrain" );
+	}
+
+	public IEnumerator StartTheDrain() {
+		GameObject dragonParticles = Instantiate( particlesToSpawnOnDragon, dragon.transform.position, Quaternion.identity );
+		NetworkServer.Spawn( dragonParticles );
+		yield return new WaitForSecondsRealtime( 2.5f );
+		GameObject et = Instantiate( energyTrail, transform.position, Quaternion.identity );
+		foreach ( var v in et.GetComponentsInChildren<LineRenderer>() ) {
+			v.SetPosition( 0, dragon.transform.position );
+			v.SetPosition( 1, skullTransform.position );
+		}
+		NetworkServer.Spawn( et );
+	}
+
+	#endregion
+
+
+	#region Teleport Testing
+
+	[Button]
+	public void TeleportingToSafety() {
+		teleportingToSafety = true;
+	}
+
+	[Button]
+	public void TeleportingToDrain() {
+		teleportingToSafety = false;
+	}
+
 	[Button]
 	public void StartTeleportAbility() {
 		StartCoroutine( "CaptainTeleport" );
@@ -75,22 +143,28 @@ public class EnemyCaptain : NetworkBehaviour {
 	}
 	#endregion
 
-	#region Teleport Stuff
+	#region Teleporting
 
+	// toSafe: 1 teleports to safe target, otherwise it teleports to a drain target
 	public void TeleportCaptain() {
 		GameObject tpCurPos = Instantiate( captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity );
 		tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
 		NetworkServer.Spawn( tpCurPos );
-		GameObject tpTarget = Instantiate( captainTargetPositionTeleportParticles, captainTeleportPositions[Random.Range( 0, captainTeleportPositions.Length )].transform.position, Quaternion.identity );
+		GameObject tpTarget;
+		if (teleportingToSafety) {
+			tpTarget = Instantiate( captainTargetPositionTeleportParticles, captainTeleportPositionsSafe[Random.Range( 0, captainTeleportPositionsSafe.Length )].transform.position, Quaternion.identity );
+		} else {
+			tpTarget = Instantiate( captainTargetPositionTeleportParticles, captainTeleportPositionsDrain[Random.Range( 0, captainTeleportPositionsDrain.Length )].transform.position, Quaternion.identity );
+		}
 		NetworkServer.Spawn( tpTarget );
-
+		canDrain = !teleportingToSafety;
 		transform.position = tpTarget.transform.position;		
 	}
 
 	#endregion
 
 
-	#region Dragonkin Testing Stuff
+	#region Dragonkin Summoning Testing
 	[Button]
 	public void StartSpawnAbility() {
 		StartCoroutine( "DragonkinSummon" );
@@ -111,7 +185,7 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	#endregion
 
-	#region Dragonkin Stuff
+	#region Dragonkin Summoning
 	public void DragonkinDeath(bool ranged) {
 		if ( ranged ) {
 			numRanged--;
