@@ -34,10 +34,8 @@ public class EnemyDragonkin : NetworkBehaviour {
 
 		if ( isRanged ) {
 			VariableHolder.instance.enemyRangedPositions[myPosition] = false;
-			EnemyCaptain.instance.DragonkinDeath( true );
 		} else {
 			VariableHolder.instance.enemyMeleePositions[myPosition] = false;
-			EnemyCaptain.instance.DragonkinDeath( false );
 		}
 	}
 }

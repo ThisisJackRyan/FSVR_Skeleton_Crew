@@ -12,29 +12,53 @@ public class EnemyCaptain : NetworkBehaviour {
 	public static EnemyCaptain instance;
 
 	[Header( "Dragonkin Summoning" )]
+	// publics
 	public GameObject[] rangedSpawnPositions;
 	public GameObject[] meleeSpawnPositions;
 	public GameObject dragonkinSpawnParticles;
 	public float timeBetweenParticlesAndEnemySpawn;
 	public GameObject meleeDragonkin, rangedDragonkin;
 
+	//privates
+	private int numRanged = 1, numMelee = 1;
+
+	[Header("Meteor Summoning")]
+	// publics
+	public GameObject[] meteorsToEnable;
+
+	// privates
+	private int curActiveIndex = -1;
+
 	[Header("Teleporting")]
+	// publics
 	public GameObject[] captainTeleportPositionsSafe;
 	public GameObject[] captainTeleportPositionsDrain;
 	public GameObject captainCurrentPositionTeleportParticles;
 	public GameObject captainTargetPositionTeleportParticles;
 
+	// privates
+	private bool teleportingToSafety;
+	private int currentIndexForSafety;
+	private int currentIndexForDraining;
+
 	[Header( "EnergyDraining" )]
+	// publics
 	public GameObject particlesToSpawnOnDragon;
 	public GameObject energyTrail;
 	public Transform skullTransform;
 	public GameObject dragon;
+	public float timeToCaptainWinningInSeconds;
 
-	public int hitsToDeath;
-
+	// privates
+	private float curTime = 0f;
+	private GameObject energyTrailInstance;
+	private GameObject particlesOnDragonInstance;
 	private bool isDraining, canDrain;
-	private bool teleportingToSafety;
-	int numRanged = 1, numMelee = 1;
+
+
+
+	[Header("Other")]
+	public int hitsToDeath;
 
 	// Use this for initialization
 	void Start () {
@@ -67,6 +91,10 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	[Button]
 	public void StartDrainAbility() {
+		if (!isServer) {
+			return;
+		}
+
 		StartCoroutine( "DrainEnergy" );
 	}
 
@@ -86,7 +114,6 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	#endregion
 
-
 	#region Drain Energy From Dragon
 
 	public bool CanDrainFromDragon() {
@@ -98,34 +125,86 @@ public class EnemyCaptain : NetworkBehaviour {
 	}
 
 	public IEnumerator StartTheDrain() {
-		GameObject dragonParticles = Instantiate( particlesToSpawnOnDragon, dragon.transform.position, Quaternion.identity );
-		NetworkServer.Spawn( dragonParticles );
+		particlesOnDragonInstance = Instantiate( particlesToSpawnOnDragon, dragon.transform.position, Quaternion.identity );
+		NetworkServer.Spawn( particlesOnDragonInstance );
 		yield return new WaitForSecondsRealtime( 2.5f );
-		GameObject et = Instantiate( energyTrail, transform.position, Quaternion.identity );
-		foreach ( var v in et.GetComponentsInChildren<LineRenderer>() ) {
+		energyTrailInstance = Instantiate( energyTrail, transform.position, Quaternion.identity );
+		foreach ( var v in energyTrailInstance.GetComponentsInChildren<LineRenderer>() ) {
 			v.SetPosition( 0, dragon.transform.position );
 			v.SetPosition( 1, skullTransform.position );
 		}
-		NetworkServer.Spawn( et );
+		NetworkServer.Spawn( energyTrailInstance );
+		isDraining = true;
+	}
+
+	private void OnCollisionEnter( Collision collision ) {
+		if ( !isServer ) {
+			return;
+		}
+
+		if(collision.transform.tag == "CannonBallPlayer") {
+			if ( isDraining ) {
+				StopDrainingAbility();
+				NetworkServer.Destroy( energyTrailInstance );
+				NetworkServer.Destroy( particlesOnDragonInstance );
+
+				isDraining = false;
+			}
+		}
+
+	}
+
+	private void Update() {
+		if ( isDraining ) {
+			curTime += Time.deltaTime;
+
+			if(curTime >= timeToCaptainWinningInSeconds ) {
+				Debug.LogWarning( "Players have lost the game. Put in shit when that happens here" );
+			}
+		}
+	}
+
+
+
+	private void StopDrainingAbility() {
+		string abName = "DrainEnergy";
+
+		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
+		var abilities = controller.GetComponents( TaskUtility.GetTypeWithinAssembly( abName ) );
+
+		Ability ab = abilities[0] as Ability;
+
+		GetComponent<ControllerHandler>().TryStopAbility( ab );
 	}
 
 	#endregion
-
 
 	#region Teleport Testing
 
 	[Button]
 	public void TeleportingToSafety() {
+		if (!isServer) {
+			return;
+		}
+
 		teleportingToSafety = true;
 	}
 
 	[Button]
 	public void TeleportingToDrain() {
+		if (!isServer) {
+			return;
+		}
+
 		teleportingToSafety = false;
 	}
 
 	[Button]
 	public void StartTeleportAbility() {
+		if (!isServer) {
+			return;
+		}
+
 		StartCoroutine( "CaptainTeleport" );
 	}
 
@@ -147,15 +226,32 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	// toSafe: 1 teleports to safe target, otherwise it teleports to a drain target
 	public void TeleportCaptain() {
+		if (!isServer) {
+			return;
+		}
+
 		GameObject tpCurPos = Instantiate( captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity );
 		tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
 		NetworkServer.Spawn( tpCurPos );
 		GameObject tpTarget;
+		int temp;
+
 		if (teleportingToSafety) {
-			tpTarget = Instantiate( captainTargetPositionTeleportParticles, captainTeleportPositionsSafe[Random.Range( 0, captainTeleportPositionsSafe.Length )].transform.position, Quaternion.identity );
+			do {
+				temp = Random.Range(0, captainTeleportPositionsSafe.Length);
+			} while (temp == currentIndexForSafety);
+
+			currentIndexForSafety = temp;
+			tpTarget = Instantiate(captainTargetPositionTeleportParticles, captainTeleportPositionsSafe[currentIndexForSafety].transform.position, Quaternion.identity);
 		} else {
-			tpTarget = Instantiate( captainTargetPositionTeleportParticles, captainTeleportPositionsDrain[Random.Range( 0, captainTeleportPositionsDrain.Length )].transform.position, Quaternion.identity );
+			do {
+				temp = Random.Range(0, captainTeleportPositionsSafe.Length);
+			} while (temp == currentIndexForDraining);
+
+			currentIndexForDraining = temp;
+			tpTarget = Instantiate( captainTargetPositionTeleportParticles, captainTeleportPositionsDrain[currentIndexForDraining].transform.position, Quaternion.identity );
 		}
+
 		NetworkServer.Spawn( tpTarget );
 		canDrain = !teleportingToSafety;
 		transform.position = tpTarget.transform.position;		
@@ -163,10 +259,83 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	#endregion
 
+	#region Meteor Summoning Testing
+
+	[Button]
+	public void StartSummonMeteorAbility() {
+		if (!isServer) {
+			return;
+		}
+
+		StartCoroutine("MeteorSummon");
+	}
+
+	IEnumerator MeteorSummon() {
+		string abName = "SummonMeteor";
+
+		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
+		var abilities = controller.GetComponents(TaskUtility.GetTypeWithinAssembly(abName));
+
+		Ability ab = abilities[0] as Ability;
+
+		GetComponent<ControllerHandler>().TryStartAbility(ab);
+		yield return new WaitForSecondsRealtime(2.5f);
+		GetComponent<ControllerHandler>().TryStopAbility(ab);
+	}
+
+	#endregion
+
+	#region Meteor Summoning
+
+	public void SpawnMeteor() {
+
+		if (!isServer) {
+			return;
+		}
+
+		curActiveIndex = Random.Range(0, meteorsToEnable.Length);
+		RpcEnableMeteor(curActiveIndex);
+		Invoke("EnableMeteor", 0.1f);
+		Invoke("DisablePortal", 4.5f);
+	}
+
+	private void EnableMeteor() {
+		meteorsToEnable[curActiveIndex].SetActive(true);
+	}
+
+	[ClientRpc]
+	private void RpcEnableMeteor(int index) {
+		if (isServer) {
+			return;
+		}
+
+		curActiveIndex = index;
+		meteorsToEnable[curActiveIndex].SetActive(true);
+
+		Invoke("DisablePortal", 4.5f);
+	}
+
+	private void DisablePortal() {
+		if(curActiveIndex == -1) {
+			Debug.Log("Tried to deactivate portal with invalid index. Looping through and disabling all portals");
+			foreach(var p in meteorsToEnable) {
+				p.SetActive(false);
+			}
+		}
+
+		meteorsToEnable[curActiveIndex].SetActive(false);
+		curActiveIndex = -1;
+	}
+
+	#endregion
 
 	#region Dragonkin Summoning Testing
 	[Button]
 	public void StartSpawnAbility() {
+		if (!isServer) {
+			return;
+		}
+
 		StartCoroutine( "DragonkinSummon" );
 	}
 
@@ -186,13 +355,6 @@ public class EnemyCaptain : NetworkBehaviour {
 	#endregion
 
 	#region Dragonkin Summoning
-	public void DragonkinDeath(bool ranged) {
-		if ( ranged ) {
-			numRanged--;
-		} else {
-			numMelee--;
-		}
-	}
 
 	public void SpawnDragonkin() {
 
