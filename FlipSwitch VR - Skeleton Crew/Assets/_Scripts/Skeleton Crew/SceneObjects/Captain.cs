@@ -357,28 +357,41 @@ public class Captain : SerializedNetworkBehaviour {
 
         return toReturn;
     }
-    #endregion
+	#endregion
 
+
+	public GameObject burstEffect;
+	public float killtimer = 0.5f;
+	[Button]
     public void FullWipeAttack() {
         if (!isServer) {
             return;
         }
 
-        foreach (var enemy in FindObjectsOfType<Enemy>()) {
-            //float dist = Vector3.Distance(transform.position, enemy.transform.position);
+		var g = Instantiate(burstEffect, transform.position, Quaternion.identity);
+		NetworkServer.Spawn(g);
 
-            //bool shouldDelete = (dist < burstDistance) ? true : TestDistanceWithChance(dist);
+		StartCoroutine("KillEnemies");
+        
+    }
 
-            //if (shouldDelete) {
-                enemy.DestroyMe();
+	IEnumerator KillEnemies() {
+		yield return new WaitForSecondsRealtime(killtimer);
+		foreach (var enemy in FindObjectsOfType<Enemy>()) {
+			//float dist = Vector3.Distance(transform.position, enemy.transform.position);
 
-            //}
-        }
+			//bool shouldDelete = (dist < burstDistance) ? true : TestDistanceWithChance(dist);
+
+			//if (shouldDelete) {
+			enemy.DestroyMe();
+
+			//}
+		}
 
 		foreach (var item in FindObjectsOfType<BoardingPartySpawner>()) {
 			NetworkServer.Destroy(item.gameObject);
 		}
-    }
+	}
 
  //   public float burstDistance = 50f;
  //   bool TestDistanceWithChance(float dist) { 

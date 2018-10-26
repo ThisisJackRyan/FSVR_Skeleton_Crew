@@ -15,6 +15,7 @@ public class HatchActivator : NetworkBehaviour {
     public AudioSource audioSource;
     public AudioClip openClip;
     public bool isLeftHatch;
+	public GameObject burst;
 
     public static HatchActivator instance;
 
@@ -115,6 +116,10 @@ public class HatchActivator : NetworkBehaviour {
             if (timer >= 1) {
                 active = false;
                 timer = 0;
+
+				var g = Instantiate(burst, transform.position, Quaternion.identity);
+				NetworkServer.Spawn(g);
+
                 StartCoroutine("AnimateAndRespawnRatmen");
             }
         }

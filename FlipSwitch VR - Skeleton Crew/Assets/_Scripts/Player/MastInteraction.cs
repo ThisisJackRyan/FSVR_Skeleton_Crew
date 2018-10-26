@@ -74,7 +74,7 @@ public class MastInteraction : NetworkBehaviour {
 
     //todo Captain.instance.MastHasBeenPulled(); still needs to be called when mast is pulled/changed
 
-        [Command]
+    [Command]
 	private void CmdHandleAiming( bool isLeft ) {
 		if ( isLeft ) {
 			Collider[] hits = Physics.OverlapSphere( leftHand.position, radius );
@@ -156,8 +156,12 @@ public class MastInteraction : NetworkBehaviour {
 		indexOfClosest = iOfClosest;
 
 		if (isLeft) {
+			mast.GetComponentInChildren<RotationTester>().toFollow = GetComponent<GrabWeapon>().leftHand;
+
 			leftHandInteracting = true;
 		} else {
+			mast.GetComponentInChildren<RotationTester>().toFollow = GetComponent<GrabWeapon>().rightHand;
+
 			rightHandInteracting = true;
 		}
 	}
@@ -179,7 +183,12 @@ public class MastInteraction : NetworkBehaviour {
 
         mastTrigger.GetComponentInChildren<MastAngleSetterTrigger>().TurnOffNodes();
 
-        mast = null;
+		if (!isServer) {
+
+			mast.GetComponentInChildren<RotationTester>().toFollow = null;
+		}
+
+		mast = null;
 		indexOfClosest = -1;
 		if ( isLeft ) {
 			leftHandInteracting = false;
@@ -199,6 +208,7 @@ public class MastInteraction : NetworkBehaviour {
 
 		RpcStopInteractingOnClient( mast.gameObject, gameObject, isLeft, showMarkerNodes );
 		mast.indexOfFirstGrabbed = -1;
+		mast.GetComponentInChildren<RotationTester>().toFollow = null;
 		mast = null;
 		indexOfClosest = -1;
 	}

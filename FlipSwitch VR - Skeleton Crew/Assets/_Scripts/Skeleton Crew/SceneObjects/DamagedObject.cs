@@ -160,6 +160,15 @@ public class DamagedObject : NetworkBehaviour {
 		}
 	}
 
+	internal void SpawnBurst(GameObject burst) {
+		if (!isServer) {
+			return;
+		}
+
+		var g = Instantiate(burst, transform.position, Quaternion.identity);
+		NetworkServer.Spawn(g);
+	}
+
 	internal void EnablePatternOnClients() {
 		if ( !isServer ) {
 			return;
