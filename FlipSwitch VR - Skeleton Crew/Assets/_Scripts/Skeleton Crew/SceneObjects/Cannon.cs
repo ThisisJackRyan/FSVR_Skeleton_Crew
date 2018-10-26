@@ -105,7 +105,7 @@ public class Cannon : NetworkBehaviour {
     public bool isMagicCannon = false;
 
     public void TriggerReload() {
-        if (!isServer) {
+        if (!isServer || isMagicCannon) {
             return;
         }
 

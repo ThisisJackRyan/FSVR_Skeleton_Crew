@@ -20,7 +20,7 @@ public class FloatingRock : MonoBehaviour {
 	}
 
 	private void OnTriggerStay(Collider other) {
-		print(other);
+		//print(other);
 		if (other.transform.root.tag == "Player") {
 			timeToFall -= Time.deltaTime;
 		}

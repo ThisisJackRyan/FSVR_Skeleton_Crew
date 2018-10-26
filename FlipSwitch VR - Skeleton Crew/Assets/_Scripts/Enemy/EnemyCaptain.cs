@@ -46,6 +46,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject particlesToSpawnOnDragon;
 	public GameObject energyTrail;
 	public Transform skullTransform;
+	public GameObject skullParticles;
 	public GameObject dragon;
 	public float timeToCaptainWinningInSeconds;
 
@@ -126,14 +127,16 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	public IEnumerator StartTheDrain() {
 		particlesOnDragonInstance = Instantiate( particlesToSpawnOnDragon, dragon.transform.position, Quaternion.identity );
-		NetworkServer.Spawn( particlesOnDragonInstance );
+
 		yield return new WaitForSecondsRealtime( 2.5f );
+
 		energyTrailInstance = Instantiate( energyTrail, transform.position, Quaternion.identity );
+
 		foreach ( var v in energyTrailInstance.GetComponentsInChildren<LineRenderer>() ) {
 			v.SetPosition( 0, dragon.transform.position );
 			v.SetPosition( 1, skullTransform.position );
 		}
-		NetworkServer.Spawn( energyTrailInstance );
+		skullParticles.SetActive( true );
 		isDraining = true;
 	}
 
@@ -145,19 +148,35 @@ public class EnemyCaptain : NetworkBehaviour {
 		if(collision.transform.tag == "CannonBallPlayer") {
 			if ( isDraining ) {
 				StopDrainingAbility();
-				NetworkServer.Destroy( energyTrailInstance );
-				NetworkServer.Destroy( particlesOnDragonInstance );
-
+				Destroy( energyTrailInstance );
+				Destroy( particlesOnDragonInstance );
+				skullParticles.SetActive( false );
+				RpcDestroyDrain();
 				isDraining = false;
 			}
 		}
 
 	}
 
+	[ClientRpc]
+	private void RpcDestroyDrain() {
+		if ( isServer ) {
+			return;
+		}
+
+		skullParticles.SetActive( false );
+		Destroy( energyTrailInstance );
+		Destroy( particlesOnDragonInstance );
+	}
+
 	private void Update() {
+		if ( !isServer ) {
+			return;
+		}
+
 		if ( isDraining ) {
 			curTime += Time.deltaTime;
-
+			print( "is draining. Current Elapsed Time: " + curTime );
 			if(curTime >= timeToCaptainWinningInSeconds ) {
 				Debug.LogWarning( "Players have lost the game. Put in shit when that happens here" );
 			}
@@ -357,7 +376,6 @@ public class EnemyCaptain : NetworkBehaviour {
 	#region Dragonkin Summoning
 
 	public void SpawnDragonkin() {
-
 		if ( !isServer) {
 			return;
 		}

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class CannonInteraction : NetworkBehaviour {
 
@@ -15,8 +16,10 @@ public class CannonInteraction : NetworkBehaviour {
 
 	private void FireCannon( GameObject cannon ) {
 		cannon.GetComponent<Cannon>().CreateCannonBall();
-		Captain.playersFiredCannons[this] = true;
-		Captain.instance.CheckPlayersCannonFiring();
+		if ( !SceneManager.GetActiveScene().name.Contains( "Boss" ) ) {
+			Captain.playersFiredCannons[this] = true;
+			Captain.instance.CheckPlayersCannonFiring();
+		}
 
 		RpcFireCannon( cannon );
 	}
