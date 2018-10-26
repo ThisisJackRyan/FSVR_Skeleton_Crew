@@ -37,7 +37,7 @@ public class GhostFreeRoamCamera : NetworkBehaviour {
         thisRenderer = GetComponent<MeshRenderer>();
         thisRenderer.enabled = false;
 
-		gimbleCamera = FindObjectOfType<CameraPathFollower>().gameObject;
+		//gimbleCamera = FindObjectOfType<CameraPathFollower>().gameObject;
     }
 
     private void Update() {
