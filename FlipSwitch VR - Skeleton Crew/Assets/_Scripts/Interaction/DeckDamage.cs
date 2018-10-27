@@ -12,6 +12,7 @@ public class DeckDamage : NetworkBehaviour {
 	public float repairRadius = 0.5f;
 	public GameObject repairSphere;
 	public GameObject particles;
+	public HapticEvent haptics;
 
 
 	private void OnEnable() {

@@ -197,6 +197,7 @@ public class DamagedObject : NetworkBehaviour {
 
 		RpcDisableNode( index );
 	}
+	public HapticEvent haptics;
 
 	[ClientRpc]
 	private void RpcDisableNode( int index ) {

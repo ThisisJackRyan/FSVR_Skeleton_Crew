@@ -31,9 +31,11 @@ public class RepairDeckTrigger : MonoBehaviour {
 			particles.SetActive( false );
 
 			deckDmg.SpawnBurst(burst, transform.position);
+			//Controller.PlayHaptics(other.gameObject.GetComponent<GrabWeaponHand>().isLeftHand, HapticController.BurstHaptics);
 
 
-            Vector3 hipPos = activator.GetComponentInChildren<HipMarker>().transform.position;
+
+			Vector3 hipPos = activator.GetComponentInChildren<HipMarker>().transform.position;
 
             transform.LookAt(new Vector3( hipPos.x, transform.position.y, hipPos.z));
             transform.Rotate(0, 180, 0);

@@ -88,6 +88,14 @@ public class HapticController : MonoBehaviour {
 			yield return null;
 		}
 	}
+
+	public static HapticEvent BurstHaptics = new HapticEvent {
+		eventType = HapticEvent.HapticEventType.Standard,
+		vibrationCount = 1,
+		vibrationLength = 0.5f,
+		gapLength = 0,
+		strength = 0.5f
+	};
 }
 
 [System.Serializable]

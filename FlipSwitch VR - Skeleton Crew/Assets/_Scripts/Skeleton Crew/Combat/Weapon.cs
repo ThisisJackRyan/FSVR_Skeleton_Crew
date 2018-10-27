@@ -59,7 +59,7 @@ public class Weapon : NetworkBehaviour {
 
 		} else {
             if (playerWhoIsHolding.GetComponentInParent<Player>().isLocalPlayer) {
-                Controller.PlayHaptics( isLeft, data.hapticsOutOfAmmo );
+                Controller.PlayHaptics( isLeft, data.hapticsFiring );
 			}
 
 			lastShottime = Time.time;
