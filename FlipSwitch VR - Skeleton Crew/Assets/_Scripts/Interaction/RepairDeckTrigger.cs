@@ -30,7 +30,7 @@ public class RepairDeckTrigger : MonoBehaviour {
 
 			particles.SetActive( false );
 
-			deckDmg.SpawnBurst(burst);
+			deckDmg.SpawnBurst(burst, transform.position);
 
 
             Vector3 hipPos = activator.GetComponentInChildren<HipMarker>().transform.position;

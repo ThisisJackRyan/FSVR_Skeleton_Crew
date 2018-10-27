@@ -35,7 +35,7 @@ public static class Controller {
 		if (con != null) {
 			con.TriggerHapticPulse(time);			
 		}
-	}
+	}	
 
 	public static bool initialized {
          get; private set;
@@ -85,5 +85,6 @@ public static class Controller {
 	public static Valve.VR.EVRButtonId TouchPad = Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad;
 	public static Valve.VR.EVRButtonId Trigger = Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger;
 	public static Valve.VR.EVRButtonId Grip = Valve.VR.EVRButtonId.k_EButton_Grip;
+
 }
 

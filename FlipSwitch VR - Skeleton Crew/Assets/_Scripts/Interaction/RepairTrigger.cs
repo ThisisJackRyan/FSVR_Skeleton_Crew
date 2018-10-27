@@ -27,7 +27,7 @@ public class RepairTrigger : MonoBehaviour {
 
 			particles.SetActive(false);
 			//tracePrompt.SetActive(true);
-			dmgObj.SpawnBurst(burst);
+			dmgObj.SpawnBurst(burst, transform.position);
 
 
 			transform.position = new Vector3(transform.position.x,
