@@ -24,16 +24,20 @@ public static class Controller {
         return SteamVR_Controller.Input(id);
     }
 
-    public static void PlayHaptics (bool leftController, ushort time = 500) {
-
-		time = (ushort)((time > 3999) ? 3999 : time);
-		time = (ushort)( ( time < 500 ) ? 500 : time );
-
+    public static void PlayHaptics (bool leftController, HapticEvent haptics) {
 
 		SteamVR_Controller.Device con = (leftController) ? LeftController : RightController;
 
 		if (con != null) {
-			con.TriggerHapticPulse(time);			
+			if (HapticController.instance) {
+				if (haptics.eventType == HapticEvent.HapticEventType.Pulse) {
+					HapticController.instance.StartHapticVibrationPulse(con, haptics.vibrationCount, haptics.vibrationLength, haptics.gapLength, haptics.strength);
+				} else if(haptics.eventType == HapticEvent.HapticEventType.Standard) {
+					HapticController.instance.StartHapticVibration(con,haptics.vibrationLength, haptics.strength);
+				}
+			} else {
+				Debug.LogError("There is no hapticController in the scene when haptics were called.");
+			}	
 		}
 	}	
 
