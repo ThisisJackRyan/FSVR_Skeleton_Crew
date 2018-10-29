@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class RFX4_PhysicsForceCurves : MonoBehaviour
 {
-
+	[Header("Built-In Variables")]
     public float ForceRadius = 5;
     public float ForceMultiplier = 1;
     public AnimationCurve ForceCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
@@ -23,6 +23,7 @@ public class RFX4_PhysicsForceCurves : MonoBehaviour
     private bool canUpdate;
     private float startTime;
     private Transform t;
+	private bool dealtDamage;
 
     private void Awake()
     {
@@ -31,13 +32,21 @@ public class RFX4_PhysicsForceCurves : MonoBehaviour
 
     private void OnEnable()
     {
-        startTime = Time.time;
+		startTime = Time.time;
         canUpdate = true;
         forceAdditionalMultiplier = 1;
+
+		GetComponent<AOEDamage>().ApplyAoeDamage();
     }
 
     private void FixedUpdate()
     {
+		if (!dealtDamage) {
+			// IF SECOND ATTEMPT DOESN'T WORK MOVE IT TO HERE
+
+			dealtDamage = true;
+		}
+
         var time = Time.time - startTime;
         if (canUpdate)
         {
@@ -45,8 +54,8 @@ public class RFX4_PhysicsForceCurves : MonoBehaviour
             var hitColliders = Physics.OverlapSphere(t.position, ForceRadius);
             foreach (var hitCollider in hitColliders)
             {
-                var rig = hitCollider.GetComponent<Rigidbody>();
-                if (rig == null) continue;
+				var rig = hitCollider.GetComponent<Rigidbody>();
+				if (rig == null) continue;
                 if (AffectedName.Length > 0 && !hitCollider.name.Contains(AffectedName)) {
                     
                     continue;
@@ -83,6 +92,7 @@ public class RFX4_PhysicsForceCurves : MonoBehaviour
         {
             if (IsLoop) startTime = Time.time;
             else canUpdate = false;
+			// MOVE AOE DAMAGE TO HERE IF IT DOESN'T WORK FIRST TIME
         }
     }
 
