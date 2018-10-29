@@ -37,9 +37,7 @@ public class Weapon : NetworkBehaviour {
 
 		if (data.type == WeaponData.WeaponType.Gun) {
 			ammo = data.ammo;
-		}
-
-		
+		}		
 	}
 
 	public void Reload() {
@@ -56,12 +54,12 @@ public class Weapon : NetworkBehaviour {
 			//print("out of ammo");
 			GetComponent<AudioSource>().clip = data.outOfAmmoSound;
 			if (playerWhoIsHolding.GetComponentInParent<Player>().isLocalPlayer) {
-				Controller.PlayHaptics(isLeft, hapticSize);
+				Controller.PlayHaptics(isLeft, data.hapticsOutOfAmmo);
 			}
 
 		} else {
             if (playerWhoIsHolding.GetComponentInParent<Player>().isLocalPlayer) {
-                Controller.PlayHaptics( isLeft, hapticSize );
+                Controller.PlayHaptics( isLeft, data.hapticsFiring );
 			}
 
 			lastShottime = Time.time;

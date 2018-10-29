@@ -7,8 +7,8 @@ public class Crystal : MonoBehaviour {
 
 	//public Transform[] otherCrystals;
 	//public int health = 1;
-    [Tooltip("needs to have audiosource play on awake for soud effect")]
-    public GameObject deathParticles;
+    //[Tooltip("needs to have audiosource play on awake for soud effect")]
+    //public GameObject deathParticles;
 
 	private void OnTriggerEnter(Collider other) {
         //Debug.LogWarning(other.tag + " hit crystal");

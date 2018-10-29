@@ -27,8 +27,8 @@ public class RepairTrigger : MonoBehaviour {
 
 			particles.SetActive(false);
 			//tracePrompt.SetActive(true);
-			dmgObj.SpawnBurst(burst);
-
+			dmgObj.SpawnBurst(burst, transform.position);
+			//Controller.PlayHaptics(other.gameObject.GetComponent<GrabWeaponHand>().isLeftHand, HapticController.BurstHaptics);
 
 			transform.position = new Vector3(transform.position.x,
 				                                other.transform.root.GetComponentInChildren<HipMarker>().transform.position.y,

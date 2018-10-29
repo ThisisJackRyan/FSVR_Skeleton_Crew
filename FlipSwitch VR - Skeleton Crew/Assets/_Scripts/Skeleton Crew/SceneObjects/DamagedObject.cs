@@ -160,12 +160,12 @@ public class DamagedObject : NetworkBehaviour {
 		}
 	}
 
-	internal void SpawnBurst(GameObject burst) {
+	internal void SpawnBurst(GameObject burst, Vector3 pos) {
 		if (!isServer) {
 			return;
 		}
 
-		var g = Instantiate(burst, transform.position, Quaternion.identity);
+		var g = Instantiate(burst, pos, Quaternion.identity);
 		NetworkServer.Spawn(g);
 	}
 
@@ -197,6 +197,7 @@ public class DamagedObject : NetworkBehaviour {
 
 		RpcDisableNode( index );
 	}
+	public HapticEvent haptics;
 
 	[ClientRpc]
 	private void RpcDisableNode( int index ) {

@@ -12,7 +12,8 @@ public class ChangeParticleCount : MonoBehaviour {
 	public void AdjustCounts() {
 		foreach (var item in GameObject.FindObjectsOfType<ParticleSystem>()) {
 			if(item.name == systemName) {
-				item.maxParticles = particleCount;
+				var main = item.main;
+				main.maxParticles = particleCount;
 			}
 		}
 	}
