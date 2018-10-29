@@ -37,7 +37,11 @@ public class GhostFreeRoamCamera : NetworkBehaviour {
         thisRenderer = GetComponent<MeshRenderer>();
         thisRenderer.enabled = false;
 
-		//gimbleCamera = FindObjectOfType<CameraPathFollower>().gameObject;
+		if (FindObjectOfType<CameraPathFollower>()) {
+
+			gimbleCamera = FindObjectOfType<CameraPathFollower>().gameObject;
+		}
+
     }
 
     private void Update() {
@@ -49,7 +53,7 @@ public class GhostFreeRoamCamera : NetworkBehaviour {
             NetworkServer.Spawn(g);
         }
 
-		if (Input.GetKeyDown(KeyCode.Escape)) {
+		if (gimbleCamera && Input.GetKeyDown(KeyCode.Escape)) {
 			foreach ( var c in GetComponentsInChildren<Camera>() ) {
 				c.enabled = false;
 			}

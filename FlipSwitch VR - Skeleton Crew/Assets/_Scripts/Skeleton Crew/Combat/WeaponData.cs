@@ -29,19 +29,12 @@ public class WeaponData : ScriptableObject {
 
 	public AudioClip firesound, outOfAmmoSound, reloadClip;
 
+	public HapticEvent hapticsFiring,  hapticsOutOfAmmo;
+
 	#endregion
 
 	public enum WeaponType {
 		Melee, Gun, Bow, Punt
 	}
 	
-	void Start() {
-		
-	}
-
-	void Update() {
-	}
-
-	
-
 }

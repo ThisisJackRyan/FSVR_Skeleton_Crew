@@ -29,6 +29,9 @@ public class RepairPatternNode : MonoBehaviour {
 		if ( !other.GetComponentInParent<MastInteraction>() ) {
 			return;
 		}
+
+		//Controller.PlayHaptics(other.gameObject.GetComponent<GrabWeaponHand>().isLeftHand, HapticController.BurstHaptics);
+
 		pattern.Increment();
 		CancelInvoke();
 		gameObject.SetActive( false );

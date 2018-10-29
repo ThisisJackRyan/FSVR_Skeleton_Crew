@@ -120,10 +120,16 @@ public class HatchActivator : NetworkBehaviour {
 				var g = Instantiate(burst, transform.position, Quaternion.identity);
 				NetworkServer.Spawn(g);
 
+				//Controller.PlayHaptics(other.gameObject.GetComponent<GrabWeaponHand>().isLeftHand, HapticController.BurstHaptics);
+
+				
+
                 StartCoroutine("AnimateAndRespawnRatmen");
             }
         }
     }
+
+	//public HapticEvent haptics;
 
     private void OnTriggerEnter(Collider other) {
         //print("trigger entered hatch");

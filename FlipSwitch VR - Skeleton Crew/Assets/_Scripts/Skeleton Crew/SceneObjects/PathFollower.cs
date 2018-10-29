@@ -240,7 +240,7 @@ public class PathFollower : NetworkBehaviour {
 		Vector3 vectorToTarget = target.transform.position - transform.position;
 		Vector3 facingDirection = transform.forward; // just for clarity!
 
-		float angleInDegrees = Vector3.Angle(facingDirection, vectorToTarget);
+		//float angleInDegrees = Vector3.Angle(facingDirection, vectorToTarget);
 		Quaternion rotation = Quaternion.FromToRotation(facingDirection, vectorToTarget);
 
 		return rotation * transform.rotation;

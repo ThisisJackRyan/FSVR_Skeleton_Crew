@@ -14,7 +14,7 @@ public class Shockwave : MonoBehaviour {
 	private float fadeTime = 2;
 	private float pauseTime = 0;
 	private float fadeRange = 3.5f;
-	private bool activeShockwave = false;
+	//private bool activeShockwave = false;
 
 	void Start() {
 
@@ -69,11 +69,11 @@ public class Shockwave : MonoBehaviour {
 		StartCoroutine("FadeLight");
 
 
-		activeShockwave = true;
+		//activeShockwave = true;
 
 		yield return new WaitForSeconds(4);  //  Wait for the shockwave to finish
 
-		activeShockwave = false;
+		//activeShockwave = false;
 		ShockwaveFX.SetActive(false);
 
 	}
