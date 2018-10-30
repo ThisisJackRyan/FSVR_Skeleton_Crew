@@ -92,7 +92,9 @@ public class EnemyCaptain : NetworkBehaviour {
 		foreach(var m in meleeSpawnPositions ) {
 			VariableHolder.instance.enemyMeleePositions.Add( m, false );
 		}
-		incrementSize = Mathf.CeilToInt(VariableHolder.instance.numPlayers / 2) + difficultyModifier;
+
+		incrementSize = (int) Mathf.Ceil((float)(VariableHolder.instance.numPlayers) / 2) + difficultyModifier;
+		
 		myTree = GetComponent<BehaviorTree>();
 
 		if ( instance != null )
@@ -110,6 +112,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	public void IncrementDifficulty() {
 		difficulty += incrementSize;
 		difficulty = (difficulty < maxDifficulty) ? difficulty : maxDifficulty;
+		print("increment difficulty called, increment size is " + incrementSize + " new difficulty is " + difficulty);
 	}
 
 	#endregion	
@@ -205,7 +208,7 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		if ( isDraining ) {
 			curTime += Time.deltaTime;
-			print( "is draining. Current Elapsed Time: " + curTime );
+			//print( "is draining. Current Elapsed Time: " + curTime );
 			if(curTime >= timeToCaptainWinningInSeconds ) {
 				Debug.LogWarning( "Players have lost the game. Put in shit when that happens here" );
 				StopDrainingAbility();
@@ -296,7 +299,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			tpTarget = Instantiate(captainTargetPositionTeleportParticles, captainTeleportPositionsSafe[currentIndexForSafety].transform.position, Quaternion.identity);
 		} else {
 			do {
-				temp = Random.Range(0, captainTeleportPositionsSafe.Length);
+				temp = Random.Range(0, captainTeleportPositionsDrain.Length);
 			} while (temp == currentIndexForDraining);
 
 			currentIndexForDraining = temp;
@@ -305,6 +308,7 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		NetworkServer.Spawn( tpTarget );
 		canDrain = !(bool) myTree.GetVariable("teleportingToSafety").GetValue();
+		//GetComponent<Rigidbody>().
 		transform.position = tpTarget.transform.position;		
 	}
 
@@ -558,11 +562,13 @@ public class EnemyCaptain : NetworkBehaviour {
 			numRanged++;
 			GameObject g = Instantiate( rangedDragonkin, key.transform.position, key.transform.rotation );
 			g.GetComponent<EnemyDragonkin>().SetMyPosition( key );
+			print("should be spawning ranged enemy");
 			NetworkServer.Spawn( g );
 		} else {
 			numMelee++;
 			GameObject g = Instantiate( meleeDragonkin, key.transform.position, key.transform.rotation );
 			g.GetComponent<EnemyDragonkin>().SetMyPosition( key );
+			print("should be spawning melee enemy");
 			NetworkServer.Spawn( g );
 		}
 	}
