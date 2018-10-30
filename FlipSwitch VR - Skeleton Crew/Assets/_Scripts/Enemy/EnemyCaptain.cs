@@ -27,7 +27,10 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject[] meteorsToEnable;
 
 	// privates
-	private int curActiveIndex = -1;
+	private int curActiveIndex1 = -1;
+	private int curActiveIndex2 = -1;
+	private int curActiveIndex3 = -1;
+	private int curActiveIndex4 = -1;
 
 	[Header("Teleporting")]
 	// publics
@@ -37,9 +40,9 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject captainTargetPositionTeleportParticles;
 
 	// privates
-	private bool teleportingToSafety;
 	private int currentIndexForSafety;
 	private int currentIndexForDraining;
+	private BehaviorTree myTree;
 
 	[Header( "EnergyDraining" )]
 	// publics
@@ -59,7 +62,15 @@ public class EnemyCaptain : NetworkBehaviour {
 
 
 	[Header("Other")]
-	public int hitsToDeath;
+	// Publics
+	public int difficulty = 1;
+	public int maxDifficulty = 10;
+	public int difficultyModifier = 0;
+	public int timesToDeath = 6;
+
+	// Privates
+	private int incrementSize;
+
 
 	// Use this for initialization
 	void Start () {
@@ -81,12 +92,27 @@ public class EnemyCaptain : NetworkBehaviour {
 		foreach(var m in meleeSpawnPositions ) {
 			VariableHolder.instance.enemyMeleePositions.Add( m, false );
 		}
+		incrementSize = Mathf.CeilToInt(VariableHolder.instance.numPlayers / 2) + difficultyModifier;
+		myTree = GetComponent<BehaviorTree>();
 
 		if ( instance != null )
 			Destroy( gameObject );
 		else
 			instance = this;
 	}
+
+	#region General
+
+	public void ModifyDifficultyIncrement(int toAdd) {
+		incrementSize += toAdd;
+	}
+
+	public void IncrementDifficulty() {
+		difficulty += incrementSize;
+		difficulty = (difficulty < maxDifficulty) ? difficulty : maxDifficulty;
+	}
+
+	#endregion	
 
 	#region Drain Testing
 
@@ -138,6 +164,9 @@ public class EnemyCaptain : NetworkBehaviour {
 		}
 		skullParticles.SetActive( true );
 		isDraining = true;
+		if (isServer) {
+			myTree.SetVariableValue("isDraining", true);
+		}
 	}
 
 	private void OnCollisionEnter( Collision collision ) {
@@ -179,6 +208,8 @@ public class EnemyCaptain : NetworkBehaviour {
 			print( "is draining. Current Elapsed Time: " + curTime );
 			if(curTime >= timeToCaptainWinningInSeconds ) {
 				Debug.LogWarning( "Players have lost the game. Put in shit when that happens here" );
+				StopDrainingAbility();
+				myTree.DisableBehavior();
 			}
 		}
 	}
@@ -194,6 +225,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		Ability ab = abilities[0] as Ability;
 
 		GetComponent<ControllerHandler>().TryStopAbility( ab );
+		myTree.SetVariableValue("isDraining", false);
 	}
 
 	#endregion
@@ -206,7 +238,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
-		teleportingToSafety = true;
+		myTree.SetVariableValue("teleportingToSafety", true);
 	}
 
 	[Button]
@@ -215,7 +247,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
-		teleportingToSafety = false;
+		myTree.SetVariableValue("teleportingToSafety", false);
 	}
 
 	[Button]
@@ -255,7 +287,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		GameObject tpTarget;
 		int temp;
 
-		if (teleportingToSafety) {
+		if ((bool) myTree.GetVariable("teleportingToSafety").GetValue()) {
 			do {
 				temp = Random.Range(0, captainTeleportPositionsSafe.Length);
 			} while (temp == currentIndexForSafety);
@@ -272,7 +304,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		}
 
 		NetworkServer.Spawn( tpTarget );
-		canDrain = !teleportingToSafety;
+		canDrain = !(bool) myTree.GetVariable("teleportingToSafety").GetValue();
 		transform.position = tpTarget.transform.position;		
 	}
 
@@ -312,14 +344,91 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
-		curActiveIndex = Random.Range(0, meteorsToEnable.Length);
-		RpcEnableMeteor(curActiveIndex);
-		Invoke("EnableMeteor", 0.1f);
-		Invoke("DisablePortal", 4.5f);
+		List<int> meteorIndexHolder = new List<int> {
+			1,
+			2,
+			3,
+			4
+		};
+
+		int temp = -1;
+
+		switch (difficulty) {
+			case 1:
+				temp = Random.Range(0, meteorIndexHolder.Count);
+				curActiveIndex1 = meteorIndexHolder[temp];
+				meteorIndexHolder.RemoveAt(temp);
+				RpcEnableMeteor(curActiveIndex1);
+				break;
+			case 2:
+				temp = Random.Range(0, meteorIndexHolder.Count);
+				curActiveIndex1 = meteorIndexHolder[temp];
+				meteorIndexHolder.RemoveAt(temp);
+
+				temp = Random.Range(0, meteorIndexHolder.Count);
+				curActiveIndex2 = meteorIndexHolder[temp];
+				meteorIndexHolder.RemoveAt(temp);
+
+				RpcEnableMeteor(curActiveIndex1);
+				RpcEnableMeteor(curActiveIndex2);
+				break;
+			case 3:
+				temp = Random.Range(0, meteorIndexHolder.Count);
+				curActiveIndex1 = meteorIndexHolder[temp];
+				meteorIndexHolder.RemoveAt(temp);
+
+				temp = Random.Range(0, meteorIndexHolder.Count);
+				curActiveIndex2 = meteorIndexHolder[temp];
+				meteorIndexHolder.RemoveAt(temp);
+
+				temp = Random.Range(0, meteorIndexHolder.Count);
+				curActiveIndex3 = meteorIndexHolder[temp];
+				meteorIndexHolder.RemoveAt(temp);
+
+				RpcEnableMeteor(curActiveIndex1);
+				RpcEnableMeteor(curActiveIndex2);
+				RpcEnableMeteor(curActiveIndex3);
+				break;
+			default:            // 4+
+				temp = Random.Range(0, meteorIndexHolder.Count);
+				curActiveIndex1 = meteorIndexHolder[temp];
+				meteorIndexHolder.RemoveAt(temp);
+
+				temp = Random.Range(0, meteorIndexHolder.Count);
+				curActiveIndex2 = meteorIndexHolder[temp];
+				meteorIndexHolder.RemoveAt(temp);
+
+				temp = Random.Range(0, meteorIndexHolder.Count);
+				curActiveIndex3 = meteorIndexHolder[temp];
+				meteorIndexHolder.RemoveAt(temp);
+
+				temp = Random.Range(0, meteorIndexHolder.Count);
+				curActiveIndex4 = meteorIndexHolder[temp];
+				meteorIndexHolder.RemoveAt(temp);
+
+				RpcEnableMeteor(curActiveIndex1);
+				RpcEnableMeteor(curActiveIndex2);
+				RpcEnableMeteor(curActiveIndex3);
+				RpcEnableMeteor(curActiveIndex4);
+				break;
+		}
+		Invoke("EnableMeteors", 0.1f);
+		Invoke("DisableMeteors", 5.5f);
 	}
 
-	private void EnableMeteor() {
-		meteorsToEnable[curActiveIndex].SetActive(true);
+	private void EnableMeteors() {
+		if (curActiveIndex1 != -1) {
+			meteorsToEnable[curActiveIndex1].SetActive(true);
+		}
+		if(curActiveIndex2 != -1) {
+			meteorsToEnable[curActiveIndex2].SetActive(true);
+		}
+		if (curActiveIndex3 != -1) {
+			meteorsToEnable[curActiveIndex3].SetActive(true);
+		}
+		if (curActiveIndex4 != -1) {
+			meteorsToEnable[curActiveIndex4].SetActive(true);
+		}
 	}
 
 	[ClientRpc]
@@ -328,22 +437,39 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
-		curActiveIndex = index;
-		meteorsToEnable[curActiveIndex].SetActive(true);
-
-		Invoke("DisablePortal", 4.5f);
+		if (curActiveIndex1 == -1) {
+			curActiveIndex1 = index;
+			meteorsToEnable[curActiveIndex1].SetActive(true);
+		} else if (curActiveIndex2 == -1) {
+			curActiveIndex2 = index;
+			meteorsToEnable[curActiveIndex2].SetActive(true);
+		} else if (curActiveIndex3 == -1) {
+			curActiveIndex3 = index;
+			meteorsToEnable[curActiveIndex3].SetActive(true);
+		} else if (curActiveIndex4 == -1) {
+			curActiveIndex4 = index;
+			meteorsToEnable[curActiveIndex4].SetActive(true);
+		}
+		Invoke("DisableMeteors", 5.5f);
 	}
 
-	private void DisablePortal() {
-		if(curActiveIndex == -1) {
-			Debug.Log("Tried to deactivate portal with invalid index. Looping through and disabling all portals");
-			foreach(var p in meteorsToEnable) {
-				p.SetActive(false);
-			}
+	private void DisableMeteors() {
+		if (curActiveIndex1 != -1) {
+			meteorsToEnable[curActiveIndex1].SetActive(false);
+			curActiveIndex1 = -1;
 		}
-
-		meteorsToEnable[curActiveIndex].SetActive(false);
-		curActiveIndex = -1;
+		if (curActiveIndex2 != -1) {
+			meteorsToEnable[curActiveIndex2].SetActive(false);
+			curActiveIndex2 = -1;
+		}
+		if (curActiveIndex3 != -1) {
+			meteorsToEnable[curActiveIndex3].SetActive(false);
+			curActiveIndex3 = -1;
+		}
+		if (curActiveIndex4 != -1) {
+			meteorsToEnable[curActiveIndex4].SetActive(false);
+			curActiveIndex4 = -1;
+		}
 	}
 
 	#endregion
@@ -380,28 +506,48 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
-		if(numRanged % 3 != 0 && VariableHolder.instance.enemyRangedPositions.ContainsValue(false)) {
-			foreach (GameObject key in VariableHolder.instance.enemyRangedPositions.Keys) {
-				if(VariableHolder.instance.enemyRangedPositions[key] == false ) {
-					GameObject p = Instantiate( dragonkinSpawnParticles, key.transform.position, key.transform.rotation );
-					NetworkServer.Spawn( p );
-					VariableHolder.instance.enemyRangedPositions[key] = true;
-					StartCoroutine(GenerateEnemy(key, true, timeBetweenParticlesAndEnemySpawn));
-					break;
+		for(int i=0; i<difficulty; i++) {
+			if(!VariableHolder.instance.enemyRangedPositions.ContainsValue(false) && !VariableHolder.instance.enemyMeleePositions.ContainsValue(false)) {
+				break;
+			}
+
+			int rand = Random.Range(0, 1);
+
+			if(rand == 0) {
+				if (!VariableHolder.instance.enemyRangedPositions.ContainsValue(false)) {
+					rand = 1;
+				}
+			} else if (rand == 1) {
+				if (!VariableHolder.instance.enemyMeleePositions.ContainsValue(false)) {
+					rand = 0;
 				}
 			}
-		} else if (VariableHolder.instance.enemyMeleePositions.ContainsValue(false)) {
-			foreach ( GameObject key in VariableHolder.instance.enemyMeleePositions.Keys ) {
-				if ( VariableHolder.instance.enemyMeleePositions[key] == false ) {
-					GameObject p = Instantiate( dragonkinSpawnParticles, key.transform.position, key.transform.rotation );
-					NetworkServer.Spawn( p );
-					VariableHolder.instance.enemyMeleePositions[key] = true;
-					StartCoroutine( GenerateEnemy( key, false, timeBetweenParticlesAndEnemySpawn ) );
+
+			switch (rand) {
+				case 0:                     // Range
+					foreach (GameObject key in VariableHolder.instance.enemyRangedPositions.Keys) {
+						if (VariableHolder.instance.enemyRangedPositions[key] == false) {
+							GameObject p = Instantiate(dragonkinSpawnParticles, key.transform.position, key.transform.rotation);
+							NetworkServer.Spawn(p);
+							VariableHolder.instance.enemyRangedPositions[key] = true;
+							StartCoroutine(GenerateEnemy(key, true, timeBetweenParticlesAndEnemySpawn));
+							break;
+						}
+					}
 					break;
-				}
+				case 1:                     // Melee
+					foreach (GameObject key in VariableHolder.instance.enemyMeleePositions.Keys) {
+						if (VariableHolder.instance.enemyMeleePositions[key] == false) {
+							GameObject p = Instantiate(dragonkinSpawnParticles, key.transform.position, key.transform.rotation);
+							NetworkServer.Spawn(p);
+							VariableHolder.instance.enemyMeleePositions[key] = true;
+							StartCoroutine(GenerateEnemy(key, false, timeBetweenParticlesAndEnemySpawn));
+							break;
+						}
+					}
+					break;
 			}
-		} else {
-			Debug.LogWarning( "Tried to spawn enemy with no positions available. Should never get here" );
+
 		}
 
 	}
