@@ -18,7 +18,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject dragonkinSpawnParticles;
 	public float timeBetweenParticlesAndEnemySpawn;
 	public GameObject meleeDragonkin, rangedDragonkin;
-	public GameObject[] cannonsForMelee;
+	public List<GameObject> cannonsForMelee;
 	//privates
 	private int numRanged = 1, numMelee = 1;
 
@@ -520,7 +520,7 @@ public class EnemyCaptain : NetworkBehaviour {
 				break;
 			}
 
-			int rand = Random.Range(0, 1);
+			int rand = Random.Range(0, 2);
 
 			if(rand == 0) {
 				if (!VariableHolder.instance.enemyRangedPositions.ContainsValue(false)) {
@@ -531,7 +531,6 @@ public class EnemyCaptain : NetworkBehaviour {
 					rand = 0;
 				}
 			}
-
 			switch (rand) {
 				case 0:                     // Range
 					foreach (GameObject key in VariableHolder.instance.enemyRangedPositions.Keys) {
