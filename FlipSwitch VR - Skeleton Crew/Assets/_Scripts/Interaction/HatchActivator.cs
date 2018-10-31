@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -105,8 +106,17 @@ public class HatchActivator : NetworkBehaviour {
         yield return new WaitForSeconds(1);
     }
 
-    //todo add activator logic
-    private void OnTriggerStay(Collider other) {
+	[Button]
+	public void ReleaseTheRats() {
+		if (!isServer) {
+			return;
+		}
+
+		StartCoroutine("AnimateAndRespawnRatmen");
+	}
+
+	//todo add activator logic
+	private void OnTriggerStay(Collider other) {
         if (!isServer)
             return;
 

@@ -135,12 +135,13 @@ public class Captain : SerializedNetworkBehaviour {
             return;
         }
 
+		print("init called server section");
         DisableCannons();
         DisableFirePrompt();
         DisableRatHatches();
         DisableRopes();
         SpawnGuards();
-
+		print("post spawn guards method call");
         eventTimes = new Dictionary<AudioEventType, float>();
         eventTimes.Add(AudioEventType.Cannon, Time.timeSinceLevelLoad);
         eventTimes.Add(AudioEventType.Ratmen, Time.timeSinceLevelLoad);
@@ -432,12 +433,16 @@ public class Captain : SerializedNetworkBehaviour {
     public float timeForGuardsToStartAttacking = 4f;
 
     public void SpawnGuards() {
+		print("spawn guards called");
         for (int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++) {
             GameObject g = Instantiate(guardPrefab, guardPositions[i].position, guardPositions[i].rotation);
             g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("target", VariableHolder.instance.players[i]);
             enemiesKilled.Add(g.GetComponent<Enemy>(), false);
             NetworkServer.Spawn(g);
+			print("looping through and should have spawned a guard");
         }
+
+		print("end of spawn guards method");
     }
 
     public void StartTutorial() {
