@@ -3,16 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using Opsive.ThirdPersonController.Wrappers;
+using BehaviorDesigner.Runtime;
 
 public class EnemyDragonkin : NetworkBehaviour {
 
 	public bool isRanged;
 
 	public GameObject deathParticles;
-
+	public PrimaryItemType primaryItemType;
+	public GameObject teleportParticles;
+	[Tooltip("The hit particles to play when hit")] public GameObject[] hitParticles;
 	private GameObject myPosition;                  // Stores the key where they're located for number of enemy/position tracking.
 	private bool canBeDamaged = true;
-	
+
+
+	private void Start() {
+		if (isServer) {
+			GetComponent<BehaviorTree>().SetVariableValue("weaponType", primaryItemType);	
+		}
+	}
+
 	private void OnCollisionEnter(Collision other) {
 		if (!isServer)
 			return;
@@ -30,6 +40,35 @@ public class EnemyDragonkin : NetworkBehaviour {
 			GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
 			Invoke("AllowDamage", 1f);
 		}
+	}
+
+	public void PlayHitParticles() {
+		//print("play hit particles called");
+
+		foreach (var p in hitParticles) {
+			p.SetActive(true);
+			var par = p.GetComponent<ParticleSystem>();
+			par.Simulate(0, true, true);
+			par.Play();
+		}
+
+		Invoke("TurnOffHit", 1.0f);
+	}
+
+	private void TurnOffHit() {
+		for (int i = 0; i < hitParticles.Length; i++) {
+			hitParticles[i].SetActive(false);
+		}
+	}
+
+	public void TeleportToDeath() {
+		if (!isServer) {
+			return;
+		}
+
+		GameObject p = Instantiate(teleportParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
+		NetworkServer.Spawn(p);
+		NetworkServer.Destroy(gameObject);
 	}
 
 	public void DestroyMe() {

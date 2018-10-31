@@ -18,7 +18,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject dragonkinSpawnParticles;
 	public float timeBetweenParticlesAndEnemySpawn;
 	public GameObject meleeDragonkin, rangedDragonkin;
-
+	public GameObject[] cannonsForMelee;
 	//privates
 	private int numRanged = 1, numMelee = 1;
 
@@ -72,6 +72,8 @@ public class EnemyCaptain : NetworkBehaviour {
 	private int incrementSize;
 
 
+	#region Initialization
+
 	// Use this for initialization
 	void Start () {
 		if ( !isServer ) {
@@ -97,11 +99,14 @@ public class EnemyCaptain : NetworkBehaviour {
 		
 		myTree = GetComponent<BehaviorTree>();
 
-		if ( instance != null )
-			Destroy( gameObject );
-		else
+		if (instance != null) {
+			Destroy(gameObject);
+		} else {
 			instance = this;
+		}
 	}
+
+	#endregion
 
 	#region General
 
@@ -568,6 +573,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			numMelee++;
 			GameObject g = Instantiate( meleeDragonkin, key.transform.position, key.transform.rotation );
 			g.GetComponent<EnemyDragonkin>().SetMyPosition( key );
+			g.GetComponent<BehaviorTree>().SetVariableValue("listOfCannons", cannonsForMelee);
 			print("should be spawning melee enemy");
 			NetworkServer.Spawn( g );
 		}
