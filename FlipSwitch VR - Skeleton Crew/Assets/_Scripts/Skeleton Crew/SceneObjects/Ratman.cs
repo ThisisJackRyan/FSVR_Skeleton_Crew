@@ -99,6 +99,10 @@ public class Ratman : NetworkBehaviour {
         }
     }
 
+	public bool IsDead() {
+		return isDead;
+	}
+
     public void FireMagicParticles() {
         //turn off magic and spawn spell
         if (!isServer) {

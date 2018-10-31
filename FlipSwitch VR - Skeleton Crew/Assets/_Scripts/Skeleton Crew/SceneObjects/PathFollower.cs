@@ -43,8 +43,17 @@ public class PathFollower : NetworkBehaviour {
 	public GameObject[] firstEncountersRanged, firstEncountersMelee, secondEncounters, thirdEncounters, tutorialSpawns;
 
 	public GameObject[] ratkinSpawnPositions;
-    public Transform crystalRoot;
+	public Transform crystalRoot;
 
+	[Header("Ratkin Rebellion Swap")]
+	// publics
+	public GameObject swapParticles;
+	public GameObject ratkinRebelPrefab;
+
+	// privates
+	private bool firstTimeRatkinRebel = true;
+
+	[Space]
 	[SerializeField]
 	EncounterStage currentStage;
 	[Button]
@@ -302,8 +311,11 @@ public class PathFollower : NetworkBehaviour {
                     ChangeSpeed(false);
                     return;
 				}
-
-				Spawn(thirdEncounters);
+				if (firstTimeRatkinRebel) {
+					InitialRebellion();
+				} else {
+					Spawn(thirdEncounters);
+				}
 				break;
 			case EncounterStage.Tutorial:
 				////print("calling spawn with index " + ( currentNode - 1 ) );
@@ -335,6 +347,31 @@ public class PathFollower : NetworkBehaviour {
 	}
 
 	static GameObject[] floaters;
+
+	private void InitialRebellion() {
+		if (!isServer) {
+			return;
+		}
+
+		var ratkinSlaveList = FindObjectsOfType<Ratman>();
+		foreach (var slave in ratkinSlaveList) {
+			if (slave.IsDead()) {
+				continue;
+			}
+
+			GameObject temp = slave.gameObject;
+			NetworkServer.Destroy(slave.gameObject);
+
+			GameObject p = Instantiate(swapParticles, temp.transform.position, Quaternion.identity);
+			NetworkServer.Spawn(p);
+
+			GameObject r = Instantiate(ratkinRebelPrefab, temp.transform.position, Quaternion.identity);
+			NetworkServer.Spawn(r);
+
+		}
+
+		firstTimeRatkinRebel = false;
+	}
 
 	public void Spawn(GameObject[] toSpawnList, int specifiedIndex = -1) {
 		if (!isServer) {
