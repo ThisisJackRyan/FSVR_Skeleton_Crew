@@ -30,7 +30,7 @@ public class PathFollower : NetworkBehaviour {
 	Quaternion currRot, nextRot;
 	GameObject prefabToSpawn;
 
-	public int encounterOneTotalTime = 180, breakTimer = 60;
+	public int encounterOneTotalTime = 180, encounterTwoTotalTime = 180, encounterthreeTotalTime = 180, breakTimer = 60;
 
 	bool canMove = false;
 	bool firstMove = true;
@@ -166,7 +166,7 @@ public class PathFollower : NetworkBehaviour {
 			Captain.instance.PlayDialogue(meteorClip.name);
 		}
 
-		Invoke("StartThirdPhase", encounterOneTotalTime);
+		Invoke("StartThirdPhase", encounterTwoTotalTime);
 		InvokeRepeating("SpawnMeteors", meteorSpawnTimer, meteorSpawnTimer);
 	}
 
@@ -176,6 +176,22 @@ public class PathFollower : NetworkBehaviour {
 			Captain.instance.PlayDialogue(mutinyClip.name);
 		}
 		CancelInvoke("SpawnMeteors");
+		Invoke( "SpawnBossCave", encounterthreeTotalTime );
+
+	}
+
+
+	public GameObject[] landmarks;
+	public float distancetoDelete = 100;
+	void SpawnBossCave() {
+		currentStage = EncounterStage.ThirdBreak;
+		foreach ( var lm in landmarks ) {
+			float dist = Vector3.Distance( shipTransform.position, lm.transform.position );
+			if (dist >= distancetoDelete) {
+
+			}
+		}
+
 	}
 
 	protected void Update() {
@@ -468,6 +484,6 @@ public class PathFollower : NetworkBehaviour {
 	#endregion
 
 	enum EncounterStage {
-		Tutorial, First, Second, Third, FirstBreak, SecondBreak
+		Tutorial, First, Second, Third, FirstBreak, SecondBreak, ThirdBreak
 	}
 }
