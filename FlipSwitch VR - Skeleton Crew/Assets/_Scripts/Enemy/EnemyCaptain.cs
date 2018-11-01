@@ -566,14 +566,14 @@ public class EnemyCaptain : NetworkBehaviour {
 			numRanged++;
 			GameObject g = Instantiate( rangedDragonkin, key.transform.position, key.transform.rotation );
 			g.GetComponent<EnemyDragonkin>().SetMyPosition( key );
-			print("should be spawning ranged enemy");
+			//print("should be spawning ranged enemy");
 			NetworkServer.Spawn( g );
 		} else {
 			numMelee++;
 			GameObject g = Instantiate( meleeDragonkin, key.transform.position, key.transform.rotation );
 			g.GetComponent<EnemyDragonkin>().SetMyPosition( key );
 			g.GetComponent<BehaviorTree>().SetVariableValue("listOfCannons", cannonsForMelee);
-			print("should be spawning melee enemy");
+			//print("should be spawning melee enemy");
 			NetworkServer.Spawn( g );
 		}
 	}

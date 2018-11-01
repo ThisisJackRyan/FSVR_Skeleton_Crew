@@ -415,7 +415,9 @@ namespace Opsive.ThirdPersonController
             IUseableItem useableItem = null;
             var primaryItem = true;
             if (((int)useType & (int)UseType.Primary) == (int)UseType.Primary) {
+				//print("use type is primary");
                 useableItem = m_CurrentPrimaryItem.Get() as IUseableItem;
+				//print("useable item name is " + useableItem.ToString());
             } else if (((int)useType & (int)UseType.DualWield) == (int)UseType.DualWield) {
                 useableItem = m_CurrentDualWieldItem.Get() as IUseableItem;
             } else if (((int)useType & (int)UseType.Secondary) == (int)UseType.Secondary) {
@@ -423,14 +425,17 @@ namespace Opsive.ThirdPersonController
                 primaryItem = false;
             }
             if (useableItem != null && useableItem.CanUse()) {
+				//print("useable item != null && canUse()");
                 // If the extension index isn't -1 then use the extension item.
                 if (extensionIndex != -1) {
                     useableItem = (useableItem as Item).ItemExtensions[extensionIndex] as IUseableItem;
                     if (useableItem == null || !useableItem.CanUse()) {
+						//print("returns false line 433");
                         return false;
                     }
                 }
                 if (primaryItem) {
+					//print("if primary item");
                     // The UseType should always be updated.
                     m_UseType |= useType;
                     if (m_ItemUsePending == null) {
@@ -442,7 +447,8 @@ namespace Opsive.ThirdPersonController
                             item = (useableItem as ItemExtension).ParentItem;
                         }
                         if (m_TryUseItem.Invoke(item)) {
-                            ReadyForUse();
+							//print("invokes try use item " + item.name);
+							ReadyForUse();
                         } else {
                             //print("registers for event OnItemReadyForUse");
 
@@ -451,17 +457,21 @@ namespace Opsive.ThirdPersonController
                     }
                     return true;
                 } else {
+					//print("got to the else");
                     if (useableItem.TryUse()) {
+						//print("try use on " + useableItem.ToString() + " after the else check passed");
                         // After the item is used the character may no longer be alive so don't execuate the events.
                         if (enabled || m_IndependentLook.Invoke()) {
-                            print(m_GameObject.name + " executing OnUpdateAnimator with value false");
+                            //print(m_GameObject.name + " executing OnUpdateAnimator with value false");
                             EventHandler.ExecuteEvent<bool>(m_GameObject, "OnUpdateAnimator", false);
                         }
+						//print("blahhh on 468");
                         return true;
                     }
                 }
             }
 
+			//print("returns false after all the things.");
             return false;
         }
         

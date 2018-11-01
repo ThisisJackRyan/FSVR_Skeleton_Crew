@@ -19,6 +19,7 @@ public class EnemyDragonkin : NetworkBehaviour {
 
 	private void Start() {
 		if (isServer) {
+			//print("should be setting the weapon type");
 			GetComponent<BehaviorTree>().SetVariableValue("weaponType", primaryItemType);	
 		}
 	}

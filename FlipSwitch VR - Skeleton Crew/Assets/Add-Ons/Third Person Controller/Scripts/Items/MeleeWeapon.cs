@@ -183,9 +183,12 @@ namespace Opsive.ThirdPersonController
         /// <returns>True if the weapon can be meleed.</returns>
         public override bool CanUse()
         {
+			//print("can use called on melee weapon");
             if (!base.CanUse()) {
                 return false;
             }
+
+			//print("this will return " + (!m_InUse || m_AllowInterruption));
             return !m_InUse || m_AllowInterruption;
         }
 
@@ -195,6 +198,7 @@ namespace Opsive.ThirdPersonController
         /// </summary>
         public override bool TryUse()
         {
+			//print("try use called on melee weapon");
             // End the item use if the weapon is currently being used and can be interrupted. This will allow the next attack to play.
             if (m_InUse && m_AllowInterruption) {
                 EndUse();
@@ -379,6 +383,10 @@ namespace Opsive.ThirdPersonController
 
                 // The character should play a recoil animation if the object does not have a Rigidbody, the Rigidbody is kinematic, or the Rigidbody is much heavier than the character.
                 if (collision.rigidbody == null || collision.rigidbody.isKinematic || collision.rigidbody.mass > m_CharacterRigidbody.mass * 10) {
+					if (GetComponent<EnemyDragonkin>()) {
+						return;
+					}
+
                     if (!m_WaitForEndUseEvent) {
                         EndUse();
                     }

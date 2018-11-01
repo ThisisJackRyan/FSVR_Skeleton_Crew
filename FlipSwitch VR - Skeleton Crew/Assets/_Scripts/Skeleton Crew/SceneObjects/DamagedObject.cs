@@ -74,7 +74,7 @@ public class DamagedObject : NetworkBehaviour {
 		if ( !isServer ) {
             //return;
             //print("health change");
-			if ( health > n && n > 0) {               
+			if ( health > n && n >= 0) {               
                 GetComponent<AudioSource>().PlayOneShot( damageClip );
 				//Instantiate( dmgParticles, transform.position, Quaternion.identity );   
 			} else if (health < n) {
@@ -291,6 +291,9 @@ public class DamagedObject : NetworkBehaviour {
 			} else if (health <= 0) {
 				if (VariableHolder.instance.cannons.Contains(gameObject)) {
 					VariableHolder.instance.cannons.Remove(gameObject);
+					GetComponent<AudioSource>().PlayOneShot(damageClip);
+					var g = Instantiate(dmgParticles, transform.position, Quaternion.identity);
+					NetworkServer.Spawn(g);
 				}
 			}
 		} else {
