@@ -72,6 +72,7 @@ public class PathFollower : NetworkBehaviour {
 		nextRot = CalcRotation(path.Nodes[nextNode]);
 	}
 
+	[Button]
 	public void StartMoving() {
 		if (!isServer) {
 			return;
@@ -179,19 +180,21 @@ public class PathFollower : NetworkBehaviour {
 		Invoke( "SpawnBossCave", encounterthreeTotalTime );
 
 	}
-
-
+	
 	public GameObject[] landmarks;
-	public float distancetoDelete = 100;
+	public GameObject bossCave;
+	public float distanceToDelete = 100;
+	public float caveMultiplier = 10;
+	[Button]
 	void SpawnBossCave() {
 		currentStage = EncounterStage.ThirdBreak;
 		foreach ( var lm in landmarks ) {
 			float dist = Vector3.Distance( shipTransform.position, lm.transform.position );
-			if (dist >= distancetoDelete) {
-
+			if (dist >= distanceToDelete) {
+				lm.SetActive( false );
 			}
 		}
-
+		bossCave.transform.position = new Vector3( shipTransform.position.x, shipTransform.position.y, shipTransform.position.z - (distanceToDelete * caveMultiplier));
 	}
 
 	protected void Update() {
