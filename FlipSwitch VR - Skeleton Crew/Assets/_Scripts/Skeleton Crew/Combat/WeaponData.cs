@@ -15,6 +15,7 @@ public class WeaponData : ScriptableObject {
 
 	public int damage;
 	public WeaponType type;
+	public GripType gripType;
 
 	//gun and bow only
 	public int ammo;
@@ -35,6 +36,10 @@ public class WeaponData : ScriptableObject {
 
 	public enum WeaponType {
 		Melee, Gun, Bow, Punt
+	}
+
+	public enum GripType {
+		Pistol, Sword, Musket, AxeKnife
 	}
 	
 }
