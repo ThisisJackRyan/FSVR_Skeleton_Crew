@@ -620,7 +620,7 @@ ModelImporter:
       name: Left_Hand_Empty
       takeName: Take 001
       firstFrame: 0
-      lastFrame: 0
+      lastFrame: 0.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -648,7 +648,7 @@ ModelImporter:
       name: Left_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Hold
       takeName: Take 001
       firstFrame: 1
-      lastFrame: 1
+      lastFrame: 1.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -704,7 +704,7 @@ ModelImporter:
       name: Left_Hand_Pirate_Knife_and_Axe_Hold
       takeName: Take 001
       firstFrame: 14
-      lastFrame: 14
+      lastFrame: 14.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -732,7 +732,7 @@ ModelImporter:
       name: Left_Hand_Sword_Hold
       takeName: Take 001
       firstFrame: 15
-      lastFrame: 15
+      lastFrame: 15.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -760,7 +760,7 @@ ModelImporter:
       name: Left_Hand_Musketoon_Short_Hold
       takeName: Take 001
       firstFrame: 19
-      lastFrame: 19
+      lastFrame: 19.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -816,7 +816,7 @@ ModelImporter:
       name: Right_Hand_Empty
       takeName: Take 001
       firstFrame: 50
-      lastFrame: 50
+      lastFrame: 50.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -844,7 +844,7 @@ ModelImporter:
       name: Right_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Hold
       takeName: Take 001
       firstFrame: 51
-      lastFrame: 51
+      lastFrame: 51.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -900,7 +900,7 @@ ModelImporter:
       name: Right_Hand_Pirate_Knife_and_Axe_Hold
       takeName: Take 001
       firstFrame: 64
-      lastFrame: 64
+      lastFrame: 64.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -928,7 +928,7 @@ ModelImporter:
       name: Right_Hand_Sword_Hold
       takeName: Take 001
       firstFrame: 65
-      lastFrame: 65
+      lastFrame: 65.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -956,7 +956,7 @@ ModelImporter:
       name: Right_Hand_Musketoon_Short_Hold
       takeName: Take 001
       firstFrame: 68
-      lastFrame: 68
+      lastFrame: 68.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
