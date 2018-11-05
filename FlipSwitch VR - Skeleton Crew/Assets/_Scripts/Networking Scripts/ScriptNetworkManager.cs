@@ -40,4 +40,15 @@ public class ScriptNetworkManager : NetworkManager {
 		//	NetworkServer.AddPlayerForConnection( conn, player, playerControllerId );
 		//}
 	}
+
+	public override void OnServerSceneChanged(string sceneName) {
+		base.OnServerSceneChanged(sceneName);
+		if (sceneName.Equals("Boss_Online")) {
+			foreach(var v in FindObjectsOfType<FSVRPlayer>()){
+				if (v.isLocalPlayer) {
+					SteamVR_Fade.Start(Color.clear, 1);
+				}
+			}
+		}
+	}
 }

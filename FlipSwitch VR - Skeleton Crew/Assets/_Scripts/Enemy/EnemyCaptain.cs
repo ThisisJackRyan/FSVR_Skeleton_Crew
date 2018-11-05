@@ -16,6 +16,10 @@ public class EnemyCaptain : NetworkBehaviour {
 	// Publics
 	public AudioClip[] introAudioClips;
 	public GameObject[] playerTeleportAreas;
+	public GameObject[] colorChangeParticles;
+	public GameObject initialTeleportTargetPositionParticle;
+	public GameObject initialTeleportCurrentPositionParticle;
+	public Color targetColor;
 	public GameObject captainTeleportTarget;
 	public float timeBetweenSecondTeleportClipAndCannon = 4.5f;
 	public float timeFromCannonToInitialDrain = 5f;
@@ -25,10 +29,15 @@ public class EnemyCaptain : NetworkBehaviour {
 	private readonly int TELEPORT1_CLIP = 1;
 	private readonly int TELEPORT2_CLIP = 2;
 	private readonly int CANNON_CLIP = 3;
-	private readonly int INITIAL_DRAIN_CLIP = 4;
-	public bool playersHaveTeleported;
+	private readonly int START_OF_DRAIN_CLIP = 4;
+	private readonly int SECOND_DRAIN_CLIP = 5;
+	private readonly int THIRD_DRAIN_CLIP = 6;
+	private readonly int END_OF_INTRO_CLIP = 7;
+
+	private bool playersHaveTeleported;
 	private bool firstTimeDrain = true;
 	private bool firstTeleport = true;
+	private int playersReadyForTeleport;
 
 	[Header( "Dragonkin Summoning" )]
 	// Publics
@@ -79,11 +88,27 @@ public class EnemyCaptain : NetworkBehaviour {
 	private GameObject particlesOnDragonInstance;
 	private bool isDraining, canDrain = true;
 
-	[Header( "Captain Death" )]
+	[Header("End Game")]
 	// Publics
 	public GameObject highScoreTable;
-	public GameObject[] particlesToPlay;
-	public AudioClip deathAudio;
+
+	// Privates
+
+	[Space]
+	[Header("Captain Defeat")]
+	// Publics
+	public GameObject[] defeatParticles;
+	public AudioClip defeatAudio;
+	public GameObject defeatPosition;
+
+	// Privates
+
+
+	[Header("Captain Victory")]
+	//Publics
+	public GameObject[] victoryParticles;
+	public AudioClip victoryAudio;
+	public GameObject victoryPosition;
 
 	// Privates
 
@@ -98,6 +123,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	// Privates
 	private int incrementSize;
 	private AudioSource source;
+	private int numberOfTimesHit;
 
 	#endregion
 
@@ -147,7 +173,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	IEnumerator BossFightIntro() {
 
 		// Intro clip
-		yield return new WaitForSeconds( 2 );
+		yield return new WaitForSeconds( 5 );
 		source.clip = introAudioClips[INTRO_CLIP];
 		source.Play();
 		yield return new WaitForSeconds( introAudioClips[INTRO_CLIP].length + 2.5f );
@@ -155,15 +181,15 @@ public class EnemyCaptain : NetworkBehaviour {
 		// Step into glowy areas for teleporting
 		source.clip = introAudioClips[TELEPORT1_CLIP];
 		source.Play();
-		foreach(var v in playerTeleportAreas ) {
-			v.SetActive( true );
-		}
+		print("enable teleport pads called");
+		EnableTeleportPads();
+
 		yield return new WaitUntil(() => playersHaveTeleported == true );
 
 		StartCoroutine( "CaptainTeleport" );
 
-		foreach (var v in playerTeleportAreas ) {
-			v.SetActive( false );
+		for(int i=0; i<NumberOfPlayerHolder.instance.numberOfPlayers; i++) {
+			playerTeleportAreas[i].SetActive( false );
 		}
 
 		yield return new WaitForSeconds( 3.5f );
@@ -178,25 +204,89 @@ public class EnemyCaptain : NetworkBehaviour {
 		source.Play();
 
 		yield return new WaitForSeconds(introAudioClips[CANNON_CLIP].length + timeFromCannonToInitialDrain);
-		StartDrainAbility();
-		print( "drain ability should be started" );
-		StartCoroutine( scaleOverTime( transform, new Vector3( 1.5f, 1.5f, 1.5f ), introAudioClips[INITIAL_DRAIN_CLIP].length + 4f ) );
-		print( "drain clip" );
-		source.clip = introAudioClips[INITIAL_DRAIN_CLIP];
+		source.clip = introAudioClips[START_OF_DRAIN_CLIP];
 		source.Play();
-		yield return new WaitForSeconds( introAudioClips[INITIAL_DRAIN_CLIP].length + 4f );
+
+		yield return new WaitForSeconds(introAudioClips[START_OF_DRAIN_CLIP].length + 1.5f);
+		StartDrainAbility();
+	
+		yield return new WaitForSeconds(4.5f);
+		source.clip = introAudioClips[SECOND_DRAIN_CLIP];
+		source.Play();
+
+		yield return new WaitForSeconds( introAudioClips[SECOND_DRAIN_CLIP].length + 2f );
+		StartCoroutine(ScaleOverTime( transform, new Vector3( 1.5f, 1.5f, 1.5f ), introAudioClips[THIRD_DRAIN_CLIP].length -1.5f ) );
+		StartCoroutine(SwapColorOverTime(introAudioClips[THIRD_DRAIN_CLIP].length - 1.5f));
+		source.clip = introAudioClips[THIRD_DRAIN_CLIP];
+		source.Play();
+
+		yield return new WaitForSeconds(introAudioClips[THIRD_DRAIN_CLIP].length + 3.5f);
+		source.clip = introAudioClips[END_OF_INTRO_CLIP];
+		source.Play();
+
+		yield return new WaitForSeconds(introAudioClips[END_OF_INTRO_CLIP].length);
+
+		print( "drain clip" );
 		myTree.SetVariableValue( "introFinished", true );
 
 	}
 
-	public void PlayersHaveTeleported() {
-		playersHaveTeleported = true;
+	private void EnableTeleportPads() {
+		for (int i = 0; i < NumberOfPlayerHolder.instance.numberOfPlayers; i++) {
+			print("should have activated pad " + (i + 1));
+			playerTeleportAreas[i].SetActive(true);
+			print(playerTeleportAreas[i].name + " should be set to active");
+			NetworkServer.Spawn(playerTeleportAreas[i]);
+		}
+	}
+
+	[Button]
+	public void PlayerSteppedOnPad() {
+		if (!isServer) {
+			return;
+		}
+		print("player stepped on pad called");
+		playersReadyForTeleport++;
+		DetermineIfPlayersCanTeleport();
+	}
+
+	[Button]
+	public void PlayerSteppedOffPad() {
+		if (!isServer) {
+			return;
+		}
+
+		playersReadyForTeleport--;
+	}
+
+	private void DetermineIfPlayersCanTeleport() {
+		print("determine if can teleport called");
+		if (playersReadyForTeleport == NumberOfPlayerHolder.instance.numberOfPlayers) {
+			print("players ready for teleport is equal to number of players in game");
+			RpcTeleportPlayers();
+			print("players should be teleported");
+			playersHaveTeleported = true;
+			print("dialogue should be continuing");
+		}
+	}
+
+	[ClientRpc]
+	private void RpcTeleportPlayers() {
+		if (isServer) {
+			return;
+		}
+
+		foreach (var v in FindObjectsOfType<FSVRPlayer>()) {
+			if (v.isLocalPlayer) {
+				v.transform.position = new Vector3(25, 0, 0);
+			}
+		}
 	}
 
 	// Scale over time gotten from https://stackoverflow.com/questions/46587150/scale-gameobject-over-time
 	bool isScaling = false;
 
-	IEnumerator scaleOverTime( Transform objectToScale, Vector3 toScale, float duration ) {
+	IEnumerator ScaleOverTime( Transform objectToScale, Vector3 toScale, float duration ) {
 		//Make sure there is only one instance of this function running
 		if ( isScaling ) {
 			yield break; ///exit if this is still running
@@ -211,6 +301,33 @@ public class EnemyCaptain : NetworkBehaviour {
 		while ( counter < duration ) {
 			counter += Time.deltaTime;
 			objectToScale.localScale = Vector3.Lerp( startScaleSize, toScale, counter / duration );
+			yield return null;
+		}
+
+		isScaling = false;
+	}
+	
+	bool isChangingColor = false;
+
+	IEnumerator SwapColorOverTime(float duration) {
+		//Make sure there is only one instance of this function running
+		if (isChangingColor) {
+			yield break; ///exit if this is still running
+		}
+		isChangingColor = true;
+
+		float counter = 0;
+
+		//Get the current scale of the object to be moved
+		Color startColor = colorChangeParticles[0].GetComponent<ParticleSystem>().startColor;
+		Vector3 startScale = colorChangeParticles[0].transform.localScale;
+
+		while (counter < duration) {
+			counter += Time.deltaTime;
+			foreach(var v in colorChangeParticles) {
+				v.GetComponent<ParticleSystem>().startColor = Color.Lerp(startColor, targetColor, counter / duration);
+				v.transform.localScale = Vector3.Lerp(startScale, new Vector3(1.5f, 1.5f, 1.5f), counter / duration);
+			}
 			yield return null;
 		}
 
@@ -254,7 +371,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		print( "drain energy ability tried start" );
 		GetComponent<ControllerHandler>().TryStartAbility( ab );
 		print( "after try start drain ability" );
-		yield return new WaitForSecondsRealtime( introAudioClips[INITIAL_DRAIN_CLIP].length + 4f );
+		yield return new WaitForSecondsRealtime( introAudioClips[START_OF_DRAIN_CLIP].length + introAudioClips[SECOND_DRAIN_CLIP].length + introAudioClips[THIRD_DRAIN_CLIP].length + 5.5f);
 		GetComponent<ControllerHandler>().TryStopAbility( ab );
 		Destroy( energyTrailInstance );
 		Destroy( particlesOnDragonInstance );
@@ -308,20 +425,27 @@ public class EnemyCaptain : NetworkBehaviour {
 				skullParticles.SetActive( false );
 				RpcDestroyDrain();
 				isDraining = false;
+				GetComponent<CharacterHealth>().Damage(0.1f, collision.contacts[0].point, Vector3.zero);
+				NetworkServer.Destroy(collision.gameObject);
+				numberOfTimesHit++;
 			}
+
+			CheckIfPlayersWin();
 		}
 
 	}
 
-	[ClientRpc]
-	private void RpcDestroyDrain() {
-		if ( isServer ) {
-			return;
-		}
+	private void CheckIfPlayersWin() {
+		if (numberOfTimesHit >= timesToDeath) {
+			Debug.LogWarning("Players have won the game");
 
-		skullParticles.SetActive( false );
-		Destroy( energyTrailInstance );
-		Destroy( particlesOnDragonInstance );
+			StartCoroutine(PlayerVictory());
+		}
+	}
+
+	IEnumerator PlayerVictory() {
+		//todo fill this out with timings and errthang
+		yield return null;
 	}
 
 	private void Update() {
@@ -336,14 +460,17 @@ public class EnemyCaptain : NetworkBehaviour {
 			curTime += Time.deltaTime;
 			//print( "is draining. Current Elapsed Time: " + curTime );
 			if(curTime >= timeToCaptainWinningInSeconds ) {
-				Debug.LogWarning( "Players have lost the game. Put in shit when that happens here" );
 				StopDrainingAbility();
 				myTree.DisableBehavior();
-
+				StartCoroutine(PlayerDefeat());
 			}
 		}
 	}
 
+	IEnumerator PlayerDefeat() {
+		// todo fill this out with timings and errthang
+		yield return null;
+	}
 
 
 	private void StopDrainingAbility() {
@@ -356,6 +483,17 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		GetComponent<ControllerHandler>().TryStopAbility( ab );
 		myTree.SetVariableValue("isDraining", false);
+	}
+
+	[ClientRpc]
+	private void RpcDestroyDrain() {
+		if (isServer) {
+			return;
+		}
+
+		skullParticles.SetActive(false);
+		Destroy(energyTrailInstance);
+		Destroy(particlesOnDragonInstance);
 	}
 
 	#endregion
@@ -411,17 +549,23 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
-		GameObject tpCurPos = Instantiate( captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity );
-		tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
-		NetworkServer.Spawn( tpCurPos );
 		GameObject tpTarget;
 		int temp;
+
 		if ( firstTeleport ) {
-			tpTarget = Instantiate( captainTargetPositionTeleportParticles, captainTeleportTarget.transform.position, Quaternion.identity );
+			GameObject tpCurPos = Instantiate(initialTeleportCurrentPositionParticle, transform.position, Quaternion.identity);
+			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
+			NetworkServer.Spawn(tpCurPos);
+
+			tpTarget = Instantiate( initialTeleportTargetPositionParticle, captainTeleportTarget.transform.position, Quaternion.identity );
 			NetworkServer.Spawn( tpTarget );
 
 			firstTeleport = false;
 		} else {
+			GameObject tpCurPos = Instantiate(captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity);
+			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
+			NetworkServer.Spawn(tpCurPos);
+
 			if ( (bool)myTree.GetVariable( "teleportingToSafety" ).GetValue() ) {
 				do {
 					temp = Random.Range( 0, captainTeleportPositionsSafe.Length );
