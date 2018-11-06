@@ -34,9 +34,9 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: UpperBody
-    m_StateMachine: {fileID: 1107153352810568710}
-    m_Mask: {fileID: 31900000, guid: 0c2997779ef12194ca721fd6be428f8c, type: 2}
+    m_Name: LowerBody
+    m_StateMachine: {fileID: 1107931052758889510}
+    m_Mask: {fileID: 31900000, guid: e10f441b4832ada45a936874192046d6, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
@@ -46,14 +46,14 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: LowerBody
-    m_StateMachine: {fileID: 1107931052758889510}
-    m_Mask: {fileID: 31900000, guid: e10f441b4832ada45a936874192046d6, type: 2}
+    m_Name: UpperBody
+    m_StateMachine: {fileID: 1107153352810568710}
+    m_Mask: {fileID: 31900000, guid: 0c2997779ef12194ca721fd6be428f8c, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: -1
-    m_DefaultWeight: 1
+    m_DefaultWeight: 0.75
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
@@ -453,6 +453,6 @@ AnimatorStateMachine:
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ExitPosition: {x: 48, y: 72, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 1102168550919646412}

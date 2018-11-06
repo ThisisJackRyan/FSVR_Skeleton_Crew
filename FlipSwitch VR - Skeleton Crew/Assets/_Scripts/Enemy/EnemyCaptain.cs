@@ -9,43 +9,63 @@ using BehaviorDesigner.Runtime;
 
 public class EnemyCaptain : NetworkBehaviour {
 
+	#region Variables
 	public static EnemyCaptain instance;
 
+	[Header( "Boss Fight Intro" )]
+	// Publics
+	public AudioClip[] introAudioClips;
+	public GameObject[] playerTeleportAreas;
+	public GameObject captainTeleportTarget;
+	public float timeBetweenSecondTeleportClipAndCannon = 4.5f;
+	public float timeFromCannonToInitialDrain = 5f;
+
+	// Privates
+	private readonly int INTRO_CLIP = 0;
+	private readonly int TELEPORT1_CLIP = 1;
+	private readonly int TELEPORT2_CLIP = 2;
+	private readonly int CANNON_CLIP = 3;
+	private readonly int INITIAL_DRAIN_CLIP = 4;
+	public bool playersHaveTeleported;
+	private bool firstTimeDrain = true;
+	private bool firstTeleport = true;
+
 	[Header( "Dragonkin Summoning" )]
-	// publics
+	// Publics
 	public GameObject[] rangedSpawnPositions;
 	public GameObject[] meleeSpawnPositions;
 	public GameObject dragonkinSpawnParticles;
 	public float timeBetweenParticlesAndEnemySpawn;
 	public GameObject meleeDragonkin, rangedDragonkin;
 	public List<GameObject> cannonsForMelee;
-	//privates
+	
+	// Privates
 	private int numRanged = 1, numMelee = 1;
 
 	[Header("Meteor Summoning")]
-	// publics
+	// Publics
 	public GameObject[] meteorsToEnable;
 
-	// privates
+	// Privates
 	private int curActiveIndex1 = -1;
 	private int curActiveIndex2 = -1;
 	private int curActiveIndex3 = -1;
 	private int curActiveIndex4 = -1;
 
 	[Header("Teleporting")]
-	// publics
+	// Publics
 	public GameObject[] captainTeleportPositionsSafe;
 	public GameObject[] captainTeleportPositionsDrain;
 	public GameObject captainCurrentPositionTeleportParticles;
 	public GameObject captainTargetPositionTeleportParticles;
 
-	// privates
+	// Privates
 	private int currentIndexForSafety;
 	private int currentIndexForDraining;
 	private BehaviorTree myTree;
 
 	[Header( "EnergyDraining" )]
-	// publics
+	// Publics
 	public GameObject particlesToSpawnOnDragon;
 	public GameObject energyTrail;
 	public Transform skullTransform;
@@ -53,12 +73,19 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject dragon;
 	public float timeToCaptainWinningInSeconds;
 
-	// privates
+	// Privates
 	private float curTime = 0f;
 	private GameObject energyTrailInstance;
 	private GameObject particlesOnDragonInstance;
-	private bool isDraining, canDrain;
+	private bool isDraining, canDrain = true;
 
+	[Header( "Captain Death" )]
+	// Publics
+	public GameObject highScoreTable;
+	public GameObject[] particlesToPlay;
+	public AudioClip deathAudio;
+
+	// Privates
 
 
 	[Header("Other")]
@@ -70,7 +97,9 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	// Privates
 	private int incrementSize;
+	private AudioSource source;
 
+	#endregion
 
 	#region Initialization
 
@@ -98,12 +127,94 @@ public class EnemyCaptain : NetworkBehaviour {
 		incrementSize = (int) Mathf.Ceil((float)(VariableHolder.instance.numPlayers) / 2) + difficultyModifier;
 		
 		myTree = GetComponent<BehaviorTree>();
+		source = GetComponent<AudioSource>();
+		
+		myTree.SetVariableValue( "dragon", dragon );
+
+		StartCoroutine( "BossFightIntro" );
 
 		if (instance != null) {
 			Destroy(gameObject);
 		} else {
 			instance = this;
 		}
+	}
+
+	#endregion
+
+	#region Boss Fight Intro
+
+	IEnumerator BossFightIntro() {
+
+		// Intro clip
+		yield return new WaitForSeconds( 2 );
+		source.clip = introAudioClips[INTRO_CLIP];
+		source.Play();
+		yield return new WaitForSeconds( introAudioClips[INTRO_CLIP].length + 2.5f );
+
+		// Step into glowy areas for teleporting
+		source.clip = introAudioClips[TELEPORT1_CLIP];
+		source.Play();
+		foreach(var v in playerTeleportAreas ) {
+			v.SetActive( true );
+		}
+		yield return new WaitUntil(() => playersHaveTeleported == true );
+
+		StartCoroutine( "CaptainTeleport" );
+
+		foreach (var v in playerTeleportAreas ) {
+			v.SetActive( false );
+		}
+
+		yield return new WaitForSeconds( 3.5f );
+
+		print( "post teleport clip" );
+		source.clip = introAudioClips[TELEPORT2_CLIP];
+		source.Play();
+
+		yield return new WaitForSeconds( introAudioClips[TELEPORT2_CLIP].length + timeBetweenSecondTeleportClipAndCannon);
+		print( "cannon clip" );
+		source.clip = introAudioClips[CANNON_CLIP];
+		source.Play();
+
+		yield return new WaitForSeconds(introAudioClips[CANNON_CLIP].length + timeFromCannonToInitialDrain);
+		StartDrainAbility();
+		print( "drain ability should be started" );
+		StartCoroutine( scaleOverTime( transform, new Vector3( 1.5f, 1.5f, 1.5f ), introAudioClips[INITIAL_DRAIN_CLIP].length + 4f ) );
+		print( "drain clip" );
+		source.clip = introAudioClips[INITIAL_DRAIN_CLIP];
+		source.Play();
+		yield return new WaitForSeconds( introAudioClips[INITIAL_DRAIN_CLIP].length + 4f );
+		myTree.SetVariableValue( "introFinished", true );
+
+	}
+
+	public void PlayersHaveTeleported() {
+		playersHaveTeleported = true;
+	}
+
+	// Scale over time gotten from https://stackoverflow.com/questions/46587150/scale-gameobject-over-time
+	bool isScaling = false;
+
+	IEnumerator scaleOverTime( Transform objectToScale, Vector3 toScale, float duration ) {
+		//Make sure there is only one instance of this function running
+		if ( isScaling ) {
+			yield break; ///exit if this is still running
+		}
+		isScaling = true;
+
+		float counter = 0;
+
+		//Get the current scale of the object to be moved
+		Vector3 startScaleSize = objectToScale.localScale;
+
+		while ( counter < duration ) {
+			counter += Time.deltaTime;
+			objectToScale.localScale = Vector3.Lerp( startScaleSize, toScale, counter / duration );
+			yield return null;
+		}
+
+		isScaling = false;
 	}
 
 	#endregion
@@ -122,7 +233,7 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	#endregion	
 
-	#region Drain Testing
+	#region Initial Draining
 
 	[Button]
 	public void StartDrainAbility() {
@@ -140,11 +251,17 @@ public class EnemyCaptain : NetworkBehaviour {
 		var abilities = controller.GetComponents( TaskUtility.GetTypeWithinAssembly( abName ) );
 
 		Ability ab = abilities[0] as Ability;
-
+		print( "drain energy ability tried start" );
 		GetComponent<ControllerHandler>().TryStartAbility( ab );
-		yield return new WaitForSecondsRealtime( 1000f );
-		print( "have waitforseconds in coroutine" );
+		print( "after try start drain ability" );
+		yield return new WaitForSecondsRealtime( introAudioClips[INITIAL_DRAIN_CLIP].length + 4f );
 		GetComponent<ControllerHandler>().TryStopAbility( ab );
+		Destroy( energyTrailInstance );
+		Destroy( particlesOnDragonInstance );
+		skullParticles.SetActive( false );
+		firstTimeDrain = false;
+		RpcDestroyDrain();
+		canDrain = false;
 	}
 
 	#endregion
@@ -156,6 +273,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	}
 
 	public void DrainEnergyFromDragon() {
+		print( "Drain EnergyFromDragon called" );
 		StartCoroutine( "StartTheDrain" );
 	}
 
@@ -172,7 +290,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		}
 		skullParticles.SetActive( true );
 		isDraining = true;
-		if (isServer) {
+		if (isServer && !firstTimeDrain) {
 			myTree.SetVariableValue("isDraining", true);
 		}
 	}
@@ -210,6 +328,9 @@ public class EnemyCaptain : NetworkBehaviour {
 		if ( !isServer ) {
 			return;
 		}
+		if ( firstTimeDrain ) {
+			return;
+		}
 
 		if ( isDraining ) {
 			curTime += Time.deltaTime;
@@ -218,6 +339,7 @@ public class EnemyCaptain : NetworkBehaviour {
 				Debug.LogWarning( "Players have lost the game. Put in shit when that happens here" );
 				StopDrainingAbility();
 				myTree.DisableBehavior();
+
 			}
 		}
 	}
@@ -294,26 +416,32 @@ public class EnemyCaptain : NetworkBehaviour {
 		NetworkServer.Spawn( tpCurPos );
 		GameObject tpTarget;
 		int temp;
+		if ( firstTeleport ) {
+			tpTarget = Instantiate( captainTargetPositionTeleportParticles, captainTeleportTarget.transform.position, Quaternion.identity );
+			NetworkServer.Spawn( tpTarget );
 
-		if ((bool) myTree.GetVariable("teleportingToSafety").GetValue()) {
-			do {
-				temp = Random.Range(0, captainTeleportPositionsSafe.Length);
-			} while (temp == currentIndexForSafety);
-
-			currentIndexForSafety = temp;
-			tpTarget = Instantiate(captainTargetPositionTeleportParticles, captainTeleportPositionsSafe[currentIndexForSafety].transform.position, Quaternion.identity);
+			firstTeleport = false;
 		} else {
-			do {
-				temp = Random.Range(0, captainTeleportPositionsDrain.Length);
-			} while (temp == currentIndexForDraining);
+			if ( (bool)myTree.GetVariable( "teleportingToSafety" ).GetValue() ) {
+				do {
+					temp = Random.Range( 0, captainTeleportPositionsSafe.Length );
+				} while ( temp == currentIndexForSafety );
 
-			currentIndexForDraining = temp;
-			tpTarget = Instantiate( captainTargetPositionTeleportParticles, captainTeleportPositionsDrain[currentIndexForDraining].transform.position, Quaternion.identity );
+				currentIndexForSafety = temp;
+				tpTarget = Instantiate( captainTargetPositionTeleportParticles, captainTeleportPositionsSafe[currentIndexForSafety].transform.position, Quaternion.identity );
+			} else {
+				do {
+					temp = Random.Range( 0, captainTeleportPositionsDrain.Length );
+				} while ( temp == currentIndexForDraining );
+
+				currentIndexForDraining = temp;
+				tpTarget = Instantiate( captainTargetPositionTeleportParticles, captainTeleportPositionsDrain[currentIndexForDraining].transform.position, Quaternion.identity );
+			}
+
+			NetworkServer.Spawn( tpTarget );
+			canDrain = !(bool)myTree.GetVariable( "teleportingToSafety" ).GetValue();
 		}
 
-		NetworkServer.Spawn( tpTarget );
-		canDrain = !(bool) myTree.GetVariable("teleportingToSafety").GetValue();
-		//GetComponent<Rigidbody>().
 		transform.position = tpTarget.transform.position;		
 	}
 
@@ -579,4 +707,13 @@ public class EnemyCaptain : NetworkBehaviour {
 	}
 
 	#endregion
+
+	#region Captain Defeated
+
+	private void SpawnDeathObjects() {
+
+	}
+
+	#endregion
+
 }
