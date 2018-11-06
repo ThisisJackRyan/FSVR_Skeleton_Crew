@@ -265,7 +265,7 @@ public class GrabWeapon : NetworkBehaviour {
 			}
 		}
 
-		if ( temp != null ) {
+		if ( temp != null ) { //the actual equipping of the weapon
 			temp.GetComponent<ObjectPositionLock>().posPoint = hand.gameObject;
 			temp.GetComponent<ObjectPositionLock>().posOffset = temp.GetComponent<Weapon>().data.heldPosition;
 			temp.GetComponent<ObjectPositionLock>().rotOffset = temp.GetComponent<Weapon>().data.heldRotation;
@@ -286,6 +286,9 @@ public class GrabWeapon : NetworkBehaviour {
 			}
 
 			weaponInteraction.AssignWeapon( side, temp );
+
+			GetComponent<NetworkAnimator>().animator.SetBool(side + temp.GetComponent<Weapon>().data.gripType.ToString(), true);			
+
 			RpcGrabWeapon( side, temp );
 		}
 	}
@@ -669,6 +672,10 @@ public class GrabWeapon : NetworkBehaviour {
 					needsToDrop = true;
 					leftWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
 
+					//handle anim change regardless of holster or drop
+					GetComponent<NetworkAnimator>().animator.SetBool(side + leftWeaponGameObj.GetComponent<Weapon>().data.gripType.ToString(), false);
+
+
 					if ( hits[i].transform == rightHolster.transform ) {
 						//////print("left found right holster");
 						//check if right holster has a weapon
@@ -750,6 +757,10 @@ public class GrabWeapon : NetworkBehaviour {
 				for ( int i = 0; i < hits.Length; i++ ) {
 					needsToDrop = true;
 					rightWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
+
+					//handle anim change regardless of drop or holster
+					GetComponent<NetworkAnimator>().animator.SetBool(side + rightWeaponGameObj.GetComponent<Weapon>().data.gripType.ToString(), false);
+
 
 					if ( hits[i].transform == rightHolster.transform ) {
 						//////print("right found right holster");
