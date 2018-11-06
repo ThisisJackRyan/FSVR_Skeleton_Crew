@@ -48,7 +48,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: LowerBody
     m_StateMachine: {fileID: 1107859743076204444}
-    m_Mask: {fileID: 31900000, guid: e10f441b4832ada45a936874192046d6, type: 2}
+    m_Mask: {fileID: 31900000, guid: 852695408a14b614fa3180bfe05e01e6, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
@@ -60,12 +60,12 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: UpperBody
     m_StateMachine: {fileID: 1107820037496881310}
-    m_Mask: {fileID: 31900000, guid: 0c2997779ef12194ca721fd6be428f8c, type: 2}
+    m_Mask: {fileID: 31900000, guid: 7a70b426437d56849832973fc3554f15, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: -1
-    m_DefaultWeight: 0.75
+    m_DefaultWeight: 0.9
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
@@ -75,7 +75,10 @@ AnimatorStateTransition:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 2
+    m_ConditionEvent: isWalking
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102437442018849572}
   m_Solo: 0
@@ -85,7 +88,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.7857152
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1

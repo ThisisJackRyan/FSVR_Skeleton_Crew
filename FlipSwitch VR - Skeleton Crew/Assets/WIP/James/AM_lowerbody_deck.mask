@@ -5,7 +5,7 @@ AvatarMask:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: AM_lowerbody
+  m_Name: AM_lowerbody_deck
   m_Mask: 01000000000000000000000001000000010000000000000000000000000000000000000000000000000000000000000000000000
   m_Elements:
   - m_Path: 
