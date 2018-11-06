@@ -53,6 +53,9 @@ public class PathFollower : NetworkBehaviour {
 	// privates
 	private bool firstTimeRatkinRebel = true;
 
+	[Header("Boss Transition")]
+	public AudioClip bossAudio;
+
 	[Space]
 	[SerializeField]
 	EncounterStage currentStage;
@@ -188,13 +191,14 @@ public class PathFollower : NetworkBehaviour {
 	[Button]
 	void SpawnBossCave() {
 		currentStage = EncounterStage.ThirdBreak;
-		foreach ( var lm in landmarks ) {
-			float dist = Vector3.Distance( shipTransform.position, lm.transform.position );
+		foreach (var lm in landmarks) {
+			float dist = Vector3.Distance(shipTransform.position, lm.transform.position);
 			if (dist >= distanceToDelete) {
-				lm.SetActive( false );
+				lm.SetActive(false);
 			}
 		}
-		bossCave.transform.position = new Vector3( shipTransform.position.x, shipTransform.position.y, shipTransform.position.z - (distanceToDelete * caveMultiplier));
+		bossCave.transform.position = new Vector3(shipTransform.position.x, shipTransform.position.y, shipTransform.position.z - (distanceToDelete * caveMultiplier));
+
 	}
 
 	protected void Update() {

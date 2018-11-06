@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 using HTC.UnityPlugin.Vive;
 using System.Collections;
-
+using UnityEngine.SceneManagement;
 public class FSVRPlayer : NetworkBehaviour {
 
 	public GameObject[] objectsToAddToDict;
@@ -18,7 +18,6 @@ public class FSVRPlayer : NetworkBehaviour {
 
 		if ( isLocalPlayer ) {
 			SetTrackerIDs();
-
 			SteamVR_Fade.Start( Color.black, 0 );
 			GetComponent<Player>().TurnOffColliders();
 
@@ -67,6 +66,13 @@ public class FSVRPlayer : NetworkBehaviour {
             StartCoroutine("FadeIn");
 		}
 
+	}
+
+	private void OnLevelWasLoaded(int level) {
+		print("level was loaded with index of " + level);
+		if(level == 2) {
+			SteamVR_Fade.Start(Color.clear, 1f);
+		}
 	}
 
 	IEnumerator FadeIn() {
