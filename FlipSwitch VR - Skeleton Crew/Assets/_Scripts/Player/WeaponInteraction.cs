@@ -121,8 +121,14 @@ public class WeaponInteraction : NetworkBehaviour {
 			rightWeaponScript.SpawnBullet(false, hapticSizeShoot);
 		}
 
-			networkAnim.SetTrigger(side+"Shoot");
+		RpcAnimTrigger(side + "Shoot");
 			RpcFireWeapon( side );
+	}
+
+	[ClientRpc]
+	void RpcAnimTrigger(string trigger) {
+		networkAnim.SetTrigger(trigger);
+
 	}
 
 	[ClientRpc]

@@ -287,10 +287,17 @@ public class GrabWeapon : NetworkBehaviour {
 
 			weaponInteraction.AssignWeapon( side, temp );
 
-			GetComponent<NetworkAnimator>().animator.SetBool(side + temp.GetComponent<Weapon>().data.gripType.ToString(), true);			
+			RpcChangeanimatorState(side + temp.GetComponent<Weapon>().data.gripType.ToString(), true);
+
 
 			RpcGrabWeapon( side, temp );
 		}
+	}
+
+	[ClientRpc]
+	void RpcChangeanimatorState(string state, bool value) {
+		GetComponent<NetworkAnimator>().animator.SetBool(state, value);
+
 	}
 
 	void PlayDrawSound() {
@@ -673,7 +680,8 @@ public class GrabWeapon : NetworkBehaviour {
 					leftWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
 
 					//handle anim change regardless of holster or drop
-					GetComponent<NetworkAnimator>().animator.SetBool(side + leftWeaponGameObj.GetComponent<Weapon>().data.gripType.ToString(), false);
+					//GetComponent<NetworkAnimator>().animator.SetBool();
+					RpcChangeanimatorState(side + leftWeaponGameObj.GetComponent<Weapon>().data.gripType.ToString(), false);
 
 
 					if ( hits[i].transform == rightHolster.transform ) {
@@ -759,8 +767,8 @@ public class GrabWeapon : NetworkBehaviour {
 					rightWeaponGameObj.GetComponent<Weapon>().TurnOffFire();
 
 					//handle anim change regardless of drop or holster
-					GetComponent<NetworkAnimator>().animator.SetBool(side + rightWeaponGameObj.GetComponent<Weapon>().data.gripType.ToString(), false);
-
+					//GetComponent<NetworkAnimator>().animator.SetBool();
+					RpcChangeanimatorState(side + rightWeaponGameObj.GetComponent<Weapon>().data.gripType.ToString(), false);
 
 					if ( hits[i].transform == rightHolster.transform ) {
 						//////print("right found right holster");
