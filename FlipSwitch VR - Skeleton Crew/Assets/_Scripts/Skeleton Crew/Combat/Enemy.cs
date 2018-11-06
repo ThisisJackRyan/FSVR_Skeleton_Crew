@@ -153,6 +153,7 @@ public class Enemy : NetworkBehaviour {
 			if (!ratkin) {
 				canBeDamaged = false;
 				GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
+				//todo PLAYER SCORE INTEGRATION FOR PROJECTILE
 				Invoke("AllowDamage", 1f);
 			} else {
 				DestroyMe();

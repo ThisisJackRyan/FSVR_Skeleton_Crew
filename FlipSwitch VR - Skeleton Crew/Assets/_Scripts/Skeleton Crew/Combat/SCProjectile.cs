@@ -12,6 +12,7 @@ public class SCProjectile : NetworkBehaviour {
 	//public GameObject particles;
 	public float particleKillTimer = 2f;
     public GameObject playerWhoFired = null;
+	public bool isCannonball = false;
 
 	// Use this for initialization//print(transform.position);
 	void Awake() {

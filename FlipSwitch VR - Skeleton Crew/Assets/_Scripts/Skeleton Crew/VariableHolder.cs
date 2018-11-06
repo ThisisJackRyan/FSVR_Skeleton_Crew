@@ -13,13 +13,17 @@ public class VariableHolder : MonoBehaviour {
     public int numRangedUnits;
     public int maxNumRangedUnits = 6;
 	public static VariableHolder instance;
+	public Dictionary<GameObject, PlayerScore> playerScores = new Dictionary<GameObject, PlayerScore>();
+
 
 	private void Awake()
 	{
-		if (instance != null)
+		if (instance != null ) {
 			Destroy(gameObject);
-		else
+		} else {
+
 			instance = this;
+		}
 	}
 
     public void RemoveRangedUnit() {
@@ -45,5 +49,25 @@ public class VariableHolder : MonoBehaviour {
 		{
 			Debug.Log("Invalid number of player");
 		}
+	}
+
+	public void AddPlayerToScoreList(GameObject player) {
+		if (!playerScores.ContainsKey(player)) {
+			playerScores.Add( player, new PlayerScore());
+		} else {
+			print("player already added to score list: " + player.name);
+		}
+	}
+
+	public class PlayerScore {
+		public int points;
+		public int ratkinKills;
+		public int skeletonKills;
+		public int dragonkinKills;
+		public int repairs;
+		public int deaths;
+		public int crystalsDetroyed;
+		public int boatsDestroyed;
+		public int captainDamage;
 	}
 }

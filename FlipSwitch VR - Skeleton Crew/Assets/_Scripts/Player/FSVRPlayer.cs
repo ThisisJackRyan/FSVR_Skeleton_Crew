@@ -28,6 +28,8 @@ public class FSVRPlayer : NetworkBehaviour {
 			if (isServer) {
 				//print("should be adding " + gameObject.name + " to host list");
 				GameObject.FindObjectOfType<Host>().AddPlayerToHostList(gameObject);
+
+				VariableHolder.instance.AddPlayerToScoreList( gameObject );
 			} else {
 				GetComponent<Player>().TurnOffColliders();
 			}

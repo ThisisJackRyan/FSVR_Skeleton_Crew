@@ -89,10 +89,17 @@ public class BoardingPartySpawner : NetworkBehaviour {
             return;
         }
 
-        if (other.gameObject.GetComponent<SCProjectile>()) {
-            //other.gameObject.GetComponent<SCProjectile>().playerWhoFired << needed for point assignment
-            NetworkServer.Destroy(gameObject);
-            //todo add point stuff here
-        }
+		if ( other.gameObject.GetComponent<SCProjectile>() ) {
+			if ( other.gameObject.GetComponent<SCProjectile>().isCannonball ) {
+				//todo PLAYER SCORE INTEGRATION FOR PROJECTILE
+
+				//other.gameObject.GetComponent<SCProjectile>().playerWhoFired << needed for point assignment
+				NetworkServer.Destroy( gameObject );
+				//todo add point stuff here
+			} else {
+
+				print("shot by player fire, but not cannonball");
+			}
+		}
     }
 }

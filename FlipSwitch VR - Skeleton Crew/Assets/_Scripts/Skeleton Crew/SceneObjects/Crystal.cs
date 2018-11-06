@@ -14,11 +14,7 @@ public class Crystal : MonoBehaviour {
         //Debug.LogWarning(other.tag + " hit crystal");
 
 
-		if (other.tag == "BulletPlayer") {
-			//destroy gameobject
-			//print("in the bullet player if");
-			HitByCannon(other.gameObject);
-		} else if (other.tag == "CannonBallPlayer") {
+		if (other.tag == "BulletPlayer" || other.tag == "CannonBallPlayer") {
 			//destroy root
 			//print("in the cannon player if");
 			HitByCannon(other.gameObject);

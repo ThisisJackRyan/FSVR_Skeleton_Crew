@@ -39,7 +39,9 @@ public class EnemyDragonkin : NetworkBehaviour {
 		} else if (other.gameObject.tag == "BulletPlayer" || other.gameObject.tag == "CannonBallPlayer") {
 			canBeDamaged = false;
 			GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
-			Invoke("AllowDamage", 1f);
+			//todo PLAYER SCORE INTEGRATION FOR PROJECTILE
+
+			Invoke( "AllowDamage", 1f);
 		}
 	}
 

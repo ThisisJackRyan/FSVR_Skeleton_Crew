@@ -75,6 +75,7 @@ public class Weapon : NetworkBehaviour {
                 var bullet = Instantiate(data.projectile, projectileSpawnPos.position, Quaternion.Euler(rot));
 			    bullet.GetComponent<Rigidbody>().AddForce(projectileSpawnPos.forward * data.power, ForceMode.Impulse);
 			    bullet.GetComponent<SCProjectile>().damage = data.damage;
+				bullet.GetComponent<SCProjectile>().playerWhoFired = playerWhoIsHolding.transform.root.gameObject;
 
                 //NetworkServer.Spawn(smoke);
                 NetworkServer.Spawn(bullet);
