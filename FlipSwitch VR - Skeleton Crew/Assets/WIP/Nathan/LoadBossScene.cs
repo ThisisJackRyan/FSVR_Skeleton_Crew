@@ -58,7 +58,7 @@ public class LoadBossScene : NetworkBehaviour {
 	public void RpcFadePlayerCameras() {
 		foreach(var v in FindObjectsOfType<FSVRPlayer>()) {
 			if (v.isLocalPlayer) {
-				SteamVR_Fade.Start(Color.black, 5f);
+				SteamVR_Fade.Start(Color.black, 2f);
 			}
 		}
 	}

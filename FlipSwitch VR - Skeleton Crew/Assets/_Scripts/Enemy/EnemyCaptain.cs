@@ -131,13 +131,14 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		source = GetComponent<AudioSource>();
+
 		if ( !isServer ) {
 			return;
 		}
 
 		VariableHolder.instance.enemyRangedPositions = new Dictionary<GameObject, bool>();
-		VariableHolder.instance.enemyMeleePositions = new Dictionary<GameObject, bool>();
-		
+		VariableHolder.instance.enemyMeleePositions = new Dictionary<GameObject, bool>();		
 
 		VariableHolder.instance.enemyRangedPositions.Clear();
 		VariableHolder.instance.enemyMeleePositions.Clear();
@@ -153,7 +154,6 @@ public class EnemyCaptain : NetworkBehaviour {
 		incrementSize = (int) Mathf.Ceil((float)(VariableHolder.instance.numPlayers) / 2) + difficultyModifier;
 		
 		myTree = GetComponent<BehaviorTree>();
-		source = GetComponent<AudioSource>();
 		
 		myTree.SetVariableValue( "dragon", dragon );
 
@@ -174,10 +174,11 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		// Intro clip
 		yield return new WaitForSeconds( 5 );
+		RpcPlayDialogue(INTRO_CLIP);
 		source.clip = introAudioClips[INTRO_CLIP];
 		source.Play();
 		yield return new WaitForSeconds( introAudioClips[INTRO_CLIP].length + 2.5f );
-
+		RpcPlayDialogue(TELEPORT1_CLIP);
 		// Step into glowy areas for teleporting
 		source.clip = introAudioClips[TELEPORT1_CLIP];
 		source.Play();
@@ -185,25 +186,27 @@ public class EnemyCaptain : NetworkBehaviour {
 		EnableTeleportPads();
 
 		yield return new WaitUntil(() => playersHaveTeleported == true );
-
-		StartCoroutine( "CaptainTeleport" );
-
-		for(int i=0; i<NumberOfPlayerHolder.instance.numberOfPlayers; i++) {
-			playerTeleportAreas[i].SetActive( false );
+		for (int i = 0; i < NumberOfPlayerHolder.instance.numberOfPlayers; i++) {
+			playerTeleportAreas[i].SetActive(false);
 		}
 
-		yield return new WaitForSeconds( 3.5f );
+		yield return new WaitForSeconds(4f);
+		StartCoroutine( "CaptainTeleport" );
 
+		yield return new WaitForSeconds( 3.5f );
+		RpcPlayDialogue(TELEPORT2_CLIP);
 		print( "post teleport clip" );
 		source.clip = introAudioClips[TELEPORT2_CLIP];
 		source.Play();
 
 		yield return new WaitForSeconds( introAudioClips[TELEPORT2_CLIP].length + timeBetweenSecondTeleportClipAndCannon);
+		RpcPlayDialogue(CANNON_CLIP);
 		print( "cannon clip" );
 		source.clip = introAudioClips[CANNON_CLIP];
 		source.Play();
 
 		yield return new WaitForSeconds(introAudioClips[CANNON_CLIP].length + timeFromCannonToInitialDrain);
+		RpcPlayDialogue(START_OF_DRAIN_CLIP);
 		source.clip = introAudioClips[START_OF_DRAIN_CLIP];
 		source.Play();
 
@@ -211,16 +214,20 @@ public class EnemyCaptain : NetworkBehaviour {
 		StartDrainAbility();
 	
 		yield return new WaitForSeconds(4.5f);
+		RpcPlayDialogue(SECOND_DRAIN_CLIP);
 		source.clip = introAudioClips[SECOND_DRAIN_CLIP];
 		source.Play();
 
 		yield return new WaitForSeconds( introAudioClips[SECOND_DRAIN_CLIP].length + 2f );
+		RpcPlayDialogue(THIRD_DRAIN_CLIP);
+		RpcMakeCaptainEvil();
 		StartCoroutine(ScaleOverTime( transform, new Vector3( 1.5f, 1.5f, 1.5f ), introAudioClips[THIRD_DRAIN_CLIP].length -1.5f ) );
 		StartCoroutine(SwapColorOverTime(introAudioClips[THIRD_DRAIN_CLIP].length - 1.5f));
 		source.clip = introAudioClips[THIRD_DRAIN_CLIP];
 		source.Play();
 
 		yield return new WaitForSeconds(introAudioClips[THIRD_DRAIN_CLIP].length + 3.5f);
+		RpcPlayDialogue(END_OF_INTRO_CLIP);
 		source.clip = introAudioClips[END_OF_INTRO_CLIP];
 		source.Play();
 
@@ -229,6 +236,26 @@ public class EnemyCaptain : NetworkBehaviour {
 		print( "drain clip" );
 		myTree.SetVariableValue( "introFinished", true );
 
+	}
+
+	[ClientRpc]
+	private void RpcMakeCaptainEvil() {
+		if (isServer) {
+			return;
+		}
+
+		StartCoroutine(ScaleOverTime(transform, new Vector3(1.5f, 1.5f, 1.5f), introAudioClips[THIRD_DRAIN_CLIP].length - 1.5f));
+		StartCoroutine(SwapColorOverTime(introAudioClips[THIRD_DRAIN_CLIP].length - 1.5f));
+	}
+
+	[ClientRpc]
+	private void RpcPlayDialogue(int index) {
+		if (isServer) {
+			return;
+		}
+
+		source.clip = introAudioClips[index];
+		source.Play();
 	}
 
 	private void EnableTeleportPads() {

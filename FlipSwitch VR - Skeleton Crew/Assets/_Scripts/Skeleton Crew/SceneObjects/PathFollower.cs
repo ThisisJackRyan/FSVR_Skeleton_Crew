@@ -53,9 +53,6 @@ public class PathFollower : NetworkBehaviour {
 	// privates
 	private bool firstTimeRatkinRebel = true;
 
-	[Header("Boss Transition")]
-	public AudioClip bossAudio;
-
 	[Space]
 	[SerializeField]
 	EncounterStage currentStage;
@@ -198,7 +195,11 @@ public class PathFollower : NetworkBehaviour {
 			}
 		}
 		bossCave.transform.position = new Vector3(shipTransform.position.x, shipTransform.position.y, shipTransform.position.z - (distanceToDelete * caveMultiplier));
+		foreach(var v in Captain.instance.mastRopes) {
+			v.enabled = false;
+		}
 
+		ChangeSpeed(true);
 	}
 
 	protected void Update() {

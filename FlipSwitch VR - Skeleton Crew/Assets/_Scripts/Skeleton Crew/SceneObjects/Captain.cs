@@ -769,10 +769,12 @@ public class Captain : SerializedNetworkBehaviour {
 
 	#region Boss Scene Transition
 
+	bool hasStartedLoadingLevel;
 
 	private void OnTriggerEnter(Collider other) {
 		if (other.tag == "BossLevelTrigger") {
-			if (isServer) {
+			if (isServer && !hasStartedLoadingLevel) {
+				hasStartedLoadingLevel = true;
 				StartCoroutine(LoadBossLevel());
 			}
 		}
@@ -781,7 +783,7 @@ public class Captain : SerializedNetworkBehaviour {
 	IEnumerator LoadBossLevel() {
 		PlayDialogue("Snd_CaptainBoss_Intro_Arrived");
 		LoadBossScene.instance.RpcFadePlayerCameras();
-		yield return new WaitForSeconds(5.5f);
+		yield return new WaitForSeconds(3.5f);
 		LoadBossScene.instance.NetworkLoadBossScene();
 	}
 }
