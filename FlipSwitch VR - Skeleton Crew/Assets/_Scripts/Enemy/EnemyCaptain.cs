@@ -470,11 +470,6 @@ public class EnemyCaptain : NetworkBehaviour {
 		}
 	}
 
-	IEnumerator PlayerVictory() {
-		//todo fill this out with timings and errthang
-		yield return null;
-	}
-
 	private void Update() {
 		if ( !isServer ) {
 			return;
@@ -486,19 +481,13 @@ public class EnemyCaptain : NetworkBehaviour {
 		if ( isDraining ) {
 			curTime += Time.deltaTime;
 			//print( "is draining. Current Elapsed Time: " + curTime );
-			if(curTime >= timeToCaptainWinningInSeconds ) {
-				StopDrainingAbility();
-				myTree.DisableBehavior();
+			if(curTime >= timeToCaptainWinningInSeconds ) {				// Player defeat / Captain victory check
+				StopDrainingAbility();									// Stop draining
+				myTree.DisableBehavior();								// Stop him from doing more.
 				StartCoroutine(PlayerDefeat());
 			}
 		}
 	}
-
-	IEnumerator PlayerDefeat() {
-		// todo fill this out with timings and errthang
-		yield return null;
-	}
-
 
 	private void StopDrainingAbility() {
 		string abName = "DrainEnergy";
@@ -881,8 +870,58 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	#region Captain Defeated
 
-	private void SpawnDeathObjects() {
+	IEnumerator PlayerVictory() {
+		PlayEndGameAudio(true);
+		yield return new WaitForSeconds(victoryAudio.length);
 
+		SpawnDeathObjects(true);
+	}
+
+	IEnumerator PlayerDefeat() {
+		PlayEndGameAudio(false);
+		yield return new WaitForSeconds(defeatAudio.length);
+
+		SpawnDeathObjects(false);
+	}
+
+	private void SpawnDeathObjects(bool playerVictory) {
+		if (!isServer) {
+			return;
+		}
+
+		EnableScoreboard();
+
+		if (playerVictory) {
+
+		} else {
+
+		}
+	}
+
+	private void EnableScoreboard() {
+		highScoreTable.SetActive(true);
+		RpcEnableScoreboard();
+	}
+
+	[ClientRpc]
+	private void RpcEnableScoreboard() {
+		if (isServer) {
+			return;
+		}
+
+		highScoreTable.SetActive(true);
+	}
+
+	private void PlayEndGameAudio(bool playerVictory) {
+		RpcPlayEndGameAudio(playerVictory);
+		source.clip = playerVictory ? victoryAudio : defeatAudio;
+		source.Play();
+	}
+
+	[ClientRpc]
+	private void RpcPlayEndGameAudio(bool playerVictory) {
+		source.clip = playerVictory ? victoryAudio : defeatAudio;
+		source.Play();
 	}
 
 	#endregion
