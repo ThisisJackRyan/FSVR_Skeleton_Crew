@@ -11,14 +11,9 @@ public class Crystal : MonoBehaviour {
     //public GameObject deathParticles;
 
 	private void OnTriggerEnter(Collider other) {
-        //Debug.LogWarning(other.tag + " hit crystal");
+		//Debug.LogWarning(other.tag + " hit crystal");
 
-
-		if (other.tag == "BulletPlayer") {
-			//destroy gameobject
-			//print("in the bullet player if");
-			HitByCannon(other.gameObject);
-		} else if (other.tag == "CannonBallPlayer") {
+		if (other.tag == "BulletPlayer" || other.tag == "CannonBallPlayer") {
 			//destroy root
 			//print("in the cannon player if");
 			HitByCannon(other.gameObject);
@@ -40,12 +35,13 @@ public class Crystal : MonoBehaviour {
 
 	void HitByCannon(GameObject bullet) {
 		//print("called rpc cannon");
+		transform.root.GetComponent<PathFollower>().DestroyCrystal( transform.GetSiblingIndex() );
+		VariableHolder.instance.IncreasePlayerScore(bullet.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.crystalsDetroyed, transform.position);
 		Destroy(bullet);
 
 		//foreach (var t in otherCrystals) {
 		//	transform.root.GetComponent<PathFollower>().DestroyCrystal( t.gameObject );
 		//}
-		transform.root.GetComponent<PathFollower>().DestroyCrystal( transform.GetSiblingIndex() );
 
 		//Destroy( gameObject ); //todo fully network this
 	}

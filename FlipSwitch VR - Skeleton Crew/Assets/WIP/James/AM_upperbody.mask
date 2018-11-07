@@ -6,14 +6,14 @@ AvatarMask:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: AM_upperbody
-  m_Mask: 01000000010000000100000000000000000000000100000001000000010000000100000001000000010000000100000001000000
+  m_Mask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000000000000000000
   m_Elements:
   - m_Path: 
     m_Weight: 1
   - m_Path: Bip01
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 L Thigh
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 L Thigh/Bip01 L Calf
@@ -31,9 +31,9 @@ AvatarMask:
   - m_Path: Bip01/Bip01 Pelvis/Bip01 R Thigh/Bip01 R Calf/Bip01 R Foot/Bip01 R Toe0
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 back_right_Wmount
@@ -130,7 +130,7 @@ AvatarMask:
       R UpperArm/Bip01 R Forearm/Bip01 R Hand/Bip01 Rhand_Weapon/SH_Sword_E2
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/SH_Chest_E
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Hair
     m_Weight: 0
   - m_Path: SH_Boots_E

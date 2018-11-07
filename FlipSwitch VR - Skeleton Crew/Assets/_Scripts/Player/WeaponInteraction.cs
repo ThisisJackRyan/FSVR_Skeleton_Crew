@@ -16,6 +16,7 @@ public class WeaponInteraction : NetworkBehaviour {
 	public MastInteraction mastInteraction;
 	public CannonInteraction cannonInteraction;
 	public GameObject playerColliderForEnemyAttacker;
+	NetworkAnimator networkAnim;
 
 	public void AssignWeapon(string side, GameObject weapon ) {
 		if ( side.Equals( "left" ) ) {
@@ -58,6 +59,7 @@ public class WeaponInteraction : NetworkBehaviour {
 	private void Start() {
 		mastInteraction = GetComponent<MastInteraction>();
 		cannonInteraction = GetComponent<CannonInteraction>();
+		networkAnim = GetComponent<NetworkAnimator>();
 	}
 
 	public ushort hapticSizeShoot = 1500, hapticSizeEmpty = 500;
@@ -113,11 +115,20 @@ public class WeaponInteraction : NetworkBehaviour {
 
 	[Command]
 	private void CmdFireWeapon(string side ) {
-		if ( side.Equals( "left" ) )
+		if ( side.Equals( "left" )) {
 			leftWeaponScript.SpawnBullet(true, hapticSizeShoot);
-		else
+		} else {
 			rightWeaponScript.SpawnBullet(false, hapticSizeShoot);
-		RpcFireWeapon( side );
+		}
+
+		RpcAnimTrigger(side + "Shoot");
+			RpcFireWeapon( side );
+	}
+
+	[ClientRpc]
+	void RpcAnimTrigger(string trigger) {
+		networkAnim.SetTrigger(trigger);
+
 	}
 
 	[ClientRpc]

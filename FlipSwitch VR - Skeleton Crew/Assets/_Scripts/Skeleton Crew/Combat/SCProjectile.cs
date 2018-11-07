@@ -11,7 +11,9 @@ public class SCProjectile : NetworkBehaviour {
 	//public GameObject deathParticles;
 	//public GameObject particles;
 	public float particleKillTimer = 2f;
+	[SyncVar]
     public GameObject playerWhoFired = null;
+	public bool isCannonball = false;
 
 	// Use this for initialization//print(transform.position);
 	void Awake() {
