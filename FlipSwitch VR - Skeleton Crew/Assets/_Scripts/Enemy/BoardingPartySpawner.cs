@@ -92,6 +92,7 @@ public class BoardingPartySpawner : NetworkBehaviour {
 		if ( other.gameObject.GetComponent<SCProjectile>() ) {
 			if ( other.gameObject.GetComponent<SCProjectile>().isCannonball ) {
 				//todo PLAYER SCORE INTEGRATION FOR PROJECTILE
+				VariableHolder.instance.IncreasePlayerScore( other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.BoatsDestroyed, transform.position );
 
 				//other.gameObject.GetComponent<SCProjectile>().playerWhoFired << needed for point assignment
 				NetworkServer.Destroy( gameObject );
