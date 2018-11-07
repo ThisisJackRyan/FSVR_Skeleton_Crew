@@ -2,6 +2,8 @@
 using UnityEngine.Networking;
 using HTC.UnityPlugin.Vive;
 using System.Collections;
+using UnityEngine.UI;
+using System;
 
 public class FSVRPlayer : NetworkBehaviour {
 
@@ -11,11 +13,12 @@ public class FSVRPlayer : NetworkBehaviour {
 
 	public SteamVR_TrackedObject leftFoot, rightFoot, hip, leftHand, rightHand;
 
+	public GameObject floatingScore;
+
 	public Camera hostCamView;
 
 	// Use this for initialization
 	void Start () {
-
 		if ( isLocalPlayer ) {
 			SetTrackerIDs();
 
@@ -44,7 +47,6 @@ public class FSVRPlayer : NetworkBehaviour {
 			}
 			
 		}
-
 
 		foreach ( GameObject obj in objectsToAddToDict ) {
 			ExitLobbyPlayerTrigger.playerDict.Add( obj, false );
@@ -109,5 +111,26 @@ public class FSVRPlayer : NetworkBehaviour {
 
 	public void DisableCamera() {
 		hostCamView.enabled = false;
+	}
+
+	
+	public void SpawnPointDisplay(Vector3 spawnPos, int value, GameObject player) {
+		if (!isServer) {
+			print("not server");
+			return;
+		}
+
+		RpcSpawnPointsOnLocalPlayer(spawnPos, value, player);		
+	}
+
+	private void RpcSpawnPointsOnLocalPlayer( Vector3 spawnPos, int value, GameObject player ) {
+		if (isLocalPlayer && player == transform.root.gameObject ) {
+
+
+			var g = Instantiate( floatingScore, spawnPos, Quaternion.identity );
+			g.GetComponentInChildren<Text>().text = "+" + value + "!";
+		} else {
+			print("local player? " + isLocalPlayer + " , player is " + player.name + " , root is " + transform.root.name);
+		}
 	}
 }
