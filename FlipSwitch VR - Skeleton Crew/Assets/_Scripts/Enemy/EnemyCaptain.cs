@@ -47,19 +47,23 @@ public class EnemyCaptain : NetworkBehaviour {
 	public float timeBetweenParticlesAndEnemySpawn;
 	public GameObject meleeDragonkin, rangedDragonkin;
 	public List<GameObject> cannonsForMelee;
-	
+	public AudioClip[] summonAudioClips;
+
 	// Privates
 	private int numRanged = 1, numMelee = 1;
+	private int summonClipToPlay;
 
 	[Header("Meteor Summoning")]
 	// Publics
 	public GameObject[] meteorsToEnable;
+	public AudioClip[] meteorAudioClips;
 
 	// Privates
 	private int curActiveIndex1 = -1;
 	private int curActiveIndex2 = -1;
 	private int curActiveIndex3 = -1;
 	private int curActiveIndex4 = -1;
+	private int meteorSoundIndex;
 
 	[Header("Teleporting")]
 	// Publics
@@ -67,10 +71,12 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject[] captainTeleportPositionsDrain;
 	public GameObject captainCurrentPositionTeleportParticles;
 	public GameObject captainTargetPositionTeleportParticles;
+	public AudioClip teleportSound;
 
 	// Privates
 	private int currentIndexForSafety;
 	private int currentIndexForDraining;
+	private int curTeleportNumber;
 	private BehaviorTree myTree;
 
 	[Header( "EnergyDraining" )]
@@ -81,12 +87,14 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject skullParticles;
 	public GameObject dragon;
 	public float timeToCaptainWinningInSeconds;
+	public AudioClip[] drainAudioClips;
 
 	// Privates
 	private float curTime = 0f;
 	private GameObject energyTrailInstance;
 	private GameObject particlesOnDragonInstance;
 	private bool isDraining, canDrain = true;
+	private int drainClipToPlay;
 
 	[Header("End Game")]
 	// Publics
@@ -119,6 +127,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	public int maxDifficulty = 10;
 	public int difficultyModifier = 0;
 	public int timesToDeath = 6;
+	public BossAmbientSound ambientSoundRef;
 
 	// Privates
 	private int incrementSize;
@@ -228,6 +237,7 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		yield return new WaitForSeconds(introAudioClips[THIRD_DRAIN_CLIP].length + 3.5f);
 		RpcPlayDialogue(END_OF_INTRO_CLIP);
+		StartBossMusic();
 		source.clip = introAudioClips[END_OF_INTRO_CLIP];
 		source.Play();
 
@@ -236,6 +246,20 @@ public class EnemyCaptain : NetworkBehaviour {
 		print( "drain clip" );
 		myTree.SetVariableValue( "introFinished", true );
 
+	}
+
+	private void StartBossMusic() {
+		ambientSoundRef.PlayBossMusic();
+		RpcStartBossMusic();
+	}
+
+	[ClientRpc]
+	private void RpcStartBossMusic() {
+		if (isServer) {
+			return;
+		}
+
+		ambientSoundRef.PlayBossMusic();
 	}
 
 	[ClientRpc]
@@ -352,8 +376,8 @@ public class EnemyCaptain : NetworkBehaviour {
 		while (counter < duration) {
 			counter += Time.deltaTime;
 			foreach(var v in colorChangeParticles) {
-				v.GetComponent<ParticleSystem>().startColor = Color.Lerp(startColor, targetColor, counter / duration);
-				v.transform.localScale = Vector3.Lerp(startScale, new Vector3(1.5f, 1.5f, 1.5f), counter / duration);
+				v.GetComponent<ParticleSystem>().startColor = Color.Lerp(startColor, targetColor, counter / (duration * 0.5f));
+				v.transform.localScale = Vector3.Lerp(startScale, new Vector3(3f, 3f, 3f), counter / duration);
 			}
 			yield return null;
 		}
@@ -418,6 +442,14 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	public void DrainEnergyFromDragon() {
 		print( "Drain EnergyFromDragon called" );
+		if (isServer) {
+			if(numberOfTimesHit % 2 != 0) {
+				PlayDrainAudio(drainClipToPlay);
+				drainClipToPlay++;
+				drainClipToPlay = drainClipToPlay % drainAudioClips.Length;
+			}
+		}
+
 		StartCoroutine( "StartTheDrain" );
 	}
 
@@ -512,6 +544,23 @@ public class EnemyCaptain : NetworkBehaviour {
 		Destroy(particlesOnDragonInstance);
 	}
 
+	private void PlayDrainAudio(int index) {
+		RpcPlayDrainAudio(index);
+		source.clip = drainAudioClips[index];
+		source.Play();
+	}
+
+	[ClientRpc]
+	private void RpcPlayDrainAudio(int index) {
+		if (isServer) {
+			return;
+		}
+
+		source.clip = drainAudioClips[index];
+		source.Play();
+
+	}
+
 	#endregion
 
 	#region Teleport Testing
@@ -569,6 +618,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		int temp;
 
 		if ( firstTeleport ) {
+			PlayTeleportSound();
 			GameObject tpCurPos = Instantiate(initialTeleportCurrentPositionParticle, transform.position, Quaternion.identity);
 			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
 			NetworkServer.Spawn(tpCurPos);
@@ -578,6 +628,10 @@ public class EnemyCaptain : NetworkBehaviour {
 
 			firstTeleport = false;
 		} else {
+			if(curTeleportNumber % 3 == 0) {
+				PlayTeleportSound();
+			}
+
 			GameObject tpCurPos = Instantiate(captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity);
 			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
 			NetworkServer.Spawn(tpCurPos);
@@ -603,6 +657,22 @@ public class EnemyCaptain : NetworkBehaviour {
 		}
 
 		transform.position = tpTarget.transform.position;		
+	}
+
+	private void PlayTeleportSound() {
+		RpcPlayTeleportSound();
+		source.clip = teleportSound;
+		source.Play();
+	}
+
+	[ClientRpc]
+	private void RpcPlayTeleportSound() {
+		if (isServer) {
+			return;
+		}
+
+		source.clip = teleportSound;
+		source.Play();
 	}
 
 	#endregion
@@ -636,9 +706,14 @@ public class EnemyCaptain : NetworkBehaviour {
 	#region Meteor Summoning
 
 	public void SpawnMeteor() {
-
 		if (!isServer) {
 			return;
+		}
+
+		if(numberOfTimesHit % 2 == 0) {
+			PlayMeteorSound(meteorSoundIndex);
+			meteorSoundIndex++;
+			meteorSoundIndex = meteorSoundIndex % meteorAudioClips.Length;
 		}
 
 		List<int> meteorIndexHolder = new List<int> {
@@ -769,6 +844,22 @@ public class EnemyCaptain : NetworkBehaviour {
 		}
 	}
 
+	private void PlayMeteorSound(int index) {
+		RpcPlayMeteorSound(index);
+		source.clip = meteorAudioClips[index];
+		source.Play();
+	}
+
+	[ClientRpc]
+	private void RpcPlayMeteorSound(int index) {
+		if (isServer) {
+			return;
+		}
+
+		source.clip = meteorAudioClips[index];
+		source.Play();
+	}
+
 	#endregion
 
 	#region Dragonkin Summoning Testing
@@ -803,10 +894,17 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
-		for(int i=0; i<difficulty; i++) {
-			if(!VariableHolder.instance.enemyRangedPositions.ContainsValue(false) && !VariableHolder.instance.enemyMeleePositions.ContainsValue(false)) {
-				break;
-			}
+		if (!VariableHolder.instance.enemyRangedPositions.ContainsValue(false) && !VariableHolder.instance.enemyMeleePositions.ContainsValue(false)) {
+			return;
+		}
+
+		if (numberOfTimesHit % 2 == 0) {
+			PlaySummonSound(summonClipToPlay);
+			summonClipToPlay++;
+			summonClipToPlay = summonClipToPlay % 2;
+		}
+
+		for (int i=0; i<difficulty; i++) {
 
 			int rand = Random.Range(0, 2);
 
@@ -866,6 +964,22 @@ public class EnemyCaptain : NetworkBehaviour {
 		}
 	}
 
+	private void PlaySummonSound(int index) {
+		RpcPlaySummonSound(index);
+		source.clip = summonAudioClips[index];
+		source.Play();
+	}
+
+	[ClientRpc]
+	private void RpcPlaySummonSound(int index) {
+		if (isServer) {
+			return;
+		}
+
+		source.clip = summonAudioClips[index];
+		source.Play();
+	}
+
 	#endregion
 
 	#region Captain Defeated
@@ -914,12 +1028,18 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	private void PlayEndGameAudio(bool playerVictory) {
 		RpcPlayEndGameAudio(playerVictory);
+		ambientSoundRef.PlayAmbientSound();
 		source.clip = playerVictory ? victoryAudio : defeatAudio;
 		source.Play();
 	}
 
 	[ClientRpc]
 	private void RpcPlayEndGameAudio(bool playerVictory) {
+		if (isServer) {
+			return;
+		}
+
+		ambientSoundRef.PlayAmbientSound();
 		source.clip = playerVictory ? victoryAudio : defeatAudio;
 		source.Play();
 	}

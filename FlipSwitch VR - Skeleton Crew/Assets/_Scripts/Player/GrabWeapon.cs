@@ -165,9 +165,9 @@ public class GrabWeapon : NetworkBehaviour {
 	}
 
 	public void SendCommandToUnHighlight( bool isLeft ) {
-		//if ( isServer ) {
-		//	return;
-		//}
+		if (isServer) {
+			return;
+		}
 
 		if ( isLeft ) {
 			leftHighlightedWeaponObj = null;

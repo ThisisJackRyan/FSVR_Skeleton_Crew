@@ -29,7 +29,7 @@ public class Enemy : NetworkBehaviour {
 	public PrimaryItemType primaryItemType;
 	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
     [SyncVar] public GameObject boardingPartyShip;
-
+	private GameObject playerWhoLastHitMe;
 	#endregion
 
     private void OnBoardingShipChange(GameObject n) {
@@ -69,10 +69,16 @@ public class Enemy : NetworkBehaviour {
             Captain.instance.CheckEnemiesKilled();
         }
 
-		//RpcSpawnDeathParticles();
+		// Put score death stuff here using playerWhoLastHitMe
+
 		var g = Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
 		NetworkServer.Spawn(g);
-		EnemyUnitDeath();
+
+		if (rangedUnit) {
+			VariableHolder.instance.RemoveRangedUnit();
+			VariableHolder.instance.enemyRangedPositions[rangedTeleTarget] = false;
+		}
+
 		NetworkServer.Destroy(gameObject);
 	}
 
@@ -126,13 +132,6 @@ public class Enemy : NetworkBehaviour {
 
     }
 
-    public void EnemyUnitDeath() {
-        if (rangedUnit) {
-            VariableHolder.instance.RemoveRangedUnit();
-            VariableHolder.instance.enemyRangedPositions[rangedTeleTarget] = false;
-        }
-    }
-
 	private void OnCollisionEnter(Collision other) {
 		if (!isServer)
 			return;
@@ -140,6 +139,7 @@ public class Enemy : NetworkBehaviour {
 		if (other.gameObject.tag == "Weapon") {
 			if (other.gameObject.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
 				if (other.gameObject.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
+					playerWhoLastHitMe = other.gameObject.GetComponent<Weapon>().playerWhoIsHolding;
 					if (!ratkin) {
 						canBeDamaged = false;
 						GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime), other.gameObject.GetComponent<Weapon>().playerWhoIsHolding.transform.root.gameObject);
@@ -150,6 +150,8 @@ public class Enemy : NetworkBehaviour {
 				}
 			}
 		} else if (other.gameObject.tag == "BulletPlayer" || other.gameObject.tag == "CannonBallPlayer") {
+			playerWhoLastHitMe = other.gameObject.GetComponent<SCProjectile>().playerWhoFired;
+
 			if (!ratkin) {
 				canBeDamaged = false;
 				GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
@@ -185,5 +187,9 @@ public class Enemy : NetworkBehaviour {
 
 	public bool GetCanBeDamaged() {
 		return canBeDamaged;
+	}
+
+	public GameObject PlayerWhoKilledMe() {
+		return playerWhoLastHitMe;
 	}
 }
