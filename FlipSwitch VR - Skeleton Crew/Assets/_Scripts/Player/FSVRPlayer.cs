@@ -123,9 +123,10 @@ public class FSVRPlayer : NetworkBehaviour {
 		RpcSpawnPointsOnLocalPlayer(spawnPos, value, player);		
 	}
 
+	[ClientRpc]
 	private void RpcSpawnPointsOnLocalPlayer( Vector3 spawnPos, int value, GameObject player ) {
 		if (isLocalPlayer && player == transform.root.gameObject ) {
-
+			print("local player and same player that scored");
 
 			var g = Instantiate( floatingScore, spawnPos, Quaternion.identity );
 			g.GetComponentInChildren<Text>().text = "+" + value + "!";
