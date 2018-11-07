@@ -303,16 +303,16 @@ public class GrabWeapon : NetworkBehaviour {
 	void RpcChangeanimatorState(string state, bool value) {
 		GetComponent<NetworkAnimator>().animator.SetBool(state, value);
 
-		if (state.Contains("left")) {
-			if(value){
-				//grabbibg weapon
-				leftHandIKSolver.SetPositionAndRotation(leftHandIKSolver.position,  leftHandOffSetWhenHolding);
-			} else {
-				//dropping
-				leftHandIKSolver.SetPositionAndRotation(leftHandIKSolver.position, leftHandOriginalRot);
+		//if (state.Contains("left")) {
+		//	if(value){
+		//		//grabbibg weapon
+		//		leftHandIKSolver.SetPositionAndRotation(leftHandIKSolver.position,  leftHandOffSetWhenHolding);
+		//	} else {
+		//		//dropping
+		//		leftHandIKSolver.SetPositionAndRotation(leftHandIKSolver.position, leftHandOriginalRot);
 
-			}
-		}
+		//	}
+		//}
 
 	}
 
