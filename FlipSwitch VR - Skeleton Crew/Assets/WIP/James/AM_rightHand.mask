@@ -266,10 +266,10 @@ AvatarMask:
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
       R UpperArm/Bip01 R Forearm
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
       R UpperArm/Bip01 R Forearm/RIGHT_HAND
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
       R UpperArm/Bip01 R Forearm/RIGHT_HAND/Bip01 R Finger0
     m_Weight: 1
