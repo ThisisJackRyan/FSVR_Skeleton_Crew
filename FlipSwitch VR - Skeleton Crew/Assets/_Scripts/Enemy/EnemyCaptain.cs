@@ -105,6 +105,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	[Space]
 	[Header("Captain Defeat")]
 	// Publics
+	public string deathAbString = "Die";
 	public GameObject[] defeatParticles;
 	public AudioClip defeatAudio;
 	public GameObject defeatPosition;
@@ -494,10 +495,28 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	}
 
+	[Button]
+	public void StartDieAbility() {
+		if (!isServer) {
+			return;
+		}
+
+		CaptainDieAbility();
+	}
+
+	private void CaptainDieAbility() {
+
+		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
+		var abilities = controller.GetComponents(typeof(Die));
+		Ability ab = abilities[0] as Ability;
+
+		GetComponent<ControllerHandler>().TryStartAbility(ab);
+	}
+
 	private void CheckIfPlayersWin() {
 		if (numberOfTimesHit >= timesToDeath) {
 			Debug.LogWarning("Players have won the game");
-
+			CaptainDieAbility();
 			StartCoroutine(PlayerVictory());
 		}
 	}
