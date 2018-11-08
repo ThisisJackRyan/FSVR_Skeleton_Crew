@@ -536,8 +536,6 @@ public class EnemyCaptain : NetworkBehaviour {
 					v.SetPosition(0, target3.transform.position);
 				}
 			}
-
-
 		}
 
 		if ( !isServer ) {
