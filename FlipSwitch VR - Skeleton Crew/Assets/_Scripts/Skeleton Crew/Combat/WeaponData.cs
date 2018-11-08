@@ -25,8 +25,8 @@ public class WeaponData : ScriptableObject {
     public float spread = 0.01f;
 	public float timeBetweenShots = 1.5f;
 
-	public Vector3 heldPosition, holsteredPosition;
-	public Quaternion heldRotation, holsteredRotation;
+	public Vector3 heldPositionRight, heldPositionLeft, holsteredPosition;
+	public Quaternion heldRotationRight, heldRotationLeft, holsteredRotation;
 
 	public AudioClip firesound, outOfAmmoSound, reloadClip;
 
