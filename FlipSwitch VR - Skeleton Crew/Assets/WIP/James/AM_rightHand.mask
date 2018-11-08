@@ -203,53 +203,56 @@ AvatarMask:
       L UpperArm/Bip01 L Forearm
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND
+      L UpperArm/Bip01 L Forearm/Left_Wrist
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/Bip01 L Finger0
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/Bip01 L Finger0/Bip01 L Finger01
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/Bip01 L Finger0
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/Bip01 L Finger0/Bip01 L Finger01/Bip01
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/Bip01 L Finger0/Bip01 L Finger01
+    m_Weight: 0
+  - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/Bip01 L Finger0/Bip01 L Finger01/Bip01
       L Finger02
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/LEFT_HAND_FINGER_A_1
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/LEFT_HAND_FINGER_A_1
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/LEFT_HAND_FINGER_A_1/LEFT_HAND_FINGER_A_2
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/LEFT_HAND_FINGER_A_1/LEFT_HAND_FINGER_A_2
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/LEFT_HAND_FINGER_A_1/LEFT_HAND_FINGER_A_2/LEFT_HAND_FINGER_A_3
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/LEFT_HAND_FINGER_A_1/LEFT_HAND_FINGER_A_2/LEFT_HAND_FINGER_A_3
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/LEFT_HAND_FINGER_B_1
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/LEFT_HAND_FINGER_B_1
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/LEFT_HAND_FINGER_B_1/LEFT_HAND_FINGER_B_2
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/LEFT_HAND_FINGER_B_1/LEFT_HAND_FINGER_B_2
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/LEFT_HAND_FINGER_B_1/LEFT_HAND_FINGER_B_2/LEFT_HAND_FINGER_B_3
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/LEFT_HAND_FINGER_B_1/LEFT_HAND_FINGER_B_2/LEFT_HAND_FINGER_B_3
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/LEFT_HAND_FINGER_C_1
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/LEFT_HAND_FINGER_C_1
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/LEFT_HAND_FINGER_C_1/LEFT_HAND_FINGER_C_2
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/LEFT_HAND_FINGER_C_1/LEFT_HAND_FINGER_C_2
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/LEFT_HAND_FINGER_C_1/LEFT_HAND_FINGER_C_2/LEFT_HAND_FINGER_C_3
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/LEFT_HAND_FINGER_C_1/LEFT_HAND_FINGER_C_2/LEFT_HAND_FINGER_C_3
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/LEFT_HAND_FINGER_D_1
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/LEFT_HAND_FINGER_D_1
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/LEFT_HAND_FINGER_D_1/LEFT_HAND_FINGER_D_2
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/LEFT_HAND_FINGER_D_1/LEFT_HAND_FINGER_D_2
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 L Clavicle/Bip01
-      L UpperArm/Bip01 L Forearm/LEFT_HAND/LEFT_HAND_FINGER_D_1/LEFT_HAND_FINGER_D_2/LEFT_HAND_FINGER_D_3
+      L UpperArm/Bip01 L Forearm/Left_Wrist/LEFT_HAND/LEFT_HAND_FINGER_D_1/LEFT_HAND_FINGER_D_2/LEFT_HAND_FINGER_D_3
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 Neck
     m_Weight: 0
@@ -268,56 +271,59 @@ AvatarMask:
       R UpperArm/Bip01 R Forearm
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND
+      R UpperArm/Bip01 R Forearm/Right_Wrist
     m_Weight: 0
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/Bip01 R Finger0
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/Bip01 R Finger0/Bip01 R Finger01
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/Bip01 R Finger0
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/Bip01 R Finger0/Bip01 R Finger01/Bip01
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/Bip01 R Finger0/Bip01 R Finger01
+    m_Weight: 1
+  - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/Bip01 R Finger0/Bip01 R Finger01/Bip01
       R Finger02
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/Bip01 Rhand_Weapon
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/Bip01 Rhand_Weapon
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/RIGHT_HAND_FINGER_A_1
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/RIGHT_HAND_FINGER_A_1
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/RIGHT_HAND_FINGER_A_1/RIGHT_HAND_FINGER_A_2
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/RIGHT_HAND_FINGER_A_1/RIGHT_HAND_FINGER_A_2
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/RIGHT_HAND_FINGER_A_1/RIGHT_HAND_FINGER_A_2/RIGHT_HAND_FINGER_A_3
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/RIGHT_HAND_FINGER_A_1/RIGHT_HAND_FINGER_A_2/RIGHT_HAND_FINGER_A_3
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/RIGHT_HAND_FINGER_B_1
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/RIGHT_HAND_FINGER_B_1
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/RIGHT_HAND_FINGER_B_1/RIGHT_HAND_FINGER_B_2
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/RIGHT_HAND_FINGER_B_1/RIGHT_HAND_FINGER_B_2
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/RIGHT_HAND_FINGER_B_1/RIGHT_HAND_FINGER_B_2/RIGHT_HAND_FINGER_B_3
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/RIGHT_HAND_FINGER_B_1/RIGHT_HAND_FINGER_B_2/RIGHT_HAND_FINGER_B_3
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/RIGHT_HAND_FINGER_C_1
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/RIGHT_HAND_FINGER_C_1
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/RIGHT_HAND_FINGER_C_1/RIGHT_HAND_FINGER_C_2
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/RIGHT_HAND_FINGER_C_1/RIGHT_HAND_FINGER_C_2
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/RIGHT_HAND_FINGER_C_1/RIGHT_HAND_FINGER_C_2/RIGHT_HAND_FINGER_C_3
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/RIGHT_HAND_FINGER_C_1/RIGHT_HAND_FINGER_C_2/RIGHT_HAND_FINGER_C_3
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/RIGHT_HAND_FINGER_D_1
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/RIGHT_HAND_FINGER_D_1
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/RIGHT_HAND_FINGER_D_1/RIGHT_HAND_FINGER_D_2
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/RIGHT_HAND_FINGER_D_1/RIGHT_HAND_FINGER_D_2
     m_Weight: 1
   - m_Path: Bip01/Bip01 Pelvis/Bip01 Spine/Bip01 Spine1/Bip01 Spine2/Bip01 R Clavicle/Bip01
-      R UpperArm/Bip01 R Forearm/RIGHT_HAND/RIGHT_HAND_FINGER_D_1/RIGHT_HAND_FINGER_D_2/RIGHT_HAND_FINGER_D_3
+      R UpperArm/Bip01 R Forearm/Right_Wrist/RIGHT_HAND/RIGHT_HAND_FINGER_D_1/RIGHT_HAND_FINGER_D_2/RIGHT_HAND_FINGER_D_3
     m_Weight: 1
   - m_Path: Hair
     m_Weight: 0

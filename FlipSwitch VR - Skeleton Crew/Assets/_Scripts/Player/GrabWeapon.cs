@@ -22,9 +22,14 @@ public class GrabWeapon : NetworkBehaviour {
     private GameObject rightHighlightedHolsterObj;
     private bool isDead;
 
+	public Transform leftHandIKSolver;
+	public Quaternion leftHandOffSetWhenHolding;
+	public Quaternion leftHandOriginalRot;
+
 	// Use this for initialization
 	void Start() {
 		weaponInteraction = GetComponent<WeaponInteraction>();
+		leftHandOriginalRot = leftHandIKSolver.rotation;
 	}
 
 	public float cooldown = 0.5f;
@@ -297,6 +302,17 @@ public class GrabWeapon : NetworkBehaviour {
 	[ClientRpc]
 	void RpcChangeanimatorState(string state, bool value) {
 		GetComponent<NetworkAnimator>().animator.SetBool(state, value);
+
+		//if (state.Contains("left")) {
+		//	if(value){
+		//		//grabbibg weapon
+		//		leftHandIKSolver.SetPositionAndRotation(leftHandIKSolver.position,  leftHandOffSetWhenHolding);
+		//	} else {
+		//		//dropping
+		//		leftHandIKSolver.SetPositionAndRotation(leftHandIKSolver.position, leftHandOriginalRot);
+
+		//	}
+		//}
 
 	}
 
