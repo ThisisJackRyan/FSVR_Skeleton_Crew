@@ -26,7 +26,7 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	// Privates
 	private readonly int INTRO_CLIP = 0;
-	private readonly int TELEPORT1_CLIP = 1;
+	private readonly int TELEPORT1_CLIP = 1;		// now unused
 	private readonly int TELEPORT2_CLIP = 2;
 	private readonly int CANNON_CLIP = 3;
 	private readonly int START_OF_DRAIN_CLIP = 4;
@@ -109,9 +109,12 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject captainRagdoll;
 	public AudioClip defeatAudio;
 	public GameObject defeatPosition;
+	public GameObject defeatParticle1;
+	public GameObject defeatParticle2;
 
 	// Privates
-
+	private GameObject defeatParticleInstance1;
+	private GameObject defeatParticleInstance2;
 
 	[Header("Captain Victory")]
 	//Publics
@@ -124,6 +127,8 @@ public class EnemyCaptain : NetworkBehaviour {
 	private GameObject trail1, trail2, trail3;
 	private GameObject target1, target2, target3;
 	private bool finalTeleport;
+	private bool captainDeathParticlesSpawned;
+	private Transform explosionPosition;
 
 	[Header("Other")]
 	// Publics
@@ -184,17 +189,12 @@ public class EnemyCaptain : NetworkBehaviour {
 	#region Boss Fight Intro
 
 	IEnumerator BossFightIntro() {
-
 		// Intro clip
 		yield return new WaitForSeconds( 5 );
 		RpcPlayDialogue(INTRO_CLIP);
 		source.clip = introAudioClips[INTRO_CLIP];
 		source.Play();
-		yield return new WaitForSeconds( introAudioClips[INTRO_CLIP].length + 2.5f );
-		RpcPlayDialogue(TELEPORT1_CLIP);
-		// Step into glowy areas for teleporting
-		source.clip = introAudioClips[TELEPORT1_CLIP];
-		source.Play();
+		yield return new WaitForSeconds( introAudioClips[INTRO_CLIP].length);
 		print("enable teleport pads called");
 		EnableTeleportPads();
 
@@ -203,7 +203,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			playerTeleportAreas[i].SetActive(false);
 		}
 
-		yield return new WaitForSeconds(4f);
+		yield return new WaitForSeconds(2f);
 		StartCoroutine( "CaptainTeleport" );
 
 		yield return new WaitForSeconds( 3.5f );
@@ -241,11 +241,11 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		yield return new WaitForSeconds(introAudioClips[THIRD_DRAIN_CLIP].length + 3.5f);
 		RpcPlayDialogue(END_OF_INTRO_CLIP);
-		StartBossMusic();
 		source.clip = introAudioClips[END_OF_INTRO_CLIP];
 		source.Play();
 
-		yield return new WaitForSeconds(introAudioClips[END_OF_INTRO_CLIP].length);
+		yield return new WaitForSeconds(introAudioClips[END_OF_INTRO_CLIP].length - 1.5f);
+		StartBossMusic();
 
 		print( "drain clip" );
 		myTree.SetVariableValue( "introFinished", true );
@@ -1029,11 +1029,18 @@ public class EnemyCaptain : NetworkBehaviour {
 	#region End Game
 
 	IEnumerator PlayerVictory() {
+		StartDeathAbility();
 		PlayEndGameAudio(true);
-		yield return new WaitForSeconds(defeatAudio.length + 2f);
-
-		transform.position = defeatPosition.transform.position; // defeat audio because variables are flipped
+		yield return new WaitForSeconds(defeatAudio.length);
+		foreach(var v in FindObjectsOfType<EnemyDragonkin>()) {
+			v.TeleportToDeath();
+		}
 		SpawnDeathObjects(true);
+
+		//yield return new WaitForSeconds(0.5f);
+		transform.position = defeatPosition.transform.position; // defeat audio because variables are flipped
+		yield return new WaitForSeconds(4f);
+		EnableScoreboard();
 	}
 
 	IEnumerator PlayerDefeat() {
@@ -1050,15 +1057,69 @@ public class EnemyCaptain : NetworkBehaviour {
 		EnableScoreboard();
 	}
 
+	[Button]
+	public void StartDeathAbility() {
+		if (!isServer) {
+			return;
+		}
+
+		StartCoroutine(PlayCaptainDeath());
+	}
+
+	IEnumerator PlayCaptainDeath() {
+		string abName = "CaptainDeath";
+
+		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
+		var abilities = controller.GetComponents(TaskUtility.GetTypeWithinAssembly(abName));
+
+		Ability ab = abilities[0] as Ability;
+
+		GetComponent<ControllerHandler>().TryStartAbility(ab);
+		yield return new WaitForSecondsRealtime(2.5f);
+		GetComponent<ControllerHandler>().TryStopAbility(ab);		
+	}
+
+	public void SpawnDeathParticles() {
+		if (!isServer || captainDeathParticlesSpawned) {
+			return;
+		}
+		explosionPosition = transform;
+		print("explosionPosition set to " + explosionPosition.position);
+		captainDeathParticlesSpawned = true;
+		print("spawn death particles called");
+		defeatParticleInstance1 = Instantiate(defeatParticle1, transform.position, Quaternion.identity);
+		NetworkServer.Spawn(defeatParticleInstance1);
+		Invoke("DestroyDeathParticles", 3f);
+
+		//Invoke("SpawnExplosionParticles", 2f);
+	}
+
+	private void SpawnExplosionParticles() {
+		defeatParticleInstance2 = Instantiate(defeatParticle2, explosionPosition.position, Quaternion.identity);
+		defeatParticleInstance2.transform.position = explosionPosition.position;
+		print("spawned the defeatParticleInstance2 at " + defeatParticle2.transform.position + " with explosionPosition being " + explosionPosition.position);
+		NetworkServer.Spawn(defeatParticleInstance2);
+		Invoke("DestroyDeathParticles", 3f);
+	}
+
+	private void DestroyDeathParticles() {
+		if (!isServer) {
+			return;
+		}
+
+		NetworkServer.Destroy(defeatParticleInstance1);
+		NetworkServer.Destroy(defeatParticleInstance2);
+	}
+
 	private void SpawnDeathObjects(bool playerVictory) {
 		if (!isServer) {
 			return;
 		}
 
 		if (playerVictory) {
-			GameObject tpCurPos = Instantiate(initialTeleportCurrentPositionParticle, transform.position, Quaternion.identity);
-			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
-			NetworkServer.Spawn(tpCurPos);
+			//GameObject tpCurPos = Instantiate(captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity);
+			//tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
+			//NetworkServer.Spawn(tpCurPos);
 
 			GameObject r = Instantiate(captainRagdoll, transform.position, transform.rotation);
 			NetworkServer.Spawn(r);
