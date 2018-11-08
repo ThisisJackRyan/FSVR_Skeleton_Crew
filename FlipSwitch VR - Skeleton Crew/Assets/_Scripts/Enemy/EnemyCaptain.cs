@@ -102,11 +102,11 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	// Privates
 
+
 	[Space]
 	[Header("Captain Defeat")]
 	// Publics
-	public string deathAbString = "Die";
-	public GameObject[] defeatParticles;
+	public GameObject captainRagdoll;
 	public AudioClip defeatAudio;
 	public GameObject defeatPosition;
 
@@ -120,7 +120,10 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject victoryPosition;
 
 	// Privates
-
+	[SyncVar] private bool lastTimeDrain;
+	private GameObject trail1, trail2, trail3;
+	private GameObject target1, target2, target3;
+	private bool finalTeleport;
 
 	[Header("Other")]
 	// Publics
@@ -441,8 +444,14 @@ public class EnemyCaptain : NetworkBehaviour {
 		return canDrain;
 	}
 
-	public void DrainEnergyFromDragon() {
+	public void DrainEnergyFromDragon() {			// called by animation event
 		print( "Drain EnergyFromDragon called" );
+
+		if (lastTimeDrain) {
+			SpawnFinalDrainObjects();
+			return;
+		}
+
 		if (isServer) {
 			if(numberOfTimesHit % 2 != 0) {
 				PlayDrainAudio(drainClipToPlay);
@@ -496,32 +505,41 @@ public class EnemyCaptain : NetworkBehaviour {
 	}
 
 	[Button]
-	public void StartDieAbility() {
-		if (!isServer) {
-			return;
-		}
-
-		CaptainDieAbility();
-	}
-
-	private void CaptainDieAbility() {
-
-		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
-		var abilities = controller.GetComponents(typeof(Die));
-		Ability ab = abilities[0] as Ability;
-
-		GetComponent<ControllerHandler>().TryStartAbility(ab);
+	public void PlayerWinWorkaround() {
+		numberOfTimesHit = timesToDeath;
+		CheckIfPlayersWin();
 	}
 
 	private void CheckIfPlayersWin() {
 		if (numberOfTimesHit >= timesToDeath) {
 			Debug.LogWarning("Players have won the game");
-			CaptainDieAbility();
 			StartCoroutine(PlayerVictory());
 		}
 	}
 
 	private void Update() {
+		if (lastTimeDrain) { // updates the end point of the drain so it follows the player as they move around
+			if (trail1) {
+				foreach (var v in trail1.GetComponentsInChildren<LineRenderer>()) {
+					v.SetPosition(0, target1.transform.position);
+				}
+			}
+
+			if (trail2) {
+				foreach (var v in trail2.GetComponentsInChildren<LineRenderer>()) {
+					v.SetPosition(0, target2.transform.position);
+				}
+			}
+
+			if (trail3) {
+				foreach (var v in trail3.GetComponentsInChildren<LineRenderer>()) {
+					v.SetPosition(0, target3.transform.position);
+				}
+			}
+
+
+		}
+
 		if ( !isServer ) {
 			return;
 		}
@@ -638,18 +656,27 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		if ( firstTeleport ) {
 			PlayTeleportSound();
+			// Spawn the ball particles at current position
 			GameObject tpCurPos = Instantiate(initialTeleportCurrentPositionParticle, transform.position, Quaternion.identity);
 			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
 			NetworkServer.Spawn(tpCurPos);
 
+			// Spawn the flame particles at target position
 			tpTarget = Instantiate( initialTeleportTargetPositionParticle, captainTeleportTarget.transform.position, Quaternion.identity );
 			NetworkServer.Spawn( tpTarget );
 
 			firstTeleport = false;
+		} else if (finalTeleport) {
+			// Spawn the ball particles at current position
+			GameObject tpCurPos = Instantiate(captainTeleportTarget, transform.position, Quaternion.identity);
+			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
+			NetworkServer.Spawn(tpCurPos);
+
+			// Spawn the flame particles at target position
+			tpTarget = Instantiate(captainTargetPositionTeleportParticles, captainTeleportTarget.transform.position, Quaternion.identity);
+			NetworkServer.Spawn(tpTarget);
 		} else {
-			if(curTeleportNumber % 3 == 0) {
-				PlayTeleportSound();
-			}
+			PlayTeleportSound();
 
 			GameObject tpCurPos = Instantiate(captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity);
 			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
@@ -675,7 +702,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			canDrain = !(bool)myTree.GetVariable( "teleportingToSafety" ).GetValue();
 		}
 
-		transform.position = tpTarget.transform.position;		
+		transform.position = tpTarget.transform.position;
 	}
 
 	private void PlayTeleportSound() {
@@ -1001,20 +1028,28 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	#endregion
 
-	#region Captain Defeated
+	#region End Game
 
 	IEnumerator PlayerVictory() {
 		PlayEndGameAudio(true);
-		yield return new WaitForSeconds(victoryAudio.length);
+		yield return new WaitForSeconds(defeatAudio.length + 2f);
 
+		transform.position = defeatPosition.transform.position; // defeat audio because variables are flipped
 		SpawnDeathObjects(true);
 	}
 
 	IEnumerator PlayerDefeat() {
 		PlayEndGameAudio(false);
-		yield return new WaitForSeconds(defeatAudio.length);
+		finalTeleport = true;
+		StartTeleportAbility();
+		yield return new WaitForSeconds(3.5f);
+
+		StartFinalDrainAbility();
+		yield return new WaitForSeconds(victoryAudio.length + 2f); // Victory audio because variables are flipped
 
 		SpawnDeathObjects(false);
+		yield return new WaitForSeconds(5f);
+		EnableScoreboard();
 	}
 
 	private void SpawnDeathObjects(bool playerVictory) {
@@ -1022,12 +1057,116 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
-		EnableScoreboard();
-
 		if (playerVictory) {
+			GameObject tpCurPos = Instantiate(initialTeleportCurrentPositionParticle, transform.position, Quaternion.identity);
+			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
+			NetworkServer.Spawn(tpCurPos);
+
+			GameObject r = Instantiate(captainRagdoll, transform.position, transform.rotation);
+			NetworkServer.Spawn(r);
 
 		} else {
 
+		}
+	}
+
+	public void StartFinalDrainAbility() {
+		if (!isServer) {
+			return;
+		}
+
+		StartCoroutine("FinalDrainEnergy");
+	}
+
+	private void SpawnFinalDrainObjects() {
+		FSVRPlayer[] players = FindObjectsOfType<FSVRPlayer>();
+		for(int i=0; i<NumberOfPlayerHolder.instance.numberOfPlayers; i++) {
+			switch (i) {
+				case 0:
+					target1 = players[i].GetComponentInChildren<EnemyTargetInit>().gameObject;
+					trail1 = Instantiate(energyTrail, transform.position, Quaternion.identity);
+
+					foreach (var v in trail1.GetComponentsInChildren<LineRenderer>()) {
+						v.SetPosition(0, target1.transform.position);
+						v.SetPosition(1, skullTransform.position);
+					}
+					break;
+				case 1:
+					target2 = players[i].GetComponentInChildren<EnemyTargetInit>().gameObject;
+					trail2 = Instantiate(energyTrail, transform.position, Quaternion.identity);
+
+					foreach (var v in trail2.GetComponentsInChildren<LineRenderer>()) {
+						v.SetPosition(0, target2.transform.position);
+						v.SetPosition(1, skullTransform.position);
+					}
+					break;
+				case 2:
+					target3 = players[i].GetComponentInChildren<EnemyTargetInit>().gameObject;
+					trail3 = Instantiate(energyTrail, transform.position, Quaternion.identity);
+
+					foreach (var v in trail3.GetComponentsInChildren<LineRenderer>()) {
+						v.SetPosition(0, target3.transform.position);
+						v.SetPosition(1, skullTransform.position);
+					}
+					break;
+				case 3: // unused til 6p test
+					break;
+				case 4: // unused til 6p test
+					break;
+				case 5: // unused til 6p test
+					break;
+			}
+		}
+	}
+
+	IEnumerator FinalDrainEnergy() {
+		string abName = "DrainEnergy";
+
+		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
+		var abilities = controller.GetComponents(TaskUtility.GetTypeWithinAssembly(abName));
+
+		Ability ab = abilities[0] as Ability;
+		print("drain energy ability tried start");
+		GetComponent<ControllerHandler>().TryStartAbility(ab);
+		print("after try start drain ability");
+		yield return new WaitForSecondsRealtime(8f);
+		GetComponent<ControllerHandler>().TryStopAbility(ab);
+		if (trail1) {
+			// disable player 1 particles here
+			RpcDrainCleanup(0);
+			Destroy(trail1);
+		}
+		if (trail2) {
+			// disable player 2 particles here
+			RpcDrainCleanup(1);
+			Destroy(trail2);
+		}
+		if (trail3) {
+			// disable player 3 particles here
+			RpcDrainCleanup(2);
+			Destroy(trail3);
+		}
+	}
+
+	[ClientRpc]
+	private void RpcDrainCleanup(int num) {
+		if (isServer) {
+			return;
+		}
+
+		switch (num) {
+			case 0:
+				// disable player 1 particles here
+				Destroy(trail1);
+				break;
+			case 1:
+				// disable player 2 particles here
+				Destroy(trail2);
+				break;
+			case 2:
+				// disable player 3 particles here
+				Destroy(trail3);
+				break;
 		}
 	}
 
@@ -1048,7 +1187,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	private void PlayEndGameAudio(bool playerVictory) {
 		RpcPlayEndGameAudio(playerVictory);
 		ambientSoundRef.PlayAmbientSound();
-		source.clip = playerVictory ? victoryAudio : defeatAudio;
+		source.clip = playerVictory ? defeatAudio : victoryAudio; // backwards because variables are flipped
 		source.Play();
 	}
 
@@ -1059,7 +1198,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		}
 
 		ambientSoundRef.PlayAmbientSound();
-		source.clip = playerVictory ? victoryAudio : defeatAudio;
+		source.clip = playerVictory ? defeatAudio : victoryAudio; // backwards because variables are flipped
 		source.Play();
 	}
 

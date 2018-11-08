@@ -6,13 +6,15 @@ using UnityEngine.Networking;
 public class EnemyCaptainRagdoll : NetworkBehaviour {
 
 	public AudioClip willHelmScream;
+	public float timeToPlayScream = 2.5f;
 
 	private AudioSource source;
-	private Rigidbody rb;
-	
+	private float duration;
+	private bool hasScreamed;
+
 	// Use this for initialization
 	void Start () {
-		source = GetComponent<AudioSource>();	
+		source = GetComponent<AudioSource>();
 	}
 
 	private void Update() {
@@ -20,10 +22,11 @@ public class EnemyCaptainRagdoll : NetworkBehaviour {
 			return;
 		}
 
-		if(rb.velocity.magnitude > 3) {
+		if(duration >= timeToPlayScream && !hasScreamed) {
+			hasScreamed = true;
 			PlayScream();
 		} else {
-			print("velocity is " + rb.velocity.magnitude);
+			duration += Time.deltaTime;
 		}
 	}
 
