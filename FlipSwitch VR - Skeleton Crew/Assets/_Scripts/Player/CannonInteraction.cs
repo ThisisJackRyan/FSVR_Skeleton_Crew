@@ -15,7 +15,7 @@ public class CannonInteraction : NetworkBehaviour {
 	}
 
 	private void FireCannon( GameObject cannon ) {
-		cannon.GetComponent<Cannon>().CreateCannonBall();
+		cannon.GetComponent<Cannon>().CreateCannonBall(transform.root.gameObject);
 		if ( !SceneManager.GetActiveScene().name.Contains( "Boss" ) ) {
 			Captain.playersFiredCannons[this] = true;
 			Captain.instance.CheckPlayersCannonFiring();
@@ -28,7 +28,7 @@ public class CannonInteraction : NetworkBehaviour {
 	private void RpcFireCannon( GameObject cannon ) {
 		if ( isServer )
 			return;
-		cannon.GetComponent<Cannon>().CreateCannonBall();
+		cannon.GetComponent<Cannon>().CreateCannonBall( transform.root.gameObject );
 	}
 
 	private void Start() {

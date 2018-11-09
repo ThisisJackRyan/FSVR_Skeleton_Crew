@@ -25,9 +25,12 @@ public class CannonFuse : MonoBehaviour {
 			timer += Time.deltaTime;
 			//print( "increasing timer " + timer );
 
+
+
 			if ( timer >= 1 ) {
 				active = false;
 				other.GetComponentInParent<Weapon>().owningPlayerCannonScript.Fire( cannonScript.gameObject );
+
 				//print( "timer reached, should fire" );
 
 			}
