@@ -36,7 +36,7 @@ public class NodePath : MonoBehaviour {
 		nodes = new Transform[points.Length];
 		int i = 0;
 		foreach (var vector2 in points) {
-			GameObject g = Instantiate( toSpawn , vector2, Quaternion.identity);
+			GameObject g = Instantiate( toSpawn , vector2, toSpawn.transform.rotation);
 			//g.transform.position = vector2;
 			//g.transform.localScale = Vector3.one * spacing * .5f;
 			g.transform.parent = transform;

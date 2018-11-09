@@ -8,33 +8,35 @@ using HTC.UnityPlugin.Vive;
 //[RequireComponent(typeof(LoadSceneOnStart))]
 public class ConnectWithPress : MonoBehaviour {
 
-    public ViveRoleSetter left, right;
+    //public ViveRoleSetter left, right;
 
     public TrackerIdSetter[] setters;
 
 	public GameObject standStill;
 
     // Use this for initialization
-    void OnEnable() {
-        //if (NetworkHelper.GetLocalIPAddress().Equals(NetworkHelper.hostIpAddress))
-        //{
-        //    gameObject.SetActive(false);
-        //    return;
-        //}
-        Invoke("InitController", 0.5f);
-        //DontDestroyOnLoad(gameObject);
+    public void EnableInput() {
+        Invoke("CanInputIsTrue", 0.5f);
     }
 
+    void CanInputIsTrue() {
+        canInput = true;
+    }
 
     void Update() {
-        if (NetworkHelper.GetLocalIPAddress().Equals(NetworkHelper.hostIpAddress)) {
-            return;
-        }
+        //if (NetworkHelper.GetLocalIPAddress().Equals(NetworkHelper.hostIpAddress)) {
+        //    return;
+        //}
 
         if (canInput) {
+            //print("input enabled");
             if (Controller.RightController.GetPressDown(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger)) {
                 foreach (var item in setters) {
-                    item.SetTrackerId();
+                    if (item) {
+                        item.SetTrackerId();
+                    } else {
+                        continue;
+                    }
                 }
 
                 StartCoroutine("FadeAndLoad");
@@ -44,11 +46,11 @@ public class ConnectWithPress : MonoBehaviour {
 
     bool canInput = false;
 
-    void InitController() {
-        canInput = true;
-        Controller.InitControllers(left.viveRole.GetDeviceIndex(), right.viveRole.GetDeviceIndex());
+    //void InitController() {
+    //    canInput = true;
+    //    Controller.InitControllers(left.viveRole.GetDeviceIndex(), right.viveRole.GetDeviceIndex());
 
-    }
+    //}
 
     [Button("loopholes")]
     void Ha() {

@@ -70,6 +70,7 @@ public class ExitLobbySwitch : NetworkBehaviour {
 		yield return new WaitForSecondsRealtime(1.5f);
 		foreach (var go in ExitLobbyPlayerTrigger.playerDict.Keys) {
 			go.transform.root.position = spawnPos.position;
+            go.transform.root.rotation = spawnPos.rotation;
 			captain.gameObject.SetActive( false);
 		}
 

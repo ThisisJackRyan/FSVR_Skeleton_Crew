@@ -107,7 +107,7 @@ Material:
     - _FresnelScale: 0.75
     - _GerstnerIntensity: 1
     - _GlossMapScale: 0.375
-    - _Glossiness: 0.198
+    - _Glossiness: 0.419
     - _GlossyReflections: 1
     - _LightingEnabled: 0
     - _Metallic: 0.241

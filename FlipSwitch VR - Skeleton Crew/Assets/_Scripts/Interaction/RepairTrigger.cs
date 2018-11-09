@@ -9,6 +9,7 @@ public class RepairTrigger : MonoBehaviour {
 	[HideInInspector]
 	public RepairPattern repairPattern;
 	Transform activator;
+	public GameObject burst;
 
 	float timer = 0;
 	bool active = false;
@@ -26,6 +27,8 @@ public class RepairTrigger : MonoBehaviour {
 
 			particles.SetActive(false);
 			//tracePrompt.SetActive(true);
+			dmgObj.SpawnBurst(burst, transform.position);
+			//Controller.PlayHaptics(other.gameObject.GetComponent<GrabWeaponHand>().isLeftHand, HapticController.BurstHaptics);
 
 			transform.position = new Vector3(transform.position.x,
 				                                other.transform.root.GetComponentInChildren<HipMarker>().transform.position.y,

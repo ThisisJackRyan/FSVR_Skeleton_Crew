@@ -8,7 +8,7 @@ public class GhostFreeRoamCamera : NetworkBehaviour {
 
     public bool allowMovement = true;
     public bool allowRotation = true;
-    public GameObject hostChild;
+    public GameObject player;
     public Transform childTransform;
 
     public KeyCode isVisible = KeyCode.Alpha1;
@@ -31,18 +31,35 @@ public class GhostFreeRoamCamera : NetworkBehaviour {
     private bool togglePressed = false;
 
     private MeshRenderer thisRenderer;
-
+	public GameObject gimbleCamera;
 
     private void Start() {
         thisRenderer = GetComponent<MeshRenderer>();
         thisRenderer.enabled = false;
+
+		if (FindObjectOfType<CameraPathFollower>()) {
+
+			gimbleCamera = FindObjectOfType<CameraPathFollower>().gameObject;
+		}
+
     }
 
     private void Update() {
         if (!isLocalPlayer)
             return;
-        if (Input.GetKeyDown(KeyCode.Space))
-            GetComponent<KillChild>().CmdKillChild();
+
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            var g = Instantiate(player, Vector3.zero, Quaternion.identity);
+            NetworkServer.Spawn(g);
+        }
+
+		if (gimbleCamera && Input.GetKeyDown(KeyCode.Escape)) {
+			foreach ( var c in GetComponentsInChildren<Camera>() ) {
+				c.enabled = false;
+			}
+			gimbleCamera.SetActive( true );
+			gimbleCamera.GetComponent<CameraPathFollower>().canMove = true;
+		}
 
         if (allowMovement) {
             bool lastMoving = moving;

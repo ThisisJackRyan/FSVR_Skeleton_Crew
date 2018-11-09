@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 public class RatkinRebelSpawner : NetworkBehaviour {
 
     public GameObject ratkinRebelPrefab;
+    public int spawnCountPerHatch = 2;
 
 	// Use this for initialization
 	void Start () {
@@ -14,10 +15,6 @@ public class RatkinRebelSpawner : NetworkBehaviour {
             return;
         }
 
-        foreach(var s in GameObject.FindObjectOfType<PathFollower>().ratkinSpawnPositions) {
-            var g = Instantiate(ratkinRebelPrefab, s.transform.position, Quaternion.identity);
-
-            NetworkServer.Spawn(g);
-        }
+        HatchActivator.SpawnRatkinRebels(ratkinRebelPrefab, spawnCountPerHatch);
 	}
 }

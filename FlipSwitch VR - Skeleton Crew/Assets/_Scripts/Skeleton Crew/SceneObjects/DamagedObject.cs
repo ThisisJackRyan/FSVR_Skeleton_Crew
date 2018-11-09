@@ -20,7 +20,7 @@ public class DamagedObject : NetworkBehaviour {
 	DamageState myState;
 	[SyncVar( hook = "OnHealthChange" )] int health = 100;
 	[SyncVar( hook = "OnPatternIndexChange" )] int rng = -1;
-
+	public GameObject burstEffect;
 
 	[Tooltip( "the number health percent much be at to reach the given damage state. anything below quarter is completely broken." )]
 	public int fullAmount = 90, threeQuarterAmount = 75, halfAmount = 50, quarterAmount = 25, maxHealth = 100;
@@ -50,6 +50,13 @@ public class DamagedObject : NetworkBehaviour {
         ChangeHealth(maxHealth);
     }
 
+	public void SpawnBurst(Vector3 pos) {
+		if (!isServer) {
+			return;
+		}
+		var g = Instantiate(burstEffect, pos, Quaternion.identity);
+		NetworkServer.Spawn( g );
+	}
 
 	private void OnPatternIndexChange( int n ) {
 		if (isServer) {
@@ -67,7 +74,7 @@ public class DamagedObject : NetworkBehaviour {
 		if ( !isServer ) {
             //return;
             //print("health change");
-			if ( health > n && n > 0) {               
+			if ( health > n && n >= 0) {               
                 GetComponent<AudioSource>().PlayOneShot( damageClip );
 				//Instantiate( dmgParticles, transform.position, Quaternion.identity );   
 			} else if (health < n) {
@@ -106,7 +113,7 @@ public class DamagedObject : NetworkBehaviour {
 
 	}
 
-	public void Start() {
+	public void InitDamagedObject() {
 		if ( isServer ) {
 			ChangeHealth( maxHealth );
 			Captain.damagedObjectsRepaired.Add( this, false );
@@ -153,6 +160,15 @@ public class DamagedObject : NetworkBehaviour {
 		}
 	}
 
+	internal void SpawnBurst(GameObject burst, Vector3 pos) {
+		if (!isServer) {
+			return;
+		}
+
+		var g = Instantiate(burst, pos, Quaternion.identity);
+		NetworkServer.Spawn(g);
+	}
+
 	internal void EnablePatternOnClients() {
 		if ( !isServer ) {
 			return;
@@ -175,8 +191,13 @@ public class DamagedObject : NetworkBehaviour {
 			return;
 		}
 
+		if (index != 0) {
+			SpawnBurst( repairPattern.transform.GetChild( index ).position );
+		}
+
 		RpcDisableNode( index );
 	}
+	public HapticEvent haptics;
 
 	[ClientRpc]
 	private void RpcDisableNode( int index ) {
@@ -270,6 +291,9 @@ public class DamagedObject : NetworkBehaviour {
 			} else if (health <= 0) {
 				if (VariableHolder.instance.cannons.Contains(gameObject)) {
 					VariableHolder.instance.cannons.Remove(gameObject);
+					GetComponent<AudioSource>().PlayOneShot(damageClip);
+					var g = Instantiate(dmgParticles, transform.position, Quaternion.identity);
+					NetworkServer.Spawn(g);
 				}
 			}
 		} else {

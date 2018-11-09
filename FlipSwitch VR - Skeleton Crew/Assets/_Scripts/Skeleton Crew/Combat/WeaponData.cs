@@ -15,6 +15,7 @@ public class WeaponData : ScriptableObject {
 
 	public int damage;
 	public WeaponType type;
+	public GripType gripType;
 
 	//gun and bow only
 	public int ammo;
@@ -24,24 +25,21 @@ public class WeaponData : ScriptableObject {
     public float spread = 0.01f;
 	public float timeBetweenShots = 1.5f;
 
-	public Vector3 heldPosition, holsteredPosition;
-	public Quaternion heldRotation, holsteredRotation;
+	public Vector3 heldPositionRight, heldPositionLeft, holsteredPosition;
+	public Quaternion heldRotationRight, heldRotationLeft, holsteredRotation;
 
-	public AudioClip firesound, outOfAmmoSound;
+	public AudioClip firesound, outOfAmmoSound, reloadClip;
+
+	public HapticEvent hapticsFiring,  hapticsOutOfAmmo;
 
 	#endregion
 
 	public enum WeaponType {
 		Melee, Gun, Bow, Punt
 	}
-	
-	void Start() {
-		
+
+	public enum GripType {
+		Pistol, Sword, Musket, AxeKnife
 	}
-
-	void Update() {
-	}
-
 	
-
 }

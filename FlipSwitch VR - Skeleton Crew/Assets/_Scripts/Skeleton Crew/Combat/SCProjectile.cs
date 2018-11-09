@@ -11,6 +11,9 @@ public class SCProjectile : NetworkBehaviour {
 	//public GameObject deathParticles;
 	//public GameObject particles;
 	public float particleKillTimer = 2f;
+	[SyncVar]
+    public GameObject playerWhoFired = null;
+	public bool isCannonball = false;
 
 	// Use this for initialization//print(transform.position);
 	void Awake() {
@@ -21,8 +24,8 @@ public class SCProjectile : NetworkBehaviour {
             return;
         }
 
-        //print("invoking");
-        Invoke("KillProjectile", 5);
+		print("invoking");
+		Invoke("KillProjectile", 5);
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -56,11 +59,6 @@ public class SCProjectile : NetworkBehaviour {
     public void KillProjectile() {
         //print("kill called");
         if (isServer) {
-            //print("server scp");
-
-            //RpcDestroy();
-            //Destroy(gameObject);
-
             NetworkServer.Destroy(gameObject);
         }
 	}

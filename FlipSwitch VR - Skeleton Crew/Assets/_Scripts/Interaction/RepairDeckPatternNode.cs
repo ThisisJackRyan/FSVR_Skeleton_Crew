@@ -29,7 +29,7 @@ public class RepairDeckPatternNode : MonoBehaviour {
 		if ( !other.GetComponentInParent<MastInteraction>() ) {
 			return;
 		}
-		pattern.Increment();
+		pattern.Increment(other.transform.root.gameObject);
 		CancelInvoke();
 		gameObject.SetActive( false );
 	}

@@ -24,9 +24,12 @@ public class Enemy : NetworkBehaviour {
 	public GameObject deathParticles;
 	public bool tutorialGuard = false;
     public bool rangedUnit = false;
+	public bool ratkin = false;
+    public GameObject rangedTeleTarget;
+	public PrimaryItemType primaryItemType;
 	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
     [SyncVar] public GameObject boardingPartyShip;
-
+	private GameObject playerWhoLastHitMe;
 	#endregion
 
     private void OnBoardingShipChange(GameObject n) {
@@ -56,7 +59,7 @@ public class Enemy : NetworkBehaviour {
         transform.parent = null;
     }
 
-    private void DestroyMe() {
+    public void DestroyMe() {
         if (!isServer) {
             return;
         }
@@ -66,17 +69,30 @@ public class Enemy : NetworkBehaviour {
             Captain.instance.CheckEnemiesKilled();
         }
 
-		//RpcSpawnDeathParticles();
+		// Put score death stuff here using playerWhoLastHitMe
+		VariableHolder.PlayerScore.ScoreType scoreType = (ratkin) ? VariableHolder.PlayerScore.ScoreType.RatkinKills: VariableHolder.PlayerScore.ScoreType.SkeletonKills;
+		VariableHolder.instance.IncreasePlayerScore( playerWhoLastHitMe.transform.root.gameObject, scoreType, transform.position );
+
+
 		var g = Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
 		NetworkServer.Spawn(g);
-		EnemyUnitDeath();
+
+		if (rangedUnit) {
+			VariableHolder.instance.RemoveRangedUnit();
+			VariableHolder.instance.enemyRangedPositions[rangedTeleTarget] = false;
+		}
+
 		NetworkServer.Destroy(gameObject);
 	}
 
+    public GameObject teleportParticles;
 	internal void TellCaptainIveBoarded() {
 		if (!isServer) {
 			Captain.instance.CrewmanHaveBoarded();
-		}
+        } else {
+            var g = Instantiate(teleportParticles, transform.position, Quaternion.identity);
+            NetworkServer.Spawn(g);
+        }
 	}
 
 	public void PlayHitParticles() {
@@ -94,23 +110,19 @@ public class Enemy : NetworkBehaviour {
 
 	private void Start() {
 
-        //Opsive.ThirdPersonController.EventHandler.RegisterEvent("OnHealthAmountChange", PlayHitParticles);
+		//Opsive.ThirdPersonController.EventHandler.RegisterEvent("OnHealthAmountChange", PlayHitParticles);
+		if (!ratkin) {
+			if (!isServer) {
+				if (boardingPartyShip) {
+					transform.parent = boardingPartyShip.transform;
+				}
 
-        if (!isServer) {
-            if (boardingPartyShip) {
-                transform.parent = boardingPartyShip.transform;
-            }
-
-            return;
-        }
-
-        int itemToEquip;
-                            
-        itemToEquip = Random.Range(0, GetComponent<Inventory>().DefaultLoadout.Length);    
-        GetComponent<Inventory>().EquipItem(itemToEquip);
-
-        RpcEquipItem(itemToEquip);
-
+				return;
+			}
+			//GetComponent<Inventory>().EquipItem(primaryItemTypes[temp]);
+			GetComponent<BehaviorTree>().SetVariableValue("weaponType", primaryItemType);
+			//RpcEquipItem(itemToEquip);
+		}
     }
 
     [ClientRpc]          
@@ -123,32 +135,39 @@ public class Enemy : NetworkBehaviour {
 
     }
 
-    public void EnemyUnitDeath() {
-        if (rangedUnit) {
-            VariableHolder.instance.RemoveRangedUnit();
-        }
-    }
-
 	private void OnCollisionEnter(Collision other) {
 		if (!isServer)
 			return;
 
 		if (other.gameObject.tag == "Weapon") {
 			if (other.gameObject.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
-				// todo: test that enemies are only being damaged by melee weapons being held by player
 				if (other.gameObject.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
-					canBeDamaged = false;
-                    GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
-					Invoke("AllowDamage", 1f);
+					playerWhoLastHitMe = other.gameObject.GetComponent<Weapon>().playerWhoIsHolding;
+					if (!ratkin) {
+						canBeDamaged = false;
+						GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime), other.gameObject.GetComponent<Weapon>().playerWhoIsHolding.transform.root.gameObject);
+						Invoke("AllowDamage", 1f);
+					} else {
+						DestroyMe();
+					}
 				}
 			}
 		} else if (other.gameObject.tag == "BulletPlayer" || other.gameObject.tag == "CannonBallPlayer") {
-            canBeDamaged = false;
-            GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));   
-            Invoke("AllowDamage", 1f);
+			playerWhoLastHitMe = other.gameObject.GetComponent<SCProjectile>().playerWhoFired;
+
+			if (!ratkin) {
+				canBeDamaged = false;
+				GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
+				//todo PLAYER SCORE INTEGRATION FOR PROJECTILE
+				//VariableHolder.instance.IncreasePlayerScore( other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.SkeletonKills, transform.position );
+
+				Invoke( "AllowDamage", 1f);
+			} else {
+				DestroyMe();
+			}
         }
 
-		if(other.gameObject.GetComponent<NavMeshAgent>()) {
+		if(other.gameObject.GetComponent<NavMeshAgent>() && GetComponent<NavMeshAgent>()) {
 			if(other.transform.GetSiblingIndex() > transform.GetSiblingIndex()) {
 				myAvoidance = GetComponent<NavMeshAgent>().avoidancePriority;
 				GetComponent<NavMeshAgent>().avoidancePriority = 0;
@@ -167,10 +186,6 @@ public class Enemy : NetworkBehaviour {
 		}
 	}
 
-	public int maxHealth = 100;
-
-
-
 	public void AllowDamage() {
 		CancelInvoke();
 		canBeDamaged = true;
@@ -178,5 +193,9 @@ public class Enemy : NetworkBehaviour {
 
 	public bool GetCanBeDamaged() {
 		return canBeDamaged;
+	}
+
+	public GameObject PlayerWhoKilledMe() {
+		return playerWhoLastHitMe;
 	}
 }

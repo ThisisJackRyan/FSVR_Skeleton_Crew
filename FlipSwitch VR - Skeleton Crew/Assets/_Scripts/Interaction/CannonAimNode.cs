@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -32,5 +33,12 @@ public class CannonAimNode : MonoBehaviour {
 		}
 	}
 
-	
+    [Button]
+    public void AimTester() {
+        //print("button hit");
+        cannon.RotateBarrel(index);
+
+    }
+
+
 }

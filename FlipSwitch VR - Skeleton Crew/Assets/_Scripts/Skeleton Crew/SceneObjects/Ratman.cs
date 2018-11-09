@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using BehaviorDesigner.Runtime;
+using UnityEngine.AI;
+using Sirenix.OdinInspector;
+//using System;
 
 public class Ratman : NetworkBehaviour {
 
@@ -11,8 +14,12 @@ public class Ratman : NetworkBehaviour {
 	public bool isOnTheLeft;
 	int maxHealth = 100;
     public GameObject[] hitParticles;
-
+    public Transform reloadMarker;
+    public Animator cannonBarrel;
+	public GameObject deathParticles;
     public AudioClip deathSound;
+    public AudioClip[] hitSounds;
+
 	[ClientRpc]
 	private void RpcPlayDeathSound() {
 		if ( isServer ) {
@@ -21,7 +28,7 @@ public class Ratman : NetworkBehaviour {
 
 		GetComponent<AudioSource>().PlayOneShot( deathSound );
 	}
-
+    
 	void OnHealthChange( int n ) {
 		if ( n < health ) {
 			if ( n >= 0 ) {
@@ -50,6 +57,15 @@ public class Ratman : NetworkBehaviour {
 			KillRatman();
 	}
 
+    public float reloadTimer = 0.5f;
+    internal void StartWaitToReload() {
+        Invoke("StartReload", reloadTimer);
+    }
+
+    void StartReload() {
+        GetComponent<Animator>().SetTrigger("Reload");
+    }
+
     private void TurnOffHit() {
         for (int i = 0; i < hitParticles.Length; i++) {
             hitParticles[i].SetActive(false);
@@ -59,7 +75,7 @@ public class Ratman : NetworkBehaviour {
     void Start() {
 		VariableHolder.instance.ratmenPositions.Add( gameObject, isOnTheLeft );
 		if ( isServer ) {
-			//  print(name + " enabled server check");
+			//  //print(name + " enabled server check");
 			Captain.ratmenRespawned.Add( this, false );
 			ChangeHealth( health );
 		} else {
@@ -73,9 +89,91 @@ public class Ratman : NetworkBehaviour {
 
     }
 
-	public AudioClip[] hitSounds;
+    public GameObject magicParticles, spellParticles;
+    public void EnableMagicParticles() {
+        magicParticles.SetActive(true);
 
-	[ClientRpc]
+        foreach (var p in magicParticles.GetComponentsInChildren<ParticleSystem>()) {
+            p.Simulate(0, true, true);
+            p.Play();
+        }
+    }
+
+	public bool IsDead() {
+		return isDead;
+	}
+
+    public void FireMagicParticles() {
+        //turn off magic and spawn spell
+        if (!isServer) {
+            return;
+        }
+
+        magicParticles.SetActive(false);
+        RpcTurnOffMagic();
+        var g = Instantiate(spellParticles, magicParticles.transform.position, Quaternion.identity);
+        NetworkServer.Spawn(g);
+        
+    }
+
+    [ClientRpc]
+    void RpcTurnOffMagic() {
+        if (isServer) {
+            return;
+        }
+        magicParticles.SetActive(false);
+    }
+
+    public void PlayReload() {
+        //StartCoroutine("MoveToPositionThenReload");
+        //GetComponent<Animator>().SetTrigger("CannonFired");
+        GetComponentInParent<NetworkAnimator>().SetTrigger("CannonFired");
+    }
+
+    public void CastReload() {
+        GetComponentInParent<NetworkAnimator>().SetTrigger("Reload");
+    }
+
+    IEnumerator MoveToPositionThenReload() {
+        GetComponentInChildren<NavMeshAgent>().SetDestination(reloadMarker.position);
+        while (!TestAgent()) {
+            yield return new WaitForEndOfFrame();
+        }
+
+        GetComponent<Animator>().SetTrigger("CannonFired");
+        //cannonBarrel.SetTrigger("Reload");
+    }
+
+    IEnumerator CheckIfReloadNeeded() {
+        //print("che4ck if reload started");
+        while ((bool)rat.GetComponent<BehaviorTree>().GetVariable("MoveToCannon").GetValue()) {
+            //print("move to cannon is true");
+            yield return new WaitForEndOfFrame();
+        }
+
+        //print("move to cannon is false, checking if cannon needs reloaded");
+
+        if(cannonBarrel.GetComponentInParent<Cannon>().NeedsReloaded) {
+            //print("cannon needs reloaded, playing reload");
+            CastReload();
+        } else {
+            //print("cannon barrel says: " + cannonBarrel.GetComponentInParent<Cannon>().NeedsReloaded);
+        }
+    }
+
+    bool TestAgent() {   
+        if (!GetComponentInChildren<NavMeshAgent>().pathPending) {
+            if (GetComponentInChildren<NavMeshAgent>().remainingDistance <= GetComponentInChildren<NavMeshAgent>().stoppingDistance) {
+                if (!GetComponentInChildren<NavMeshAgent>().hasPath || GetComponentInChildren<NavMeshAgent>().velocity.sqrMagnitude == 0f) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    [ClientRpc]
 	private void RpcPlayHitSound( int rng ) {
 		if ( isServer ) {
 			return;
@@ -84,16 +182,24 @@ public class Ratman : NetworkBehaviour {
 		GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
 	}
 
+    [Button]
 	public void KillMe() {
 		if ( isServer )
 			ChangeHealth( maxHealth );
 	}
 
+    [Button]
+    public void Respawn() {
+        Respawn(transform.position);
+    }
+
 	public void Respawn( Vector3 spawnPos ) {
+		isDead = false;
 		ChangeHealth( maxHealth, false );
 		rat.transform.position = spawnPos;
 		rat.SetActive( true );
 		rat.GetComponent<BehaviorTree>().SetVariableValue( "MoveToCannon", true );
+        StartCoroutine("CheckIfReloadNeeded");
 		// ratAnim.enabled = true;
 		Captain.ratmenRespawned[this] = true;
 		Captain.instance.CheckRatmenRespawns();
@@ -134,9 +240,9 @@ public class Ratman : NetworkBehaviour {
 		return health;
 	}
 
-	public GameObject deathParticles;
+	bool isDead = false;
 
-	void KillRatman() {
+    void KillRatman() {
 		rat.SetActive( false );
 		//ratAnim.enabled = false;
 		HatchActivator.EnableHatch( isOnTheLeft );
@@ -144,14 +250,21 @@ public class Ratman : NetworkBehaviour {
 		if (!isServer) {
 
 			return;
+		} else {
+			if (isDead) {
+				return;
+			} else {
+				isDead = true;
+			}
+
 		}
 
         if (Time.timeSinceLevelLoad > 5) {
 
-		var g = Instantiate( deathParticles, new Vector3( rat.transform.position.x, rat.transform.position.y + 0.5f, rat.transform.position.z ), Quaternion.identity );
-		NetworkServer.Spawn(g);
+			var g = Instantiate( deathParticles, new Vector3( rat.transform.position.x, rat.transform.position.y + 0.5f, rat.transform.position.z ), Quaternion.identity );
+			NetworkServer.Spawn(g);
 
-        Captain.instance.AddEventToQueue(Captain.AudioEventType.Ratmen);
+			Captain.instance.AddEventToQueue(Captain.AudioEventType.Ratmen);
 
         }
     }

@@ -144,6 +144,16 @@ ModelImporter:
     100276: SH_Shield_F4
     100278: SH_Shield_G4
     100280: SH_Sword_B4
+    100282: Fake_Left_Hand
+    100284: Fake_Right_Hand
+    100286: Real_LEFT_HAND
+    100288: Real_RIGHT_HAND
+    100290: Left_Wrist
+    100292: Right_Wrist
+    100294: SH_Shield_C5
+    100296: SH_Shield_F5
+    100298: SH_Shield_G5
+    100300: SH_Sword_B5
     400000: ARMOR_SET_A
     400002: ARMOR_SET_B
     400004: ARMOR_SET_C
@@ -285,6 +295,16 @@ ModelImporter:
     400276: SH_Shield_F4
     400278: SH_Shield_G4
     400280: SH_Sword_B4
+    400282: Fake_Left_Hand
+    400284: Fake_Right_Hand
+    400286: Real_LEFT_HAND
+    400288: Real_RIGHT_HAND
+    400290: Left_Wrist
+    400292: Right_Wrist
+    400294: SH_Shield_C5
+    400296: SH_Shield_F5
+    400298: SH_Shield_G5
+    400300: SH_Sword_B5
     2100000: hair1
     2100002: Helmet_A1
     2100004: Chest_A1
@@ -405,6 +425,66 @@ ModelImporter:
     2100234: SH_Shoulders_G3
     2100236: SH_Chest_G3
     2100238: phong4
+    2100240: hair4
+    2100242: Helmet_A4
+    2100244: Chest_A4
+    2100246: Shoulders_A4
+    2100248: SH_Sword__A4
+    2100250: Boots_A4
+    2100252: Legs_A4
+    2100254: Gloves_A4
+    2100256: SH_Shield_A5
+    2100258: SH_Shield__B4
+    2100260: Helmet_B4
+    2100262: Chest_B4
+    2100264: Boots_B4
+    2100266: Gloves_B4
+    2100268: Shoulders_B4
+    2100270: Legs_B4
+    2100272: SH_Sword_B4
+    2100274: SH_Sword_C6
+    2100276: SH_Shield_C4
+    2100278: Chest_C4
+    2100280: Mail_C4
+    2100282: Shoulders_C4
+    2100284: Helmet_C4
+    2100286: Gloves_C4
+    2100288: Boots_C4
+    2100290: Legs_C4
+    2100292: SH_LegsArmor_D4
+    2100294: SH_Boots_D4
+    2100296: SH_Shouldrers_D4
+    2100298: SH_Sword_D5
+    2100300: SH_Shield_D4
+    2100302: SH_Gloves_D4
+    2100304: SH_Chest_D4
+    2100306: Mail_D4
+    2100308: SH_Helmet_D4
+    2100310: SH_Helmet_E5
+    2100312: SH_Boots_E4
+    2100314: SH_Shouldrers_E4
+    2100316: SH_Sword_E5
+    2100318: SH_Shield_E4
+    2100320: SH_Chest_E5
+    2100322: SH_LegsArmor_E4
+    2100324: SH_Gloves_E4
+    2100326: SH_Helmet_F5
+    2100328: SH_Sword_F5
+    2100330: SH_Shield_F4
+    2100332: SH_Chest_F5
+    2100334: SH_Shoulders_F4
+    2100336: SH_Gloves_F4
+    2100338: SH_Boots_F4
+    2100340: SH_LegsArmor_F4
+    2100342: SH_Helmet_G5
+    2100344: SH_Sword_G5
+    2100346: SH_Shield_G4
+    2100348: SH_Gloves_G4
+    2100350: SH_Boots_G4
+    2100352: SH_LegsArmor_G4
+    2100354: SH_Shoulders_G4
+    2100356: SH_Chest_G4
+    2100358: phong5
     2300000: SH_Shield_A2
     2300002: SH_Shield_B
     2300004: SH_Shield_C2
@@ -415,6 +495,9 @@ ModelImporter:
     2300014: SH_Shield_C4
     2300016: SH_Shield_F4
     2300018: SH_Shield_G4
+    2300020: SH_Shield_C5
+    2300022: SH_Shield_F5
+    2300024: SH_Shield_G5
     3300000: SH_Shield_A2
     3300002: SH_Shield_B
     3300004: SH_Shield_C2
@@ -425,6 +508,9 @@ ModelImporter:
     3300014: SH_Shield_C4
     3300016: SH_Shield_F4
     3300018: SH_Shield_G4
+    3300020: SH_Shield_C5
+    3300022: SH_Shield_F5
+    3300024: SH_Shield_G5
     4300000: Hair
     4300002: SH_Helmet_A
     4300004: SH_CHest_Armor_A
@@ -501,6 +587,10 @@ ModelImporter:
     4300146: SH_Shield_C4
     4300148: SH_Shield_F4
     4300150: SH_Shield_G4
+    4300152: SH_Sword_B5
+    4300154: SH_Shield_C5
+    4300156: SH_Shield_F5
+    4300158: SH_Shield_G5
     7400000: Left Hand Empty
     7400002: Left_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Hold
     7400004: Left_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Fire_Animation
@@ -582,6 +672,8 @@ ModelImporter:
     13700126: SH_Sword_G2
     13700128: Skeleton_Body
     13700130: SH_Sword_B4
+    13700132: SH_Sword_B5
+    2186277476908879412: ImportLogs
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -607,7 +699,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -619,7 +711,7 @@ ModelImporter:
       name: Left Hand Empty
       takeName: Take 001
       firstFrame: 0
-      lastFrame: 0
+      lastFrame: 0.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -647,7 +739,7 @@ ModelImporter:
       name: Left_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Hold
       takeName: Take 001
       firstFrame: 1
-      lastFrame: 1
+      lastFrame: 1.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -703,7 +795,7 @@ ModelImporter:
       name: Left_Hand_Pirate_Knife_and_Axe_Hold
       takeName: Take 001
       firstFrame: 14
-      lastFrame: 14
+      lastFrame: 14.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -731,7 +823,7 @@ ModelImporter:
       name: Left_Hand_Sword_Hold
       takeName: Take 001
       firstFrame: 15
-      lastFrame: 15
+      lastFrame: 15.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -759,7 +851,7 @@ ModelImporter:
       name: Left_Hand_Musketoon_Short_Hold
       takeName: Take 001
       firstFrame: 19
-      lastFrame: 19
+      lastFrame: 19.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -815,7 +907,7 @@ ModelImporter:
       name: Right_Hand_Empty
       takeName: Take 001
       firstFrame: 50
-      lastFrame: 50
+      lastFrame: 50.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -843,7 +935,7 @@ ModelImporter:
       name: Right_Hand_Pirate_Pistol_and_2_Barrel_Pistol_Hold
       takeName: Take 001
       firstFrame: 51
-      lastFrame: 51
+      lastFrame: 51.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -899,7 +991,7 @@ ModelImporter:
       name: Right_Hand_Pirate_Knife_and_Axe_Hold
       takeName: Take 001
       firstFrame: 64
-      lastFrame: 64
+      lastFrame: 64.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -927,7 +1019,7 @@ ModelImporter:
       name: Right_Hand_Sword_Hold
       takeName: Take 001
       firstFrame: 65
-      lastFrame: 65
+      lastFrame: 65.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -955,7 +1047,7 @@ ModelImporter:
       name: Right_Hand_Musketoon_Short_Hold
       takeName: Take 001
       firstFrame: 68
-      lastFrame: 68
+      lastFrame: 68.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -1051,7 +1143,7 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2

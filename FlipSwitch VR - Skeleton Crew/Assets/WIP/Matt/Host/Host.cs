@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Dissonance;
 using RootMotion.Demos;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -27,12 +28,15 @@ public class Host : NetworkBehaviour {
 	#region Initialization
 	void Start()
 	{
+
 		if (!isLocalPlayer && !isServer)
 		{
 			GetComponent<AudioListener>().enabled = false;
 			return;
 		}
 
+        //var comms = FindObjectOfType<VoiceBroadcastTrigger>();
+        //comms.BroadcastPosition = false;
 		GetComponent<Camera>().enabled = true;
 		GetComponent<AudioListener>().enabled = true;
 		//Resources.FindObjectsOfTypeAll<HostCanvas>()[0].gameObject.SetActive(true);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class CannonInteraction : NetworkBehaviour {
 
@@ -14,9 +15,11 @@ public class CannonInteraction : NetworkBehaviour {
 	}
 
 	private void FireCannon( GameObject cannon ) {
-		cannon.GetComponent<Cannon>().CreateCannonBall();
-		Captain.playersFiredCannons[this] = true;
-		Captain.instance.CheckPlayersCannonFiring();
+		cannon.GetComponent<Cannon>().CreateCannonBall(transform.root.gameObject);
+		if ( !SceneManager.GetActiveScene().name.Contains( "Boss" ) ) {
+			Captain.playersFiredCannons[this] = true;
+			Captain.instance.CheckPlayersCannonFiring();
+		}
 
 		RpcFireCannon( cannon );
 	}
@@ -25,12 +28,12 @@ public class CannonInteraction : NetworkBehaviour {
 	private void RpcFireCannon( GameObject cannon ) {
 		if ( isServer )
 			return;
-		cannon.GetComponent<Cannon>().CreateCannonBall();
+		cannon.GetComponent<Cannon>().CreateCannonBall( transform.root.gameObject );
 	}
 
 	private void Start() {
 		if ( isServer ) {
-			//print( name + " enabled server check" );
+			////print( name + " enabled server check" );
 			Captain.playersFiredCannons.Add( this, false );
 		}
 
@@ -54,7 +57,7 @@ public class CannonInteraction : NetworkBehaviour {
 		//closest hasnt been found, grabbing is allowed  //are we changing the -1 sentinel?
 		if ( !leftHandInteracting && mastInteraction.emptyLeftHand && Controller.LeftController.GetPressDown( Controller.Grip ) ) {
 			CmdHandleAiming( true );
-			//print("inside button down left");
+			////print("inside button down left");
 		}
 
 		if (!rightHandInteracting && mastInteraction.emptyRightHand && Controller.RightController.GetPressDown( Controller.Grip ) ) {
@@ -78,13 +81,13 @@ public class CannonInteraction : NetworkBehaviour {
 
 		//player let go
 		if ( leftHandInteracting && Controller.LeftController.GetPressUp( Controller.Grip ) ) {
-			//print( "inside up left" );
+			////print( "inside up left" );
 			leftHandInteracting = false;
 			CmdStopInteracting(true, true);
 		}
 
 		if ( rightHandInteracting && Controller.RightController.GetPressUp( Controller.Grip ) ) {
-			//print( "inside up right" );
+			////print( "inside up right" );
 			rightHandInteracting = false;
 			CmdStopInteracting(false, true);
 		}
@@ -165,12 +168,17 @@ public class CannonInteraction : NetworkBehaviour {
 		}
 
 		cannonCurrentlyAiming = cannon.GetComponent<Cannon>();
-		indexOfClosest = iOfClosest;
+        ////print(cannonCurrentlyAiming);
+
+        indexOfClosest = iOfClosest;
 
 		if (isLeft) {
+            cannonCurrentlyAiming.GetComponentInChildren<RotationTester>().toFollow = GetComponent<GrabWeapon>().leftHand;
 			leftHandInteracting = true;
 		} else {
-			rightHandInteracting = true;
+            cannonCurrentlyAiming.GetComponentInChildren<RotationTester>().toFollow = GetComponent<GrabWeapon>().rightHand;
+
+            rightHandInteracting = true;
 		}
 	}
 
@@ -185,6 +193,12 @@ public class CannonInteraction : NetworkBehaviour {
 		}
 
         cannon.GetComponentInChildren<CannonAngleSetterTrigger>().TurnOffNodes();
+
+        if (!isServer) {
+
+        cannonCurrentlyAiming.GetComponentInChildren<RotationTester>().toFollow = null;
+        }
+
 
         cannonCurrentlyAiming = null;
 		indexOfClosest = -1;
@@ -205,8 +219,14 @@ public class CannonInteraction : NetworkBehaviour {
 
 		RpcStopInteractingOnClient( cannonCurrentlyAiming.gameObject, gameObject, isLeft, showMarkerNodes );
 		cannonCurrentlyAiming.indexOfFirstGrabbed = -1;
+
+        cannonCurrentlyAiming
+            .GetComponentInChildren<RotationTester>()
+            .toFollow = null;
+
 		cannonCurrentlyAiming = null;
 		indexOfClosest = -1;
+
 	}
 
     [ClientRpc]

@@ -9,332 +9,489 @@ using Random = UnityEngine.Random;
 public class PathFollower : NetworkBehaviour {
 #pragma warning disable 0219
 
-    public NodePath path;
-    int currentNode, nextNode;
-    public float speed = 1;
-    public float maxSpeed = 2, minSpeed = 0.5f;
-    public Vector2 yLimiter;
-    public GameObject shipDeck;
-    public GameObject crystalDeathParticles;
+	public NodePath path;
+	int currentNode, nextNode;
+	public float speed = 1;
+	public float maxSpeed = 2, minSpeed = 0.5f;
+	public Vector2 yLimiter;
+	public GameObject shipDeck;
+	public GameObject crystalDeathParticles;
 
-    [SerializeField]
-    float timeToNextNode = 1f;
-    float currentLerpTime;
+	[SerializeField]
+	float timeToNextNode = 1f;
+	float currentLerpTime;
 
-    Vector3 startPos;
-    Vector3 endPos;
-    public float xOffset = 50;
-    public float meteorSpawnTimer = .5f;
-    public float meteorRadius = 40;
-    public GameObject[] meteors;
-    Quaternion currRot, nextRot;
-    GameObject prefabToSpawn;
+	Vector3 startPos;
+	Vector3 endPos;
+	public float xOffset = 50;
+	public float meteorSpawnTimer = .5f;
+	public float meteorRadius = 40;
+	public GameObject[] meteors;
+	Quaternion currRot, nextRot;
+	GameObject prefabToSpawn;
 
-    public int encounterOneTotalTime = 180, breakTimer = 60;
+	public int encounterOneTotalTime = 180, encounterTwoTotalTime = 180, encounterthreeTotalTime = 180, breakTimer = 60;
 
-    bool canMove = false;
-    bool firstMove = true;
-    [Header("Spawning stuff")]
-    public float spawnDistFromRock = 2;
-    public float spawnRadiusMin, spawnRadiusMax;
-    public Transform shipTransform;
-    [Tooltip("second encounters will be the object that spawns the meteor prefab, not the prefab itself. third encounters is for ratmen." +
-        "it again will have a specific object that tells rats to spawn. will prolly be changed tho. ")]
-    public GameObject[] firstEncounters, secondEncounters, thirdEncounters, tutorialSpawns;
+	bool canMove = false;
+	bool firstMove = true;
+	[Header("Spawning stuff")]
+	public float spawnDistFromRock = 2;
+	public float spawnRadiusMin, spawnRadiusMax;
+	public Transform shipTransform;
+	[Tooltip("second encounters will be the object that spawns the meteor prefab, not the prefab itself. third encounters is for ratmen." +
+		"it again will have a specific object that tells rats to spawn. will prolly be changed tho. ")]
+	public GameObject[] firstEncountersRanged, firstEncountersMelee, secondEncounters, thirdEncounters, tutorialSpawns;
 
-    public GameObject[] ratkinSpawnPositions;
+	public GameObject[] ratkinSpawnPositions;
+	public Transform crystalRoot;
 
-    [SerializeField]
-    EncounterStage currentStage;
-    [Button]
-    public void WorkAroundSpawn() {
-        SpawnEncounter(currentStage);
+	[Header("Ratkin Rebellion Swap")]
+	// publics
+	public GameObject swapParticles;
+	public GameObject ratkinRebelPrefab;
 
-    }
+	// privates
+	private bool firstTimeRatkinRebel = true;
 
-    protected void Start() {
-        if (!isServer) {
-            return;
-        }
-        currentNode = 0;
-        nextNode = 1;
-        currRot = transform.rotation;
-        nextRot = CalcRotation(path.Nodes[nextNode]);
-    }
+	[Space]
+	[SerializeField]
+	EncounterStage currentStage;
+	[Button]
+	public void WorkAroundSpawn() {
+		SpawnEncounter(currentStage);
 
-    public void StartMoving() {
-        if (!isServer) {
-            return;
-        }
-        canMove = true;
-        currentStage = EncounterStage.Tutorial;
-        Invoke("ChangeToPhaseTwo", encounterOneTotalTime);
-    }
+	}
 
-    public void ChangeSpeed(bool faster) {
-        speed = (faster) ? maxSpeed : minSpeed;
-    }
-
-    public bool ChangeSpeed(float increment) {
-        if (firstMove && Mathf.Sign(increment) == 1) {
-            StartMoving();
-            firstMove = false;
-        }
-
-        if (speed + increment == maxSpeed || speed + increment == minSpeed) {
-            return false;
-        }
-
-        speed += increment;
-        if (speed > maxSpeed) {
-            speed = maxSpeed;
-        } else if (speed < minSpeed) {
-            speed = minSpeed;
-        }
-
-        return true;
-    }
-
-    internal void DestroyCrystal(GameObject g) {
-        if (isServer) {
-			//NetworkServer.Destroy( g );
-			print( "i am the server, destroy crystal was called, should have spawned fragments" );
-
-			GameObject go = Instantiate(crystalDeathParticles, g.transform.position, Quaternion.identity);
-            NetworkServer.Spawn(go);
-		} else {
-			print("im not the server, but destroy crystal was called, should have spawned fragments");
+	protected void Start() {
+		if (!isServer) {
+			return;
 		}
-    }
+		currentNode = 0;
+		nextNode = 1;
+		currRot = transform.rotation;
+		nextRot = CalcRotation(path.Nodes[nextNode]);
+	}
 
-    void ChangeToPhaseTwo() {
-        currentStage = EncounterStage.FirstBreak;
-        Invoke("StartSecondPhase", breakTimer);
-    }
+	[Button]
+	public void StartMoving() {
+		if (!isServer) {
+			return;
+		}
+		canMove = true;
+		currentStage = EncounterStage.Tutorial;
+		Invoke("EnemyWipeThenFirstBreak", encounterOneTotalTime);
+	}
 
-    void StartSecondPhase() {
-        currentStage = EncounterStage.Second;
-        Invoke("StartThirdPhase", encounterOneTotalTime);
-        InvokeRepeating("SpawnMeteors", meteorSpawnTimer, meteorSpawnTimer);
-    }
+	public MastSwitch mast;
+	public void ChangeSpeed(bool faster) {
+		speed = (faster) ? maxSpeed : minSpeed;
+		mast.AdjustSails();
+	}
 
-    void StartThirdPhase() {
-        currentStage = EncounterStage.Third;
-        CancelInvoke("SpawnMeteors");
-    }
+	public bool ChangeSpeed(float increment) {
+		if (firstMove && Mathf.Sign(increment) == 1) {
+			StartMoving();
+			firstMove = false;
+		}
 
-    protected void Update() {
-        //if (Input.GetKeyDown(KeyCode.Space)) {
-        //	StartMoving();
-        //}
-        if (!isServer) {
+		if (speed + increment == maxSpeed || speed + increment == minSpeed) {
+			return false;
+		}
+
+		speed += increment;
+		if (speed > maxSpeed) {
+			speed = maxSpeed;
+		} else if (speed < minSpeed) {
+			speed = minSpeed;
+		}
+
+		return true;
+	}
+
+	internal void DestroyCrystal(int i) {
+		if (isServer) {
+			//NetworkServer.Destroy( g );
+			//print("i am the server, destroy crystal was called, should have spawned fragments");
+
+			GameObject go = Instantiate(crystalDeathParticles, crystalRoot.GetChild(i).position, Quaternion.identity);
+			NetworkServer.Spawn(go);
+
+            Destroy(crystalRoot.GetChild(i).gameObject);
+            RpcDestroyCrystalOnClient(i);
+
+		} //else {
+		//	//print("im not the server, but destroy crystal was called, should have spawned fragments");
+		//}
+	}
+
+    [ClientRpc]
+    internal void RpcDestroyCrystalOnClient(int i) {
+        if (isServer) {
             return;
         }
 
-        if (!canMove) {
-            return;
-        }
+        Destroy(crystalRoot.GetChild(i).gameObject);
 
-        if (nextNode < path.Nodes.Length) {
-            MovePosition();
-        } else {
-            print("next node too high " + nextNode + " " + path.Nodes.Length);
+    }
+
+	public AudioClip breakClip, mutinyClip, meteorClip;
+	void StartFirstBreak() {
+		currentStage = EncounterStage.FirstBreak;
+		if (isServer && breakClip) {
+			Captain.instance.PlayDialogue(breakClip.name);
+		}
+
+		Invoke("StartSecondPhase", breakTimer);
+	}
+
+    void EnemyWipeThenFirstBreak() {
+        if (isServer) {
+            Captain.instance.FullWipeAttack();
+            Invoke("StartFirstBreak", 5f);
         }
     }
 
-    void SpawnMeteors() {
-        bool hitDeck = false;
-        Vector2 spawnVector;
-        Vector3 rayVector;
-        do {
-            hitDeck = false;
-            spawnVector = Random.insideUnitCircle * 40;
-            rayVector = new Vector3(spawnVector.x + shipDeck.transform.position.x, Random.Range(5f, 50f), spawnVector.y + shipDeck.transform.position.z);
-            var hits = Physics.RaycastAll(rayVector, Vector3.down);
-            foreach (var hit in hits) {
-                if (hit.collider.gameObject == shipDeck) {
-                    hitDeck = true;
-                }
-            }
-        } while (hitDeck);
+	public GameObject[] tutorialPanels;
+	void TurnOffTutorialPanels() {
+		foreach(var t in tutorialPanels ) {
+			t.SetActive( false );
+		}
+	}
 
-        //not hitting deck
-        int rng = Random.Range(0, meteors.Length);
-        rayVector.x += xOffset;
-        var m = Instantiate(meteors[rng], rayVector, Quaternion.identity);
-        m.transform.parent = transform;
-        NetworkServer.Spawn(m);
-    }
+	void StartSecondPhase() {
+		TurnOffTutorialPanels();
+
+		currentStage = EncounterStage.Second;
+
+		if (isServer && meteorClip) {
+			Captain.instance.PlayDialogue(meteorClip.name);
+		}
+
+		Invoke("StartThirdPhase", encounterTwoTotalTime);
+		InvokeRepeating("SpawnMeteors", meteorSpawnTimer, meteorSpawnTimer);
+	}
+
+	void StartThirdPhase() {
+		currentStage = EncounterStage.Third;
+		if (isServer && mutinyClip) {
+			Captain.instance.PlayDialogue(mutinyClip.name);
+		}
+		CancelInvoke("SpawnMeteors");
+		Invoke( "SpawnBossCave", encounterthreeTotalTime );
+
+	}
+	
+	public GameObject[] landmarks;
+	public GameObject bossCave;
+	public float distanceToDelete = 100;
+	public float caveMultiplier = 10;
+	[Button]
+	void SpawnBossCave() {
+		currentStage = EncounterStage.ThirdBreak;
+		foreach (var lm in landmarks) {
+			float dist = Vector3.Distance(shipTransform.position, lm.transform.position);
+			if (dist >= distanceToDelete) {
+				lm.SetActive(false);
+			}
+		}
+		bossCave.transform.position = new Vector3(shipTransform.position.x, shipTransform.position.y, shipTransform.position.z - (distanceToDelete * caveMultiplier));
+		foreach(var v in Captain.instance.mastRopes) {
+			v.enabled = false;
+		}
+
+		ChangeSpeed(true);
+	}
+
+	protected void Update() {
+
+		if (!isServer) {
+			return;
+		}
+
+		if (Input.GetKeyDown(KeyCode.Space)) {
+			SpawnWithPortal(firstEncountersMelee);
+		}
+
+		if (!canMove) {
+			return;
+		}
+
+		if (nextNode < path.Nodes.Length) {
+			MovePosition();
+		} else {
+			//print("next node too high " + nextNode + " " + path.Nodes.Length);
+		}
+	}
+
+	void SpawnMeteors() {
+		bool hitDeck = false;
+		Vector2 spawnVector;
+		Vector3 rayVector;
+		do {
+			hitDeck = false;
+			spawnVector = Random.insideUnitCircle * 40;
+			rayVector = new Vector3(spawnVector.x + shipDeck.transform.position.x, Random.Range(5f, 50f), spawnVector.y + shipDeck.transform.position.z);
+			var hits = Physics.RaycastAll(rayVector, Vector3.down);
+			foreach (var hit in hits) {
+				if (hit.collider.gameObject == shipDeck) {
+					hitDeck = true;
+				}
+			}
+		} while (hitDeck);
+
+		//not hitting deck
+		int rng = Random.Range(0, meteors.Length);
+		rayVector.x += xOffset;
+		var m = Instantiate(meteors[rng], rayVector, Quaternion.identity);
+		m.transform.parent = transform;
+		NetworkServer.Spawn(m);
+	}
 
 #pragma warning disable 0219
 
-    void MovePosition() {
-        //increment timer once per frame
-        currentLerpTime += Time.deltaTime * speed;
-        if (currentLerpTime > timeToNextNode) {
-            currentLerpTime = timeToNextNode;
-        }
+	void MovePosition() {
+		//increment timer once per frame
+		currentLerpTime += Time.deltaTime * speed;
+		if (currentLerpTime > timeToNextNode) {
+			currentLerpTime = timeToNextNode;
+		}
 
-        //lerp!
-        float perc = currentLerpTime / timeToNextNode;
-        transform.position = Vector3.Lerp(path.Nodes[currentNode].position, path.Nodes[nextNode].position, perc);
+		//lerp!
+		float perc = currentLerpTime / timeToNextNode;
+		transform.position = Vector3.Lerp(path.Nodes[currentNode].position, path.Nodes[nextNode].position, perc);
 
-        //lerp rotation
-        //print("curr " + currRot + " next " + nextRot);
-        transform.rotation = Quaternion.Lerp(currRot, nextRot, perc);
+		//lerp rotation
+		////print("curr " + currRot + " next " + nextRot);
+		transform.rotation = Quaternion.Lerp(currRot, nextRot, perc);
 
-        if (perc >= 1) {
-            IncrementNode();
-        }
-    }
+		if (perc >= 1) {
+			IncrementNode();
+		}
+	}
 
-    Quaternion CalcRotation(Transform target) {
-        Vector3 vectorToTarget = target.transform.position - transform.position;
-        Vector3 facingDirection = transform.forward; // just for clarity!
+	Quaternion CalcRotation(Transform target) {
+		Vector3 vectorToTarget = target.transform.position - transform.position;
+		Vector3 facingDirection = transform.forward; // just for clarity!
 
-        float angleInDegrees = Vector3.Angle(facingDirection, vectorToTarget);
-        Quaternion rotation = Quaternion.FromToRotation(facingDirection, vectorToTarget);
+		//float angleInDegrees = Vector3.Angle(facingDirection, vectorToTarget);
+		Quaternion rotation = Quaternion.FromToRotation(facingDirection, vectorToTarget);
 
-        return rotation * transform.rotation;
-    }
+		return rotation * transform.rotation;
+	}
 
-    void IncrementNode() {
-        currentNode = nextNode;
-        if (this.nextNode < path.Nodes.Length - 1) {
-            nextNode++;
-        }
+    [Button("increment path")]
+	void IncrementNode() {
+		currentNode = nextNode;
+		if (this.nextNode < path.Nodes.Length - 1) {
+			nextNode++;
+		}
 
-        currentLerpTime = 0f;
+		currentLerpTime = 0f;
 
-        SpawnEncounter(currentStage);
+		if (currentStage != EncounterStage.FirstBreak || currentStage != EncounterStage.SecondBreak) {
+			if (path.Nodes[currentNode].GetComponent<EncounterNode>()) {
+				path.Nodes[currentNode].GetComponent<EncounterNode>().SpawnEncounter();
+			} else {
+				SpawnEncounter(currentStage);
+			}
+		}
 
-        //update rot values
-        currRot = nextRot;
-        nextRot = CalcRotation(path.Nodes[nextNode]);
-    }
+		//update rot values
+		currRot = nextRot;
+		nextRot = CalcRotation(path.Nodes[nextNode]);
+	}
 
-    void SpawnEncounter(EncounterStage stage) {
-        switch (stage) {
-            case EncounterStage.First:
-                //print( "hit node during first" );
-
-                SpawnWithPortal(firstEncounters);
-                break;
-            case EncounterStage.Second:
-                //print( "hit node during second" );
-
-                Spawn(secondEncounters);
-                break;
-            case EncounterStage.Third:
-                Spawn(thirdEncounters);
-                break;
-            case EncounterStage.Tutorial:
-                //print("calling spawn with index " + ( currentNode - 1 ) );
-
-                Spawn(tutorialSpawns, currentNode - 1);
-                if (tutorialSpawns.Length == currentNode) {
-                    //print("hit last node in tutorial, moving to first encounter");
-                    currentStage = EncounterStage.First;
+	void SpawnEncounter(EncounterStage stage) {
+		switch (stage) {
+			case EncounterStage.First:
+				////print( "hit node during first" );
+				//test enemy count
+				if (FindObjectsOfType<Enemy>().Length >= maxEnemies) {
+                    ChangeSpeed(false);
+					return;
+				}
+                if (NumberOfPlayerHolder.instance.numberOfPlayers <= 2) {
+                    if (VariableHolder.instance.numRangedUnits > 2) {
+                        int rand = Random.Range(0, 100);
+                        if (rand <= 49) {
+                            SpawnWithPortal(firstEncountersRanged);
+                        } else {
+                            SpawnWithPortal(firstEncountersMelee);
+                        }
+                    } else {
+                        SpawnWithPortal(firstEncountersRanged);
+                    }
+                } else {
+                    SpawnWithPortal(firstEncountersRanged);
                 }
+				break;
+			case EncounterStage.Second:
+				////print( "hit node during second" );
 
-                break;
-            default:
-                //print("hit node during break or tutorial: " + currentStage.ToString());
-                break;
-        }
-    }
+				Spawn(secondEncounters);
+				break;
+			case EncounterStage.Third:
+				if (FindObjectsOfType<Enemy>().Length >= maxEnemies) {
+                    ChangeSpeed(false);
+                    return;
+				}
+				if (firstTimeRatkinRebel) {
+					InitialRebellion();
+				} else {
+					Spawn(thirdEncounters);
+				}
+				break;
+			case EncounterStage.Tutorial:
+				////print("calling spawn with index " + ( currentNode - 1 ) );
+				///
+				if ( FindObjectsOfType<Enemy>().Length >= maxEnemies ) {
+					ChangeSpeed( false );
+					return;
+				}
 
-    #region spawn stuff	
+				SpawnWithPortal(tutorialSpawns, currentNode - 1);
+				if (tutorialSpawns.Length == currentNode) {
+					////print("hit last node in tutorial, moving to first encounter");
+					currentStage = EncounterStage.First;
+				}
 
-    public static GameObject[] Floaters {
-        get {
-            return floaters ?? (floaters = GameObject.FindGameObjectsWithTag("Floater"));
-        }
-    }
+				break;
+			default:
+				////print("hit node during break or tutorial: " + currentStage.ToString());
+				break;
+		}
+	}
 
-    static GameObject[] floaters;
+	#region spawn stuff	
 
-  
+	public static GameObject[] Floaters {
+		get {
+			return floaters ?? (floaters = GameObject.FindGameObjectsWithTag("Floater"));
+		}
+	}
 
-    public void Spawn(GameObject[] toSpawnList, int specifiedIndex = -1) {
-        if (!isServer) {
-            return;
-        }
+	static GameObject[] floaters;
 
-        int spawnIndex = (specifiedIndex != -1) ? specifiedIndex : Random.Range(0, toSpawnList.Length);
-        prefabToSpawn = toSpawnList[spawnIndex];
+	private void InitialRebellion() {
+		if (!isServer) {
+			return;
+		}
 
-        //print( name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name  );
-        //find rock
-        List<GameObject> rocks = new List<GameObject>();
+		var ratkinSlaveList = FindObjectsOfType<Ratman>();
+		foreach (var slave in ratkinSlaveList) {
+			if (slave.IsDead()) {
+				continue;
+			}
 
-        foreach (GameObject go in Floaters) {
-            float dist = Vector3.Distance(shipTransform.position, go.transform.position);
-            //print( "distance to " + go.name + " is " + dist );
-            if (dist > spawnRadiusMin && dist < spawnRadiusMax) {
-                rocks.Add(go);
-            }
-        }
-        //print( "number of floaters " + Floaters.Length );
-        //print( "rocks in range " + rocks.Count );
+			GameObject temp = slave.gameObject;
+			NetworkServer.Destroy(slave.gameObject);
 
-        if (rocks.Count > 0) {
-            int chosenOne = Random.Range(0, rocks.Count);
-            //calc other side
-            Vector3 spawnVector = rocks[chosenOne].transform.position - shipTransform.position;
-            spawnVector = rocks[chosenOne].transform.position + (spawnVector.normalized * spawnDistFromRock);
+			GameObject p = Instantiate(swapParticles, temp.transform.position, Quaternion.identity);
+			NetworkServer.Spawn(p);
 
-            float rng = Random.Range(yLimiter.x, yLimiter.y);
-            spawnVector.y = rng;
-            //spawn
-            GameObject g = Instantiate(prefabToSpawn, spawnVector, Quaternion.identity);
+			GameObject r = Instantiate(ratkinRebelPrefab, temp.transform.position, Quaternion.identity);
+			NetworkServer.Spawn(r);
 
-            if (g.GetComponent<ImpactReticuleSpawner>()) {
-                foreach (var v in g.GetComponents<ImpactReticuleSpawner>()) {
-                    v.deckMesh = shipDeck;
-                }
-            }
+		}
 
-            //print( g.name + " spawned, calling rpc" );
-            //RpcSpawnEnemy( g, spawnVector );
-            NetworkServer.Spawn(g);
-        }
-    }
+		firstTimeRatkinRebel = false;
+	}
 
-    public List<Transform> portalPosPoints;
-    public GameObject portal;
+	public void Spawn(GameObject[] toSpawnList, int specifiedIndex = -1) {
+		if (!isServer) {
+			return;
+		}
+
+		int spawnIndex = (specifiedIndex != -1) ? specifiedIndex : Random.Range(0, toSpawnList.Length);
+		prefabToSpawn = toSpawnList[spawnIndex];
+
+		////print( name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name  );
+		//find rock
+		List<GameObject> rocks = new List<GameObject>();
+
+		foreach (GameObject go in Floaters) {
+			float dist = Vector3.Distance(shipTransform.position, go.transform.position);
+			////print( "distance to " + go.name + " is " + dist );
+			if (dist > spawnRadiusMin && dist < spawnRadiusMax) {
+				rocks.Add(go);
+			}
+		}
+		////print( "number of floaters " + Floaters.Length );
+		////print( "rocks in range " + rocks.Count );
+
+		if (rocks.Count > 0) {
+			int chosenOne = Random.Range(0, rocks.Count);
+			//calc other side
+			Vector3 spawnVector = rocks[chosenOne].transform.position - shipTransform.position;
+			spawnVector = rocks[chosenOne].transform.position + (spawnVector.normalized * spawnDistFromRock);
+
+			float rng = Random.Range(yLimiter.x, yLimiter.y);
+			spawnVector.y = rng;
+			//spawn
+			GameObject g = Instantiate(prefabToSpawn, spawnVector, Quaternion.identity);
+
+			if (g.GetComponent<ImpactReticuleSpawner>()) {
+				foreach (var v in g.GetComponents<ImpactReticuleSpawner>()) {
+					v.deckMesh = shipDeck;
+				}
+			}
+
+			////print( g.name + " spawned, calling rpc" );
+			//RpcSpawnEnemy( g, spawnVector );
+			NetworkServer.Spawn(g);
+		}
+	}
+
+	public List<Transform> portalPosPoints;
+	public GameObject portal;
 	public float distanceBehindPortal = 4;
-    public void SpawnWithPortal(GameObject[] toSpawnList, int specifiedIndex = -1) {
-        if (!isServer) {
-            return;
-        }
+	public int maxEnemies = 16;
 
-        int spawnIndex = (specifiedIndex != -1) ? specifiedIndex : Random.Range(0, toSpawnList.Length);
-        prefabToSpawn = toSpawnList[spawnIndex];
+	public void SpawnWithPortal(GameObject[] toSpawnList, int specifiedIndex = -1) {
+		if (!isServer) {
+			return;
+		}
 
-        int chosenOne = Random.Range(0, portalPosPoints.Count);
-        //calc other side
-        Vector3 spawnVector = portalPosPoints[chosenOne].position;
+		int spawnIndex = (specifiedIndex != -1) ? specifiedIndex : Random.Range(0, toSpawnList.Length);
+		prefabToSpawn = toSpawnList[spawnIndex];
 
-        GameObject g = Instantiate(prefabToSpawn, spawnVector, Quaternion.identity);
+		int chosenOne = Random.Range(0, portalPosPoints.Count);
+		//calc other side
+		spawnVector = portalPosPoints[chosenOne].position;
 
-        spawnVector += (spawnVector - shipTransform.position).normalized * -distanceBehindPortal;
+		lookPos = new Vector3(shipDeck.transform.position.x, spawnVector.y, spawnVector.z);
+		facingVector =  lookPos - spawnVector;
+		GameObject g = Instantiate(prefabToSpawn, spawnVector, Quaternion.identity);
+		lookPos.x =  Mathf.Sign(Random.insideUnitCircle.x) * 10;
+		//int y = (int)Mathf.Sign(Random.insideUnitCircle.x) * 5;
+		lookPos.y = Random.Range(3,7);
 
-        GameObject p = Instantiate(portal, spawnVector, Quaternion.LookRotation((spawnVector - shipTransform.position), Vector3.up));
+		g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("TargetPosition", lookPos);
 
-        if (g.GetComponent<ImpactReticuleSpawner>()) {
-            foreach (var v in g.GetComponents<ImpactReticuleSpawner>()) {
-                v.deckMesh = shipDeck;
-            }
-        }
 
-        NetworkServer.Spawn(g);
-        NetworkServer.Spawn(p);
-    }
+		spawnVector += (spawnVector - shipTransform.position).normalized * -distanceBehindPortal;
+		//g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariable("TargetPosition", new Vector3())
 
-    #endregion
+		GameObject p = Instantiate(portal, spawnVector, Quaternion.LookRotation((spawnVector - shipTransform.position), Vector3.up));
 
-    enum EncounterStage {
-        Tutorial, First, Second, Third, FirstBreak, SecondBreak
-    }
+		if (g.GetComponent<ImpactReticuleSpawner>()) {
+			foreach (var v in g.GetComponents<ImpactReticuleSpawner>()) {
+				v.deckMesh = shipDeck;
+			}
+		}
+
+		NetworkServer.Spawn(g);
+		NetworkServer.Spawn(p);
+	}
+	public Vector3 lookPos, facingVector, spawnVector;
+	private void OnDrawGizmosSelected() {
+		Gizmos.DrawSphere(lookPos, 1f);
+		Gizmos.DrawRay(spawnVector, facingVector);
+	}
+
+	#endregion
+
+	enum EncounterStage {
+		Tutorial, First, Second, Third, FirstBreak, SecondBreak, ThirdBreak
+	}
 }

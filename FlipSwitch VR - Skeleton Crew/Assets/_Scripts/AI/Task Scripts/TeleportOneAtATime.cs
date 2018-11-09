@@ -18,29 +18,40 @@ public class TeleportOneAtATime : Action {
     private IEnumerator TeleportCrewmen() {
         foreach(var crewman in crewmen.Value) {
             //crewman.transform.parent = null;
-            GameObject teleTarget;
+            GameObject teleTarget = gameObject;
 
-            if (crewman.name.Contains("Archer") || crewman.name.Contains("Mage")) {
+            if (crewman.name.Contains("Archer") || crewman.name.Contains("Mage") || crewman.name.Contains("Range")) {
                 foreach(GameObject key in VariableHolder.instance.enemyRangedPositions.Keys) {
                     if(VariableHolder.instance.enemyRangedPositions[key] == false) {
                         teleTarget = key;
-                        VariableHolder.instance.enemyRangedPositions[key] = true;
+                        break;
                     } else {
 						teleTarget = null;
 					}
                 }
 
-				teleTarget = null;
-            } else {
+                if (teleTarget == gameObject) {
+                    Debug.LogWarning(gameObject.name + " has no keys in variableHolder.enemyrangedPositions");
+                } else if(teleTarget != null){
+                    VariableHolder.instance.enemyRangedPositions[teleTarget] = true;
+                    crewman.GetComponent<Enemy>().rangedTeleTarget = teleTarget;
+                }
+
+				//teleTarget = null;
+            }
+
+            if (teleTarget == null || teleTarget == gameObject) {
                 teleTarget = teleportTargets.Value.ToArray()[Random.Range(0, teleportTargets.Value.Count)];
                 teleportTargets.Value.Remove(teleTarget);
             }
 
 			crewman.transform.position = teleTarget.transform.position;
+            crewman.transform.rotation = Quaternion.Euler(Vector3.zero);
 			crewman.GetComponent<Enemy>().UnParentMe();
 			crewman.GetComponent<Behavior>().SetVariableValue( "Teleported", true );
 			crewman.GetComponent<Enemy>().TellCaptainIveBoarded();
-			
+            crewman.GetComponent<Rigidbody>().useGravity = true;
+            //Debug.Log("crewman should be teleported");
             yield return new WaitForSeconds(timeBetweenTeleports.Value);
 
         }
@@ -48,5 +59,7 @@ public class TeleportOneAtATime : Action {
         transform.parent = null;
         GetComponent<Enemy>().UnParentMe();
         transform.position = teleportTargets.Value.ToArray()[Random.Range(0, teleportTargets.Value.Count)].transform.position;
+        GetComponent<Rigidbody>().useGravity = true;
+        //Debug.Log("captain should be teleported");
     }
 }

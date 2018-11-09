@@ -12,6 +12,7 @@ public class DeckDamage : NetworkBehaviour {
 	public float repairRadius = 0.5f;
 	public GameObject repairSphere;
 	public GameObject particles;
+	public HapticEvent haptics;
 
 
 	private void OnEnable() {
@@ -121,6 +122,15 @@ public class DeckDamage : NetworkBehaviour {
 
 		repairPattern.transform.GetChild( 0 ).gameObject.SetActive( true );
 		repairPattern.transform.GetChild( index ).gameObject.SetActive( true );
+	}
+
+	internal void SpawnBurst(GameObject burst, Vector3 pos) {
+		if (!isServer) {
+			return;
+		}
+
+		var g = Instantiate(burst, pos, Quaternion.identity);
+		NetworkServer.Spawn(g);
 	}
 
 	internal void EnablePatternOnClients() {

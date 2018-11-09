@@ -18,7 +18,8 @@ public class Player : NetworkBehaviour {
 	public Collider[] playerColliders;
 	public GameObject[] deathExplosion;
 	public Transform explosionPosition;
-	bool isDead;
+    [SyncVar]
+    bool isDead = false;
 
     public bool IsDead {
         get {
@@ -46,21 +47,6 @@ public class Player : NetworkBehaviour {
 				particles.Play();
 			}
 			Invoke( "TurnOffHit", 1.0f );
-
-			if (n >= 0) {
-				if ( isServer ) {
-					int rng = Random.Range( 0, hitSounds.Length );
-					GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
-					RpcPlayHitSound( rng );
-				}
-			} 
-			//else if ( n <= 0 ) {
-			//	if ( isServer ) {
-
-			//		GetComponent<AudioSource>().PlayOneShot( deathSound );
-			//		RpcPlayDeathSound();
-			//	}
-			//}
 		}
 
 		health = n;
@@ -75,24 +61,11 @@ public class Player : NetworkBehaviour {
 		}
 	}
 
-
-	public AudioClip[] hitSounds;
-
-	[ClientRpc]
-	private void RpcPlayHitSound( int rng ) {
-		if ( isServer ) {
-			return;
-		}
-
-		GetComponent<AudioSource>().PlayOneShot( hitSounds[rng] );
-	}
-
 	void TurnOffHit() {
 		for ( int i = 0; i < hitParticles.Length; i++ ) {
 			hitParticles[i].SetActive( false );
 		}
 	}
-
 
 	private void UpdateParticles( bool internalActive, bool externalActive, bool deathActive ) {
 		for ( int i = 0; i < internalParticles.Length; i++ ) {
@@ -123,6 +96,8 @@ public class Player : NetworkBehaviour {
 	bool hasStartedTutorial = false;
 
 	public void RevivePlayer() {
+        //print("revive called with isDead: " + isDead);
+
         if (isDead) {
 		    ChangeHealth( maxHealth, false );
 	    	VariableHolder.instance.players.Add( GetComponentInChildren<EnemyTargetInit>().gameObject );
@@ -133,10 +108,13 @@ public class Player : NetworkBehaviour {
 	}
 
 	void DisableBody() {
+        //print("disable body called with isDead: " + isDead);
         if (!isDead) {
-
             if (isServer) {
                 Captain.instance.AddEventToQueue(Captain.AudioEventType.Respawn);
+
+				VariableHolder.instance.IncreasePlayerScore(gameObject.transform.root.gameObject, VariableHolder.PlayerScore.ScoreType.Deaths, transform.position);
+
             }
 
             foreach ( GameObject g in playerBody ) {
@@ -156,6 +134,24 @@ public class Player : NetworkBehaviour {
 
             isDead = true;
         }
+	}
+
+	public void TurnOffAllParticles() {
+		if (!isServer) {
+			return;
+		}
+
+		UpdateParticles(false, false, false);
+		RpcTurnOffAllParticles();
+	}
+
+	[ClientRpc]
+	private void RpcTurnOffAllParticles() {
+		if (isServer) {
+			return;
+		}
+
+		UpdateParticles(false, false, false);
 	}
 
 	public void TurnOffColliders() { //todo rename for nathans sake
@@ -215,9 +211,12 @@ public class Player : NetworkBehaviour {
 			health = ( health > maxHealth ) ? maxHealth : health;
 		}
 
-        if (VariableHolder.instance.players.Contains(GetComponentInChildren<EnemyTargetInit>().gameObject)) {
-            VariableHolder.instance.players.Remove(GetComponentInChildren<EnemyTargetInit>().gameObject);
-        }
+
+		if (health == 0) {
+			if (VariableHolder.instance.players.Contains(GetComponentInChildren<EnemyTargetInit>().gameObject)) {
+				VariableHolder.instance.players.Remove(GetComponentInChildren<EnemyTargetInit>().gameObject);
+			}
+		}
 
 
 		return health;

@@ -15,11 +15,14 @@ public class WeaponInteraction : NetworkBehaviour {
 
 	public MastInteraction mastInteraction;
 	public CannonInteraction cannonInteraction;
+	public GameObject playerColliderForEnemyAttacker;
+	NetworkAnimator networkAnim;
 
 	public void AssignWeapon(string side, GameObject weapon ) {
 		if ( side.Equals( "left" ) ) {
 			leftHandWeapon = weapon;
 			leftWeaponScript = weapon.GetComponent<Weapon>();
+			leftWeaponScript.playerWhoIsHolding = playerColliderForEnemyAttacker;
 			mastInteraction.emptyLeftHand = false;
 			leftHandIsInteractable = ( leftWeaponScript.data.type == WeaponData.WeaponType.Melee ) ? false : true;
 			if ( leftWeaponScript.data.type == WeaponData.WeaponType.Punt )
@@ -27,6 +30,7 @@ public class WeaponInteraction : NetworkBehaviour {
 		} else {
 			rightHandWeapon = weapon;
 			rightWeaponScript = weapon.GetComponent<Weapon>();
+			rightWeaponScript.playerWhoIsHolding = playerColliderForEnemyAttacker;
 			mastInteraction.emptyRightHand = false;
 			rightHandIsInteractable = ( rightWeaponScript.data.type == WeaponData.WeaponType.Melee ) ? false : true;
 			if ( rightWeaponScript.data.type == WeaponData.WeaponType.Punt )
@@ -55,6 +59,7 @@ public class WeaponInteraction : NetworkBehaviour {
 	private void Start() {
 		mastInteraction = GetComponent<MastInteraction>();
 		cannonInteraction = GetComponent<CannonInteraction>();
+		networkAnim = GetComponent<NetworkAnimator>();
 	}
 
 	public ushort hapticSizeShoot = 1500, hapticSizeEmpty = 500;
@@ -80,15 +85,50 @@ public class WeaponInteraction : NetworkBehaviour {
 
 			}
 		}
-	}
+
+        //if (leftHandIsInteractable && Controller.LeftController.GetPressDown(Controller.TouchPad)) {
+        //     if (leftWeaponScript.data.type == WeaponData.WeaponType.Gun) {
+        //        CmdReloadWeapon("left");
+        //    }
+        //}
+
+        //if (rightHandIsInteractable && Controller.RightController.GetPressDown(Controller.TouchPad)) {
+        //    if (rightWeaponScript.data.type == WeaponData.WeaponType.Gun) {
+        //        CmdReloadWeapon("right");
+        //    }
+        //}
+    }
+
+    [Command]
+    private void CmdReloadWeapon(string side) {
+        if (side.Equals("left"))
+            leftWeaponScript.Reload();
+        else
+            rightWeaponScript.Reload();
+        //RpcReloadWeapon(side);
+    }
+
+    //[ClientRpc]
+    //private void RpcReloadWeapon(string side) {
+
+    //}
 
 	[Command]
 	private void CmdFireWeapon(string side ) {
-		if ( side.Equals( "left" ) )
+		if ( side.Equals( "left" )) {
 			leftWeaponScript.SpawnBullet(true, hapticSizeShoot);
-		else
+		} else {
 			rightWeaponScript.SpawnBullet(false, hapticSizeShoot);
-		RpcFireWeapon( side );
+		}
+
+		RpcAnimTrigger(side + "Shoot");
+			RpcFireWeapon( side );
+	}
+
+	[ClientRpc]
+	void RpcAnimTrigger(string trigger) {
+		networkAnim.SetTrigger(trigger);
+
 	}
 
 	[ClientRpc]

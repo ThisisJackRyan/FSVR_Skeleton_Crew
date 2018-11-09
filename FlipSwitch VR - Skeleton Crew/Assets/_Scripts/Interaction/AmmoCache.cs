@@ -49,8 +49,8 @@ public class AmmoCache : NetworkBehaviour{
 				timer = 0;	
 				
 				other.GetComponent<Weapon>().Reload();
-				GetComponent<AudioSource>().PlayOneShot( reloadClip );
-				RpcPlaySound();
+				//GetComponent<AudioSource>().PlayOneShot( reloadClip );
+				//RpcPlaySound();
 				
 			}
 		}

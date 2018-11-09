@@ -64,19 +64,13 @@ namespace Opsive.ThirdPersonController
         {
 #if ENABLE_MULTIPLAYER
             if (!isServer) {
-                // Add the collision effects on the client.
+				// Add the collision effects on the client.
+				print("adding collision effects to client");
                 AddCollisionEffects(collisionTransform, collisionPoint, collisionNormal);
                 return;
             }
 #endif
-
-            if (destroy) {
-                // Place back in the ObjectPool.
-                ObjectPool.Destroy(m_GameObject);
-            } else {
-                // Let the ObjectManager manage the project. It will remove the projectile when too many of the same projectiles have been instantiated.
-                ObjectManager.AddObject(m_GameObject);
-            }
+			print("collide in base called, is server. collided with " + collisionTransform.name);
 
             // Spawn the explosion. The explosion will apply the damage and impact force. If there is no explosion then just apply the damage and impact force now.
             if (m_Explosion != null) {
@@ -91,25 +85,39 @@ namespace Opsive.ThirdPersonController
                 // Do not take any damage if the collision hits an item.
                 if (Utility.GetComponentForType<Item>(collisionTransform.gameObject) == null) {
 					// If the Health component exists it will apply a force to the rigidbody in addition to deducting the health. Otherwise just apply the force to the rigidbody. 
+					print("hit a non item thing");
+					if (collisionTransform.GetComponentInParent<FSVRPlayer>()) { 
+					var hitHealth = collisionTransform.root.GetComponentInChildren<EnemyTargetInit>();
 
-					var hitHealth = collisionTransform.GetComponentInParent<EnemyTargetInit>();
-
-					if (hitHealth != null) {
-                        hitHealth.ApplyMeleeDamage((int)m_DamageAmount);
-                    } else {
-                        var m_CollisionRigidbody = collisionTransform.GetComponent<Rigidbody>();
-                        if (m_ImpactForce > 0 && m_CollisionRigidbody != null && !m_CollisionRigidbody.isKinematic) {
-                            m_CollisionRigidbody.AddForceAtPosition(m_Transform.forward * -m_ImpactForce, collisionPoint);
-                        }
-                    }
+						if (hitHealth != null) {
+							print("should be applying damage to " + hitHealth.name);
+							hitHealth.ApplyMeleeDamage((int)m_DamageAmount);
+						} else {
+							var m_CollisionRigidbody = collisionTransform.GetComponent<Rigidbody>();
+							if (m_ImpactForce > 0 && m_CollisionRigidbody != null && !m_CollisionRigidbody.isKinematic) {
+								m_CollisionRigidbody.AddForceAtPosition(m_Transform.forward * -m_ImpactForce, collisionPoint);
+							}
+						}
+					}
                 }
             }
 
-            // Add any collision effects. These effects do not need to be added on the server.
+			// Add any collision effects. These effects do not need to be added on the server.
+			print("root of hit object is " + collisionTransform.root.name);
+			RpcAddCollisionEffects(collisionTransform.root.gameObject, collisionPoint, collisionNormal);
+
+			if (destroy) {
+				// Place back in the ObjectPool.
+				ObjectPool.Destroy(m_GameObject);
+			} else {
+				// Let the ObjectManager manage the project. It will remove the projectile when too many of the same projectiles have been instantiated.
+				ObjectManager.AddObject(m_GameObject);
+			}
+
 #if !ENABLE_MULTIPLAYER
             AddCollisionEffects(collisionTransform, collisionPoint, collisionNormal);
 #endif
-        }
+		}
 
 #if ENABLE_MULTIPLAYER
         /// <summary>
@@ -150,14 +158,18 @@ namespace Opsive.ThirdPersonController
                 }
             }
 
+			print("dust should be called");
             // Spawn dust particle effect.
             GameObject dust;
             if (collisionTransform != null && ObjectManager.ObjectForItem(collisionTransform.tag, m_ParentItemType, ObjectManager.ObjectCategory.Dust, ref retrievedObject)) {
                 dust = retrievedObject as GameObject;
             } else {
+				print("dust should be set to " + m_DefaultDust);
                 dust = m_DefaultDust;
+				print("dust is set to " + dust);
             }
             if (dust != null) {
+				print("should be instantiating the dust");
                 ObjectPool.Instantiate(dust, collisionPoint, dust.transform.rotation * hitRotation);
             }
         }

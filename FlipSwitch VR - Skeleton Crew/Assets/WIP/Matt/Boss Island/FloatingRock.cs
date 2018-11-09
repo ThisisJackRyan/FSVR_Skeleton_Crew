@@ -5,7 +5,7 @@ using UnityEngine;
 public class FloatingRock : MonoBehaviour {
 
 	public Transform rock;
-	public GameObject spellPattern;
+	//public GameObject spellPattern;
 	public float minTimeToFall = 1.5f, maxTimeToFall = 5f, raiseFallSpeed = 2f, timeBeforeReraise = 5f;
 	float timeToFall;
 	float currentLerpTime;
@@ -20,7 +20,7 @@ public class FloatingRock : MonoBehaviour {
 	}
 
 	private void OnTriggerStay(Collider other) {
-		print(other);
+		//print(other);
 		if (other.transform.root.tag == "Player") {
 			timeToFall -= Time.deltaTime;
 		}

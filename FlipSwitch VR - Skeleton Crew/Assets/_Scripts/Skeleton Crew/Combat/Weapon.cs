@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+
 using UnityEngine.Networking;
 
 public class Weapon : NetworkBehaviour {
@@ -8,10 +10,11 @@ public class Weapon : NetworkBehaviour {
 	public CannonInteraction owningPlayerCannonScript;
 	public Outline myOutline;
 	public bool isBeingHeldByPlayer = false;
+	public GameObject playerWhoIsHolding;
 	public GameObject playerWhoHolstered = null;
 	[SyncVar(hook = "OnAmmoNumChange")] int ammo = -1;
 	float lastShottime = 0;
-
+	
 	public bool IsFullOnAmmo {
 		get {
 			//if ammo is the same as data.ammo then return true
@@ -34,28 +37,29 @@ public class Weapon : NetworkBehaviour {
 
 		if (data.type == WeaponData.WeaponType.Gun) {
 			ammo = data.ammo;
-		}
+		}		
 	}
 
 	public void Reload() {
 		ammo = data.ammo;
-	}
+        GetComponent<AudioSource>().PlayOneShot(data.reloadClip);
+    }
 
-	public void SpawnBullet(bool isLeft, ushort hapticSize) {
+    public void SpawnBullet(bool isLeft, ushort hapticSize) {
 		if (lastShottime + data.timeBetweenShots > Time.time) {
 			return;
 		}
 
         if (ammo-- <= 0) {  //decrements after check
-			print("out of ammo");
+			//print("out of ammo");
 			GetComponent<AudioSource>().clip = data.outOfAmmoSound;
-			if (!isServer) {
-				Controller.PlayHaptics(isLeft, hapticSize);
+			if (playerWhoIsHolding.GetComponentInParent<Player>().isLocalPlayer) {
+				Controller.PlayHaptics(isLeft, data.hapticsOutOfAmmo);
 			}
 
 		} else {
-			if ( !isServer ) {
-				Controller.PlayHaptics( isLeft, hapticSize );
+            if (playerWhoIsHolding.GetComponentInParent<Player>().isLocalPlayer) {
+                Controller.PlayHaptics( isLeft, data.hapticsFiring );
 			}
 
 			lastShottime = Time.time;
@@ -71,12 +75,13 @@ public class Weapon : NetworkBehaviour {
                 var bullet = Instantiate(data.projectile, projectileSpawnPos.position, Quaternion.Euler(rot));
 			    bullet.GetComponent<Rigidbody>().AddForce(projectileSpawnPos.forward * data.power, ForceMode.Impulse);
 			    bullet.GetComponent<SCProjectile>().damage = data.damage;
+				bullet.GetComponent<SCProjectile>().playerWhoFired = playerWhoIsHolding.transform.root.gameObject;
 
                 //NetworkServer.Spawn(smoke);
                 NetworkServer.Spawn(bullet);
             }
 
-			Instantiate(data.particles, projectileSpawnPos.position, Quaternion.Euler(transform.forward));
+			Instantiate(data.particles, projectileSpawnPos.position, projectileSpawnPos.rotation);
 
         }
 
