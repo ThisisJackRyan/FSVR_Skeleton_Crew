@@ -133,6 +133,24 @@ public class Player : NetworkBehaviour {
         }
 	}
 
+	public void TurnOffAllParticles() {
+		if (!isServer) {
+			return;
+		}
+
+		UpdateParticles(false, false, false);
+		RpcTurnOffAllParticles();
+	}
+
+	[ClientRpc]
+	private void RpcTurnOffAllParticles() {
+		if (isServer) {
+			return;
+		}
+
+		UpdateParticles(false, false, false);
+	}
+
 	public void TurnOffColliders() { //todo rename for nathans sake
 		foreach ( Collider c in playerColliders ) {
 			c.enabled = false;

@@ -434,6 +434,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		firstTimeDrain = false;
 		RpcDestroyDrain();
 		canDrain = false;
+		isDraining = false;
 	}
 
 	#endregion
@@ -506,12 +507,22 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	[Button]
 	public void PlayerWinWorkaround() {
+		if (!isServer) {
+			return;
+		}
+
 		numberOfTimesHit = timesToDeath;
+		StopDrainingAbility();
+		Destroy(energyTrailInstance);
+		Destroy(particlesOnDragonInstance);
+		skullParticles.SetActive(false);
+		RpcDestroyDrain();
 		CheckIfPlayersWin();
 	}
 
 	private void CheckIfPlayersWin() {
 		if (numberOfTimesHit >= timesToDeath) {
+			myTree.DisableBehavior();                               // Stop him from doing more.
 			Debug.LogWarning("Players have won the game");
 			StartCoroutine(PlayerVictory());
 		}
@@ -538,6 +549,12 @@ public class EnemyCaptain : NetworkBehaviour {
 			}
 		}
 
+		if (energyTrailInstance && firstTimeDrain) {
+			foreach(var v in energyTrailInstance.GetComponentsInChildren<LineRenderer>()) {
+				v.SetPosition(1, skullTransform.position);
+			}
+		}
+
 		if ( !isServer ) {
 			return;
 		}
@@ -547,7 +564,7 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		if ( isDraining ) {
 			curTime += Time.deltaTime;
-			//print( "is draining. Current Elapsed Time: " + curTime );
+			print( "is draining. Current Elapsed Time: " + curTime );
 			if(curTime >= timeToCaptainWinningInSeconds ) {				// Player defeat / Captain victory check
 				StopDrainingAbility();									// Stop draining
 				myTree.DisableBehavior();								// Stop him from doing more.
@@ -666,7 +683,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			firstTeleport = false;
 		} else if (finalTeleport) {
 			// Spawn the ball particles at current position
-			GameObject tpCurPos = Instantiate(captainTeleportTarget, transform.position, Quaternion.identity);
+			GameObject tpCurPos = Instantiate(captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity);
 			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
 			NetworkServer.Spawn(tpCurPos);
 
@@ -1044,15 +1061,20 @@ public class EnemyCaptain : NetworkBehaviour {
 	}
 
 	IEnumerator PlayerDefeat() {
+		isDraining = false;
+		print("player defeat called");
 		PlayEndGameAudio(false);
 		finalTeleport = true;
 		StartTeleportAbility();
 		yield return new WaitForSeconds(3.5f);
-
+		print("after post-teleport wait");
 		StartFinalDrainAbility();
+		print("called start final drain ability");
 		yield return new WaitForSeconds(victoryAudio.length + 2f); // Victory audio because variables are flipped
 
 		SpawnDeathObjects(false);
+		print("should have spawned the death objects");
+
 		yield return new WaitForSeconds(5f);
 		EnableScoreboard();
 	}
@@ -1133,7 +1155,8 @@ public class EnemyCaptain : NetworkBehaviour {
 		if (!isServer) {
 			return;
 		}
-
+		lastTimeDrain = true;
+		print("last time drain set to " + lastTimeDrain);
 		StartCoroutine("FinalDrainEnergy");
 	}
 
@@ -1179,6 +1202,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	}
 
 	IEnumerator FinalDrainEnergy() {
+		print("final drain called");
 		string abName = "DrainEnergy";
 
 		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
@@ -1188,7 +1212,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		print("drain energy ability tried start");
 		GetComponent<ControllerHandler>().TryStartAbility(ab);
 		print("after try start drain ability");
-		yield return new WaitForSecondsRealtime(8f);
+		yield return new WaitForSecondsRealtime(15f);
 		GetComponent<ControllerHandler>().TryStopAbility(ab);
 		if (trail1) {
 			// disable player 1 particles here
@@ -1204,6 +1228,10 @@ public class EnemyCaptain : NetworkBehaviour {
 			// disable player 3 particles here
 			RpcDrainCleanup(2);
 			Destroy(trail3);
+		}
+
+		foreach(var v in FindObjectsOfType<Player>()) {
+			v.TurnOffAllParticles();
 		}
 	}
 
@@ -1246,6 +1274,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	private void PlayEndGameAudio(bool playerVictory) {
 		RpcPlayEndGameAudio(playerVictory);
 		ambientSoundRef.PlayAmbientSound();
+		print("should be playing end game audio, playerVictory? " + playerVictory);
 		source.clip = playerVictory ? defeatAudio : victoryAudio; // backwards because variables are flipped
 		source.Play();
 	}
