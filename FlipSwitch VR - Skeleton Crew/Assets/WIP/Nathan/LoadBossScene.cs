@@ -59,9 +59,14 @@ public class LoadBossScene : NetworkBehaviour {
 		foreach(var v in FindObjectsOfType<FSVRPlayer>()) {
 			if (v.isLocalPlayer) {
 				SteamVR_Fade.Start(Color.black, 2f);
+				StartCoroutine(MovePlayerToZero(v.gameObject));
 			}
 		}
 	}
 
+	IEnumerator MovePlayerToZero(GameObject p) {
+		yield return new WaitForSeconds(2f);
+		p.transform.position = Vector3.zero;
+	}
 
 }

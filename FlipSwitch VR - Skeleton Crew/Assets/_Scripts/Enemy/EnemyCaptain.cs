@@ -449,19 +449,21 @@ public class EnemyCaptain : NetworkBehaviour {
 		print( "Drain EnergyFromDragon called" );
 
 		if (lastTimeDrain) {
+			print("draining from players");
 			SpawnFinalDrainObjects();
 			return;
-		}
+		} else {
 
-		if (isServer) {
-			if(numberOfTimesHit % 2 != 0) {
-				PlayDrainAudio(drainClipToPlay);
-				drainClipToPlay++;
-				drainClipToPlay = drainClipToPlay % drainAudioClips.Length;
+			if (isServer) {
+				if (numberOfTimesHit % 2 != 0) {
+					PlayDrainAudio(drainClipToPlay);
+					drainClipToPlay++;
+					drainClipToPlay = drainClipToPlay % drainAudioClips.Length;
+				}
 			}
+			print("draining from dragon");
+			StartCoroutine( "StartTheDrain" );
 		}
-
-		StartCoroutine( "StartTheDrain" );
 	}
 
 	public IEnumerator StartTheDrain() {
@@ -496,8 +498,10 @@ public class EnemyCaptain : NetworkBehaviour {
 				RpcDestroyDrain();
 				isDraining = false;
 				GetComponent<CharacterHealth>().Damage(0.1f, collision.contacts[0].point, Vector3.zero);
+				VariableHolder.instance.IncreasePlayerScore(collision.transform.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.CaptainDamage, transform.position);
 				NetworkServer.Destroy(collision.gameObject);
 				numberOfTimesHit++;
+
 			}
 
 			CheckIfPlayersWin();
@@ -533,18 +537,21 @@ public class EnemyCaptain : NetworkBehaviour {
 			if (trail1) {
 				foreach (var v in trail1.GetComponentsInChildren<LineRenderer>()) {
 					v.SetPosition(0, target1.transform.position);
+					v.SetPosition(1, skullTransform.position);
 				}
 			}
 
 			if (trail2) {
 				foreach (var v in trail2.GetComponentsInChildren<LineRenderer>()) {
 					v.SetPosition(0, target2.transform.position);
+					v.SetPosition(1, skullTransform.position);
 				}
 			}
 
 			if (trail3) {
 				foreach (var v in trail3.GetComponentsInChildren<LineRenderer>()) {
 					v.SetPosition(0, target3.transform.position);
+					v.SetPosition(1, skullTransform.position);
 				}
 			}
 		}
@@ -566,7 +573,11 @@ public class EnemyCaptain : NetworkBehaviour {
 			curTime += Time.deltaTime;
 			print( "is draining. Current Elapsed Time: " + curTime );
 			if(curTime >= timeToCaptainWinningInSeconds ) {				// Player defeat / Captain victory check
-				StopDrainingAbility();									// Stop draining
+				StopDrainingAbility();                                  // Stop draining
+				skullParticles.SetActive(false);
+				Destroy(energyTrailInstance);
+				Destroy(particlesOnDragonInstance);
+				RpcDestroyDrain();
 				myTree.DisableBehavior();								// Stop him from doing more.
 				StartCoroutine(PlayerDefeat());
 			}
@@ -1074,7 +1085,6 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		SpawnDeathObjects(false);
 		print("should have spawned the death objects");
-
 		yield return new WaitForSeconds(5f);
 		EnableScoreboard();
 	}
@@ -1139,10 +1149,6 @@ public class EnemyCaptain : NetworkBehaviour {
 		}
 
 		if (playerVictory) {
-			//GameObject tpCurPos = Instantiate(captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity);
-			//tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
-			//NetworkServer.Spawn(tpCurPos);
-
 			GameObject r = Instantiate(captainRagdoll, transform.position, transform.rotation);
 			NetworkServer.Spawn(r);
 
@@ -1232,6 +1238,15 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		foreach(var v in FindObjectsOfType<Player>()) {
 			v.TurnOffAllParticles();
+		}
+
+		GameObject tpCurPos = Instantiate(captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity);
+		tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
+		NetworkServer.Spawn(tpCurPos);
+		transform.position = defeatPosition.transform.position;
+
+		foreach (var v in FindObjectsOfType<EnemyDragonkin>()) {
+			v.TeleportToDeath();
 		}
 	}
 
