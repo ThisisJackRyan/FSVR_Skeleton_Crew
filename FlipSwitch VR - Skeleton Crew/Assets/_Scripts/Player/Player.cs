@@ -70,7 +70,7 @@ public class Player : NetworkBehaviour {
 	private void UpdateParticles( bool internalActive, bool externalActive, bool deathActive ) {
 		for ( int i = 0; i < internalParticles.Length; i++ ) {
 			internalParticles[i].SetActive( internalActive );
-			externalParticles[i].SetActive( externalActive );
+			//externalParticles[i].SetActive( externalActive );
 			deathParticles[i].SetActive( deathActive );
 		}
 	}

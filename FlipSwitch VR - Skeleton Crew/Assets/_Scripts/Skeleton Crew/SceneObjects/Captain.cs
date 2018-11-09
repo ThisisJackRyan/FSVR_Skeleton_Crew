@@ -436,7 +436,7 @@ public class Captain : SerializedNetworkBehaviour {
 	public void SpawnGuards() {
 		print("spawn guards called");
 		for (int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++) {
-			GameObject g = Instantiate(guardPrefab, guardPositions[i].position, guardPositions[i].rotation);
+			GameObject g = Instantiate(guardPrefab, guardPositions[i].position, Quaternion.identity);
 			g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("target", VariableHolder.instance.players[i]);
 			enemiesKilled.Add(g.GetComponent<Enemy>(), false);
 			NetworkServer.Spawn(g);
@@ -463,7 +463,7 @@ public class Captain : SerializedNetworkBehaviour {
 	private void EnableGuardBehaviors() {
 		for (int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++) {
 			StartCoroutine(SpawnGuard(i));
-			GameObject g = Instantiate(guardParticleSpawn, guardPositions[i].position, guardPositions[i].rotation);
+			GameObject g = Instantiate(guardParticleSpawn, guardPositions[i].position, Quaternion.identity);
 			NetworkServer.Spawn(g);
 			print("looping through and should have spawned a guard");
 		}
@@ -471,7 +471,7 @@ public class Captain : SerializedNetworkBehaviour {
 	}
 
 	IEnumerator SpawnGuard(int num) {
-		yield return new WaitForSeconds(3.5f);
+		yield return new WaitForSeconds(2f);
 		GameObject g = Instantiate(guardPrefab, guardPositions[num].position, guardPositions[num].rotation);
 		NetworkServer.Spawn(g);
 		g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("target", VariableHolder.instance.players[num]);

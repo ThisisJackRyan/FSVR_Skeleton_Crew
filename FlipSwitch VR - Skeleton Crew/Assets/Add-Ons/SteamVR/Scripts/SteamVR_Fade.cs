@@ -38,8 +38,12 @@ public class SteamVR_Fade : MonoBehaviour
 	static public void View(Color newColor, float duration)
 	{
 		var compositor = OpenVR.Compositor;
-		if (compositor != null)
+		if (compositor != null) {
+			print("compositor is not null, should be going to " + newColor.ToString());
 			compositor.FadeToColor(duration, newColor.r, newColor.g, newColor.b, newColor.a, false);
+		} else {
+			print("compositor is null");
+		}
 	}
 
 #if TEST_FADE_VIEW
