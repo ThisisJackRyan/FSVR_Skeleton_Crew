@@ -63,7 +63,7 @@ public class VariableHolder : MonoBehaviour {
 		if ( !playerScores.ContainsKey( player ) ) {
 			return "not in collection";
 		} else {
-			return playerScores[player].ToString();
+			return playerScores[player].points.ToString();
 		}
 	}
 

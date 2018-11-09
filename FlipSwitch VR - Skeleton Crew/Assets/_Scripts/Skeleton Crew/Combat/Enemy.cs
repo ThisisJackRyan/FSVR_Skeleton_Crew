@@ -159,7 +159,7 @@ public class Enemy : NetworkBehaviour {
 				canBeDamaged = false;
 				GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
 				//todo PLAYER SCORE INTEGRATION FOR PROJECTILE
-				VariableHolder.instance.IncreasePlayerScore( other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.SkeletonKills, transform.position );
+				//VariableHolder.instance.IncreasePlayerScore( other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.SkeletonKills, transform.position );
 
 				Invoke( "AllowDamage", 1f);
 			} else {
