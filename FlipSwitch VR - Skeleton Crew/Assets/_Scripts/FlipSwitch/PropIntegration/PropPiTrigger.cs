@@ -32,6 +32,10 @@ public class MessageCollection
 	public static message MakeNoise = new message(1001, "pi1003");
 	public static message Decon = new message(1001, "pi1004");
 	public static message Flash = new message(1001, "pi1005");
+
+	public static message turnOn = new message( 1001, "pi1005" );
+	public static message turnOff = new message( 1002, "pi1005" );
+
 }
 
 public class PropPiTrigger : NetworkBehaviour

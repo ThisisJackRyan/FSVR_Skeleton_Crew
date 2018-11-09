@@ -39,6 +39,18 @@ public static class PropClientSocket
 		//thread1005.Start();
 	}
 
+
+	private static ThreadStart delegateSpecific;
+	private static WritePi piSpecific;
+
+	public static void SetupSocketSpecfic(string ipOrID) {
+		piSpecific = new WritePi( ipOrID );
+		delegateSpecific = new ThreadStart( piSpecific.Run );
+		Thread threadSpecific = new Thread( delegateSpecific );
+
+		threadSpecific.Start();
+	}
+
 	public static void CloseSockets() {
 		pi1002.CloseSocket();
 		//pi1003.CloseSocket();
@@ -61,6 +73,9 @@ public static class PropClientSocket
 				break;
 			case "pi1005":
 				pi1005.eventCode = msg.msgCode;
+				break;
+			case "Specific":
+				piSpecific.eventCode = msg.msgCode;
 				break;
 		}
 	}
