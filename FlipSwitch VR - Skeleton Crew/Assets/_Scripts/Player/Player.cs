@@ -112,6 +112,9 @@ public class Player : NetworkBehaviour {
         if (!isDead) {
             if (isServer) {
                 Captain.instance.AddEventToQueue(Captain.AudioEventType.Respawn);
+
+				VariableHolder.instance.IncreasePlayerScore(gameObject.transform.root.gameObject, VariableHolder.PlayerScore.ScoreType.Deaths, transform.position);
+
             }
 
             foreach ( GameObject g in playerBody ) {

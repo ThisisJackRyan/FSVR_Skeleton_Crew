@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class ConstantSize : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
+	public float sizeMod = 0.1f;
+
 	void Update () {
-		
+		float size = (Camera.main.transform.position - transform.position).magnitude;
+		transform.localScale = new Vector3( size, size, size ) * sizeMod;
 	}
 }
