@@ -79,7 +79,7 @@ public class Cannon : NetworkBehaviour {
 	}
 
     [Button]
-	public void CreateCannonBall() {
+	public void CreateCannonBall(GameObject shooter) {
 		if ( !isReloaded ) {
 			return;
 		}
@@ -89,6 +89,7 @@ public class Cannon : NetworkBehaviour {
 		GameObject bullet = Instantiate( projectile, spawnPos.position, Quaternion.identity );
 		Instantiate( smoke, spawnPos.position, spawnPos.rotation );
 		bullet.GetComponent<Rigidbody>().velocity = spawnPos.forward * power;
+		bullet.GetComponent<SCProjectile>().playerWhoFired = shooter;
 
         if (isMagicCannon) {
             Invoke("ReloadCannon", 3f);

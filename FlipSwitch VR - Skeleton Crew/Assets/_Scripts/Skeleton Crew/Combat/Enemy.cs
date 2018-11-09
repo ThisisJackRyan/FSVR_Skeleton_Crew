@@ -70,6 +70,9 @@ public class Enemy : NetworkBehaviour {
         }
 
 		// Put score death stuff here using playerWhoLastHitMe
+		VariableHolder.PlayerScore.ScoreType scoreType = (ratkin) ? VariableHolder.PlayerScore.ScoreType.RatkinKills: VariableHolder.PlayerScore.ScoreType.SkeletonKills;
+		VariableHolder.instance.IncreasePlayerScore( playerWhoLastHitMe.transform.root.gameObject, scoreType, transform.position );
+
 
 		var g = Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
 		NetworkServer.Spawn(g);
@@ -156,7 +159,7 @@ public class Enemy : NetworkBehaviour {
 				canBeDamaged = false;
 				GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
 				//todo PLAYER SCORE INTEGRATION FOR PROJECTILE
-				VariableHolder.instance.IncreasePlayerScore( other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.SkeletonKills, transform.position );
+				//VariableHolder.instance.IncreasePlayerScore( other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.SkeletonKills, transform.position );
 
 				Invoke( "AllowDamage", 1f);
 			} else {

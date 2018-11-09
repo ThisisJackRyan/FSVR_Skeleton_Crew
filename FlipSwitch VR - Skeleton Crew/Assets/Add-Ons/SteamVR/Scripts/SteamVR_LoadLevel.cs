@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Collections;
 using Valve.VR;
 using System.IO;
+using UnityEngine.Networking;
 
 public class SteamVR_LoadLevel : MonoBehaviour
 {
@@ -372,7 +373,10 @@ public class SteamVR_LoadLevel : MonoBehaviour
 			}
 			else
 			{
-				UnityEngine.SceneManagement.SceneManager.LoadScene(levelName, mode);
+				//UnityEngine.SceneManagement.SceneManager.LoadScene(levelName, mode);
+				print("start client called");
+				NetworkManager.singleton.StartClient();
+
 			}
 		}
 

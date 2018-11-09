@@ -59,6 +59,14 @@ public class VariableHolder : MonoBehaviour {
 		}
 	}
 
+	public string GetPlayerScore( GameObject player ) {
+		if ( !playerScores.ContainsKey( player ) ) {
+			return "not in collection";
+		} else {
+			return playerScores[player].points.ToString();
+		}
+	}
+
 	public void IncreasePlayerScore(GameObject player, PlayerScore.ScoreType type, Vector3 pointPosition) {
 		if ( !playerScores.ContainsKey(player) ) {
 			Debug.LogWarning("Player: " + player.name + " was not in player score dictionary when score increase was made, adding them now. \n"+
@@ -68,28 +76,28 @@ public class VariableHolder : MonoBehaviour {
 		} 
 
 		switch ( type ) {
-			case PlayerScore.ScoreType.RatkinKills:
+			case PlayerScore.ScoreType.RatkinKills://
 				playerScores[player].ratkinKills ++;
 				break;
-			case PlayerScore.ScoreType.SkeletonKills:
+			case PlayerScore.ScoreType.SkeletonKills://
 				playerScores[player].skeletonKills ++;
 				break;
-			case PlayerScore.ScoreType.DragonkinKills:
+			case PlayerScore.ScoreType.DragonkinKills://
 				playerScores[player].dragonkinKills ++;
 				break;
-			case PlayerScore.ScoreType.Repairs:
+			case PlayerScore.ScoreType.Repairs://
 				playerScores[player].repairs ++;
 				break;
-			case PlayerScore.ScoreType.Deaths:
+			case PlayerScore.ScoreType.Deaths://
 				playerScores[player].deaths ++;
 				break;
-			case PlayerScore.ScoreType.crystalsDetroyed:
+			case PlayerScore.ScoreType.crystalsDetroyed://
 				playerScores[player].crystalsDetroyed ++;
 				break;
-			case PlayerScore.ScoreType.BoatsDestroyed:
+			case PlayerScore.ScoreType.BoatsDestroyed://
 				playerScores[player].boatsDestroyed ++;
 				break;
-			case PlayerScore.ScoreType.CaptainDamage:
+			case PlayerScore.ScoreType.CaptainDamage://
 				playerScores[player].captainDamage ++;
 				break;
 		}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using Sirenix.OdinInspector;
-using HTC.UnityPlugin.Vive;
+using Valve.VR;
 
 //[RequireComponent(typeof(LoadSceneOnStart))]
 public class ConnectWithPress : MonoBehaviour {
@@ -13,6 +13,7 @@ public class ConnectWithPress : MonoBehaviour {
     public TrackerIdSetter[] setters;
 
 	public GameObject standStill;
+	//public GameObject vrLoadLevel;
 
     // Use this for initialization
     public void EnableInput() {
@@ -38,8 +39,9 @@ public class ConnectWithPress : MonoBehaviour {
                         continue;
                     }
                 }
+				FindObjectOfType<SteamVR_LoadLevel>().Trigger();
 
-                StartCoroutine("FadeAndLoad");
+				//StartCoroutine("FadeAndLoad");
             }
         }
     }
@@ -54,11 +56,16 @@ public class ConnectWithPress : MonoBehaviour {
 
     [Button("loopholes")]
     void Ha() {
-        StartCoroutine("FadeAndLoad");
+		FindObjectOfType<SteamVR_LoadLevel>().Trigger();  //("Master_Online_new");
+
+        //StartCoroutine("FadeAndLoad");
     }
 
     IEnumerator FadeAndLoad() {
-        SteamVR_Fade.Start(Color.black, 1, true);
+		//SteamVR_Overlay.instance.UpdateOverlay();
+		var compositor = OpenVR.Compositor;
+        SteamVR_Fade.Start(Color.black, 1);
+		compositor.FadeToColor(1f, 255f, 255f, 255f, 1.0f, false);
 		standStill.SetActive(true);
         yield return new WaitForSecondsRealtime(1f);
         //NetworkManager.singleton.networkAddress = NetworkManager.singleton.serverBindAddress;
