@@ -88,6 +88,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject dragon;
 	public float timeToCaptainWinningInSeconds;
 	public AudioClip[] drainAudioClips;
+	public AudioClip drainTimeWarning;
 
 	// Privates
 	private float curTime = 0f;
@@ -95,6 +96,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	private GameObject particlesOnDragonInstance;
 	private bool isDraining, canDrain = true;
 	private int drainClipToPlay;
+	private bool warningTriggered;
 
 	[Header("End Game")]
 	// Publics
@@ -572,7 +574,13 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		if ( isDraining ) {
 			curTime += Time.deltaTime;
-			print( "is draining. Current Elapsed Time: " + curTime );
+			//print( "is draining. Current Elapsed Time: " + curTime );
+
+			if(timeToCaptainWinningInSeconds - curTime <= 60 && !warningTriggered) {
+				warningTriggered = true;
+				PlayWarningAudio();
+			}
+
 			if(curTime >= timeToCaptainWinningInSeconds ) {				// Player defeat / Captain victory check
 				StopDrainingAbility();                                  // Stop draining
 				skullParticles.SetActive(false);
@@ -595,6 +603,25 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		GetComponent<ControllerHandler>().TryStopAbility( ab );
 		myTree.SetVariableValue("isDraining", false);
+	}
+
+	private void PlayWarningAudio() {
+		if (!isServer) {
+			return;
+		}
+		RpcPlayWarningAudio();
+		source.clip = drainTimeWarning;
+		source.Play();
+	}
+
+	[ClientRpc]
+	private void RpcPlayWarningAudio() {
+		if (isServer) {
+			return;
+		}
+
+		source.clip = drainTimeWarning;
+		source.Play();
 	}
 
 	[ClientRpc]
@@ -1236,7 +1263,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			RpcDrainCleanup(2);
 			Destroy(trail3);
 		}
-
+		print("after trail cleanup in finaldrainenergy coroutine");
 		foreach(var v in FindObjectsOfType<Player>()) {
 			v.TurnOffAllParticles();
 		}
@@ -1246,6 +1273,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		NetworkServer.Spawn(tpCurPos);
 		transform.position = defeatPosition.transform.position;
 
+		print("should be teleporting all dragonkin to death");
 		foreach (var v in FindObjectsOfType<EnemyDragonkin>()) {
 			v.TeleportToDeath();
 		}
