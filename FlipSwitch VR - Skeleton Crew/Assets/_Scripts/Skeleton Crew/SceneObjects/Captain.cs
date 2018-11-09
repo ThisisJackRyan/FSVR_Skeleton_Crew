@@ -140,7 +140,7 @@ public class Captain : SerializedNetworkBehaviour {
 		DisableFirePrompt();
 		DisableRatHatches();
 		DisableRopes();
-		SpawnGuards();
+		//SpawnGuards();
 		print("post spawn guards method call");
 		eventTimes = new Dictionary<AudioEventType, float>();
 		eventTimes.Add(AudioEventType.Cannon, Time.timeSinceLevelLoad);
@@ -429,6 +429,7 @@ public class Captain : SerializedNetworkBehaviour {
 	public List<GameObject> tutorialCannons, actualCannons, cannonFirePrompts, tutorialRatHatch, ratHatch, tutorialGuards, mastPrompts; //todo disable mast prompt etc
 
 	public Transform[] guardPositions;
+	public GameObject guardParticleSpawn;
 	public GameObject guardPrefab;
 	public float timeForGuardsToStartAttacking = 4f;
 
@@ -460,7 +461,22 @@ public class Captain : SerializedNetworkBehaviour {
 	}
 
 	private void EnableGuardBehaviors() {
+		for (int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++) {
+			StartCoroutine(SpawnGuard(i));
+			GameObject g = Instantiate(guardParticleSpawn, guardPositions[i].position, guardPositions[i].rotation);
+			NetworkServer.Spawn(g);
+			print("looping through and should have spawned a guard");
+		}
 		BehaviorDesigner.Runtime.GlobalVariables.Instance.SetVariableValue("playersOnDeck", true);
+	}
+
+	IEnumerator SpawnGuard(int num) {
+		yield return new WaitForSeconds(3.5f);
+		GameObject g = Instantiate(guardPrefab, guardPositions[num].position, guardPositions[num].rotation);
+		NetworkServer.Spawn(g);
+		g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("target", VariableHolder.instance.players[num]);
+		enemiesKilled.Add(g.GetComponent<Enemy>(), false);
+
 	}
 
 	[ClientRpc]
