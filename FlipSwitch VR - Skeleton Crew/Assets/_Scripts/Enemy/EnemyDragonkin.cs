@@ -92,6 +92,8 @@ public class EnemyDragonkin : NetworkBehaviour {
 			VariableHolder.instance.enemyMeleePositions[myPosition] = false;
 		}
 
+		VariableHolder.instance.IncreasePlayerScore( playerWhoLastHitMe.transform.root.gameObject, VariableHolder.PlayerScore.ScoreType.DragonkinKills, transform.position );
+
 		GameObject d = Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
 		NetworkServer.Spawn(d);
 		TeleportToDeath();

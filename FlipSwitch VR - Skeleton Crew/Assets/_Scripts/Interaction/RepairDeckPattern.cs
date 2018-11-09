@@ -21,7 +21,7 @@ public class RepairDeckPattern : MonoBehaviour {
 
 		deckDmg.FacePattern(transform);
 		
-		Increment();
+		Increment(null);
 		//print("awerrrrrrrrrrrrrrrrrrrrrrrgwer");
 	}
 
@@ -37,7 +37,7 @@ public class RepairDeckPattern : MonoBehaviour {
 	//	transform.Rotate( 0, 180, 0 );
 	//}
 	// Use this for initialization
-	public virtual void Increment() {
+	public virtual void Increment( GameObject repairer ) {
 		//print( "incrememnt called with index of " + index );
 
 		index++;
@@ -50,9 +50,14 @@ public class RepairDeckPattern : MonoBehaviour {
 			
 			GetComponentInParent<RepairDeckTrigger>().repairPattern = null;
 
+
+			if ( repairer ) {
+				VariableHolder.instance.IncreasePlayerScore( repairer, VariableHolder.PlayerScore.ScoreType.Repairs, transform.position );
+			}
+
 			deckDmg.RepairDeck();
 			//gameObject.SetActive( false );
-			
+
 		}
 	}
 
