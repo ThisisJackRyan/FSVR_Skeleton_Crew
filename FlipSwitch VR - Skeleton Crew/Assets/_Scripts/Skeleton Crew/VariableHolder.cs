@@ -82,7 +82,9 @@ public class VariableHolder : MonoBehaviour {
 							 "The playerscore dictionary holds " + playerScores.Count + " before adding " + player.name + ".");
 
 			AddPlayerToScoreList( player );
-		} 
+		} else {
+			print(player.name + " is in score collection, adding points");
+		}
 
 		switch ( type ) {
 			case PlayerScore.ScoreType.RatkinKills://

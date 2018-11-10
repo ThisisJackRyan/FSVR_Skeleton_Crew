@@ -132,7 +132,10 @@ public class FSVRPlayer : NetworkBehaviour {
 
 	[Button]
 	public void GivePoints() {
+		print("give points");
 		if (!isServer) {
+			print( "returning not server" );
+
 			return;
 		}
 		VariableHolder.instance.IncreasePlayerScore( transform.root.gameObject, type, transform.position );
@@ -153,7 +156,7 @@ public class FSVRPlayer : NetworkBehaviour {
 			//print("local player and same player that scored");
 
 			var g = Instantiate( floatingScore, spawnPos, Quaternion.identity );
-			g.GetComponentInChildren<Text>().text = "+" + value + "!";
+			g.GetComponentInChildren<Text>().text = "+" + value;
 		} else {
 			//print("local player? " + isLocalPlayer + " , player is " + player.name + " , root is " + transform.root.name);
 		}
