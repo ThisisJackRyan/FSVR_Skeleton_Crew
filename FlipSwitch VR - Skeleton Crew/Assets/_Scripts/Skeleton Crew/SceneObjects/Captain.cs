@@ -429,6 +429,7 @@ public class Captain : SerializedNetworkBehaviour {
 	public List<GameObject> tutorialCannons, actualCannons, cannonFirePrompts, tutorialRatHatch, ratHatch, tutorialGuards, mastPrompts; //todo disable mast prompt etc
 
 	public Transform[] guardPositions;
+	public GameObject[] guardBonePiles;
 	public GameObject guardParticleSpawn;
 	public GameObject guardPrefab;
 	public float timeForGuardsToStartAttacking = 4f;
@@ -463,11 +464,23 @@ public class Captain : SerializedNetworkBehaviour {
 	private void EnableGuardBehaviors() {
 		for (int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++) {
 			StartCoroutine(SpawnGuard(i));
+			NetworkServer.Destroy( guardBonePiles[i] );
 			GameObject g = Instantiate(guardParticleSpawn, guardPositions[i].position, Quaternion.identity);
 			NetworkServer.Spawn(g);
-			print("looping through and should have spawned a guard");
+
+			//print("looping through and should have spawned a guard");
 		}
 		BehaviorDesigner.Runtime.GlobalVariables.Instance.SetVariableValue("playersOnDeck", true);
+
+		CleanupRemainingBonePiles();
+	}
+
+	private void CleanupRemainingBonePiles() {
+		foreach(var v in guardBonePiles ) {
+			if ( v ) {
+				NetworkServer.Destroy( v );
+			}
+		}
 	}
 
 	IEnumerator SpawnGuard(int num) {
@@ -476,7 +489,6 @@ public class Captain : SerializedNetworkBehaviour {
 		NetworkServer.Spawn(g);
 		g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("target", VariableHolder.instance.players[num]);
 		enemiesKilled.Add(g.GetComponent<Enemy>(), false);
-
 	}
 
 	[ClientRpc]
