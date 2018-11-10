@@ -87,7 +87,7 @@ public class Weapon : NetworkBehaviour {
                 NetworkServer.Spawn(bullet);
             }
 
-			Instantiate(data.particles, projectileSpawnPos.position, projectileSpawnPos.rotation);
+			//Instantiate(data.particles, projectileSpawnPos.position, projectileSpawnPos.rotation);
 
         }
 
