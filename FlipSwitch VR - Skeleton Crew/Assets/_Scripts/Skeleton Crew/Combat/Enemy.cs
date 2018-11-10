@@ -59,19 +59,21 @@ public class Enemy : NetworkBehaviour {
         transform.parent = null;
     }
 
-    public void DestroyMe() {
-        if (!isServer) {
-            return;
-        }
-        if (tutorialGuard) {
-            //print( "tut guard killed" );
-            Captain.enemiesKilled[this] = true;
-            Captain.instance.CheckEnemiesKilled();
-        }
+	public void DestroyMe() {
+		if (!isServer) {
+			return;
+		}
+		if (tutorialGuard) {
+			//print( "tut guard killed" );
+			Captain.enemiesKilled[this] = true;
+			Captain.instance.CheckEnemiesKilled();
+		}
 
 		// Put score death stuff here using playerWhoLastHitMe
-		VariableHolder.PlayerScore.ScoreType scoreType = (ratkin) ? VariableHolder.PlayerScore.ScoreType.RatkinKills: VariableHolder.PlayerScore.ScoreType.SkeletonKills;
-		VariableHolder.instance.IncreasePlayerScore( playerWhoLastHitMe.transform.root.gameObject, scoreType, transform.position );
+		VariableHolder.PlayerScore.ScoreType scoreType = (ratkin) ? VariableHolder.PlayerScore.ScoreType.RatkinKills : VariableHolder.PlayerScore.ScoreType.SkeletonKills;
+		if (playerWhoLastHitMe) {
+			VariableHolder.instance.IncreasePlayerScore(playerWhoLastHitMe.transform.root.gameObject, scoreType, transform.position);
+		}
 
 
 		var g = Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);

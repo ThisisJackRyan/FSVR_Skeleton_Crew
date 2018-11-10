@@ -368,7 +368,7 @@ public class Captain : SerializedNetworkBehaviour {
 		if (!isServer) {
 			return;
 		}
-
+		print("full whipe attack on server");
 		var g = Instantiate(burstEffect, transform.position, Quaternion.identity);
 		NetworkServer.Spawn(g);
 

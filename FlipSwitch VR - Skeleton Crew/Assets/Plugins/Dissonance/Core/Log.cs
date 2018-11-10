@@ -31,7 +31,9 @@ namespace Dissonance
         /// <summary>
         /// Critical errors caused by external factors, outside of missuse or bugs.
         /// </summary>
-        Error = 4
+        Error = 4,
+
+		None = 5
     }
 
     public enum LogCategory
@@ -39,7 +41,7 @@ namespace Dissonance
         Core,
         Recording,
         Network,
-        Playback
+        Playback,
     }
 
     public static class Logs
@@ -90,6 +92,9 @@ namespace Dissonance
             {
                 switch (_level)
                 {
+					case LogLevel.None:
+						// Do nothing
+						break;
                     case LogLevel.Trace:
                         UnityEngine.Debug.Log(_message);
                         break;

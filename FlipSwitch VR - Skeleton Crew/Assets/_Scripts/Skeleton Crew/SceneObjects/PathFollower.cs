@@ -153,13 +153,34 @@ public class PathFollower : NetworkBehaviour {
 
 	public GameObject[] tutorialPanels;
 	void TurnOffTutorialPanels() {
+		if (!isServer) {
+			return;
+		}
+
+		RpcTurnOffTutorialPanels();
 		foreach(var t in tutorialPanels ) {
 			t.SetActive( false );
 		}
+		print("should be turned off on server");
+	}
+
+	[ClientRpc]
+	private void RpcTurnOffTutorialPanels() {
+		if (isServer) {
+			return;
+		}
+
+		foreach (var t in tutorialPanels) {
+			t.SetActive(false);
+		}
+		print("should be turned off on client");
 	}
 
 	void StartSecondPhase() {
-		TurnOffTutorialPanels();
+		if (isServer) {
+			print("called turn off panels on server");
+			TurnOffTutorialPanels();
+		}
 
 		currentStage = EncounterStage.Second;
 
