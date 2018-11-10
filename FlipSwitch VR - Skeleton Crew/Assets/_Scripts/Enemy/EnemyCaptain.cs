@@ -19,8 +19,10 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject[] colorChangeParticles;
 	public GameObject initialTeleportTargetPositionParticle;
 	public GameObject initialTeleportCurrentPositionParticle;
-	public Color targetColor;
 	public GameObject captainTeleportTarget;
+	public Color targetColor;
+	public GameObject shipTrackingSpace;
+	public GameObject bossTrackingSpace;
 	public float timeBetweenSecondTeleportClipAndCannon = 4.5f;
 	public float timeFromCannonToInitialDrain = 5f;
 
@@ -335,7 +337,10 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		foreach (var v in FindObjectsOfType<FSVRPlayer>()) {
 			if (v.isLocalPlayer) {
+				shipTrackingSpace.SetActive(false);
+				bossTrackingSpace.SetActive(true);
 				v.transform.position = new Vector3(25, 0, 0);
+				v.transform.Rotate(v.transform.up, 90);
 			}
 		}
 	}
@@ -1085,12 +1090,13 @@ public class EnemyCaptain : NetworkBehaviour {
 	#region End Game
 
 	IEnumerator PlayerVictory() {
+		foreach (var v in FindObjectsOfType<EnemyDragonkin>()) {
+			v.TeleportToDeath();
+		}
 		StartDeathAbility();
 		PlayEndGameAudio(true);
 		yield return new WaitForSeconds(defeatAudio.length);
-		foreach(var v in FindObjectsOfType<EnemyDragonkin>()) {
-			v.TeleportToDeath();
-		}
+
 		SpawnDeathObjects(true);
 
 		//yield return new WaitForSeconds(0.5f);
@@ -1100,6 +1106,9 @@ public class EnemyCaptain : NetworkBehaviour {
 	}
 
 	IEnumerator PlayerDefeat() {
+		foreach (var v in FindObjectsOfType<EnemyDragonkin>()) {
+			v.TeleportToDeath();
+		}
 		isDraining = false;
 		print("player defeat called");
 		PlayEndGameAudio(false);
@@ -1246,7 +1255,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		print("drain energy ability tried start");
 		GetComponent<ControllerHandler>().TryStartAbility(ab);
 		print("after try start drain ability");
-		yield return new WaitForSecondsRealtime(15f);
+		yield return new WaitForSecondsRealtime(10f);
 		GetComponent<ControllerHandler>().TryStopAbility(ab);
 		if (trail1) {
 			// disable player 1 particles here
@@ -1272,11 +1281,6 @@ public class EnemyCaptain : NetworkBehaviour {
 		tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
 		NetworkServer.Spawn(tpCurPos);
 		transform.position = defeatPosition.transform.position;
-
-		print("should be teleporting all dragonkin to death");
-		foreach (var v in FindObjectsOfType<EnemyDragonkin>()) {
-			v.TeleportToDeath();
-		}
 	}
 
 	[ClientRpc]

@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -12,12 +13,18 @@ public class Player : NetworkBehaviour {
 	[Tooltip( "The particles within the bones (flames)" )] public GameObject[] internalParticles;
 	[Tooltip( "The particles coming out of the bones (dust)" )] public GameObject[] externalParticles; // external is dust
 	[Tooltip( "The death particles (old player particles)" )] public GameObject[] deathParticles;
+
+
+
 	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
 
 	public GameObject[] playerBody;
 	public Collider[] playerColliders;
 	public GameObject[] deathExplosion;
 	public Transform explosionPosition;
+
+	public GameObject activeTrailHand;
+
     [SyncVar]
     bool isDead = false;
 
@@ -58,6 +65,30 @@ public class Player : NetworkBehaviour {
 			UpdateParticles( true, false, false );
 		} else if ( health <= maxHealth ) { // enabled: internal & external ; disabled: death
 			UpdateParticles( true, true, false );
+		}
+	}
+
+	internal void DisableTrailRenderer() {
+		if (!isServer) {
+			return;
+		}
+		activeTrailHand = null;
+		foreach (var v in GetComponentsInChildren<TrailRenderer>()) {
+			v.enabled = false;
+		}
+
+		RpcDisableTrailRenderer();
+	}
+
+	[ClientRpc]
+	private void RpcDisableTrailRenderer() {
+		if (isServer) {
+			return;
+		}
+
+		activeTrailHand = null;
+		foreach(var v in GetComponentsInChildren<TrailRenderer>()) {
+			v.enabled = false;
 		}
 	}
 
@@ -224,5 +255,71 @@ public class Player : NetworkBehaviour {
 
 	public int GetHealth() {
 		return health;
+	}
+
+	public void StartTrail(bool? isLeftHand) {
+		if (!isServer) {
+			return;
+		}
+
+		//print("start trail called on server. should be rpcing out now");
+
+		bool test = (bool)(isLeftHand);
+
+		RpcStartTrail(test);
+
+		if (isLeftHand == true) {
+			foreach (var v in GetComponentsInChildren<GrabWeaponHand>()) {
+				if (v.isLeftHand) {
+					activeTrailHand = v.gameObject;
+					activeTrailHand.GetComponent<TrailRenderer>().enabled = true;
+					break;
+				}
+			}
+		} else if (isLeftHand == false) {
+			foreach (var v in GetComponentsInChildren<GrabWeaponHand>()) {
+				if (!v.isLeftHand) {
+					activeTrailHand = v.gameObject;
+					activeTrailHand.GetComponent<TrailRenderer>().enabled = true;
+					break;
+				}
+			}
+		}
+
+	}
+
+	[ClientRpc]
+	internal void RpcStartTrail(bool isLeftHand) {
+		if (isServer) {
+			return;
+		}
+		//print("rpc start trail has been called not on server");
+
+		if (isLeftHand == true) {
+			foreach(var v in GetComponentsInChildren<GrabWeaponHand>()) {
+				//print(v.name + " was found in loop");
+				if (v.isLeftHand) {
+					//print("left trail renderer is being stored as active, pre enable");
+
+					activeTrailHand = v.gameObject;
+					activeTrailHand.GetComponent<TrailRenderer>().enabled = true;
+					//print("left trail renderer should be started");
+					break;
+				}
+			}
+		} else if (isLeftHand == false) {
+			foreach (var v in GetComponentsInChildren<GrabWeaponHand>()) {
+				//print(v.name + " was found in loop");
+
+				if (!v.isLeftHand) {
+					//print("right trail renderer is being stored as active, pre enable");
+
+					activeTrailHand = v.gameObject;
+					activeTrailHand.GetComponent<TrailRenderer>().enabled = true;
+					//print("right trail renderer should be started");
+					break;
+				}
+			}
+		}
 	}
 }

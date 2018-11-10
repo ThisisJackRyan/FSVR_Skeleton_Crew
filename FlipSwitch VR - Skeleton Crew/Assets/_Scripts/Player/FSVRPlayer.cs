@@ -140,7 +140,7 @@ public class FSVRPlayer : NetworkBehaviour {
 
 	public void SpawnPointDisplay(Vector3 spawnPos, int value, GameObject player) {
 		if (!isServer) {
-			print("not server");
+			//print("not server");
 			return;
 		}
 
@@ -150,12 +150,12 @@ public class FSVRPlayer : NetworkBehaviour {
 	[ClientRpc]
 	private void RpcSpawnPointsOnLocalPlayer( Vector3 spawnPos, int value, GameObject player ) {
 		if (isLocalPlayer && player == transform.root.gameObject ) {
-			print("local player and same player that scored");
+			//print("local player and same player that scored");
 
 			var g = Instantiate( floatingScore, spawnPos, Quaternion.identity );
 			g.GetComponentInChildren<Text>().text = "+" + value + "!";
 		} else {
-			print("local player? " + isLocalPlayer + " , player is " + player.name + " , root is " + transform.root.name);
+			//print("local player? " + isLocalPlayer + " , player is " + player.name + " , root is " + transform.root.name);
 		}
 	}
 }

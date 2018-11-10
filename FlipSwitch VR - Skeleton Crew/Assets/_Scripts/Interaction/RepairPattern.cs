@@ -6,7 +6,7 @@ public class RepairPattern : MonoBehaviour {
 
    	internal int index = 0;
 	public DamagedObject dmgObj;
-
+	public GameObject repairerInstance;
 	public void Init() {
 		//print( name + " init called" );
 
@@ -15,24 +15,35 @@ public class RepairPattern : MonoBehaviour {
 			transform.GetChild( i ).gameObject.SetActive( false );
 		}
 
-		Increment(null);
+		Increment(null, null);
 		//print("awerrrrrrrrrrrrrrrrrrrrrrrgwer");
 	}
 
 	// Use this for initialization
-	public virtual void Increment (GameObject repairer) {
-        //print("incrememnt called with index of " + index);
+	public virtual void Increment (GameObject repairer, bool? isLefthand) {
+		//print("incrememnt called with index of " + index + " and repairer " + repairer + " has left hand " + isLefthand);
 
-        dmgObj.DisableRepairNode( index );
+		dmgObj.DisableRepairNode( index );
 		index++;
+
+		if (repairer) {
+			repairerInstance = repairer;
+			//VariableHolder.instance.IncreasePlayerScore(repairer, VariableHolder.PlayerScore.ScoreType.Repairs, transform.position);
+			//print("increment with repairer, about to call start trail, is left hand is " + isLefthand);
+			repairer.GetComponent<Player>().StartTrail(isLefthand);
+		}
 		if (index < transform.childCount) {
 			//print("index in range");
 			transform.GetChild( index ).gameObject.SetActive(true);
 			dmgObj.EnableRepairNode( index );
+
+
 		} else if(index == transform.childCount) {
 			//print( "index is last child" );
 			if (repairer) {
 				VariableHolder.instance.IncreasePlayerScore( repairer, VariableHolder.PlayerScore.ScoreType.Repairs, transform.position );
+				repairer.GetComponent<Player>().DisableTrailRenderer();
+
 			}
 			//last node hit
 			//run repair code
@@ -61,8 +72,4 @@ public class RepairPattern : MonoBehaviour {
 			transform.GetChild( i ).gameObject.SetActive( false );
 		}
 	}
-
-
-
-
 }
