@@ -464,21 +464,59 @@ public class Captain : SerializedNetworkBehaviour {
 	private void EnableGuardBehaviors() {
 		for (int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++) {
 			StartCoroutine(SpawnGuard(i));
+			DestroyPile(i);
 			NetworkServer.Destroy( guardBonePiles[i] );
 			GameObject g = Instantiate(guardParticleSpawn, guardPositions[i].position, Quaternion.identity);
 			NetworkServer.Spawn(g);
 
-			//print("looping through and should have spawned a guard");
+			print("looping through and should have spawned guard particles");
 		}
 		BehaviorDesigner.Runtime.GlobalVariables.Instance.SetVariableValue("playersOnDeck", true);
 
 		CleanupRemainingBonePiles();
 	}
 
+	private void DestroyPile(int index) {
+		if (!isServer) {
+			return;
+		}
+
+		RpcDestroyPile(index);
+		Destroy(guardBonePiles[index]);
+
+	}
+
+	[ClientRpc]
+	private void RpcDestroyPile(int index) {
+		if (isServer) {
+			return;
+		}
+
+		Destroy(guardBonePiles[index]);
+	}
+
 	private void CleanupRemainingBonePiles() {
+		if (!isServer) {
+			return;
+		}
+		RpcCleanupBonePiles();
+
 		foreach(var v in guardBonePiles ) {
 			if ( v ) {
 				NetworkServer.Destroy( v );
+			}
+		}
+	}
+
+	[ClientRpc]
+	private void RpcCleanupBonePiles() {
+		if (isServer) {
+			return;
+		}
+
+		foreach (var v in guardBonePiles) {
+			if (v) {
+				NetworkServer.Destroy(v);
 			}
 		}
 	}

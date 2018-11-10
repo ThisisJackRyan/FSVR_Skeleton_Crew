@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -42,6 +43,16 @@ public class ExitLobbySwitch : NetworkBehaviour {
 				//}
 			}
 		}
+	}
+
+	[Button]
+	public void TeleportWorkAround() {
+		if (!isServer) {
+			return;
+		}
+
+		StartFade();
+		FindObjectOfType<Player>().TellCaptainToStartTutorial();
 	}
 
 	public void StartFade() {
