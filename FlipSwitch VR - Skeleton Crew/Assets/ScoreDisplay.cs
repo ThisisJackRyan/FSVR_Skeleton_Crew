@@ -13,7 +13,7 @@ public class ScoreDisplay : NetworkBehaviour {
 		if ( !isServer ) {
 			return;
 		}
-		RpcUpdateDisplay( VariableHolder.instance.GetPlayerScore( transform.root.gameObject ));
+		RpcUpdateDisplay( VariableHolder.instance.GetPlayerPoints( transform.root.gameObject ));
 	}
 
 	[ClientRpc]

@@ -4,6 +4,7 @@ using HTC.UnityPlugin.Vive;
 using System.Collections;
 using UnityEngine.UI;
 using System;
+using Sirenix.OdinInspector;
 
 public class FSVRPlayer : NetworkBehaviour {
 
@@ -113,7 +114,16 @@ public class FSVRPlayer : NetworkBehaviour {
 		hostCamView.enabled = false;
 	}
 
-	
+	public VariableHolder.PlayerScore.ScoreType type;
+
+	[Button]
+	public void GivePoints() {
+		if (!isServer) {
+			return;
+		}
+		VariableHolder.instance.IncreasePlayerScore( transform.root.gameObject, type, transform.position );
+	}
+
 	public void SpawnPointDisplay(Vector3 spawnPos, int value, GameObject player) {
 		if (!isServer) {
 			print("not server");

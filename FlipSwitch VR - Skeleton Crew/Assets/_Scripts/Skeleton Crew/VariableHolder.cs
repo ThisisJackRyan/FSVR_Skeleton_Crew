@@ -59,11 +59,20 @@ public class VariableHolder : MonoBehaviour {
 		}
 	}
 
-	public string GetPlayerScore( GameObject player ) {
+	public string GetPlayerPoints( GameObject player ) {
 		if ( !playerScores.ContainsKey( player ) ) {
 			return "not in collection";
 		} else {
 			return playerScores[player].points.ToString();
+		}
+	}
+
+	public PlayerScore GetPlayerScore( GameObject player ) {
+		if ( !playerScores.ContainsKey( player ) ) {
+			Debug.LogError(player.name +  "not in collection");
+			return null;
+		} else {
+			return playerScores[player];
 		}
 	}
 
@@ -132,6 +141,28 @@ public class VariableHolder : MonoBehaviour {
 			crystalsDetroyed		= 500,
 			BoatsDestroyed			= 1500,
 			CaptainDamage			= 1000
+		}
+
+		public static PlayerScore ParseAsPlayerScore(string scoreAsString ) {
+			PlayerScore toReturn = new PlayerScore();
+			string[] s = scoreAsString.Split( ',' );
+
+			toReturn.points = int.Parse( s[0] );
+			toReturn.ratkinKills = int.Parse( s[1] );
+			toReturn.skeletonKills = int.Parse( s[2] );
+			toReturn.dragonkinKills = int.Parse( s[3] );
+			toReturn.repairs = int.Parse( s[4] );
+			toReturn.crystalsDetroyed = int.Parse( s[5] );
+			toReturn.boatsDestroyed = int.Parse( s[6] );
+			toReturn.captainDamage = int.Parse( s[7] );
+
+			return toReturn;
+		}
+
+		public override string ToString() {
+			return string.Format( "{0},{1},{2},{3},{4},{5},{6},{7}", points,
+				ratkinKills, skeletonKills, dragonkinKills, repairs, deaths,
+				crystalsDetroyed, boatsDestroyed, captainDamage );
 		}
 	}
 }
