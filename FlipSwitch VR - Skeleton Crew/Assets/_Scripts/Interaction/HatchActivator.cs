@@ -40,6 +40,7 @@ public class HatchActivator : NetworkBehaviour {
             if (h.isLeftHatch == isLeftHatch) {
                 h.GetComponent<Collider>().enabled = true;
                 h.hatchSign.SetActive(true);
+				h.hatchSign.transform.GetChild(0).gameObject.SetActive(true);
             }
         }
     }
@@ -77,6 +78,7 @@ public class HatchActivator : NetworkBehaviour {
     IEnumerator AnimateAndRespawnRatmen() {
         animator.SetBool("Opening", true);
         audioSource.PlayOneShot(openClip);
+		DisableParticles();
         RpcAnimateHatch(true);
         yield return new WaitForSeconds(1);
         bool hasRespawned = false;
@@ -105,6 +107,24 @@ public class HatchActivator : NetworkBehaviour {
 
         yield return new WaitForSeconds(1);
     }
+
+	private void DisableParticles() {
+		if (!isServer) {
+			return;
+		}
+
+		hatchSign.transform.GetChild(0).gameObject.SetActive(false);
+		RpcDisableParticles();
+	}
+
+	[ClientRpc]
+	private void RpcDisableParticles() {
+		if (isServer) {
+			return;
+		}
+
+		hatchSign.transform.GetChild(0).gameObject.SetActive(false);
+	}
 
 	[Button]
 	public void ReleaseTheRats() {

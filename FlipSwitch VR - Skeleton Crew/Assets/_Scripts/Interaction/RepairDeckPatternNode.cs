@@ -17,6 +17,10 @@ public class RepairDeckPatternNode : MonoBehaviour {
 
 	void Timer() {
 		//print(name + " timer ran out");
+		if (pattern.repairerInstance != null) {
+			pattern.repairerInstance.GetComponent<Player>().DisableTrailRenderer();
+		}
+
 		pattern.gameObject.SetActive( false );
 		if ( repairSphere ) {
 			//repairSphere.GetComponent<Renderer>().enabled = true;
@@ -26,10 +30,10 @@ public class RepairDeckPatternNode : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter( Collider other ) {
-		if ( !other.GetComponentInParent<MastInteraction>() ) {
+		if (!other.GetComponent<GrabWeaponHand>()) {
 			return;
 		}
-		pattern.Increment(other.transform.root.gameObject);
+		pattern.Increment(other.transform.root.gameObject, other.GetComponent<GrabWeaponHand>().isLeftHand);
 		CancelInvoke();
 		gameObject.SetActive( false );
 	}

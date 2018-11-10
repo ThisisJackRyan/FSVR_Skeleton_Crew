@@ -6,7 +6,7 @@ public class RepairDeckPattern : MonoBehaviour {
 
 	internal int index = 0;
 	public DeckDamage deckDmg;
-
+	public GameObject repairerInstance;
 	public void Init(Transform activator) {
 		//print( name + " init called" );
 
@@ -21,7 +21,7 @@ public class RepairDeckPattern : MonoBehaviour {
 
 		deckDmg.FacePattern(transform);
 		
-		Increment(null);
+		Increment(null, null);
 		//print("awerrrrrrrrrrrrrrrrrrrrrrrgwer");
 	}
 
@@ -37,10 +37,18 @@ public class RepairDeckPattern : MonoBehaviour {
 	//	transform.Rotate( 0, 180, 0 );
 	//}
 	// Use this for initialization
-	public virtual void Increment( GameObject repairer ) {
+	public virtual void Increment( GameObject repairer, bool? isLefthand) {
 		//print( "incrememnt called with index of " + index );
 
 		index++;
+
+		if (repairer) {
+			repairerInstance = repairer;
+			//VariableHolder.instance.IncreasePlayerScore(repairer, VariableHolder.PlayerScore.ScoreType.Repairs, transform.position);
+			//print("increment with repairer, about to call start trail, is left hand is " + isLefthand);
+			repairer.GetComponent<Player>().StartTrail(isLefthand);
+		}
+
 		if ( index < transform.childCount ) {
 			deckDmg.DisableRepairNode( index - 1 );
 			//print("index in range");
@@ -53,6 +61,7 @@ public class RepairDeckPattern : MonoBehaviour {
 
 			if ( repairer ) {
 				VariableHolder.instance.IncreasePlayerScore( repairer, VariableHolder.PlayerScore.ScoreType.Repairs, transform.position );
+				repairer.GetComponent<Player>().DisableTrailRenderer();
 			}
 
 			deckDmg.RepairDeck();

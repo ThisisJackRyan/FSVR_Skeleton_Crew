@@ -61,7 +61,8 @@ public class RepairDeckTrigger : MonoBehaviour {
 		}
 
 		if ( other.gameObject.GetComponentInParent<MastInteraction>() ) { //player check
-			if ( repairPattern != null && repairPattern.gameObject.activeInHierarchy ) { //pattern is active
+			if ((repairPattern != null && repairPattern.gameObject.activeInHierarchy) || other.gameObject.GetComponentInParent<Player>().activeTrailHand /* Check for if player has already started repairing something */) { //pattern is active
+				//print("returning on repair sphere because pattern is either set and active or player is already repairing something");
 				return;
 			}
 

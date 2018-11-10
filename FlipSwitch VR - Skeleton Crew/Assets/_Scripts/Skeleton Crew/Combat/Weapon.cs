@@ -12,6 +12,10 @@ public class Weapon : NetworkBehaviour {
 	public bool isBeingHeldByPlayer = false;
 	public GameObject playerWhoIsHolding;
 	public GameObject playerWhoHolstered = null;
+
+	public Transform reloadParticlePosition;
+	public GameObject reloadParticles;
+
 	[SyncVar(hook = "OnAmmoNumChange")] int ammo = -1;
 	float lastShottime = 0;
 	
@@ -43,6 +47,8 @@ public class Weapon : NetworkBehaviour {
 	public void Reload() {
 		ammo = data.ammo;
         GetComponent<AudioSource>().PlayOneShot(data.reloadClip);
+		GameObject g = Instantiate(reloadParticles, reloadParticlePosition.position, Quaternion.identity);
+		NetworkServer.Spawn(g);
     }
 
     public void SpawnBullet(bool isLeft, ushort hapticSize) {
