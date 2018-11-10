@@ -64,11 +64,25 @@ public class FSVRPlayer : NetworkBehaviour {
 				item.CalibratePlayer();
 			}
 
-            FindObjectOfType<CaptainDialogueLobby>().enabled = true;
-            FindObjectOfType<Captain>().Init();
+			if (FindObjectOfType<Captain>()) {
+				FindObjectOfType<CaptainDialogueLobby>().enabled = true;
+				FindObjectOfType<Captain>().Init();
+			}
             StartCoroutine("FadeIn");
 		}
 
+	}
+
+	void OnLevelWasLoaded(int level) {
+		if (isLocalPlayer) {
+			if (level == 2) {
+				SteamVR_Fade.Start(Color.clear, 1f);
+			}
+		}
+	}
+
+	private void SetPositionToZero() {
+		transform.position = Vector3.zero;
 	}
 
 	IEnumerator FadeIn() {

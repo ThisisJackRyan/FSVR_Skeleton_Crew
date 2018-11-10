@@ -26,7 +26,7 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	// Privates
 	private readonly int INTRO_CLIP = 0;
-	private readonly int TELEPORT1_CLIP = 1;
+	private readonly int TELEPORT1_CLIP = 1;		// now unused
 	private readonly int TELEPORT2_CLIP = 2;
 	private readonly int CANNON_CLIP = 3;
 	private readonly int START_OF_DRAIN_CLIP = 4;
@@ -88,6 +88,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject dragon;
 	public float timeToCaptainWinningInSeconds;
 	public AudioClip[] drainAudioClips;
+	public AudioClip drainTimeWarning;
 
 	// Privates
 	private float curTime = 0f;
@@ -95,6 +96,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	private GameObject particlesOnDragonInstance;
 	private bool isDraining, canDrain = true;
 	private int drainClipToPlay;
+	private bool warningTriggered;
 
 	[Header("End Game")]
 	// Publics
@@ -102,15 +104,19 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	// Privates
 
+
 	[Space]
 	[Header("Captain Defeat")]
 	// Publics
-	public GameObject[] defeatParticles;
+	public GameObject captainRagdoll;
 	public AudioClip defeatAudio;
 	public GameObject defeatPosition;
+	public GameObject defeatParticle1;
+	public GameObject defeatParticle2;
 
 	// Privates
-
+	private GameObject defeatParticleInstance1;
+	private GameObject defeatParticleInstance2;
 
 	[Header("Captain Victory")]
 	//Publics
@@ -119,7 +125,12 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject victoryPosition;
 
 	// Privates
-
+	[SyncVar] private bool lastTimeDrain;
+	private GameObject trail1, trail2, trail3;
+	private GameObject target1, target2, target3;
+	private bool finalTeleport;
+	private bool captainDeathParticlesSpawned;
+	private Transform explosionPosition;
 
 	[Header("Other")]
 	// Publics
@@ -180,17 +191,12 @@ public class EnemyCaptain : NetworkBehaviour {
 	#region Boss Fight Intro
 
 	IEnumerator BossFightIntro() {
-
 		// Intro clip
 		yield return new WaitForSeconds( 5 );
 		RpcPlayDialogue(INTRO_CLIP);
 		source.clip = introAudioClips[INTRO_CLIP];
 		source.Play();
-		yield return new WaitForSeconds( introAudioClips[INTRO_CLIP].length + 2.5f );
-		RpcPlayDialogue(TELEPORT1_CLIP);
-		// Step into glowy areas for teleporting
-		source.clip = introAudioClips[TELEPORT1_CLIP];
-		source.Play();
+		yield return new WaitForSeconds( introAudioClips[INTRO_CLIP].length);
 		print("enable teleport pads called");
 		EnableTeleportPads();
 
@@ -199,7 +205,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			playerTeleportAreas[i].SetActive(false);
 		}
 
-		yield return new WaitForSeconds(4f);
+		yield return new WaitForSeconds(2f);
 		StartCoroutine( "CaptainTeleport" );
 
 		yield return new WaitForSeconds( 3.5f );
@@ -237,11 +243,11 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		yield return new WaitForSeconds(introAudioClips[THIRD_DRAIN_CLIP].length + 3.5f);
 		RpcPlayDialogue(END_OF_INTRO_CLIP);
-		StartBossMusic();
 		source.clip = introAudioClips[END_OF_INTRO_CLIP];
 		source.Play();
 
-		yield return new WaitForSeconds(introAudioClips[END_OF_INTRO_CLIP].length);
+		yield return new WaitForSeconds(introAudioClips[END_OF_INTRO_CLIP].length - 1.5f);
+		StartBossMusic();
 
 		print( "drain clip" );
 		myTree.SetVariableValue( "introFinished", true );
@@ -430,6 +436,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		firstTimeDrain = false;
 		RpcDestroyDrain();
 		canDrain = false;
+		isDraining = false;
 	}
 
 	#endregion
@@ -440,22 +447,31 @@ public class EnemyCaptain : NetworkBehaviour {
 		return canDrain;
 	}
 
-	public void DrainEnergyFromDragon() {
+	public void DrainEnergyFromDragon() {			// called by animation event
 		print( "Drain EnergyFromDragon called" );
-		if (isServer) {
-			if(numberOfTimesHit % 2 != 0) {
-				PlayDrainAudio(drainClipToPlay);
-				drainClipToPlay++;
-				drainClipToPlay = drainClipToPlay % drainAudioClips.Length;
-			}
-		}
 
-		StartCoroutine( "StartTheDrain" );
+		if (lastTimeDrain) {
+			print("draining from players");
+			SpawnFinalDrainObjects();
+			return;
+		} else {
+
+			if (isServer) {
+				if (numberOfTimesHit % 2 != 0) {
+					PlayDrainAudio(drainClipToPlay);
+					drainClipToPlay++;
+					drainClipToPlay = drainClipToPlay % drainAudioClips.Length;
+				}
+			}
+			print("draining from dragon");
+			StartCoroutine( "StartTheDrain" );
+		}
 	}
 
 	public IEnumerator StartTheDrain() {
 		particlesOnDragonInstance = Instantiate( particlesToSpawnOnDragon, dragon.transform.position, Quaternion.identity );
-
+		particlesOnDragonInstance.transform.LookAt(transform.position);
+		particlesOnDragonInstance.transform.Rotate(transform.up, 180f);
 		yield return new WaitForSecondsRealtime( 2.5f );
 
 		energyTrailInstance = Instantiate( energyTrail, transform.position, Quaternion.identity );
@@ -485,8 +501,10 @@ public class EnemyCaptain : NetworkBehaviour {
 				RpcDestroyDrain();
 				isDraining = false;
 				GetComponent<CharacterHealth>().Damage(0.1f, collision.contacts[0].point, Vector3.zero);
+				VariableHolder.instance.IncreasePlayerScore(collision.transform.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.CaptainDamage, transform.position);
 				NetworkServer.Destroy(collision.gameObject);
 				numberOfTimesHit++;
+
 			}
 
 			CheckIfPlayersWin();
@@ -494,15 +512,59 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	}
 
+	[Button]
+	public void PlayerWinWorkaround() {
+		if (!isServer) {
+			return;
+		}
+
+		numberOfTimesHit = timesToDeath;
+		StopDrainingAbility();
+		Destroy(energyTrailInstance);
+		Destroy(particlesOnDragonInstance);
+		skullParticles.SetActive(false);
+		RpcDestroyDrain();
+		CheckIfPlayersWin();
+	}
+
 	private void CheckIfPlayersWin() {
 		if (numberOfTimesHit >= timesToDeath) {
+			myTree.DisableBehavior();                               // Stop him from doing more.
 			Debug.LogWarning("Players have won the game");
-
 			StartCoroutine(PlayerVictory());
 		}
 	}
 
 	private void Update() {
+		if (lastTimeDrain) { // updates the end point of the drain so it follows the player as they move around
+			if (trail1) {
+				foreach (var v in trail1.GetComponentsInChildren<LineRenderer>()) {
+					v.SetPosition(0, target1.transform.position);
+					v.SetPosition(1, skullTransform.position);
+				}
+			}
+
+			if (trail2) {
+				foreach (var v in trail2.GetComponentsInChildren<LineRenderer>()) {
+					v.SetPosition(0, target2.transform.position);
+					v.SetPosition(1, skullTransform.position);
+				}
+			}
+
+			if (trail3) {
+				foreach (var v in trail3.GetComponentsInChildren<LineRenderer>()) {
+					v.SetPosition(0, target3.transform.position);
+					v.SetPosition(1, skullTransform.position);
+				}
+			}
+		}
+
+		if (energyTrailInstance && firstTimeDrain) {
+			foreach(var v in energyTrailInstance.GetComponentsInChildren<LineRenderer>()) {
+				v.SetPosition(1, skullTransform.position);
+			}
+		}
+
 		if ( !isServer ) {
 			return;
 		}
@@ -513,8 +575,18 @@ public class EnemyCaptain : NetworkBehaviour {
 		if ( isDraining ) {
 			curTime += Time.deltaTime;
 			//print( "is draining. Current Elapsed Time: " + curTime );
+
+			if(timeToCaptainWinningInSeconds - curTime <= 60 && !warningTriggered) {
+				warningTriggered = true;
+				PlayWarningAudio();
+			}
+
 			if(curTime >= timeToCaptainWinningInSeconds ) {				// Player defeat / Captain victory check
-				StopDrainingAbility();									// Stop draining
+				StopDrainingAbility();                                  // Stop draining
+				skullParticles.SetActive(false);
+				Destroy(energyTrailInstance);
+				Destroy(particlesOnDragonInstance);
+				RpcDestroyDrain();
 				myTree.DisableBehavior();								// Stop him from doing more.
 				StartCoroutine(PlayerDefeat());
 			}
@@ -531,6 +603,25 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		GetComponent<ControllerHandler>().TryStopAbility( ab );
 		myTree.SetVariableValue("isDraining", false);
+	}
+
+	private void PlayWarningAudio() {
+		if (!isServer) {
+			return;
+		}
+		RpcPlayWarningAudio();
+		source.clip = drainTimeWarning;
+		source.Play();
+	}
+
+	[ClientRpc]
+	private void RpcPlayWarningAudio() {
+		if (isServer) {
+			return;
+		}
+
+		source.clip = drainTimeWarning;
+		source.Play();
 	}
 
 	[ClientRpc]
@@ -619,18 +710,27 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		if ( firstTeleport ) {
 			PlayTeleportSound();
+			// Spawn the ball particles at current position
 			GameObject tpCurPos = Instantiate(initialTeleportCurrentPositionParticle, transform.position, Quaternion.identity);
 			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
 			NetworkServer.Spawn(tpCurPos);
 
+			// Spawn the flame particles at target position
 			tpTarget = Instantiate( initialTeleportTargetPositionParticle, captainTeleportTarget.transform.position, Quaternion.identity );
 			NetworkServer.Spawn( tpTarget );
 
 			firstTeleport = false;
+		} else if (finalTeleport) {
+			// Spawn the ball particles at current position
+			GameObject tpCurPos = Instantiate(captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity);
+			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
+			NetworkServer.Spawn(tpCurPos);
+
+			// Spawn the flame particles at target position
+			tpTarget = Instantiate(captainTargetPositionTeleportParticles, captainTeleportTarget.transform.position, Quaternion.identity);
+			NetworkServer.Spawn(tpTarget);
 		} else {
-			if(curTeleportNumber % 3 == 0) {
-				PlayTeleportSound();
-			}
+			PlayTeleportSound();
 
 			GameObject tpCurPos = Instantiate(captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity);
 			tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
@@ -656,7 +756,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			canDrain = !(bool)myTree.GetVariable( "teleportingToSafety" ).GetValue();
 		}
 
-		transform.position = tpTarget.transform.position;		
+		transform.position = tpTarget.transform.position;
 	}
 
 	private void PlayTeleportSound() {
@@ -982,20 +1082,93 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	#endregion
 
-	#region Captain Defeated
+	#region End Game
 
 	IEnumerator PlayerVictory() {
+		StartDeathAbility();
 		PlayEndGameAudio(true);
-		yield return new WaitForSeconds(victoryAudio.length);
-
+		yield return new WaitForSeconds(defeatAudio.length);
+		foreach(var v in FindObjectsOfType<EnemyDragonkin>()) {
+			v.TeleportToDeath();
+		}
 		SpawnDeathObjects(true);
+
+		//yield return new WaitForSeconds(0.5f);
+		transform.position = defeatPosition.transform.position; // defeat audio because variables are flipped
+		yield return new WaitForSeconds(4f);
+		EnableScoreboard();
 	}
 
 	IEnumerator PlayerDefeat() {
+		isDraining = false;
+		print("player defeat called");
 		PlayEndGameAudio(false);
-		yield return new WaitForSeconds(defeatAudio.length);
+		finalTeleport = true;
+		StartTeleportAbility();
+		yield return new WaitForSeconds(3.5f);
+		print("after post-teleport wait");
+		StartFinalDrainAbility();
+		print("called start final drain ability");
+		yield return new WaitForSeconds(victoryAudio.length + 2f); // Victory audio because variables are flipped
 
 		SpawnDeathObjects(false);
+		print("should have spawned the death objects");
+		yield return new WaitForSeconds(5f);
+		EnableScoreboard();
+	}
+
+	[Button]
+	public void StartDeathAbility() {
+		if (!isServer) {
+			return;
+		}
+
+		StartCoroutine(PlayCaptainDeath());
+	}
+
+	IEnumerator PlayCaptainDeath() {
+		string abName = "CaptainDeath";
+
+		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
+		var abilities = controller.GetComponents(TaskUtility.GetTypeWithinAssembly(abName));
+
+		Ability ab = abilities[0] as Ability;
+
+		GetComponent<ControllerHandler>().TryStartAbility(ab);
+		yield return new WaitForSecondsRealtime(2.5f);
+		GetComponent<ControllerHandler>().TryStopAbility(ab);		
+	}
+
+	public void SpawnDeathParticles() {
+		if (!isServer || captainDeathParticlesSpawned) {
+			return;
+		}
+		explosionPosition = transform;
+		print("explosionPosition set to " + explosionPosition.position);
+		captainDeathParticlesSpawned = true;
+		print("spawn death particles called");
+		defeatParticleInstance1 = Instantiate(defeatParticle1, transform.position, Quaternion.identity);
+		NetworkServer.Spawn(defeatParticleInstance1);
+		Invoke("DestroyDeathParticles", 3f);
+
+		//Invoke("SpawnExplosionParticles", 2f);
+	}
+
+	private void SpawnExplosionParticles() {
+		defeatParticleInstance2 = Instantiate(defeatParticle2, explosionPosition.position, Quaternion.identity);
+		defeatParticleInstance2.transform.position = explosionPosition.position;
+		print("spawned the defeatParticleInstance2 at " + defeatParticle2.transform.position + " with explosionPosition being " + explosionPosition.position);
+		NetworkServer.Spawn(defeatParticleInstance2);
+		Invoke("DestroyDeathParticles", 3f);
+	}
+
+	private void DestroyDeathParticles() {
+		if (!isServer) {
+			return;
+		}
+
+		NetworkServer.Destroy(defeatParticleInstance1);
+		NetworkServer.Destroy(defeatParticleInstance2);
 	}
 
 	private void SpawnDeathObjects(bool playerVictory) {
@@ -1003,12 +1176,128 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
-		EnableScoreboard();
-
 		if (playerVictory) {
+			GameObject r = Instantiate(captainRagdoll, transform.position, transform.rotation);
+			NetworkServer.Spawn(r);
 
 		} else {
 
+		}
+	}
+
+	public void StartFinalDrainAbility() {
+		if (!isServer) {
+			return;
+		}
+		lastTimeDrain = true;
+		print("last time drain set to " + lastTimeDrain);
+		StartCoroutine("FinalDrainEnergy");
+	}
+
+	private void SpawnFinalDrainObjects() {
+		FSVRPlayer[] players = FindObjectsOfType<FSVRPlayer>();
+		for(int i=0; i<NumberOfPlayerHolder.instance.numberOfPlayers; i++) {
+			switch (i) {
+				case 0:
+					target1 = players[i].GetComponentInChildren<EnemyTargetInit>().gameObject;
+					trail1 = Instantiate(energyTrail, transform.position, Quaternion.identity);
+
+					foreach (var v in trail1.GetComponentsInChildren<LineRenderer>()) {
+						v.SetPosition(0, target1.transform.position);
+						v.SetPosition(1, skullTransform.position);
+					}
+					break;
+				case 1:
+					target2 = players[i].GetComponentInChildren<EnemyTargetInit>().gameObject;
+					trail2 = Instantiate(energyTrail, transform.position, Quaternion.identity);
+
+					foreach (var v in trail2.GetComponentsInChildren<LineRenderer>()) {
+						v.SetPosition(0, target2.transform.position);
+						v.SetPosition(1, skullTransform.position);
+					}
+					break;
+				case 2:
+					target3 = players[i].GetComponentInChildren<EnemyTargetInit>().gameObject;
+					trail3 = Instantiate(energyTrail, transform.position, Quaternion.identity);
+
+					foreach (var v in trail3.GetComponentsInChildren<LineRenderer>()) {
+						v.SetPosition(0, target3.transform.position);
+						v.SetPosition(1, skullTransform.position);
+					}
+					break;
+				case 3: // unused til 6p test
+					break;
+				case 4: // unused til 6p test
+					break;
+				case 5: // unused til 6p test
+					break;
+			}
+		}
+	}
+
+	IEnumerator FinalDrainEnergy() {
+		print("final drain called");
+		string abName = "DrainEnergy";
+
+		RigidbodyCharacterController controller = GetComponent<RigidbodyCharacterController>();
+		var abilities = controller.GetComponents(TaskUtility.GetTypeWithinAssembly(abName));
+
+		Ability ab = abilities[0] as Ability;
+		print("drain energy ability tried start");
+		GetComponent<ControllerHandler>().TryStartAbility(ab);
+		print("after try start drain ability");
+		yield return new WaitForSecondsRealtime(15f);
+		GetComponent<ControllerHandler>().TryStopAbility(ab);
+		if (trail1) {
+			// disable player 1 particles here
+			RpcDrainCleanup(0);
+			Destroy(trail1);
+		}
+		if (trail2) {
+			// disable player 2 particles here
+			RpcDrainCleanup(1);
+			Destroy(trail2);
+		}
+		if (trail3) {
+			// disable player 3 particles here
+			RpcDrainCleanup(2);
+			Destroy(trail3);
+		}
+		print("after trail cleanup in finaldrainenergy coroutine");
+		foreach(var v in FindObjectsOfType<Player>()) {
+			v.TurnOffAllParticles();
+		}
+
+		GameObject tpCurPos = Instantiate(captainCurrentPositionTeleportParticles, transform.position, Quaternion.identity);
+		tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
+		NetworkServer.Spawn(tpCurPos);
+		transform.position = defeatPosition.transform.position;
+
+		print("should be teleporting all dragonkin to death");
+		foreach (var v in FindObjectsOfType<EnemyDragonkin>()) {
+			v.TeleportToDeath();
+		}
+	}
+
+	[ClientRpc]
+	private void RpcDrainCleanup(int num) {
+		if (isServer) {
+			return;
+		}
+
+		switch (num) {
+			case 0:
+				// disable player 1 particles here
+				Destroy(trail1);
+				break;
+			case 1:
+				// disable player 2 particles here
+				Destroy(trail2);
+				break;
+			case 2:
+				// disable player 3 particles here
+				Destroy(trail3);
+				break;
 		}
 	}
 
@@ -1029,7 +1318,8 @@ public class EnemyCaptain : NetworkBehaviour {
 	private void PlayEndGameAudio(bool playerVictory) {
 		RpcPlayEndGameAudio(playerVictory);
 		ambientSoundRef.PlayAmbientSound();
-		source.clip = playerVictory ? victoryAudio : defeatAudio;
+		print("should be playing end game audio, playerVictory? " + playerVictory);
+		source.clip = playerVictory ? defeatAudio : victoryAudio; // backwards because variables are flipped
 		source.Play();
 	}
 
@@ -1040,7 +1330,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		}
 
 		ambientSoundRef.PlayAmbientSound();
-		source.clip = playerVictory ? victoryAudio : defeatAudio;
+		source.clip = playerVictory ? defeatAudio : victoryAudio; // backwards because variables are flipped
 		source.Play();
 	}
 

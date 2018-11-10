@@ -25,9 +25,9 @@ public class ObjectPositionLock : MonoBehaviour
 
 	void OnBeforeRender() {
 		if (posPoint) {
-			if (!positionOnly) {
+			//if (!positionOnly) {
 				transform.rotation = posPoint.transform.rotation * rotOffset;
-			}
+			//}
             
             transform.position = posPoint.transform.position + (Vector3)(transform.localToWorldMatrix * posOffset);
 			

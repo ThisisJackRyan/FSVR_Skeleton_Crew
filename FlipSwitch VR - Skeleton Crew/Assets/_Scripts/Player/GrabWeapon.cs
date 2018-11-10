@@ -22,9 +22,14 @@ public class GrabWeapon : NetworkBehaviour {
     private GameObject rightHighlightedHolsterObj;
     private bool isDead;
 
+	public Transform leftHandIKSolver;
+	public Quaternion leftHandOffSetWhenHolding;
+	public Quaternion leftHandOriginalRot;
+
 	// Use this for initialization
 	void Start() {
 		weaponInteraction = GetComponent<WeaponInteraction>();
+		leftHandOriginalRot = leftHandIKSolver.rotation;
 	}
 
 	public float cooldown = 0.5f;
@@ -267,8 +272,15 @@ public class GrabWeapon : NetworkBehaviour {
 
 		if ( temp != null ) { //the actual equipping of the weapon
 			temp.GetComponent<ObjectPositionLock>().posPoint = hand.gameObject;
-			temp.GetComponent<ObjectPositionLock>().posOffset = temp.GetComponent<Weapon>().data.heldPosition;
-			temp.GetComponent<ObjectPositionLock>().rotOffset = temp.GetComponent<Weapon>().data.heldRotation;
+			if (side.Equals("left")) {
+				temp.GetComponent<ObjectPositionLock>().posOffset = temp.GetComponent<Weapon>().data.heldPositionLeft;
+				temp.GetComponent<ObjectPositionLock>().rotOffset = temp.GetComponent<Weapon>().data.heldRotationLeft;
+
+			} else {
+				temp.GetComponent<ObjectPositionLock>().posOffset = temp.GetComponent<Weapon>().data.heldPositionRight;
+				temp.GetComponent<ObjectPositionLock>().rotOffset = temp.GetComponent<Weapon>().data.heldRotationRight;
+
+			}
 			temp.GetComponent<Weapon>().isBeingHeldByPlayer = true;
 			temp.GetComponent<Weapon>().playerWhoHolstered = null;
 
@@ -297,6 +309,17 @@ public class GrabWeapon : NetworkBehaviour {
 	[ClientRpc]
 	void RpcChangeanimatorState(string state, bool value) {
 		GetComponent<NetworkAnimator>().animator.SetBool(state, value);
+
+		//if (state.Contains("left")) {
+		//	if(value){
+		//		//grabbibg weapon
+		//		leftHandIKSolver.SetPositionAndRotation(leftHandIKSolver.position,  leftHandOffSetWhenHolding);
+		//	} else {
+		//		//dropping
+		//		leftHandIKSolver.SetPositionAndRotation(leftHandIKSolver.position, leftHandOriginalRot);
+
+		//	}
+		//}
 
 	}
 
@@ -405,8 +428,13 @@ public class GrabWeapon : NetworkBehaviour {
 		}
 
 		weapon.GetComponent<ObjectPositionLock>().posPoint = hand.gameObject;
-		weapon.GetComponent<ObjectPositionLock>().posOffset = weapon.GetComponent<Weapon>().data.heldPosition;
-		weapon.GetComponent<ObjectPositionLock>().rotOffset = weapon.GetComponent<Weapon>().data.heldRotation;
+		if (side.Equals("left")) {
+			weapon.GetComponent<ObjectPositionLock>().posOffset = weapon.GetComponent<Weapon>().data.heldPositionLeft;
+			weapon.GetComponent<ObjectPositionLock>().rotOffset = weapon.GetComponent<Weapon>().data.heldRotationLeft;
+		} else {
+			weapon.GetComponent<ObjectPositionLock>().posOffset = weapon.GetComponent<Weapon>().data.heldPositionRight;
+			weapon.GetComponent<ObjectPositionLock>().rotOffset = weapon.GetComponent<Weapon>().data.heldRotationRight;
+		}
 		weapon.GetComponent<Weapon>().isBeingHeldByPlayer = true;
 		weapon.GetComponent<Weapon>().playerWhoHolstered = null;
 
