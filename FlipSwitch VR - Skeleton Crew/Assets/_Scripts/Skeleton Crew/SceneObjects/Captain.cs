@@ -104,15 +104,15 @@ public class Captain : SerializedNetworkBehaviour {
 	void Start() {
 		if (isServer) {
 			if (instance == null) {
-				////print("is server, setting as instance");
+				//print("is server, setting as instance");
 				instance = this;
 			} else {
-				////print("is server with instance, destroying");
+				//print("is server with instance, destroying");
 
 				Destroy(gameObject);
 			}
 		} else {
-			////print("not server");
+			//print("not server");
 		}
 
 		foreach (var g in mastRopes) {
@@ -141,7 +141,7 @@ public class Captain : SerializedNetworkBehaviour {
 		DisableRatHatches();
 		DisableRopes();
 		//SpawnGuards();
-		print("post spawn guards method call");
+		//print("post spawn guards method call");
 		eventTimes = new Dictionary<AudioEventType, float>();
 		eventTimes.Add(AudioEventType.Cannon, Time.timeSinceLevelLoad);
 		eventTimes.Add(AudioEventType.Ratmen, Time.timeSinceLevelLoad);
@@ -172,18 +172,18 @@ public class Captain : SerializedNetworkBehaviour {
 
 	private void Update() {
 		if (!isServer || !hasInitialized) {
-			//print("returning");
+			print("returning");
 			return;
 		}
 
 		if (mySource.isPlaying) {
-			//print("source is playing");
+			print("source is playing");
 
 			return;
 		}
 
 		if (priorityAudioQueue.Count > 0 && lastPlayedTime + timeBetweenPriorityClips <= Time.timeSinceLevelLoad) {
-			//print("priority needs to play");
+			print("priority needs to play");
 
 			//need to check severity still
 			mySource.PlayOneShot(priorityAudioQueue.First());
@@ -193,10 +193,10 @@ public class Captain : SerializedNetworkBehaviour {
 		}
 
 		if (lastPlayedTime + timeBetweenReminders <= Time.timeSinceLevelLoad) { //its been atleast aslong as the remindertimer
-																				//print("time for reminder");
+			print("time for reminder");
 
 			if (reminderQueue.Count > 0) {
-				//print("reminder needs to play");
+				print("reminder needs to play");
 
 				mySource.PlayOneShot(reminderQueue.First());
 				RpcPlayDialogue(reminderQueue.Dequeue().name);
@@ -219,7 +219,7 @@ public class Captain : SerializedNetworkBehaviour {
 			return;
 		}
 
-		//print("rpc called with " + clipName);
+		print("rpc called with " + clipName);
 
 		mySource.PlayOneShot(clipNames[clipName]);
 	}
@@ -249,7 +249,7 @@ public class Captain : SerializedNetworkBehaviour {
 			case AudioEventType.Cannon:
 
 				if (!priorityAudioQueue.Contains(repairCannonClip)) {
-					//print("adding clip[ to queue");
+					print("adding clip[ to queue");
 					eventTimes[AudioEventType.Cannon] = Time.timeSinceLevelLoad;
 					priorityAudioQueue.Enqueue(repairCannonClip);
 				}
@@ -451,7 +451,7 @@ public class Captain : SerializedNetworkBehaviour {
 		if (!isServer) {
 			return;
 		}
-		////print("start tutorial");
+		//print("start tutorial");
 
 
 		ambientSource.enabled = true;
@@ -468,7 +468,7 @@ public class Captain : SerializedNetworkBehaviour {
 			GameObject g = Instantiate(guardParticleSpawn, guardPositions[i].position, Quaternion.identity);
 			NetworkServer.Spawn(g);
 
-			//print("looping through and should have spawned a guard");
+			print("looping through and should have spawned a guard");
 		}
 		BehaviorDesigner.Runtime.GlobalVariables.Instance.SetVariableValue("playersOnDeck", true);
 
@@ -522,7 +522,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckEnemiesKilled() {
 		//foreach (var obj in enemiesKilled) {
-		//	////print(obj.Key.name + " has a value of " + obj.Value);
+		//	//print(obj.Key.name + " has a value of " + obj.Value);
 		//}
 		if (!enemiesKilled.ContainsValue(false) && !guardsComplete) {
 			guardsComplete = true;
@@ -579,7 +579,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckDamagedObjects() {
 		//foreach (var obj in damagedObjectsRepaired) {
-		//	//print(obj.Key.name + " has a value of " + obj.Value);
+		//	print(obj.Key.name + " has a value of " + obj.Value);
 		//}
 		if (!damagedObjectsRepaired.ContainsValue(false) && !damagedComplete) {
 			damagedComplete = true;
@@ -591,9 +591,9 @@ public class Captain : SerializedNetworkBehaviour {
 	#region fire prompts 
 
 	void EnableFirePrompt() {
-		//print("enable fire prompts");
+		print("enable fire prompts");
 		for (int i = 0; i < cannonFirePrompts.Count; i++) {
-			//print( cannonFirePrompts[i].name +  " being enabled" );
+			print( cannonFirePrompts[i].name +  " being enabled" );
 
 			cannonFirePrompts[i].SetActive(true);
 		}
@@ -633,7 +633,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckPlayersCannonFiring() {
 		//foreach (var obj in playersFiredCannons) {
-		//	//print(obj.Key.name + " has a value of " + obj.Value);
+		//	print(obj.Key.name + " has a value of " + obj.Value);
 		//}
 		if (!playersFiredCannons.ContainsValue(false) && !cannonsComplete) {
 			cannonsComplete = true;
@@ -696,7 +696,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckRatmenRespawns() {
 		//foreach (var obj in ratmenRespawned) {
-		//	//print(obj.Key.name + " has a value of " + obj.Value);
+		//	print(obj.Key.name + " has a value of " + obj.Value);
 		//}
 		if (!ratmenRespawned.ContainsValue(false) && !ratmenComplete) {
 			ratmenComplete = true;
@@ -772,7 +772,7 @@ public class Captain : SerializedNetworkBehaviour {
 		if (isServer)
 			return;
 
-		////print("playing sound clip " + clip);
+		//print("playing sound clip " + clip);
 
 		for (int i = 0; i < tutorialSounds.Length; i++) {
 			if (tutorialSounds[i].name == clip) {
