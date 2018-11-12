@@ -62,6 +62,11 @@ public class PathFollower : NetworkBehaviour {
 
 	}
 
+	[Button]
+	public void SpawnFirstEncounterMelee() {
+		SpawnWithPortal(firstEncountersMelee);
+	}
+
 	protected void Start() {
 		if (!isServer) {
 			return;

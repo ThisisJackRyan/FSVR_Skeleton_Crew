@@ -25,8 +25,10 @@ public class Enemy : NetworkBehaviour {
 	public bool tutorialGuard = false;
     public bool rangedUnit = false;
 	public bool ratkin = false;
+	public bool isAttacking;
     public GameObject rangedTeleTarget;
 	public PrimaryItemType primaryItemType;
+	public Collider weaponCollider;
 	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
     [SyncVar] public GameObject boardingPartyShip;
 	private GameObject playerWhoLastHitMe;
@@ -109,6 +111,25 @@ public class Enemy : NetworkBehaviour {
 
         Invoke("TurnOffHit", 1.0f);
     }
+
+	public void OnMeleeAttackStart() {
+		if (!isServer) {
+			return;
+		}
+
+		weaponCollider.enabled = true;
+		isAttacking = true;
+	}
+
+	public void OnMeleeAttackEnd() {
+		if (!isServer) {
+			return;
+		}
+
+		weaponCollider.enabled = false;
+		isAttacking = false;
+	}
+
 
 	private void Start() {
 

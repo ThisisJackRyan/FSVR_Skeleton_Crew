@@ -48,14 +48,21 @@ public class EnemyTargetInit : MonoBehaviour {
     public void ApplyMeleeDamage(int dmg) {
         //print("apply melee damage called with " + dmg + " coming in");
         if (targetType == TargetType.Cannon) {
-            int hp = GetComponent<DamagedObject>().ChangeHealth(dmg);
-            if (hp <= 0) {
-                RemoveFromList();
-            }
+			if (GetComponentInParent<DamagedObject>().isServer) {
+				int hp = GetComponent<DamagedObject>().ChangeHealth(dmg);
+				if (hp <= 0) {
+					RemoveFromList();
+				}
+			}
         } else if (targetType == TargetType.Ratmen) {
-            GetComponentInParent<Ratman>().ChangeHealth(dmg);
+			if (GetComponentInParent<Ratman>().isServer) {
+				int hp = GetComponentInParent<Ratman>().ChangeHealth(dmg);
+				if (hp <= 0) {
+					RemoveFromList();
+				}
+			}
         } else if (targetType == TargetType.Player) {
-            if (transform.parent.GetComponent<FSVRPlayer>().isServer) {
+            if (GetComponentInParent<FSVRPlayer>().isServer) {
                 int hp = GetComponentInParent<Player>().ChangeHealth(dmg);
                 if (hp <= 0) {
                     RemoveFromList();

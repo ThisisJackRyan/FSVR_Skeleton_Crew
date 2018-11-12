@@ -381,12 +381,11 @@ namespace Opsive.ThirdPersonController
                     Attack(collision.transform, collision.contacts[0].point, collision.contacts[0].normal);
                 }
 
+				// return because I don't want any recoil
+				return;
+
                 // The character should play a recoil animation if the object does not have a Rigidbody, the Rigidbody is kinematic, or the Rigidbody is much heavier than the character.
                 if (collision.rigidbody == null || collision.rigidbody.isKinematic || collision.rigidbody.mass > m_CharacterRigidbody.mass * 10) {
-					if (GetComponent<EnemyDragonkin>()) {
-						return;
-					}
-
                     if (!m_WaitForEndUseEvent) {
                         EndUse();
                     }

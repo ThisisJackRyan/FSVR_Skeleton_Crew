@@ -219,12 +219,13 @@ public class Captain : SerializedNetworkBehaviour {
 			return;
 		}
 
-		//print("rpc called with " + clipName);
-
+		print("rpc called with " + clipName);
+		print("clipNames returned value of clipNames with passed string " + clipNames[clipName]);
 		mySource.PlayOneShot(clipNames[clipName]);
 	}
 
 	void AssignClipsToDictionary() {
+		print("assign clips to dictionary called");
 		clipNames = new Dictionary<string, AudioClip>();
 		clipNames.Add(repairCannonClip.name, repairCannonClip);
 		clipNames.Add(ratmenDeadClip.name, ratmenDeadClip);
