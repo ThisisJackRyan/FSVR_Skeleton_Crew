@@ -123,6 +123,7 @@ public class Captain : SerializedNetworkBehaviour {
 	}
 
 	bool hasInitialized = false;
+	[Button]
 	public void Init() {
 		hasInitialized = true;
 		AssignClipsToDictionary();

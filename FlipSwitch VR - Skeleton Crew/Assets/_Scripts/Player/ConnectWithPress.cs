@@ -39,9 +39,9 @@ public class ConnectWithPress : MonoBehaviour {
                         continue;
                     }
                 }
-				FindObjectOfType<SteamVR_LoadLevel>().Trigger();
+				//FindObjectOfType<SteamVR_LoadLevel>().Trigger();
 
-				//StartCoroutine("FadeAndLoad");
+				StartCoroutine("FadeAndLoad");
             }
         }
     }
@@ -56,23 +56,22 @@ public class ConnectWithPress : MonoBehaviour {
 
     [Button("loopholes")]
     void Ha() {
-		FindObjectOfType<SteamVR_LoadLevel>().Trigger();  //("Master_Online_new");
+		//FindObjectOfType<SteamVR_LoadLevel>().Trigger();  //("Master_Online_new");
 
-        //StartCoroutine("FadeAndLoad");
+        StartCoroutine("FadeAndLoad");
     }
 
     IEnumerator FadeAndLoad() {
 		//SteamVR_Overlay.instance.UpdateOverlay();
-		var compositor = OpenVR.Compositor;
-        SteamVR_Fade.Start(Color.black, 1);
-		compositor.FadeToColor(1f, 255f, 255f, 255f, 1.0f, false);
+		//var compositor = OpenVR.Compositor;
+        SteamVR_Fade.Start(Color.black, 1, true);
+		//compositor.FadeToColor(1f, 255f, 255f, 255f, 1.0f, false);
 		standStill.SetActive(true);
         yield return new WaitForSecondsRealtime(1f);
         //NetworkManager.singleton.networkAddress = NetworkManager.singleton.serverBindAddress;
         NetworkManager.singleton.StartClient();
 
-        yield return new WaitForSecondsRealtime(1f);
-        SteamVR_Fade.Start(Color.clear, 1, true);
+        //yield return new WaitForSecondsRealtime(1f);
     }
 }
 
