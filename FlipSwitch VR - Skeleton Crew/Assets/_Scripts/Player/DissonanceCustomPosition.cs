@@ -24,14 +24,16 @@ public class DissonanceCustomPosition : NetworkBehaviour {
     public override void OnStartAuthority() {
         base.OnStartAuthority();
 
-        // Get the local DissonanceComms object 
-        var comms = FindObjectOfType<DissonanceComms>();
+		// Get the local DissonanceComms object 
+		if (FindObjectOfType<DissonanceComms>()) {
+			var comms = FindObjectOfType<DissonanceComms>();
 
-        // Call set player name, to sync the name across all peers
-        SetPlayerName(FindObjectOfType<DissonanceComms>().LocalPlayerName);
+			// Call set player name, to sync the name across all peers
+			SetPlayerName(FindObjectOfType<DissonanceComms>().LocalPlayerName);
 
-        // Make sure that if the local name is changed, we sync the change across the network
-        comms.LocalPlayerNameChanged += SetPlayerName;
+			// Make sure that if the local name is changed, we sync the change across the network
+			comms.LocalPlayerNameChanged += SetPlayerName;
+		}
     }
 
     private void SetPlayerName(string playerName) {

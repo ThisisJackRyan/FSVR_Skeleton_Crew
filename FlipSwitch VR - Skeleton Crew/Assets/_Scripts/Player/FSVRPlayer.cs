@@ -20,12 +20,12 @@ public class FSVRPlayer : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		print("fsvr player start. isLocalPlayer? " + isLocalPlayer);
 		if ( isLocalPlayer ) {
-			SetTrackerIDs();
-
+			print("should be setting screen to black");
 			SteamVR_Fade.Start( Color.black, 0 );
 			GetComponent<Player>().TurnOffColliders();
-
+			SetTrackerIDs();
 			//GetComponentInChildren<SteamVR_PlayArea>().BuildMesh();
 
 		} else {
@@ -54,6 +54,7 @@ public class FSVRPlayer : NetworkBehaviour {
 		}
 
         if (NumberOfPlayerHolder.instance.numberOfPlayers == VariableHolder.instance.players.Count) {
+			print("player count true");
             //if (true) { 
 			GetComponent<VRIKCalibrateOnStart>().CalibratePlayer();
 
@@ -65,6 +66,7 @@ public class FSVRPlayer : NetworkBehaviour {
 			}
 
 			if (FindObjectOfType<Captain>()) {
+				print("looking for captian");
 				FindObjectOfType<CaptainDialogueLobby>().enabled = true;
 				FindObjectOfType<Captain>().Init();
 			}
@@ -86,6 +88,7 @@ public class FSVRPlayer : NetworkBehaviour {
 	}
 
 	IEnumerator FadeIn() {
+		print("FADE IN");
 		yield return new WaitForSecondsRealtime(1f);
 		SteamVR_Fade.Start( Color.clear, 1 );
 		if (FindObjectOfType<LobbyAudioPlayer>()) {
