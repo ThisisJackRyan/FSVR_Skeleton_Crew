@@ -27,7 +27,7 @@ public class FSVRPlayer : NetworkBehaviour {
 			GetComponent<Player>().TurnOffColliders();
 			SetTrackerIDs();
 			//GetComponentInChildren<SteamVR_PlayArea>().BuildMesh();
-
+			print("post tracker set");
 		} else {
 			if (isServer) {
 				//print("should be adding " + gameObject.name + " to host list");
@@ -75,6 +75,7 @@ public class FSVRPlayer : NetworkBehaviour {
 
 	}
 
+
 	void OnLevelWasLoaded(int level) {
 		if (isLocalPlayer) {
 			if (level == 2) {
@@ -98,12 +99,16 @@ public class FSVRPlayer : NetworkBehaviour {
 	}
 	
 	void SetTrackerIDs() {
-        //print("set tracker ids called. isServer? " + isServer);
-		leftFoot.index = TrackerIds.leftFootId;
-		rightFoot.index = TrackerIds.rightFootId;
-		hip.index = TrackerIds.hipId;
-        leftHand.index = (SteamVR_TrackedObject.EIndex)Controller.LeftController.index == SteamVR_TrackedObject.EIndex.None ? 0 : (SteamVR_TrackedObject.EIndex)Controller.LeftController.index;
-        rightHand.index = (SteamVR_TrackedObject.EIndex)Controller.RightController.index == SteamVR_TrackedObject.EIndex.None ? 0 : (SteamVR_TrackedObject.EIndex)Controller.RightController.index;
+		print("set tracker ids called. isServer? " + isServer);
+		try {
+			leftFoot.index = TrackerIds.leftFootId;
+			rightFoot.index = TrackerIds.rightFootId;
+			hip.index = TrackerIds.hipId;
+			leftHand.index = (SteamVR_TrackedObject.EIndex)Controller.LeftController.index == SteamVR_TrackedObject.EIndex.None ? 0 : (SteamVR_TrackedObject.EIndex)Controller.LeftController.index;
+			rightHand.index = (SteamVR_TrackedObject.EIndex)Controller.RightController.index == SteamVR_TrackedObject.EIndex.None ? 0 : (SteamVR_TrackedObject.EIndex)Controller.RightController.index;
+		} catch (Exception e){
+			Debug.LogError("trackers had a null ref, " + e.Message);
+		}
     }
 
     public void SetCameraSettings(int playerNum) {
