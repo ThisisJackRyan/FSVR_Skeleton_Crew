@@ -475,7 +475,7 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	public IEnumerator StartTheDrain() {
 		particlesOnDragonInstance = Instantiate( particlesToSpawnOnDragon, dragon.transform.position, Quaternion.identity );
-		particlesOnDragonInstance.transform.LookAt(transform.position);
+		particlesOnDragonInstance.transform.LookAt(skullTransform.position);
 		particlesOnDragonInstance.transform.Rotate(transform.up, 180f);
 		yield return new WaitForSecondsRealtime( 2.5f );
 
