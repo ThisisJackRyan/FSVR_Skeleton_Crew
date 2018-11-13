@@ -91,6 +91,8 @@ public class PathFollower : NetworkBehaviour {
 	public void ChangeSpeed(bool faster) {
 		speed = (faster) ? maxSpeed : minSpeed;
 		mast.AdjustSails();
+
+		UpdateWindProp();
 	}
 
 	public bool ChangeSpeed(float increment) {
@@ -110,7 +112,40 @@ public class PathFollower : NetworkBehaviour {
 			speed = minSpeed;
 		}
 
+		UpdateWindProp();
+
 		return true;
+	}
+
+	void UpdateWindProp() {
+#if ENABLE_PROPS
+		if (!isServer) {
+			return;
+		}
+
+		/*
+		 * c1 & c2 1
+		 * c3 & c4 2
+		 * 
+		 0 = none
+		 1 = 1 + 2
+		 2 = 1 + 2
+		 3 = 1+2
+		 4 =3+4
+		 5 = 3+4
+		 6 = 3+4
+		 7 = 1234
+		 8 = 1234
+
+		 */
+
+		//PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+
+		//PropClientSocket.SendMessage(new Message(PhysicalEffect.Wind, 1001));
+
+
+
+#endif
 	}
 
 	internal void DestroyCrystal(int i) {

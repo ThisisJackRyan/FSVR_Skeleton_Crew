@@ -7,34 +7,37 @@ using UnityEngine.Networking;
 
 public enum PhysicalEffect
 {
-	Lift,
-	MakeNoise,
-	Decon,
-	Flash
+	//Lift,
+	//MakeNoise,
+	//Decon,
+	//Flash,
+	Wind,
+	CannonLeft,
+	CannonRight,
+	SpecificController
 }
 
-public struct message
+public struct Message
 {
 	public int msgCode;
-	public string piName;
+	public PhysicalEffect effect;
 
-	public message(int code, string name)
+	public Message( PhysicalEffect effect, int code)
 	{
 		msgCode = code;
-		piName = name;
+		this.effect = effect;
 	}
-
 }
 
 public class MessageCollection
 {
-	public static message Lift = new message(1001, "pi1002");
-	public static message MakeNoise = new message(1001, "pi1003");
-	public static message Decon = new message(1001, "pi1004");
-	public static message Flash = new message(1001, "pi1005");
+	//public static message Lift = new message(1001, "pi1002");
+	//public static message MakeNoise = new message(1001, "pi1003");
+	//public static message Decon = new message(1001, "pi1004");
+	//public static message Flash = new message(1001, "pi1005");
 
-	public static message turnOn = new message( 1001, "pi1005" );
-	public static message turnOff = new message( 1002, "pi1005" );
+	//public static message turnOn = new message( 1001, "pi1005" );
+	//public static message turnOff = new message( 1002, "pi1005" );
 
 }
 
@@ -54,23 +57,23 @@ public class PropPiTrigger : NetworkBehaviour
 		return instance;
 	}
 
-	[Command]
-	public void CmdTriggerPi(PhysicalEffect effect)
-	{
-		switch (effect)
-		{
-			case PhysicalEffect.Lift:
-					PropClientSocket.sendMessage(MessageCollection.Lift);
-					break;
-			case PhysicalEffect.Decon:
-					PropClientSocket.sendMessage(MessageCollection.Decon);
-					break;
-			case PhysicalEffect.Flash:
-					PropClientSocket.sendMessage(MessageCollection.Flash);
-					break;
-			case PhysicalEffect.MakeNoise:
-					PropClientSocket.sendMessage(MessageCollection.MakeNoise);
-					break;
-		}
-	}
+	//[Command]
+	//public void CmdTriggerPi(PhysicalEffect effect)
+	//{
+	//	switch (effect)
+	//	{
+	//		case PhysicalEffect.Lift:
+	//				PropClientSocket.sendMessage(MessageCollection.Lift);
+	//				break;
+	//		case PhysicalEffect.Decon:
+	//				PropClientSocket.sendMessage(MessageCollection.Decon);
+	//				break;
+	//		case PhysicalEffect.Flash:
+	//				PropClientSocket.sendMessage(MessageCollection.Flash);
+	//				break;
+	//		case PhysicalEffect.MakeNoise:
+	//				PropClientSocket.sendMessage(MessageCollection.MakeNoise);
+	//				break;
+	//	}
+	//}
 }
