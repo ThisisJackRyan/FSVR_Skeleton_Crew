@@ -170,7 +170,8 @@ public class GrabWeapon : NetworkBehaviour {
 	}
 
 	public void SendCommandToUnHighlight( bool isLeft ) {
-		if (isServer) {
+		print("called unhighlight cmd");
+		if (!isServer) {
 			return;
 		}
 
@@ -353,8 +354,11 @@ public class GrabWeapon : NetworkBehaviour {
 
 	[ClientRpc]
 	private void RpcUnhighlightWeapon( string side, GameObject player ) {
-		if ( isServer )
+		print("called unhighlight rpc " + side + " " + player.name + " " + isServer);
+
+		if ( isServer) {
 			return;
+		}
 
 		if ( isLocalPlayer && player == gameObject ) {
 			if ( side.Equals( "left" ) ) {
@@ -638,7 +642,9 @@ public class GrabWeapon : NetworkBehaviour {
 
     [ClientRpc]
     private void RpcUnhighlightHolster(bool isLeft, GameObject player) {
-        if (isServer)
+		print("called unhighlight rpc holster");
+
+		if (isServer)
             return;
 
         if (isLocalPlayer && player == gameObject) {
