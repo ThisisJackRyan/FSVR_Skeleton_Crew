@@ -1,39 +1,73 @@
 fileFormatVersion: 2
-guid: 33d769e150df3fb41ba0bc92f38d64f8
+guid: 20ef470af15f068409e2a6a635e31fe8
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Low_Poly_Ground
-    100004: Canyon_Left
-    100006: Canyon_Right
-    100008: transform1
+    100002: Canyon_Left
+    100004: Canyon_Right
+    100006: Low_Poly_Ground
+    100008: polySurface1
+    100010: polySurface2
+    100012: polySurface3
+    100014: polySurface4
+    100016: transform1
+    100018: transform2
+    100020: transform3
+    100022: Floor
+    100024: Left_Back
+    100026: Left_Canyon
+    100028: Right_Back
+    100030: Right_Canyon
     400000: //RootNode
-    400002: Low_Poly_Ground
-    400004: Canyon_Left
-    400006: Canyon_Right
-    400008: transform1
-    2100000: Bottomless_Canyon
-    2100002: Bottomless_Canyon1
-    2100004: MAT_bottomlesscanyon
-    2300000: //RootNode
-    2300002: Low_Poly_Ground
-    2300004: Canyon_Left
-    2300006: Canyon_Right
-    3300000: //RootNode
-    3300002: Low_Poly_Ground
-    3300004: Canyon_Left
-    3300006: Canyon_Right
-    4300000: Bottemless_Canyon
-    4300002: Low_Poly_Ground
-    4300004: Canyon_Right
-    4300006: Canyon_Left
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Bottomless_Canyon
-    second: {fileID: 2100000, guid: 45cd950f6ec662f4a9e98fd1450d868f, type: 2}
+    400002: Canyon_Left
+    400004: Canyon_Right
+    400006: Low_Poly_Ground
+    400008: polySurface1
+    400010: polySurface2
+    400012: polySurface3
+    400014: polySurface4
+    400016: transform1
+    400018: transform2
+    400020: transform3
+    400022: Floor
+    400024: Left_Back
+    400026: Left_Canyon
+    400028: Right_Back
+    400030: Right_Canyon
+    2100000: MAT_bottomlesscanyon
+    2100002: phong2
+    2300000: Low_Poly_Ground
+    2300002: polySurface1
+    2300004: polySurface2
+    2300006: polySurface3
+    2300008: polySurface4
+    2300010: Floor
+    2300012: Left_Back
+    2300014: Left_Canyon
+    2300016: Right_Back
+    2300018: Right_Canyon
+    3300000: Low_Poly_Ground
+    3300002: polySurface1
+    3300004: polySurface2
+    3300006: polySurface3
+    3300008: polySurface4
+    3300010: Floor
+    3300012: Left_Back
+    3300014: Left_Canyon
+    3300016: Right_Back
+    3300018: Right_Canyon
+    4300000: Low_Poly_Ground
+    4300002: polySurface1
+    4300004: polySurface2
+    4300006: polySurface3
+    4300008: polySurface4
+    4300010: Right_Back
+    4300012: Left_Back
+    4300014: Floor
+    4300016: Right_Canyon
+    4300018: Left_Canyon
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
@@ -72,7 +106,7 @@ ModelImporter:
     importCameras: 1
     importLights: 1
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
