@@ -104,8 +104,10 @@ namespace Opsive.ThirdPersonController
 
 			// Add any collision effects. These effects do not need to be added on the server.
 			print("root of hit object is " + collisionTransform.root.name);
+#if ENABLE_MULTIPLAYER
 			RpcAddCollisionEffects(collisionTransform.root.gameObject, collisionPoint, collisionNormal);
 
+#endif
 			if (destroy) {
 				// Place back in the ObjectPool.
 				ObjectPool.Destroy(m_GameObject);
@@ -132,6 +134,7 @@ namespace Opsive.ThirdPersonController
             AddCollisionEffects(collisionGameObject != null ? collisionGameObject.transform : null, collisionPoint, collisionNormal);
         }
 #endif
+		
 
         /// <summary>
         /// The destructable object has collided itself. Add any effects.
