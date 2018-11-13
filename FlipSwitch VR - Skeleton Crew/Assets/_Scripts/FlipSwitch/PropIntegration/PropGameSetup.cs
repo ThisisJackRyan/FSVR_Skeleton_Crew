@@ -13,64 +13,63 @@ public class PropGameSetup : MonoBehaviour {
 	// Use this for initialization
 	[Button]
 	void StartSocket () {
-		PropClientSocket.SetupSocketSpecfic(ipAddress);
+		print("opening");
+		PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+		StartCoroutine("PlayEffect");
 	}
 
 	[Button]
-	void TriggerPiOn() {
-		PropClientSocket.sendMessage( new message(4001, "Specific" ) );
-	}
-
-	[Button]
-	void TriggerPiOff() {
-		PropClientSocket.sendMessage( new message( 4002, "Specific" ) );
+	void CloseSocket() {
+		print("closing socket");
+		PropClientSocket.CloseSocket(PhysicalEffect.Wind);
 
 	}
 
-	[Button]
-	void TriggerPiAllInOne() {
-		StartCoroutine("PlayCode");
+	IEnumerator PlayEffect() {
+		yield return new WaitForSeconds(0.5f);
+		print("sending message");
+		PropClientSocket.SendMessage(new Message(PhysicalEffect.Wind, 1001));
 	}
 
-	IEnumerator PlayCode() {
-		PropClientSocket.SetupSocketSpecfic( ipAddress );
-		yield return new WaitForSeconds( 2 );
-		PropClientSocket.sendMessage( new message( 1001, "Specific" ) );
-		yield return new WaitForSeconds( 2 );
+	//IEnumerator PlayCode() {
+	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
+	//	yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.sendMessage( new message( 1001, "Specific" ) );
+	//	yield return new WaitForSeconds( 2 );
 
-		PropClientSocket.SetupSocketSpecfic( ipAddress );
-		yield return new WaitForSeconds( 2 );
-		PropClientSocket.sendMessage( new message( 2001, "Specific" ) );
-		yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
+	//	yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.sendMessage( new message( 2001, "Specific" ) );
+	//	yield return new WaitForSeconds( 2 );
 
-		PropClientSocket.SetupSocketSpecfic( ipAddress );
-		yield return new WaitForSeconds( 2 );
-		PropClientSocket.sendMessage( new message( 3001, "Specific" ) );
-		yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
+	//	yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.sendMessage( new message( 3001, "Specific" ) );
+	//	yield return new WaitForSeconds( 2 );
 
-		PropClientSocket.SetupSocketSpecfic( ipAddress );
-		yield return new WaitForSeconds( 2 );
-		PropClientSocket.sendMessage( new message( 4001, "Specific" ) );
-		yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
+	//	yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.sendMessage( new message( 4001, "Specific" ) );
+	//	yield return new WaitForSeconds( 2 );
 
-		PropClientSocket.SetupSocketSpecfic( ipAddress );
-		yield return new WaitForSeconds( 2 );
-		PropClientSocket.sendMessage( new message( 1002, "Specific" ) );
-		yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
+	//	yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.sendMessage( new message( 1002, "Specific" ) );
+	//	yield return new WaitForSeconds( 2 );
 
-		PropClientSocket.SetupSocketSpecfic( ipAddress );
-		yield return new WaitForSeconds( 2 );
-		PropClientSocket.sendMessage( new message( 2002, "Specific" ) );
-		yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
+	//	yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.sendMessage( new message( 2002, "Specific" ) );
+	//	yield return new WaitForSeconds( 2 );
 
-		PropClientSocket.SetupSocketSpecfic( ipAddress );
-		yield return new WaitForSeconds( 2 );
-		PropClientSocket.sendMessage( new message( 3002, "Specific" ) );
-		yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
+	//	yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.sendMessage( new message( 3002, "Specific" ) );
+	//	yield return new WaitForSeconds( 2 );
 
-		PropClientSocket.SetupSocketSpecfic( ipAddress );
-		yield return new WaitForSeconds( 2 );
-		PropClientSocket.sendMessage( new message( 4002, "Specific" ) );
-		yield return new WaitForSeconds( 2 );
-	}
+	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
+	//	yield return new WaitForSeconds( 2 );
+	//	PropClientSocket.sendMessage( new message( 4002, "Specific" ) );
+	//	yield return new WaitForSeconds( 2 );
+	//}
 }

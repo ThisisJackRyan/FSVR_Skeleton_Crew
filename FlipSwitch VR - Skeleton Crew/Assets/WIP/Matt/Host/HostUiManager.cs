@@ -12,6 +12,8 @@ public class HostUiManager : MonoBehaviour {
     public Button togglePauseButton;
     public GameObject[] playerTexts;
 
+	public RenderTexture[] mirrorViews;
+
     private GameObject currentlySelectedPlayer;
     private Host host;
     private bool isHostPerspective = true;

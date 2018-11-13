@@ -16,7 +16,7 @@ public class FSVRPlayer : NetworkBehaviour {
 
 	public GameObject floatingScore;
 
-	public Camera hostCamView;
+	public Camera hostCamView, hostCamViewDepth;
 
 	// Use this for initialization
 	void Start () {
@@ -130,10 +130,12 @@ public class FSVRPlayer : NetworkBehaviour {
 
 	public void EnableCamera() {
 		hostCamView.enabled = true;
+		hostCamViewDepth.enabled = true;
 	}
 
 	public void DisableCamera() {
 		hostCamView.enabled = false;
+		hostCamViewDepth.enabled = false;
 	}
 
 	public VariableHolder.PlayerScore.ScoreType type;
