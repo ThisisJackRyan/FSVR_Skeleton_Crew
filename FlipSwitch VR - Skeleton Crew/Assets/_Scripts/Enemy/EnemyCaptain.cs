@@ -1312,16 +1312,7 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		highScoreTable.SetActive(true);
 		NetworkServer.Spawn(highScoreTable);
-		RpcEnableScoreboard();
-	}
-
-	[ClientRpc]
-	private void RpcEnableScoreboard() {
-		if (isServer) {
-			return;
-		}
-
-		highScoreTable.SetActive(true);
+		highScoreTable.GetComponent<HighScoreTable>().DisplayScores();
 	}
 
 	private void PlayEndGameAudio(bool playerVictory) {

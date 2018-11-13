@@ -10,7 +10,7 @@ public class HighScoreTable : NetworkBehaviour {
 	public HighScoreDisplay[] scoreDisplays;
 
 	// Use this for initialization
-	void Start () {
+	public void DisplayScores () {
 		if ( !isServer ) {
 			print( "returning as not server" );
 
