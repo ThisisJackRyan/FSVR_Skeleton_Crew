@@ -6,7 +6,7 @@ using UnityEngine;
 //[ExecuteInEditMode]
 public class PropGameSetup : MonoBehaviour {
 
-	public string ipAddress = "192.168.1.12";
+	public string ipAddress = "190.5f.168.1.105";
 	public int message;
 
 
@@ -15,7 +15,7 @@ public class PropGameSetup : MonoBehaviour {
 	void StartSocket () {
 		print("opening");
 		PropClientSocket.OpenSocket(PhysicalEffect.Wind);
-		StartCoroutine("PlayEffect");
+		StartCoroutine("PlayCode");
 	}
 
 	[Button]
@@ -31,45 +31,52 @@ public class PropGameSetup : MonoBehaviour {
 		PropClientSocket.SendMessage(new Message(PhysicalEffect.Wind, 1001));
 	}
 
-	//IEnumerator PlayCode() {
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 1001, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
+	IEnumerator PlayCode() {
+		  PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+		yield return new WaitForSeconds( 0.5f );
+		PropClientSocket.SendMessage( new Message( PhysicalEffect.Wind, 2001) );
+		yield return new WaitForSeconds( 0.5f );
 
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 2001, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
+		  PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+		yield return new WaitForSeconds( 0.5f );
+		PropClientSocket.SendMessage( new Message( PhysicalEffect.Wind, 3001 ) );
 
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 3001, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
+		yield return new WaitForSeconds( 0.5f );
 
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 4001, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
+		  PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+		yield return new WaitForSeconds( 0.5f );
+		PropClientSocket.SendMessage( new Message( PhysicalEffect.Wind, 4001 ) );
 
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 1002, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
+		yield return new WaitForSeconds( 0.5f );
 
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 2002, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
+		  PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+		yield return new WaitForSeconds( 0.5f );
+		PropClientSocket.SendMessage( new Message( PhysicalEffect.Wind, 1001 ) );
 
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 3002, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
+		yield return new WaitForSeconds( 0.5f );
 
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 4002, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
-	//}
+		  PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+		yield return new WaitForSeconds( 0.5f );
+		PropClientSocket.SendMessage( new Message( PhysicalEffect.Wind, 2000 ) );
+
+		yield return new WaitForSeconds( 0.5f );
+
+		  PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+		yield return new WaitForSeconds( 0.5f );
+		PropClientSocket.SendMessage( new Message( PhysicalEffect.Wind, 3000 ) );
+
+		yield return new WaitForSeconds( 0.5f );
+
+		  PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+		yield return new WaitForSeconds( 0.5f );
+		PropClientSocket.SendMessage( new Message( PhysicalEffect.Wind, 4000 ) );
+
+		yield return new WaitForSeconds( 0.5f );
+
+		  PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+		yield return new WaitForSeconds( 0.5f );
+		PropClientSocket.SendMessage( new Message( PhysicalEffect.Wind, 1000 ) );
+
+		yield return new WaitForSeconds( 0.5f );
+	}
 }

@@ -5,29 +5,7 @@ using UnityEngine.Networking;
  * Author: Nathan Boehning
  */
 
-public enum PhysicalEffect
-{
-	//Lift,
-	//MakeNoise,
-	//Decon,
-	//Flash,
-	Wind,
-	CannonLeft,
-	CannonRight,
-	SpecificController
-}
 
-public struct Message
-{
-	public int msgCode;
-	public PhysicalEffect effect;
-
-	public Message( PhysicalEffect effect, int code)
-	{
-		msgCode = code;
-		this.effect = effect;
-	}
-}
 
 public class MessageCollection
 {
