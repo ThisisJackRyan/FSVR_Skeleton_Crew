@@ -70,6 +70,7 @@ public class ImpactProjectile : NetworkBehaviour {
                 if (deathParticles) {
                     var dp = Instantiate(deathParticles, transform.position, Quaternion.identity);
                     NetworkServer.Spawn(dp);
+					VariableHolder.instance.IncreasePlayerScore(bullet.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.CrystalsDetroyed, transform.position);
                 }
 
             }

@@ -102,7 +102,7 @@ public class VariableHolder : MonoBehaviour {
 			case PlayerScore.ScoreType.Deaths://
 				playerScores[player].deaths ++;
 				break;
-			case PlayerScore.ScoreType.crystalsDetroyed://
+			case PlayerScore.ScoreType.CrystalsDetroyed://
 				playerScores[player].crystalsDetroyed ++;
 				break;
 			case PlayerScore.ScoreType.BoatsDestroyed://
@@ -140,7 +140,7 @@ public class VariableHolder : MonoBehaviour {
 			DragonkinKills			= 750,
 			Repairs					= 100,
 			Deaths					= -100,
-			crystalsDetroyed		= 500,
+			CrystalsDetroyed		= 500,
 			BoatsDestroyed			= 1500,
 			CaptainDamage			= 1000
 		}
