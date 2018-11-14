@@ -44,7 +44,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 5197ee2c05bffdd4083a2a89e8e8708b, type: 3}
-        m_Scale: {x: 5, y: 1}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -98,8 +98,8 @@ Material:
     - _OutlineWidth: 0
     - _Parallax: 0.02
     - _Posterize: 2
-    - _ScrollXSpeed: 5
-    - _ScrollYSpeed: 5
+    - _ScrollXSpeed: 10
+    - _ScrollYSpeed: 10
     - _SmoothnessTextureChannel: 0
     - _SpecularArea: 0.619
     - _SpecularHighlights: 1
@@ -128,5 +128,5 @@ Material:
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
-    - _TextureColor: {r: 0, g: 0.61499643, b: 1, a: 0.39215687}
+    - _TextureColor: {r: 0, g: 0.61499643, b: 1, a: 0.78431374}
     - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
