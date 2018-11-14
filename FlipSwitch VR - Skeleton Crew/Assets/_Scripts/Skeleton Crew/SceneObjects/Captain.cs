@@ -704,6 +704,8 @@ public class Captain : SerializedNetworkBehaviour {
 			return;
 		}
 		for (int i = 0; i < ratHatch.Count; i++) {
+			print(i);
+
 			ratHatch[i].SetActive(true);
 			tutorialRatHatch[i].SetActive(false);
 		}
@@ -714,6 +716,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	void DisableRatHatches() {
 		for (int i = 0; i < ratHatch.Count; i++) {
+			print(i);
 			ratHatch[i].SetActive(false);
 			tutorialRatHatch[i].SetActive(true);
 		}
@@ -726,7 +729,7 @@ public class Captain : SerializedNetworkBehaviour {
 		if (isServer) {
 			return;
 		}
-		for (int i = 0; i < tutorialCannons.Count; i++) {
+		for (int i = 0; i < ratHatch.Count; i++) {
 			ratHatch[i].SetActive(false);
 			tutorialRatHatch[i].SetActive(true);
 		}
