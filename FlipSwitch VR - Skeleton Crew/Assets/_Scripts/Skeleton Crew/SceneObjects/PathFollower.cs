@@ -118,34 +118,25 @@ public class PathFollower : NetworkBehaviour {
 	}
 
 	void UpdateWindProp() {
-#if ENABLE_PROPS
+#if PROP_ENABLED
 		if (!isServer) {
 			return;
 		}
 
-		/*
-		 * c1 & c2 1
-		 * c3 & c4 2
-		 * 
-		 0 = none
-		 1 = 1 + 2
-		 2 = 1 + 2
-		 3 = 1+2
-		 4 =3+4
-		 5 = 3+4
-		 6 = 3+4
-		 7 = 1234
-		 8 = 1234
+		if ( speed == 0 ) {
+			PropController.Instance.ActivateProp( Prop.WindOff );
+		} else if (speed >= .3 || speed <= .7) {
+			PropController.Instance.ActivateProp( Prop.WindLow );
+		} else if ( speed >= .9 || speed <= 1.3 ) {
+			PropController.Instance.ActivateProp( Prop.WindMed );
+		} else if ( speed >= 1.5 ) {
+			PropController.Instance.ActivateProp( Prop.WindHigh );
+		}
 
-		 */
-
-		//PropClientSocket.OpenSocket(PhysicalEffect.Wind);
-
-		//PropClientSocket.SendMessage(new Message(PhysicalEffect.Wind, 1001));
-
-
+		// .3, .5, .7, .9, 1.1, 1.3, 1.5
 
 #endif
+
 	}
 
 	internal void DestroyCrystal(int i) {

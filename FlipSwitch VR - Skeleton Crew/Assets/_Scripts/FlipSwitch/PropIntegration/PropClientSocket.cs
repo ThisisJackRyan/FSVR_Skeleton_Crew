@@ -28,9 +28,9 @@ public static class PropClientSocket {
 		}
 	}
 
-	public static readonly string windController = "192.168.1.6";
-	public static readonly string cannonControllerRight = "192.168.1.14";
-	public static readonly string cannonControllerLeft = "192.168.1.13";
+	public static readonly string windController = "192.168.1.105";
+	public static readonly string cannonControllerRight = "192.168.1.102";
+	public static readonly string cannonControllerLeft = "192.168.1.104";
 
 	public static void OpenSocket(PhysicalEffect effect) {
 		switch (effect) {
@@ -54,7 +54,6 @@ public static class PropClientSocket {
 				break;
 		}
 	}
-
 
 	private static ThreadStart delegateSpecific;
 	private static WritePi piSpecific;
@@ -90,7 +89,38 @@ public static class PropClientSocket {
 		}
 	}
 
+
 } // end class ClientSocket
+
+public enum Prop {
+	WindOff,
+	WindLow,
+	WindMed,
+	WindHigh,
+	CannonLeftOne,
+	CannonLeftTwo,
+	CannonLeftThree,
+	CannonRightOne,
+	CannonRightTwo,
+	CannonRightThree
+}
+
+public enum PhysicalEffect {
+	Wind,
+	CannonLeft,
+	CannonRight,
+	SpecificController
+}
+
+public struct Message {
+	public int msgCode;
+	public PhysicalEffect effect;
+
+	public Message( PhysicalEffect effect, int code ) {
+		msgCode = code;
+		this.effect = effect;
+	}
+}
 
 public class WritePi {
 	bool socketReady;                // global variables are setup here

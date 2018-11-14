@@ -6,70 +6,51 @@ using UnityEngine;
 //[ExecuteInEditMode]
 public class PropGameSetup : MonoBehaviour {
 
-	public string ipAddress = "192.168.1.12";
-	public int message;
-
+	//public string ipAddress = "190.168.1.105";
+	//public int message;
 
 	// Use this for initialization
 	[Button]
-	void StartSocket () {
-		print("opening");
-		PropClientSocket.OpenSocket(PhysicalEffect.Wind);
-		StartCoroutine("PlayEffect");
+	void StartHighWind () {
+		PropController.Instance.ActivateProp(Prop.WindHigh);
 	}
 
 	[Button]
-	void CloseSocket() {
-		print("closing socket");
-		PropClientSocket.CloseSocket(PhysicalEffect.Wind);
-
+	void StopWind() {
+		PropController.Instance.ActivateProp( Prop.WindOff );
 	}
 
-	IEnumerator PlayEffect() {
-		yield return new WaitForSeconds(0.5f);
-		print("sending message");
-		PropClientSocket.SendMessage(new Message(PhysicalEffect.Wind, 1001));
+	[Button]
+	void StartLowWind() {
+		PropController.Instance.ActivateProp( Prop.WindLow );
+	}
+	[Button]
+	void StartMedWind() {
+		PropController.Instance.ActivateProp( Prop.WindMed );
+	}
+	[Button]
+	void FireCannonLeftOne() {
+		PropController.Instance.ActivateProp( Prop.CannonLeftOne );
+	}
+	[Button]
+	void FireCannonLeftTwo() {
+		PropController.Instance.ActivateProp( Prop.CannonLeftTwo );
+	}
+	[Button]
+	void FireCannonLeftThree() {
+		PropController.Instance.ActivateProp( Prop.CannonLeftThree );
+	}
+	[Button]
+	void FireCannonRightOne() {
+		PropController.Instance.ActivateProp( Prop.CannonRightOne );
+	}
+	[Button]
+	void FireCannonRightTwo() {
+		PropController.Instance.ActivateProp( Prop.CannonRightTwo );
+	}
+	[Button]
+	void FireCannonRightThree() {
+		PropController.Instance.ActivateProp( Prop.CannonRightThree );
 	}
 
-	//IEnumerator PlayCode() {
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 1001, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
-
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 2001, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
-
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 3001, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
-
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 4001, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
-
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 1002, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
-
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 2002, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
-
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 3002, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
-
-	//	PropClientSocket.SetupSocketSpecfic( ipAddress );
-	//	yield return new WaitForSeconds( 2 );
-	//	PropClientSocket.sendMessage( new message( 4002, "Specific" ) );
-	//	yield return new WaitForSeconds( 2 );
-	//}
 }
