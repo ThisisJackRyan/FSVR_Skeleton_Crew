@@ -102,8 +102,14 @@ public class Cannon : NetworkBehaviour {
 
         GetComponent<NetworkAnimator>().SetTrigger("Fire");
 
+		if (isServer) { 
+			PropController.Instance.ActivateProp(cannonProp);
+		}
+
 	}
     public bool isMagicCannon = false;
+
+	public Prop cannonProp;
 
     public void TriggerReload() {
         if (!isServer || isMagicCannon) {

@@ -55,7 +55,6 @@ public static class PropClientSocket {
 		}
 	}
 
-
 	private static ThreadStart delegateSpecific;
 	private static WritePi piSpecific;
 
