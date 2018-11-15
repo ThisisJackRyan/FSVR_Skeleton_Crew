@@ -80,4 +80,18 @@ public class PropController : MonoBehaviour {
 			PropClientSocket.SendMessage( new Message( effect, codes[i] ) );
 		}
 	}
+
+	//private void OnDestroy() {
+	//	//ActivateProp(Prop.WindOff);
+	//	PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+	//	PropClientSocket.SendMessage(new Message(PhysicalEffect.Wind, 1002));
+	//	PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+	//	PropClientSocket.SendMessage(new Message(PhysicalEffect.Wind, 2002));
+	//	PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+	//	PropClientSocket.SendMessage(new Message(PhysicalEffect.Wind, 3002));
+	//	PropClientSocket.OpenSocket(PhysicalEffect.Wind);
+	//	PropClientSocket.SendMessage(new Message(PhysicalEffect.Wind, 4002));
+	//}
+
+
 }
