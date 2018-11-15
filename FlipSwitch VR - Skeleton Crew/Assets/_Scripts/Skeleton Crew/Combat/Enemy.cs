@@ -143,9 +143,10 @@ public class Enemy : NetworkBehaviour {
 				return;
 			}
 			//GetComponent<Inventory>().EquipItem(primaryItemTypes[temp]);
-			GetComponent<BehaviorTree>().SetVariableValue("weaponType", primaryItemType);
 			//RpcEquipItem(itemToEquip);
 		}
+
+		GetComponent<BehaviorTree>().SetVariableValue("weaponType", primaryItemType);
     }
 
     [ClientRpc]          
