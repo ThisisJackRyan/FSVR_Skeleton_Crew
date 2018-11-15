@@ -137,13 +137,17 @@ public class Host : NetworkBehaviour {
 
 	public void ShowView(int player) {
 		//turn on players camera -- should be rendering to mirrored display
+		print("show view " + player);
 		if (!isServer) {
 			return;
 		}
 
 		foreach (var g in players) {
+			print(g.name);
 			if (g.name == "Player " + player) {
-
+				g.GetComponent<FSVRPlayer>().MirrorView();
+			} else {
+				g.GetComponent<FSVRPlayer>().DisableMirrorView(hostUI.mirrorViews[players.Count - 1]);
 			}
 		}
 	}

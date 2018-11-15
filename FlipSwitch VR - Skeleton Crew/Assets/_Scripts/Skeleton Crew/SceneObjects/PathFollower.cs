@@ -229,6 +229,8 @@ public class PathFollower : NetworkBehaviour {
 			Captain.instance.PlayDialogue(mutinyClip.name);
 		}
 		CancelInvoke("SpawnMeteors");
+		InitialRebellion();
+
 		Invoke( "SpawnBossCave", encounterthreeTotalTime );
 
 	}
@@ -387,11 +389,10 @@ public class PathFollower : NetworkBehaviour {
                     ChangeSpeed(false);
                     return;
 				}
-				if (firstTimeRatkinRebel) {
-					InitialRebellion();
-				} else {
+				//if (firstTimeRatkinRebel) {
+				//} else {
 					Spawn(thirdEncounters);
-				}
+				//}
 				break;
 			case EncounterStage.Tutorial:
 				////print("calling spawn with index " + ( currentNode - 1 ) );

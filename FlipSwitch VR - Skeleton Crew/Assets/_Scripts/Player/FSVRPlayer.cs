@@ -133,11 +133,35 @@ public class FSVRPlayer : NetworkBehaviour {
 	public void EnableCamera() {
 		hostCamView.enabled = true;
 		hostCamViewDepth.enabled = true;
+		hostCamViewDepth.gameObject.SetActive( true);
+	}
+
+	public void MirrorView() {
+		print("mirror view called");
+		EnableCamera();
+		hostCamView.targetDisplay = 1;
+		hostCamView.targetTexture = null;
+
+		hostCamViewDepth.targetDisplay = 1;
+		hostCamViewDepth.targetTexture = null;
+
+	}
+
+	public void DisableMirrorView(RenderTexture texture) {
+		print("disable mirror view called");
+		EnableCamera();
+		hostCamView.targetDisplay = 2;
+		hostCamView.targetTexture = texture;
+
+		hostCamViewDepth.targetDisplay = 2;
+		hostCamViewDepth.targetTexture = texture;
+
 	}
 
 	public void DisableCamera() {
 		hostCamView.enabled = false;
 		hostCamViewDepth.enabled = false;
+		hostCamViewDepth.gameObject.SetActive(false);
 	}
 
 	public VariableHolder.PlayerScore.ScoreType type;
