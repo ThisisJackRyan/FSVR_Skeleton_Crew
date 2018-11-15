@@ -66,7 +66,7 @@ public class Host : NetworkBehaviour {
 		}
 
 		players.Add(playerToAdd);
-		playerToAdd.GetComponent<FSVRPlayer>().SetCameraSettings(players.Count, hostUI.mirrorViews[players.Count - 1]);
+		playerToAdd.GetComponent<FSVRPlayer>().SetCameraSettings( hostUI.mirrorViews[players.Count - 1]);
 		playerToAdd.name = "Player " + players.Count;
 		//  scriptHostUi.UpdateUI();
 	}
@@ -147,7 +147,7 @@ public class Host : NetworkBehaviour {
 			if (g.name == "Player " + player) {
 				g.GetComponent<FSVRPlayer>().MirrorView();
 			} else {
-				g.GetComponent<FSVRPlayer>().DisableMirrorView(hostUI.mirrorViews[players.Count - 1]);
+				g.GetComponent<FSVRPlayer>().DisableMirrorView(hostUI.mirrorViews[int.Parse(g.name[7].ToString())]);
 			}
 		}
 	}
