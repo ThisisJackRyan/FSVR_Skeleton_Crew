@@ -9,44 +9,43 @@ public class Host : NetworkBehaviour {
 
 	public GameObject tagResetterPrefab;
 	List<GameObject> players;
-	private HostUiManager scriptHostUi;
+	private HostUiManager hostUI;
 
 	private GameObject selectedPlayer;
 
 	#region Getters & Setters
-	public void SetSelectedPlayer(GameObject p)
-	{
+	public void SetSelectedPlayer(GameObject p) {
 		selectedPlayer = p;
 	}
 
-	public List<GameObject> GetPlayerList()
-	{
+	public List<GameObject> GetPlayerList() {
 		return players;
 	}
 	#endregion
 
 	#region Initialization
-	void Start()
-	{
+	void Start() {
 
-		if (!isLocalPlayer && !isServer)
-		{
+		if (!isLocalPlayer && !isServer) {
 			GetComponent<AudioListener>().enabled = false;
 			return;
 		}
 
-        //var comms = FindObjectOfType<VoiceBroadcastTrigger>();
-        //comms.BroadcastPosition = false;
+		//var comms = FindObjectOfType<VoiceBroadcastTrigger>();
+		//comms.BroadcastPosition = false;
 		GetComponent<Camera>().enabled = true;
 		GetComponent<AudioListener>().enabled = true;
+		hostUI = GetComponent<HostUiManager>();
 		//Resources.FindObjectsOfTypeAll<HostCanvas>()[0].gameObject.SetActive(true);
 		//GameObject uiManager = GameObject.Find( "HostUIManager" );
 		//uiManager.SetActive( true );
-
-
-
 		//scriptHostUi = uiManager.GetComponent<HostUiManager>();
 		//scriptHostUi.SetHost( this );
+
+		if (isServer) {
+			InitSecondaryDisplays();
+		}
+
 	}
 
 	public void AddPlayerToHostList(GameObject playerToAdd) {
@@ -56,7 +55,7 @@ public class Host : NetworkBehaviour {
 
 	[ClientRpc]
 	private void RpcAddPlayerToHost(GameObject playerToAdd) {
-		if ( !isLocalPlayer) {
+		if (!isLocalPlayer) {
 			return;
 		}
 
@@ -67,9 +66,9 @@ public class Host : NetworkBehaviour {
 		}
 
 		players.Add(playerToAdd);
-		playerToAdd.GetComponent<FSVRPlayer>().SetCameraSettings(players.Count);
+		playerToAdd.GetComponent<FSVRPlayer>().SetCameraSettings(players.Count, hostUI.mirrorViews[players.Count - 1]);
 		playerToAdd.name = "Player " + players.Count;
-	  //  scriptHostUi.UpdateUI();
+		//  scriptHostUi.UpdateUI();
 	}
 
 	#endregion
@@ -131,6 +130,38 @@ public class Host : NetworkBehaviour {
 	#endregion
 
 	#region Handle Player Returning
+
+	#endregion
+
+	#region Mirror Views
+
+	public void ShowView(int player) {
+		//turn on players camera -- should be rendering to mirrored display
+		if (!isServer) {
+			return;
+		}
+
+		foreach (var g in players) {
+			if (g.name == "Player " + player) {
+
+			}
+		}
+	}
+
+	void InitSecondaryDisplays() {
+		//get player cameras, set their display to 2
+		//activate display 2
+		//turn them all back off
+
+		for (int i = 0; i < Display.displays.Length; i++) {
+			if (i == 0) {
+				continue;
+			}
+
+			Debug.Log("Activating display " + i);
+			Display.displays[i].Activate();
+		}
+	}
 
 	#endregion
 }

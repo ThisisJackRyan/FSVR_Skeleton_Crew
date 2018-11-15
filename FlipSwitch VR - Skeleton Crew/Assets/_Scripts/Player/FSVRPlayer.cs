@@ -111,10 +111,12 @@ public class FSVRPlayer : NetworkBehaviour {
 		}
     }
 
-    public void SetCameraSettings(int playerNum) {
+    public void SetCameraSettings(int playerNum, RenderTexture mirror) {
 		switch (playerNum) {
 			case 1:
-				hostCamView.rect = new Rect(new Vector2(0f, 0.55f), new Vector2(0.5f, 0.45f));
+				hostCamView.targetTexture = mirror;
+				hostCamViewDepth.targetTexture = mirror;
+				EnableCamera();
 				break;
 			case 2:
 				hostCamView.rect = new Rect(new Vector2(0.5f, 0.55f), new Vector2(0.5f, 0.45f));

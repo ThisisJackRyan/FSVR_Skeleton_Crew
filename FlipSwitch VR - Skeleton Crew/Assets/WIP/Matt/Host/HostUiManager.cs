@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class HostUiManager : MonoBehaviour {
+public class HostUiManager : NetworkBehaviour {
 
     public Dropdown playerSelectDropdown;
     public Dropdown playerActionDropdown;
@@ -12,13 +13,20 @@ public class HostUiManager : MonoBehaviour {
     public Button togglePauseButton;
     public GameObject[] playerTexts;
 
+	public GameObject canvas;
 	public RenderTexture[] mirrorViews;
 
     private GameObject currentlySelectedPlayer;
     private Host host;
     private bool isHostPerspective = true;
 
-    public void UpdateUI() {
+	private void Start() {
+		if (!isServer) {
+			canvas.SetActive(false);
+		}
+	}
+
+	public void UpdateUI() {
 		playerSelectDropdown.options.Clear();
         List<string> playerNames = new List<string>();
         foreach (GameObject player in host.GetPlayerList()) {
