@@ -57,6 +57,25 @@ public class Host : NetworkBehaviour {
 		hostUI.UpdateUI();
 	}
 
+	PathFollower pathFollower;
+	public void ChangeSpeed(bool faster) {
+		if (!isServer) {
+			return;
+		}
+
+		if (!pathFollower) {
+			if (FindObjectOfType<PathFollower>()) {
+				pathFollower = FindObjectOfType<PathFollower>();
+			}
+		}
+
+		if (pathFollower) {
+			pathFollower.ChangeSpeed((faster) ? 1 : -1);
+		} else {
+			Debug.LogWarning("pathfollower was not able to be found.");
+		}
+	}
+
 	[ClientRpc]
 	private void RpcAddPlayerToHost(GameObject playerToAdd) {
 		if (!isLocalPlayer) {

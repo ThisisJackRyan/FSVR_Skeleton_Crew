@@ -12,6 +12,8 @@ public class HostUiManager : NetworkBehaviour {
     public Button mirrorViewButton;
     public Button performCalibrateButton;
     public Button togglePauseButton;
+	public Text togglePauseText;
+	public Button speedUp, speedDown;
 
 	public Text headerText;
 
@@ -43,7 +45,7 @@ public class HostUiManager : NetworkBehaviour {
     }
 
     public void _SelectPlayer(int n) {
-        host.SetSelectedPlayer(host.GetPlayerList()[n]);
+        host.SetSelectedPlayer(host.GetPlayerList()[n-1]);
 		headerText.text = "Player " + n;
 		//update buttons here
 		mirrorViewButton.onClick.RemoveAllListeners();
@@ -76,7 +78,7 @@ public class HostUiManager : NetworkBehaviour {
 	}
 
 	public void _TogglePauseGame() {
-        togglePauseButton.GetComponentInChildren<Text>().text = Time.timeScale == 0f ? "Pause Game" : "Unpause Game";
+		togglePauseText.text = Time.timeScale == 0f ? "Pause Game" : "Unpause Game";
         
         host.TogglePause();
     }

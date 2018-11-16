@@ -117,6 +117,10 @@ public class PathFollower : NetworkBehaviour {
 		return true;
 	}
 
+	public void ChangeSpeed(int sign) {
+		ChangeSpeed(mast.speedIncrement * sign);
+	}
+
 	void UpdateWindProp() {
 #if PROP_ENABLED
 		if (!isServer) {
