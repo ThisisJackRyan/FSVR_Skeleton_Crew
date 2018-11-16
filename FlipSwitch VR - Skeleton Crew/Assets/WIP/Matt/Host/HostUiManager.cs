@@ -7,16 +7,18 @@ using UnityEngine.UI;
 public class HostUiManager : NetworkBehaviour {
 
     public Dropdown playerSelectDropdown;
-    public Dropdown playerActionDropdown;
-    public Button togglePerspectiveButton;
-    public Button forceNextPhaseButton;
-    public Button performActionButton;
+    public Dropdown forceEventDropdown;
+    public Button forceEventButton;
+    public Button mirrorViewButton;
+    public Button performCalibrateButton;
     public Button togglePauseButton;
-    public GameObject[] playerTexts;
+
+	public Text headerText;
 
 	public GameObject canvas;
-	public RenderTexture[] mirrorViews;
 	public GameObject[] playerViewPanel;
+    public GameObject[] playerTexts;
+	public RenderTexture[] mirrorViews;
 
     private GameObject currentlySelectedPlayer;
     private Host host;
@@ -26,6 +28,8 @@ public class HostUiManager : NetworkBehaviour {
 		if (!isServer) {
 			canvas.SetActive(false);
 		}
+
+		host = GetComponent<Host>();
 	}
 
 	public void UpdateUI() {
@@ -40,25 +44,31 @@ public class HostUiManager : NetworkBehaviour {
 
     public void _SelectPlayer(int n) {
         host.SetSelectedPlayer(host.GetPlayerList()[n]);
+		headerText.text = "Player " + n;
+		//update buttons here
+		mirrorViewButton.onClick.RemoveAllListeners();
+		mirrorViewButton.onClick.AddListener(()=> host.ShowView(n));
     }
 
-    public void _TogglePerspective() {
-        if (isHostPerspective) {
-            togglePerspectiveButton.GetComponentInChildren<Text>().text = "Show Host Perspective";
-            host.GetComponent<Camera>().enabled = false;
-            for (int i = 0; i < host.GetPlayerList().Count; i++) {
-                host.GetPlayerList()[i].GetComponent<FSVRPlayer>().EnableCamera();
-                playerTexts[i].SetActive(true);
-            }
-            // Todo figure out how to look through players eyes without getting null ref on steamvr hmds
-        } else {
-            togglePerspectiveButton.GetComponentInChildren<Text>().text = "Show Players Perspective";
-            host.GetComponent<Camera>().enabled = true;
-            for (int i = 0; i < host.GetPlayerList().Count; i++) {
-                host.GetPlayerList()[i].GetComponent<FSVRPlayer>().DisableCamera();
-                playerTexts[i].SetActive(false);
-            }
-        }
+    public void _TogglePerspective(int i) {
+		//if (isHostPerspective) {
+		//    togglePerspectiveButton.GetComponentInChildren<Text>().text = "Show Host Perspective";
+		//    host.GetComponent<Camera>().enabled = false;
+		//    for (int i = 0; i < host.GetPlayerList().Count; i++) {
+		//        host.GetPlayerList()[i].GetComponent<FSVRPlayer>().EnableCamera();
+		//        playerTexts[i].SetActive(true);
+		//    }
+		//    // Todo figure out how to look through players eyes without getting null ref on steamvr hmds
+		//} else {
+		//    togglePerspectiveButton.GetComponentInChildren<Text>().text = "Show Players Perspective";
+		//    host.GetComponent<Camera>().enabled = true;
+		//    for (int i = 0; i < host.GetPlayerList().Count; i++) {
+		//        host.GetPlayerList()[i].GetComponent<FSVRPlayer>().DisableCamera();
+		//        playerTexts[i].SetActive(false);
+		//    }
+		//}
+
+		host.ShowView(i);
     }
 
 	internal void EnablePlayerView(int i) {
@@ -71,42 +81,40 @@ public class HostUiManager : NetworkBehaviour {
         host.TogglePause();
     }
 
-    public void _ActionSelection(int n) {
-        switch (n) {
-            case 0: // Calibrate the player
-                performActionButton.GetComponentInChildren<Text>().text = "Perform Calibration";
-                break;
-            case 1: // Reset the players tags
-                performActionButton.GetComponentInChildren<Text>().text = "Perform Tag Reset";
-                break;
-            case 2: // Player is leaving the game
-                performActionButton.GetComponentInChildren<Text>().text = "Perform Leave Game";
-                break;
-            case 3:
-                performActionButton.GetComponentInChildren<Text>().text = "Perform Return";
-                break;
-        }
-    }
+    //public void _ActionSelection(int n) {
+    //    switch (n) {
+    //        case 0: // Calibrate the player
+    //            performActionButton.GetComponentInChildren<Text>().text = "Perform Calibration";
+    //            break;
+    //        case 1: // Reset the players tags
+    //            performActionButton.GetComponentInChildren<Text>().text = "Perform Tag Reset";
+    //            break;
+    //        case 2: // Player is leaving the game
+    //            performActionButton.GetComponentInChildren<Text>().text = "Perform Leave Game";
+    //            break;
+    //        case 3:
+    //            performActionButton.GetComponentInChildren<Text>().text = "Perform Return";
+    //            break;
+    //    }
+    //}
 
-    public void _PerformAction() {
-        switch (playerActionDropdown.value) {
-            case 0: // Calibrate the player
-                host.PerformCalibration();
-                break;
-            case 1: // Reset the players tags
+    //public void _PerformAction() {
+    //    switch (playerActionDropdown.value) {
+    //        case 0: // Calibrate the player
+    //            host.PerformCalibration();
+    //            break;
+    //        case 1: // Reset the players tags
                 
-                break;
-            case 2: // Player is leaving the game
+    //            break;
+    //        case 2: // Player is leaving the game
                 
-                break;
-            case 3: // Player is returning to the game
-                break;
-        }
-    }
+    //            break;
+    //        case 3: // Player is returning to the game
+    //            break;
+    //    }
+    //}
 
     public void SetHost(Host g) {
         host = g;
     }
-
-
 }

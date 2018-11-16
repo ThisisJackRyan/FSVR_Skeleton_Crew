@@ -54,6 +54,7 @@ public class Host : NetworkBehaviour {
 
 		//needs player index
 		hostUI.EnablePlayerView((players != null)? players.Count : 0);
+		hostUI.UpdateUI();
 	}
 
 	[ClientRpc]
@@ -76,20 +77,27 @@ public class Host : NetworkBehaviour {
 
 	#endregion
 
-	#region Handle Pausing
+	#region Handle Pausing  ----- done
 	public void TogglePause() {
-		if (isLocalPlayer) {
-			CmdTogglePause();
+		if (!isServer) {
+			return;
 		}
-	}
 
-	[Command]
-	private void CmdTogglePause() {
+		if (Time.timeScale == 0f) {
+			Time.timeScale = 1f;
+		} else {
+			Time.timeScale = 0f;
+		}
+
 		RpcTogglePause();
 	}
 
 	[ClientRpc]
 	private void RpcTogglePause() {
+		if (isServer) {
+			return;
+		}
+
 		if (Time.timeScale == 0f) {
 			Time.timeScale = 1f;
 		} else {
