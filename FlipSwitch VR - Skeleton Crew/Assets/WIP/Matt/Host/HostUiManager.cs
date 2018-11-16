@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class HostUiManager : NetworkBehaviour {
 
-    public Dropdown playerSelectDropdown;
-    public Dropdown forceEventDropdown;
-    public Button forceEventButton;
-    public Button mirrorViewButton;
-    public Button performCalibrateButton;
-    public Button togglePauseButton;
+	public Dropdown playerSelectDropdown;
+	public Dropdown forceEventDropdown;
+	public Button forceEventButton;
+	public Button mirrorViewButton;
+	public Button performCalibrateButton;
+	public Button togglePauseButton;
 	public Text togglePauseText;
 	public Button speedUp, speedDown;
 
@@ -19,12 +19,12 @@ public class HostUiManager : NetworkBehaviour {
 
 	public GameObject canvas;
 	public GameObject[] playerViewPanel;
-    public GameObject[] playerTexts;
+	public GameObject[] playerTexts;
 	public RenderTexture[] mirrorViews;
 
-    private GameObject currentlySelectedPlayer;
-    private Host host;
-    private bool isHostPerspective = true;
+	private GameObject currentlySelectedPlayer;
+	private Host host;
+	private bool isHostPerspective = true;
 
 	private void Start() {
 		if (!isServer) {
@@ -36,23 +36,30 @@ public class HostUiManager : NetworkBehaviour {
 
 	public void UpdateUI() {
 		playerSelectDropdown.options.Clear();
-        List<string> playerNames = new List<string>();
-        foreach (GameObject player in host.GetPlayerList()) {
-            playerNames.Add(player.name);
-        }
+		List<string> playerNames = new List<string>();
+		if (host.GetPlayerList() != null) {
 
-        playerSelectDropdown.AddOptions(playerNames);
-    }
+			foreach (GameObject player in host.GetPlayerList()) {
+				playerNames.Add(player.name);
+			}
 
-    public void _SelectPlayer(int n) {
-        host.SetSelectedPlayer(host.GetPlayerList()[n-1]);
+		}
+		playerSelectDropdown.AddOptions(playerNames);
+	}
+
+	public void _SelectPlayer(int n) {
+		currentlySelectedPlayer =
+			host.SetSelectedPlayer(host.GetPlayerList()[n - 1]);
+
 		headerText.text = "Player " + n;
+
+
 		//update buttons here
 		mirrorViewButton.onClick.RemoveAllListeners();
-		mirrorViewButton.onClick.AddListener(()=> host.ShowView(n));
-    }
+		mirrorViewButton.onClick.AddListener(() => host.ShowView(n));
+	}
 
-    public void _TogglePerspective(int i) {
+	public void _TogglePerspective(int i) {
 		//if (isHostPerspective) {
 		//    togglePerspectiveButton.GetComponentInChildren<Text>().text = "Show Host Perspective";
 		//    host.GetComponent<Camera>().enabled = false;
@@ -71,7 +78,7 @@ public class HostUiManager : NetworkBehaviour {
 		//}
 
 		host.ShowView(i);
-    }
+	}
 
 	internal void EnablePlayerView(int i) {
 		playerViewPanel[i].SetActive(true);
@@ -79,9 +86,9 @@ public class HostUiManager : NetworkBehaviour {
 
 	public void _TogglePauseGame() {
 		togglePauseText.text = Time.timeScale == 0f ? "Pause Game" : "Unpause Game";
-        
-        host.TogglePause();
-    }
+
+		host.TogglePause();
+	}
 
 	public void _ForceEvent() {
 		switch (forceEventDropdown.value) {
@@ -124,12 +131,14 @@ public class HostUiManager : NetworkBehaviour {
 		//playerSelectDropdown.value is the player needing calibration
 
 		//not the correct player, this is the local player - not the player selected.
-		currentlySelectedPlayer.GetComponent<FSVRPlayer>().RpcReCalibrate();
+
+		//where is this getting set?
+		currentlySelectedPlayer.GetComponent<FSVRPlayer>().RpcReCalibrate(host.GetPlayerList()[  playerSelectDropdown.value]);
 
 	}
 
 
 	public void SetHost(Host g) {
-        host = g;
-    }
+		host = g;
+	}
 }

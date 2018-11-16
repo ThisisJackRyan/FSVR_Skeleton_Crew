@@ -31,22 +31,32 @@ public class ConnectWithPress : MonoBehaviour {
 
         if (canInput) {
             //print("input enabled");
-            if (Controller.RightController.GetPressDown(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger)) {
-                foreach (var item in setters) {
-                    if (item) {
-                        item.SetTrackerId();
-                    } else {
-                        continue;
-                    }
-                }
+            if (Controller.RightController.GetPress(Controller.Trigger)) {
+				timer += Time.deltaTime;
+            }else if (Controller.RightController.GetPressUp(Controller.Trigger) || Controller.RightController.GetPressDown(Controller.Trigger)) {
+				timer = 0;
+			}
+
+			if(timer >= timeToHold) {
+				foreach (var item in setters) {
+					if (item) {
+						item.SetTrackerId();
+					} else {
+						continue;
+					}
+				}
 				//FindObjectOfType<SteamVR_LoadLevel>().Trigger();
 
 				StartCoroutine("FadeAndLoad");
-            }
+			}
         }
     }
 
+	float timer, timeToHold = 3;
+
     bool canInput = false;
+
+
 
     //void InitController() {
     //    canInput = true;

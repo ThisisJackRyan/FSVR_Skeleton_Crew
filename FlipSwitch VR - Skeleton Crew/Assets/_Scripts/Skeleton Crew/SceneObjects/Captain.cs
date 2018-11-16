@@ -854,6 +854,13 @@ public class Captain : SerializedNetworkBehaviour {
 	IEnumerator LoadBossLevel() {
 		PlayDialogue("Snd_CaptainBoss_Intro_Arrived");
 		LoadBossScene.instance.RpcFadePlayerCameras();
+
+#if PROP_ENABLED
+		if (isServer) {
+			PropController.Instance.ActivateProp(Prop.WindOff);
+		}
+#endif
+
 		yield return new WaitForSeconds(3.5f);
 		LoadBossScene.instance.NetworkLoadBossScene();
 	}

@@ -86,6 +86,17 @@ public class FSVRPlayer : NetworkBehaviour {
 		if (isLocalPlayer) {
 			if (level == 2) {
 				SteamVR_Fade.Start(Color.clear, 1f);
+
+				//clear anim
+				ResetAnims();
+			}
+		}
+	}
+
+	void ResetAnims() {
+		foreach (var item in GetComponent<NetworkAnimator>().animator.parameters) {
+			if (item.type == AnimatorControllerParameterType.Bool) {
+				GetComponent<NetworkAnimator>().animator.SetBool(item.name, false);
 			}
 		}
 	}
@@ -131,12 +142,12 @@ public class FSVRPlayer : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	public void RpcReCalibrate() {
+	public void RpcReCalibrate(GameObject playerToCalibrate) {
 		if (isServer || !isLocalPlayer) {
 			return;
 		}
 
-		vrik.Calibrate();
+		playerToCalibrate.GetComponent<FSVRPlayer>().vrik.Calibrate();
 
 	}
 

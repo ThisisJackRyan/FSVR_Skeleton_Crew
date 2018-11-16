@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -102,12 +102,22 @@ public class Cannon : NetworkBehaviour {
 
         GetComponent<NetworkAnimator>().SetTrigger("Fire");
 
-		if (isServer) { 
-			PropController.Instance.ActivateProp(cannonProp);
+		if (isServer) {
+			StartCoroutine("FirePorp");
 		}
 
 	}
-    public bool isMagicCannon = false;
+
+	public float cannonPropWait = 0.5f;
+
+	IEnumerator FireProp() {
+#if PROP_ENABLED
+		yield return new WaitForSeconds(cannonPropWait);
+		PropController.Instance.ActivateProp(cannonProp);
+#endif
+	}
+
+	public bool isMagicCannon = false;
 
 	public Prop cannonProp;
 

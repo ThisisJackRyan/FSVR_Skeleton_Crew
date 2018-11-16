@@ -14,8 +14,9 @@ public class Host : NetworkBehaviour {
 	private GameObject selectedPlayer;
 
 	#region Getters & Setters
-	public void SetSelectedPlayer(GameObject p) {
+	public GameObject SetSelectedPlayer(GameObject p) {
 		selectedPlayer = p;
+		return p;
 	}
 
 	public List<GameObject> GetPlayerList() {
@@ -46,6 +47,14 @@ public class Host : NetworkBehaviour {
 			InitSecondaryDisplays();
 		}
 
+	}
+
+	void OnLevelWasLoaded(int level) {
+		if (isServer) {
+			if (level == 2) {
+				transform.position = Vector3.zero;
+			}
+		}
 	}
 
 	public void AddPlayerToHostList(GameObject playerToAdd) {
@@ -127,27 +136,27 @@ public class Host : NetworkBehaviour {
 
 	#region Handle Calibrations
 
-	public void PerformCalibration() {
-		if (!selectedPlayer) {
-			return;
-		}
+	//public void PerformCalibration() {
+	//	if (!selectedPlayer) {
+	//		return;
+	//	}
 
-		CmdCalibratePlayer(selectedPlayer);
-	}
+	//	CmdCalibratePlayer(selectedPlayer);
+	//}
 
-	[Command]
-	private void CmdCalibratePlayer(GameObject g) {
-		RpcCalibratePlayer(g);
-	}
+	//[Command]
+	//private void CmdCalibratePlayer(GameObject g) {
+	//	RpcCalibratePlayer(g);
+	//}
 
-	[ClientRpc]
-	private void RpcCalibratePlayer(GameObject g) {
-		if (isServer) {
-			return;
-		}
+	//[ClientRpc]
+	//private void RpcCalibratePlayer(GameObject g) {
+	//	if (isServer) {
+	//		return;
+	//	}
 
-		g.GetComponentInChildren<VRIKCalibrationController>().Calibrate();
-	}
+	//	g.GetComponentInChildren<VRIKCalibrationController>().Calibrate();
+	//}
 
 	#endregion
 

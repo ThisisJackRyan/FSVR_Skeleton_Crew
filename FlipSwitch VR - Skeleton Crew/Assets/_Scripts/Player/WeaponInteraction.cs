@@ -18,6 +18,8 @@ public class WeaponInteraction : NetworkBehaviour {
 	public GameObject playerColliderForEnemyAttacker;
 	NetworkAnimator networkAnim;
 
+
+
 	public void AssignWeapon(string side, GameObject weapon ) {
 		if ( side.Equals( "left" ) ) {
 			leftHandWeapon = weapon;
@@ -128,7 +130,6 @@ public class WeaponInteraction : NetworkBehaviour {
 	[ClientRpc]
 	void RpcAnimTrigger(string trigger) {
 		networkAnim.SetTrigger(trigger);
-
 	}
 
 	[ClientRpc]
