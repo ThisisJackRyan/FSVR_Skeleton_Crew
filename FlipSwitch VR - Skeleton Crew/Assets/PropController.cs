@@ -19,6 +19,7 @@ public class PropController : MonoBehaviour {
 	}
 
 	public void ActivateProp(Prop prop) {
+		print("activate called with " + prop);
 		switch ( prop ) {
 			case Prop.WindOff:
 				StartCoroutine( SendMessages(PhysicalEffect.Wind, new int[] {1002, 2002, 3002, 4002 } ));
@@ -32,6 +33,7 @@ public class PropController : MonoBehaviour {
 
 				break;
 			case Prop.WindHigh:
+				print("wind hi");
 				StartCoroutine( SendMessages( PhysicalEffect.Wind, new int[] { 1001, 2001, 3001, 4001 } ) );
 				break;
 			case Prop.CannonLeftOne:
@@ -76,7 +78,7 @@ public class PropController : MonoBehaviour {
 			print( "opening" );
 			PropClientSocket.OpenSocket( effect );
 			yield return new WaitForSeconds( 0.5f );
-			print( "triggering code " + i );
+			print( "triggering code " + i + " with message " + codes[i]);
 			PropClientSocket.SendMessage( new Message( effect, codes[i] ) );
 		}
 	}

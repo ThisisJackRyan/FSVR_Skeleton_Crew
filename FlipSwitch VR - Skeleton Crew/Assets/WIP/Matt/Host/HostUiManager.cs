@@ -83,40 +83,40 @@ public class HostUiManager : NetworkBehaviour {
         host.TogglePause();
     }
 
-    //public void _ActionSelection(int n) {
-    //    switch (n) {
-    //        case 0: // Calibrate the player
-    //            performActionButton.GetComponentInChildren<Text>().text = "Perform Calibration";
-    //            break;
-    //        case 1: // Reset the players tags
-    //            performActionButton.GetComponentInChildren<Text>().text = "Perform Tag Reset";
-    //            break;
-    //        case 2: // Player is leaving the game
-    //            performActionButton.GetComponentInChildren<Text>().text = "Perform Leave Game";
-    //            break;
-    //        case 3:
-    //            performActionButton.GetComponentInChildren<Text>().text = "Perform Return";
-    //            break;
-    //    }
-    //}
+	public void _ForceEvent() {
+		switch (forceEventDropdown.value) {
+			case 0: // 
+				break;
+			case 1: // to deck
+				if (FindObjectOfType<ExitLobbySwitch>()) {
+					FindObjectOfType<ExitLobbySwitch>().TeleportWorkAround();
+				} else {
+					Debug.LogWarning("couldnt find exit lobby switch");
+				}
+				break;
+			case 2: // first phase
+				FindObjectOfType<PathFollower>().StartMoving();
+				break;
+			case 3: //first break
+				FindObjectOfType<PathFollower>().StartFirstBreak();
 
-    //public void _PerformAction() {
-    //    switch (playerActionDropdown.value) {
-    //        case 0: // Calibrate the player
-    //            host.PerformCalibration();
-    //            break;
-    //        case 1: // Reset the players tags
-                
-    //            break;
-    //        case 2: // Player is leaving the game
-                
-    //            break;
-    //        case 3: // Player is returning to the game
-    //            break;
-    //    }
-    //}
+				break;
+			case 4: //second phase
+				FindObjectOfType<PathFollower>().StartSecondPhase();
 
-    public void SetHost(Host g) {
+				break;
+			case 5: //third phase
+				FindObjectOfType<PathFollower>().StartThirdPhase();
+
+				break;
+			case 6: //spawn boss cave
+				FindObjectOfType<PathFollower>().SpawnBossCave();
+
+				break;
+		}
+	}
+
+	public void SetHost(Host g) {
         host = g;
     }
 }

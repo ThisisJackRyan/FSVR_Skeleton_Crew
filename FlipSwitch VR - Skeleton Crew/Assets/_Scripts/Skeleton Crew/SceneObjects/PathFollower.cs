@@ -55,7 +55,7 @@ public class PathFollower : NetworkBehaviour {
 
 	[Space]
 	[SerializeField]
-	EncounterStage currentStage;
+	public EncounterStage currentStage;
 	[Button]
 	public void WorkAroundSpawn() {
 		SpawnEncounter(currentStage);
@@ -127,20 +127,34 @@ public class PathFollower : NetworkBehaviour {
 			return;
 		}
 
-		if ( speed == 0 ) {
-			PropController.Instance.ActivateProp( Prop.WindOff );
-		} else if (speed >= .3 || speed <= .7) {
-			PropController.Instance.ActivateProp( Prop.WindLow );
-		} else if ( speed >= .9 || speed <= 1.3 ) {
-			PropController.Instance.ActivateProp( Prop.WindMed );
-		} else if ( speed >= 1.5 ) {
-			PropController.Instance.ActivateProp( Prop.WindHigh );
-		}
+		CancelInvoke("InvokeWind");
+		Invoke("InvokeWind", 1.0f);
+		//InvokeWind();
 
 		// .3, .5, .7, .9, 1.1, 1.3, 1.5
 
 #endif
 
+	}
+
+	void InvokeWind() {
+		print("speed is " + speed);
+		if (speed == 0) {
+			print("wind off");
+			PropController.Instance.ActivateProp(Prop.WindOff);
+		} else if (speed >= .3f && speed <= .7f) {
+			print("wind low");
+
+			PropController.Instance.ActivateProp(Prop.WindLow);
+		} else if (speed >= .9f && speed <= 1.3f) {
+			print("wind med");
+
+			PropController.Instance.ActivateProp(Prop.WindMed);
+		} else if (speed >= 1.5f) {
+			print("wind high");
+
+			PropController.Instance.ActivateProp(Prop.WindHigh);
+		}
 	}
 
 	internal void DestroyCrystal(int i) {
@@ -170,7 +184,8 @@ public class PathFollower : NetworkBehaviour {
     }
 
 	public AudioClip breakClip, mutinyClip, meteorClip;
-	void StartFirstBreak() {
+	public void StartFirstBreak() {
+		CancelInvoke("StartFirstBreak");
 		currentStage = EncounterStage.FirstBreak;
 		if (isServer && breakClip) {
 			Captain.instance.PlayDialogue(breakClip.name);
@@ -211,7 +226,9 @@ public class PathFollower : NetworkBehaviour {
 		print("should be turned off on client");
 	}
 
-	void StartSecondPhase() {
+	public void StartSecondPhase() {
+		CancelInvoke("StartSecondPhase");
+
 		if (isServer) {
 			print("called turn off panels on server");
 			TurnOffTutorialPanels();
@@ -227,7 +244,10 @@ public class PathFollower : NetworkBehaviour {
 		InvokeRepeating("SpawnMeteors", meteorSpawnTimer, meteorSpawnTimer);
 	}
 
-	void StartThirdPhase() {
+	public void StartThirdPhase() {
+		CancelInvoke("StartThirdPhase");
+		CancelInvoke("SpawnMeteors");
+
 		currentStage = EncounterStage.Third;
 		if (isServer && mutinyClip) {
 			Captain.instance.PlayDialogue(mutinyClip.name);
@@ -244,7 +264,8 @@ public class PathFollower : NetworkBehaviour {
 	public float distanceToDelete = 100;
 	public float caveMultiplier = 10;
 	[Button]
-	void SpawnBossCave() {
+	public void SpawnBossCave() {
+		CancelInvoke("SpawnBossCave");
 		currentStage = EncounterStage.ThirdBreak;
 		foreach (var lm in landmarks) {
 			float dist = Vector3.Distance(shipTransform.position, lm.transform.position);
@@ -548,7 +569,7 @@ public class PathFollower : NetworkBehaviour {
 
 	#endregion
 
-	enum EncounterStage {
+	public enum EncounterStage {
 		Tutorial, First, Second, Third, FirstBreak, SecondBreak, ThirdBreak
 	}
 }
