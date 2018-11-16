@@ -32,6 +32,8 @@ public class FSVRPlayer : NetworkBehaviour {
 			if (isServer) {
 				//print("should be adding " + gameObject.name + " to host list");
 				GameObject.FindObjectOfType<Host>().AddPlayerToHostList(gameObject);
+		
+
 
 				VariableHolder.instance.AddPlayerToScoreList( gameObject );
 			} else {
@@ -69,6 +71,7 @@ public class FSVRPlayer : NetworkBehaviour {
 				print("looking for captian");
 				FindObjectOfType<CaptainDialogueLobby>().enabled = true;
 				FindObjectOfType<Captain>().Init();
+				
 			}
             StartCoroutine("FadeIn");
 		}
@@ -136,7 +139,7 @@ public class FSVRPlayer : NetworkBehaviour {
 	}
 
 	public void DisableMirrorView(RenderTexture texture) {
-		print("disable mirror view called");
+		print("disable mirror view called on " + name);
 		EnableCamera();
 		hostCamView.targetDisplay = 2;
 		hostCamView.targetTexture = texture;

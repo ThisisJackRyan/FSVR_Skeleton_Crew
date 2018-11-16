@@ -51,6 +51,9 @@ public class Host : NetworkBehaviour {
 	public void AddPlayerToHostList(GameObject playerToAdd) {
 		//print("pre rpc " + playerToAdd.name);
 		RpcAddPlayerToHost(playerToAdd);
+
+		//needs player index
+		hostUI.EnablePlayerView((players != null)? players.Count : 0);
 	}
 
 	[ClientRpc]
@@ -147,7 +150,7 @@ public class Host : NetworkBehaviour {
 			if (g.name == "Player " + player) {
 				g.GetComponent<FSVRPlayer>().MirrorView();
 			} else {
-				g.GetComponent<FSVRPlayer>().DisableMirrorView(hostUI.mirrorViews[int.Parse(g.name[7].ToString())]);
+				g.GetComponent<FSVRPlayer>().DisableMirrorView(hostUI.mirrorViews[int.Parse(g.name[7].ToString()) - 1]);
 			}
 		}
 	}

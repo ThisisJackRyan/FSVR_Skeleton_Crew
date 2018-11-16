@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ public class HostUiManager : NetworkBehaviour {
 
 	public GameObject canvas;
 	public RenderTexture[] mirrorViews;
+	public GameObject[] playerViewPanel;
 
     private GameObject currentlySelectedPlayer;
     private Host host;
@@ -59,7 +61,11 @@ public class HostUiManager : NetworkBehaviour {
         }
     }
 
-    public void _TogglePauseGame() {
+	internal void EnablePlayerView(int i) {
+		playerViewPanel[i].SetActive(true);
+	}
+
+	public void _TogglePauseGame() {
         togglePauseButton.GetComponentInChildren<Text>().text = Time.timeScale == 0f ? "Pause Game" : "Unpause Game";
         
         host.TogglePause();
@@ -101,4 +107,6 @@ public class HostUiManager : NetworkBehaviour {
     public void SetHost(Host g) {
         host = g;
     }
+
+
 }
