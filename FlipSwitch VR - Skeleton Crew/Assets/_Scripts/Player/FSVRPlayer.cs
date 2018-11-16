@@ -5,6 +5,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 using Sirenix.OdinInspector;
+using RootMotion.Demos;
 
 public class FSVRPlayer : NetworkBehaviour {
 
@@ -17,6 +18,8 @@ public class FSVRPlayer : NetworkBehaviour {
 	public GameObject floatingScore;
 
 	public Camera hostCamView, hostCamViewDepth;
+
+	public VRIKCalibrationController vrik;
 
 	// Use this for initialization
 	void Start () {
@@ -126,6 +129,17 @@ public class FSVRPlayer : NetworkBehaviour {
 		hostCamViewDepth.enabled = true;
 		hostCamViewDepth.gameObject.SetActive( true);
 	}
+
+	[ClientRpc]
+	public void RpcReCalibrate() {
+		if (isServer || !isLocalPlayer) {
+			return;
+		}
+
+		vrik.Calibrate();
+
+	}
+
 
 	public void MirrorView() {
 		print("mirror view called");

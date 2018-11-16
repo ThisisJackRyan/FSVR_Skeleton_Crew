@@ -116,6 +116,19 @@ public class HostUiManager : NetworkBehaviour {
 		}
 	}
 
+	public void CalibratePlayer() {
+		if (!isServer) {
+			return;
+		}
+		//find client to calibrate on
+		//playerSelectDropdown.value is the player needing calibration
+
+		//not the correct player, this is the local player - not the player selected.
+		currentlySelectedPlayer.GetComponent<FSVRPlayer>().RpcReCalibrate();
+
+	}
+
+
 	public void SetHost(Host g) {
         host = g;
     }
