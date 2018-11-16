@@ -72,6 +72,7 @@ public class ConnectWithPress : MonoBehaviour {
     }
 
     IEnumerator FadeAndLoad() {
+		canInput = false;
 		//SteamVR_Overlay.instance.UpdateOverlay();
 		//var compositor = OpenVR.Compositor;
         SteamVR_Fade.Start(Color.black, 1, true);

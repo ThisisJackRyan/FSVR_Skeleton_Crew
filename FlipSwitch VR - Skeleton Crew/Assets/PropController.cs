@@ -68,7 +68,7 @@ public class PropController : MonoBehaviour {
 	IEnumerator SendMessage(PhysicalEffect effect, int code) {
 		print( "opening" );
 		PropClientSocket.OpenSocket( effect );
-		yield return new WaitForSeconds( 0.5f );
+		yield return new WaitForSeconds( 0.1f );
 		print( "triggering" );
 		PropClientSocket.SendMessage( new Message( effect, code ) );
 	}
@@ -77,7 +77,7 @@ public class PropController : MonoBehaviour {
 		for ( int i = 0; i < codes.Length; i++ ) {
 			print( "opening" );
 			PropClientSocket.OpenSocket( effect );
-			yield return new WaitForSeconds( 0.5f );
+			yield return new WaitForSeconds( 0.1f );
 			print( "triggering code " + i + " with message " + codes[i]);
 			PropClientSocket.SendMessage( new Message( effect, codes[i] ) );
 		}

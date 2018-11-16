@@ -103,7 +103,7 @@ public class Cannon : NetworkBehaviour {
         GetComponent<NetworkAnimator>().SetTrigger("Fire");
 
 		if (isServer) {
-			StartCoroutine("FirePorp");
+			StartCoroutine("FireProp");
 		}
 
 	}
