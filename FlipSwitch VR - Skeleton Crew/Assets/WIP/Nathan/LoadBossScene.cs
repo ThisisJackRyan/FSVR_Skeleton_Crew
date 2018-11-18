@@ -13,11 +13,11 @@ public class LoadBossScene : NetworkBehaviour {
 	public static LoadBossScene instance;
 
 	private void Start() {
-		if(!isServer) {
+		if (!isServer) {
 			return;
 		}
 
-		if(instance == null) {
+		if (instance == null) {
 			instance = this;
 		}
 	}
@@ -56,14 +56,19 @@ public class LoadBossScene : NetworkBehaviour {
 
 	[ClientRpc]
 	public void RpcFadePlayerCameras() {
-		foreach(var v in FindObjectsOfType<FSVRPlayer>()) {
+		foreach (var v in FindObjectsOfType<FSVRPlayer>()) {
+			v.ResetAnims();
 			if (v.isLocalPlayer) {
 				SteamVR_Fade.Start(Color.black, 2f);
 				StartCoroutine(MovePlayerToZero(v.gameObject));
 			}
 		}
-	}
 
+		foreach (var v in FindObjectsOfType<Host>()) {
+			StartCoroutine(MovePlayerToZero(v.gameObject));
+
+		}
+	}
 	IEnumerator MovePlayerToZero(GameObject p) {
 		yield return new WaitForSeconds(2f);
 		p.transform.position = Vector3.zero;

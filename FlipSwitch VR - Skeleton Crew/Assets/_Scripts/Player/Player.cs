@@ -142,7 +142,9 @@ public class Player : NetworkBehaviour {
         //print("disable body called with isDead: " + isDead);
         if (!isDead) {
             if (isServer) {
-                Captain.instance.AddEventToQueue(Captain.AudioEventType.Respawn);
+				if (Captain.instance) {
+					Captain.instance.AddEventToQueue(Captain.AudioEventType.Respawn);
+				}
 
 				VariableHolder.instance.IncreasePlayerScore(gameObject.transform.root.gameObject, VariableHolder.PlayerScore.ScoreType.Deaths, transform.position);
 
