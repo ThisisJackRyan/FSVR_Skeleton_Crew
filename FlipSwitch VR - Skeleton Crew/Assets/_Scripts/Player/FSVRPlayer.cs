@@ -88,12 +88,12 @@ public class FSVRPlayer : NetworkBehaviour {
 				SteamVR_Fade.Start(Color.clear, 1f);
 
 				//clear anim
-				ResetAnims();
+				//ResetAnims();
 			}
 		}
 	}
 
-	void ResetAnims() {
+	public void ResetAnims() {
 		foreach (var item in GetComponent<NetworkAnimator>().animator.parameters) {
 			if (item.type == AnimatorControllerParameterType.Bool) {
 				GetComponent<NetworkAnimator>().animator.SetBool(item.name, false);

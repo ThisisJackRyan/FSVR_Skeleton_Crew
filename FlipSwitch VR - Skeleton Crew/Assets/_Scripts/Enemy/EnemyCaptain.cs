@@ -139,7 +139,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	public int difficulty = 1;
 	public int maxDifficulty = 10;
 	public int difficultyModifier = 0;
-	public int timesToDeath = 6;
+	public int timesToDeath = 4;
 	public BossAmbientSound ambientSoundRef;
 
 	// Privates
@@ -174,7 +174,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		}
 
 		incrementSize = (int) Mathf.Ceil((float)(VariableHolder.instance.numPlayers) / 2) + difficultyModifier;
-		
+
 		myTree = GetComponent<BehaviorTree>();
 		
 		myTree.SetVariableValue( "dragon", dragon );
