@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class CaptainDialogueLobby : MonoBehaviour {
 
     public ClipAndDelay[] clips;
+	public string[] subtitles;
     AudioSource source;
 
     public float finaleDelay;
@@ -19,10 +20,14 @@ public class CaptainDialogueLobby : MonoBehaviour {
 	
 	// Update is called once per frame
 	IEnumerator CaptainsSpeech() {
+		int i = 0;
         foreach (var item in clips){
             yield return new WaitForSecondsRealtime(item.delay);
             source.clip = item.clip;
             source.Play();
+			PlayerHud.instance.UpdateSubtitles(subtitles[i]);
+
+			i++;
         }
         yield return new WaitForSecondsRealtime(finaleDelay);
         finale.Invoke();

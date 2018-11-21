@@ -88,18 +88,18 @@ public class WeaponInteraction : NetworkBehaviour {
 			}
 		}
 
-        //if (leftHandIsInteractable && Controller.LeftController.GetPressDown(Controller.TouchPad)) {
-        //     if (leftWeaponScript.data.type == WeaponData.WeaponType.Gun) {
-        //        CmdReloadWeapon("left");
-        //    }
-        //}
+		if (leftHandIsInteractable && Controller.LeftController.GetPressDown(Controller.TouchPad)) {
+			if (leftWeaponScript.data.type == WeaponData.WeaponType.Gun) {
+				CmdReloadWeapon("left");
+			}
+		}
 
-        //if (rightHandIsInteractable && Controller.RightController.GetPressDown(Controller.TouchPad)) {
-        //    if (rightWeaponScript.data.type == WeaponData.WeaponType.Gun) {
-        //        CmdReloadWeapon("right");
-        //    }
-        //}
-    }
+		if (rightHandIsInteractable && Controller.RightController.GetPressDown(Controller.TouchPad)) {
+			if (rightWeaponScript.data.type == WeaponData.WeaponType.Gun) {
+				CmdReloadWeapon("right");
+			}
+		}
+	}
 
     [Command]
     private void CmdReloadWeapon(string side) {
@@ -124,7 +124,7 @@ public class WeaponInteraction : NetworkBehaviour {
 		}
 
 		RpcAnimTrigger(side + "Shoot");
-			RpcFireWeapon( side );
+		RpcFireWeapon( side );
 	}
 
 	[ClientRpc]
@@ -136,6 +136,7 @@ public class WeaponInteraction : NetworkBehaviour {
 	private void RpcFireWeapon(string side ) {
 		if (isServer)
 			return;
+
 		if ( side.Equals( "left" ) )
 			leftWeaponScript.SpawnBullet( true, hapticSizeShoot );
 		else

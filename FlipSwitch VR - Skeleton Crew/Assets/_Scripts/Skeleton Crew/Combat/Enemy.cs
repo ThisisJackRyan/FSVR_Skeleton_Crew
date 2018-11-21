@@ -177,6 +177,7 @@ public class Enemy : NetworkBehaviour {
 				}
 			}
 		} else if (other.gameObject.tag == "BulletPlayer" || other.gameObject.tag == "CannonBallPlayer") {
+			print("collision with bullet");
 			playerWhoLastHitMe = other.gameObject.GetComponent<SCProjectile>().playerWhoFired;
 
 			if (!ratkin) {

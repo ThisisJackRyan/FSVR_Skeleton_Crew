@@ -69,15 +69,16 @@ public class Weapon : NetworkBehaviour {
 			}
 
 			lastShottime = Time.time;
-            Vector3 rot = Quaternion.identity.eulerAngles;
-            if (data.spread > 0) {
-                var variance = Quaternion.AngleAxis(Random.Range(0, 360), rot) * Vector3.up * Random.Range(0, data.spread);
-                rot += variance;
-            }
 
 			GetComponent<AudioSource>().clip = data.firesound;
 
             if (isServer) {
+				Vector3 rot = Quaternion.identity.eulerAngles;
+				if (data.spread > 0) {
+					var variance = Quaternion.AngleAxis(Random.Range(0, 360), rot) * Vector3.up * Random.Range(0, data.spread);
+					rot += variance;
+				}
+
                 var bullet = Instantiate(data.projectile, projectileSpawnPos.position, Quaternion.Euler(rot));
 			    bullet.GetComponent<Rigidbody>().AddForce(projectileSpawnPos.forward * data.power, ForceMode.Impulse);
 			    bullet.GetComponent<SCProjectile>().damage = data.damage;

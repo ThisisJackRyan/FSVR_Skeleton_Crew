@@ -19,7 +19,7 @@ public class SCProjectile : NetworkBehaviour {
 	void Awake() {
         //print("awake. s: " + isServer + " lp:" + isLocalPlayer + " c:" + isClient  );
 
-        Physics.IgnoreLayerCollision(0, 10);
+        //Physics.IgnoreLayerCollision(0, 10);
         if (!isServer) {
             return;
         }
@@ -28,19 +28,19 @@ public class SCProjectile : NetworkBehaviour {
 		Invoke("KillProjectile", 5);
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if (!isServer) {
-            return;
-        }
+    //private void OnTriggerEnter(Collider other) {
+    //    if (!isServer) {
+    //        return;
+    //    }
 
 
-        if (other.gameObject.tag == "Weapon" || other.gameObject.tag == "Cannon" || other.gameObject.tag == "WeaponPickup") {
-            return;
-        }
+    //    if (other.gameObject.tag == "Weapon" || other.gameObject.tag == "Cannon" || other.gameObject.tag == "WeaponPickup") {
+    //        return;
+    //    }
 
-        KillProjectile();
+    //    KillProjectile();
         
-    }
+    //}
 
     private void OnCollisionEnter(Collision other) {
         if (!isServer) {
@@ -51,8 +51,8 @@ public class SCProjectile : NetworkBehaviour {
             return;
         }
 
-        //print("collision enter on " + name);
-        KillProjectile();
+		print("collision enter on " + name + " with " + other.collider.name);
+		KillProjectile();
     }
 
 
