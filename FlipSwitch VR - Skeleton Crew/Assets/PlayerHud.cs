@@ -31,8 +31,8 @@ public class PlayerHud : MonoBehaviour {
 	private void Start() {
 		if (instance == null) {
 			instance = this;
-		} else {
-			Destroy(gameObject);
-		}
+		}// else {
+		//	Destroy(gameObject);
+		//}
 	}
 }

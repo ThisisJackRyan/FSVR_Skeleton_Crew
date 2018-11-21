@@ -17,47 +17,6 @@ public enum Side {
 public class Captain : SerializedNetworkBehaviour {
 	#region Sounds
 
-	[ToggleGroup("FirstToggle", order: -1, groupTitle: "Captain Speech")]
-	public bool FirstToggle;
-
-	// Low priority audio clips (reminders everything 30s if needed)
-	[ToggleGroup("FirstToggle")]
-	public AudioClip leftCannonsDown;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip leftCannonsAndRatmen;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip rightCannonsDown;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip rightCannonsAndRatmen;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip leftAndRightCannons;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip leftAndRightCannonsAndRatmen;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip ratmenOnly;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip shouldNeverGetHere;
-
-	// High priority audio clips
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemiesAtMast;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip cannonDestroyedLeftSide;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip cannonDestroyedRightSide;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip cannonDestroyedBothSides;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemyIncomingLeft;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemyIncomingRight;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemyIncomingBoth;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemyBoardingLeft;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemyBoardingRight;
-
 	bool firstBoard = true;
 	public AudioClip firstBoardClip;
 	internal void CrewmanHaveBoarded() {
@@ -67,19 +26,6 @@ public class Captain : SerializedNetworkBehaviour {
 			PlayDialogue(firstBoardClip.name);
 		}
 	}
-
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemyBoardingBoth;
-
-	// End of encounter audio clips
-	[ToggleGroup("FirstToggle")]
-	public AudioClip endOfEncounterRatmen;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip endOfEncounterCannons;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip endOfEncounterBoth;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip endOfEncounterAllIsWell;
 
 	#endregion
 
@@ -130,7 +76,8 @@ public class Captain : SerializedNetworkBehaviour {
 
 		priorityAudioQueue = new Queue<AudioClip>();
 		reminderQueue = new Queue<AudioClip>();
-
+		prioritySubtitleQueue = new Queue<string>();
+		reminderSubtitleQueue = new Queue<string>();
 
 		if (!isServer) {
 			return;
@@ -164,9 +111,12 @@ public class Captain : SerializedNetworkBehaviour {
 
 	Dictionary<AudioEventType, float> eventTimes;
 	Dictionary<string, AudioClip> clipNames;
+	Dictionary<string, string> clipSubtitles;
+
 	//Dictionary<AudioClip, string> clipNamesLookup;
 
 	Queue<AudioClip> priorityAudioQueue, reminderQueue;
+	Queue<string> prioritySubtitleQueue, reminderSubtitleQueue;
 	public float timeBetweenReminders = 10, timeBetweenPriorityClips = 3, lastPlayedTime;
 
 	public AudioClip repairCannonClip, ratmenDeadClip, playerRespawnClip, repairDeckClip;
@@ -233,6 +183,11 @@ public class Captain : SerializedNetworkBehaviour {
 		clipNames.Add(repairDeckClip.name, repairDeckClip);
 		clipNames.Add(playerRespawnClip.name, playerRespawnClip);
 
+		//clipSubtitles = new Dictionary<string, string>();
+		//clipSubtitles.Add(repairCannonClip.name, repairCannonSubtitle);
+		//clipSubtitles.Add(ratmenDeadClip.name, ratmenDeadSubtitle);
+		//clipSubtitles.Add(repairDeckClip.name, repairDeckClip);
+		//clipSubtitles.Add(playerRespawnClip.name, playerRespawnClip);
 		//clipNamesLookup = new Dictionary<AudioClip, string>();
 		//clipNamesLookup.Add( repairCannonClip, "Cannon");
 		//clipNamesLookup.Add( ratmenDeadClip,"Ratmen");
@@ -426,6 +381,7 @@ public class Captain : SerializedNetworkBehaviour {
 	public bool mastHasBeenPulled = false;
 	public Collider[] mastRopes;
 	public AudioClip[] tutorialSounds;
+	public string[] tutorialSubtitles;
 	bool guardsComplete, damagedComplete, ratmenComplete, cannonsComplete;
 
 	public List<GameObject> tutorialCannons, actualCannons, cannonFirePrompts, tutorialRatHatch, ratHatch, tutorialGuards, mastPrompts; //todo disable mast prompt etc
@@ -820,6 +776,7 @@ public class Captain : SerializedNetworkBehaviour {
 		for (int i = 0; i < tutorialSounds.Length; i++) {
 			if (tutorialSounds[i].name == clip) {
 				mySource.PlayOneShot(tutorialSounds[i]);
+				PlayerHud.instance.UpdateSubtitles(tutorialSubtitles[i]);
 				break;
 			}
 		}
