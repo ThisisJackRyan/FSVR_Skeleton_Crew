@@ -5,7 +5,7 @@ AnimatorController:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Prompt_grip
+  m_Name: AC_grip
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
@@ -56,7 +56,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1102554245491524648}
-    m_Position: {x: 200, y: 0, z: 0}
+    m_Position: {x: 36, y: 204, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
