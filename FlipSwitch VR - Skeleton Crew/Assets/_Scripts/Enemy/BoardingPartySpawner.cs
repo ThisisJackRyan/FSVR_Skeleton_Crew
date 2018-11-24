@@ -5,15 +5,38 @@ using UnityEngine.Networking;
 using BehaviorDesigner.Runtime;
 public class BoardingPartySpawner : NetworkBehaviour {
 
-	public GameObject[] crewBosses, crewMembers, rangedMembers;
-    public bool useRanged;
+	[Header("Use These")]
+	// Publics
+	public GameObject[] spawnableEnemies;
+	public GameObject[] enemySpawnPositions;
+	public float modifier = 1f;
+	public int health = 4;
+	public GameObject smokeTrailOnDeath;
+	public GameObject cannonHitParticles;
+	public bool portSideShip;
+	public PathFollower pathFollowerRef;
+
+	// Privates
+	private int timesHit = 0;
+	private Rigidbody rb;
+	
+	// public GameObject[] crewBosses, crewMembers, rangedMembers;
+    // public bool useRanged;
 	// Use this for initialization
 	void Start () {
 		if ( !isServer ) {
             ////print("not the server");
-
             return;
         }
+
+		rb = GetComponent<Rigidbody>();
+
+		for (int i = 0; i < (int) Mathf.Floor((float) (NumberOfPlayerHolder.instance.numberOfPlayers ) * modifier); i++) {
+			GameObject enemy = Instantiate(spawnableEnemies[Random.Range(0, spawnableEnemies.Length)], enemySpawnPositions[i].transform.position, Quaternion.identity);
+			enemy.transform.parent = transform;
+			NetworkServer.Spawn(enemy);
+		}
+
    //     else{
 			//////print("im the server");
 			////transform.LookAt(FindObjectOfType<PathFollower>().lookPos);
@@ -24,7 +47,7 @@ public class BoardingPartySpawner : NetworkBehaviour {
         ////print("in start");
 
         //Debug.Break();
-
+		/* --- OLD STUFF ---
 		int bossIndex = Random.Range( 0, crewBosses.Length );
 		int crewIndex1 = Random.Range( 0, crewMembers.Length );
         List<GameObject> crewmen = new List<GameObject>();
@@ -82,9 +105,16 @@ public class BoardingPartySpawner : NetworkBehaviour {
 
         NetworkServer.Spawn(boss);
         ////print("network server spawned the boss.");
+		--- END OF OLD STUFF --- */
     }
 
     private void OnCollisionEnter(Collision other) {
+		if (other.gameObject.GetComponent<SCProjectile>()) {
+			if (other.gameObject.GetComponent<SCProjectile>().isCannonball) {
+				Instantiate(cannonHitParticles, other.transform.position, Quaternion.identity);
+			}
+		}
+
         if (!isServer) {
             return;
         }
@@ -92,15 +122,35 @@ public class BoardingPartySpawner : NetworkBehaviour {
 		if ( other.gameObject.GetComponent<SCProjectile>() ) {
 			if ( other.gameObject.GetComponent<SCProjectile>().isCannonball ) {
 				//todo PLAYER SCORE INTEGRATION FOR PROJECTILE
-				VariableHolder.instance.IncreasePlayerScore( other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.BoatsDestroyed, transform.position );
-
-				//other.gameObject.GetComponent<SCProjectile>().playerWhoFired << needed for point assignment
-				NetworkServer.Destroy( gameObject );
+				VariableHolder.instance.IncreasePlayerScore(other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.BoatsDestroyed, transform.position);
+				timesHit++;
+				if (timesHit >= health) {
+					EnableSmokeTrail();
+					rb.useGravity = true;
+					pathFollowerRef.ShipDestroyed(portSideShip);
+				}
 				//todo add point stuff here
 			} else {
-
 				print("shot by player fire, but not cannonball");
 			}
 		}
     }
+
+	private void EnableSmokeTrail() {
+		if (!isServer) {
+			return;
+		}
+
+		RpcEnableSmokeTrail();
+		smokeTrailOnDeath.SetActive(true);
+	}
+
+	[ClientRpc]
+	private void RpcEnableSmokeTrail() {
+		if (isServer) {
+			return;
+		}
+
+		smokeTrailOnDeath.SetActive(true);
+	}
 }
