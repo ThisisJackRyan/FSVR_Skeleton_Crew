@@ -20,8 +20,13 @@ public class PlayerHud : MonoBehaviour {
 
 	public Text subtitleText;
 
-	public void UpdateSubtitles(string subtitle) {
+	public void UpdateSubtitles(string subtitle, bool selfClear = false) {
+		CancelInvoke("ClearSubtitles");
+		print( "should be updating subtitles to " + subtitle );
 		subtitleText.text = subtitle;
+		if ( selfClear ) {
+			Invoke( "ClearSubtitles", 10f );
+		}
 	}
 
 	public void ClearSubtitles() {
