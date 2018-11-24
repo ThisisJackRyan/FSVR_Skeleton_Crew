@@ -633,9 +633,13 @@ public class Captain : SerializedNetworkBehaviour {
 		//}
 		if (!playersFiredCannons.ContainsValue(false) && !cannonsComplete) {
 			cannonsComplete = true;
-			RpcPlaySoundClip("PrepTut_Rat");
-			EnableRatHatches();
+			//RpcPlaySoundClip("PrepTut_Rat");
+			//EnableRatHatches();
 			DisableFirePrompt();
+
+			RpcPlaySoundClip("PrepTut_Mast");
+
+			EnableRopes();
 		}
 	}
 
