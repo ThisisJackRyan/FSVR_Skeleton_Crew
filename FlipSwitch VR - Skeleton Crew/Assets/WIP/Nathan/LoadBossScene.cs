@@ -29,7 +29,7 @@ public class LoadBossScene : NetworkBehaviour {
 		}
 
 		if (!hasCalled) {
-			print("started loading scene at " + Time.time);
+			//print("started loading scene at " + Time.time);
 			NetworkManager.singleton.ServerChangeScene("Boss_Online");
 			//RpcLoadBossScene();
 			hasCalled = true;
@@ -37,15 +37,15 @@ public class LoadBossScene : NetworkBehaviour {
 	}
 
 	IEnumerator LoadBossSceneOnline() {
-		print("started at " + Time.time);
+		//print("started at " + Time.time);
 
 		thing = SceneManager.LoadSceneAsync("Boss_Online", LoadSceneMode.Additive);
 
 		while (!thing.isDone) {
-			print(thing.progress);
+			//print(thing.progress);
 			yield return new WaitForEndOfFrame();
 		}
-		print("done at " + Time.time);
+		//print("done at " + Time.time);
 	}
 
 	[ClientRpc]

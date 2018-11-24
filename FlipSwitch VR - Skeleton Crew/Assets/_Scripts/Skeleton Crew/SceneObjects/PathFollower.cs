@@ -243,7 +243,7 @@ public class PathFollower : NetworkBehaviour {
 		CancelInvoke("StartSecondPhase");
 
 		if (isServer) {
-			print("called turn off panels on server");
+			//print("called turn off panels on server");
 			TurnOffTutorialPanels();
 		}
 

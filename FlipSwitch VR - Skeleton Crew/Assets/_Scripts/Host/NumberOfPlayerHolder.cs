@@ -20,10 +20,10 @@ public class NumberOfPlayerHolder : NetworkBehaviour {
 		}
 
 		if (isServer) {
-			print("start isServwer numPlayerHolder");
+			//print("start isServwer numPlayerHolder");
 			numberOfPlayers = VariableHolder.instance.numPlayers;
 		} else if (isClient) {
-			print("on start client numPlayerHolder");
+			//print("on start client numPlayerHolder");
 			OnNumPlayerChanged(numberOfPlayers);
 		}
 	}

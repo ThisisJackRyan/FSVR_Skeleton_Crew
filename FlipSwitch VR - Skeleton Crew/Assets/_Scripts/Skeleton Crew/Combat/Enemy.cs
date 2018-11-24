@@ -66,7 +66,7 @@ public class Enemy : NetworkBehaviour {
 			return;
 		}
 		if (tutorialGuard) {
-			//print( "tut guard killed" );
+			////print( "tut guard killed" );
 			Captain.enemiesKilled[this] = true;
 			Captain.instance.CheckEnemiesKilled();
 		}
@@ -100,7 +100,7 @@ public class Enemy : NetworkBehaviour {
 	}
 
 	public void PlayHitParticles() {
-        //print("play hit particles called");
+        ////print("play hit particles called");
 
         foreach(var p in hitParticles) {
             p.SetActive(true);
@@ -177,7 +177,7 @@ public class Enemy : NetworkBehaviour {
 				}
 			}
 		} else if (other.gameObject.tag == "BulletPlayer" || other.gameObject.tag == "CannonBallPlayer") {
-			print("collision with bullet");
+			//print("collision with bullet");
 			playerWhoLastHitMe = other.gameObject.GetComponent<SCProjectile>().playerWhoFired;
 
 			if (!ratkin) {

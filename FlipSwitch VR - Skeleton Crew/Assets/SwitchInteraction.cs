@@ -42,7 +42,7 @@ public class SwitchInteraction : NetworkBehaviour {
 		Collider[] hits = Physics.OverlapSphere(hand.position, interactRadius);
 
 		for (int i = 0; i < hits.Length; i++) {
-			Debug.LogWarning(hits[i].name);
+			//Debug.LogWarning(hits[i].name);
 			if (hits[i].transform.root == transform.root) {
 				continue;
 			}

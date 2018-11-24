@@ -101,13 +101,13 @@ namespace Opsive.ThirdPersonController.Abilities
         protected override void AbilityStarted()
         {
             base.AbilityStarted();
-			print("die ability started");
+			//print("die ability started");
             m_CanStop = false;
             // Ragdoll death needs to enable the ragdoll colliders.
             if (m_RagdollDeath) {
                 m_FrameCount = 0;
                 m_Animator.enabled = false;
-				print("ragdoll should be enabled");
+				//print("ragdoll should be enabled");
                 EnableRagdoll(true);
             } else {
                 // Call DetermineStates directly because the animator may be disabled.
@@ -233,7 +233,7 @@ namespace Opsive.ThirdPersonController.Abilities
         /// <param name="enable">Should the ragdoll be enabled?</param>
         private void EnableRagdoll(bool enable)
         {
-			print("inside enableragdoll method");
+			//print("inside enableragdoll method");
             if (enable) {
                 for (int i = 0; i < m_Transforms.Count; ++i) {
                     m_PrevTransformPosition[i] = m_Transforms[i].position;

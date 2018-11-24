@@ -23,17 +23,17 @@ public class FSVRPlayer : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		print("fsvr player start. isLocalPlayer? " + isLocalPlayer);
+		//print("fsvr player start. isLocalPlayer? " + isLocalPlayer);
 		if ( isLocalPlayer ) {
-			print("should be setting screen to black");
+			//print("should be setting screen to black");
 			SteamVR_Fade.Start( Color.black, 0 );
 			GetComponent<Player>().TurnOffColliders();
 			SetTrackerIDs();
 			//GetComponentInChildren<SteamVR_PlayArea>().BuildMesh();
-			print("post tracker set");
+			//print("post tracker set");
 		} else {
 			if (isServer) {
-				//print("should be adding " + gameObject.name + " to host list");
+				////print("should be adding " + gameObject.name + " to host list");
 				GameObject.FindObjectOfType<Host>().AddPlayerToHostList(gameObject);
 		
 
@@ -59,19 +59,19 @@ public class FSVRPlayer : NetworkBehaviour {
 		}
 
         if (NumberOfPlayerHolder.instance.numberOfPlayers == VariableHolder.instance.players.Count) {
-			print("player count true");
+			//print("player count true");
             //if (true) { 
 			GetComponent<VRIKCalibrateOnStart>().CalibratePlayer();
 
 			var iks = FindObjectsOfType<VRIKCalibrateOnStart>();
-			//print(iks.Length);
+			////print(iks.Length);
 			foreach (var item in iks) {
-				//print(item.calibrated + " calibrated " + name);
+				////print(item.calibrated + " calibrated " + name);
 				item.CalibratePlayer();
 			}
 
 			if (FindObjectOfType<Captain>()) {
-				print("looking for captian");
+				//print("looking for captian");
 				FindObjectOfType<CaptainDialogueLobby>().enabled = true;
 				FindObjectOfType<Captain>().Init();
 				
@@ -106,7 +106,7 @@ public class FSVRPlayer : NetworkBehaviour {
 	}
 
 	IEnumerator FadeIn() {
-		print("FADE IN");
+		//print("FADE IN");
 		yield return new WaitForSecondsRealtime(1f);
 		SteamVR_Fade.Start( Color.clear, 1 );
 		if (FindObjectOfType<LobbyAudioPlayer>()) {
@@ -116,7 +116,7 @@ public class FSVRPlayer : NetworkBehaviour {
 	}
 	
 	void SetTrackerIDs() {
-		print("set tracker ids called. isServer? " + isServer);
+		//print("set tracker ids called. isServer? " + isServer);
 		try {
 			leftFoot.index = TrackerIds.leftFootId;
 			rightFoot.index = TrackerIds.rightFootId;
@@ -153,7 +153,7 @@ public class FSVRPlayer : NetworkBehaviour {
 
 
 	public void MirrorView() {
-		print("mirror view called");
+		//print("mirror view called");
 		EnableCamera();
 		hostCamView.targetDisplay = 1;
 		hostCamView.targetTexture = null;
@@ -164,7 +164,7 @@ public class FSVRPlayer : NetworkBehaviour {
 	}
 
 	public void DisableMirrorView(RenderTexture texture) {
-		print("disable mirror view called on " + name);
+		//print("disable mirror view called on " + name);
 		EnableCamera();
 		hostCamView.targetDisplay = 2;
 		hostCamView.targetTexture = texture;
@@ -184,9 +184,9 @@ public class FSVRPlayer : NetworkBehaviour {
 
 	[Button]
 	public void GivePoints() {
-		print("give points");
+		//print("give points");
 		if (!isServer) {
-			print( "returning not server" );
+			//print( "returning not server" );
 
 			return;
 		}
@@ -195,7 +195,7 @@ public class FSVRPlayer : NetworkBehaviour {
 
 	public void SpawnPointDisplay(Vector3 spawnPos, int value, GameObject player) {
 		if (!isServer) {
-			//print("not server");
+			////print("not server");
 			return;
 		}
 
@@ -205,12 +205,12 @@ public class FSVRPlayer : NetworkBehaviour {
 	[ClientRpc]
 	private void RpcSpawnPointsOnLocalPlayer( Vector3 spawnPos, int value, GameObject player ) {
 		if (isLocalPlayer && player == transform.root.gameObject ) {
-			//print("local player and same player that scored");
+			////print("local player and same player that scored");
 
 			var g = Instantiate( floatingScore, spawnPos, Quaternion.identity );
 			g.GetComponentInChildren<Text>().text = "+" + value;
 		} else {
-			//print("local player? " + isLocalPlayer + " , player is " + player.name + " , root is " + transform.root.name);
+			////print("local player? " + isLocalPlayer + " , player is " + player.name + " , root is " + transform.root.name);
 		}
 	}
 }

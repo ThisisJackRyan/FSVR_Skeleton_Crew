@@ -55,7 +55,7 @@ public class VariableHolder : MonoBehaviour {
 		if (!playerScores.ContainsKey(player)) {
 			playerScores.Add( player, new PlayerScore());
 		} else {
-			print("player already added to score list: " + player.name);
+			//print("player already added to score list: " + player.name);
 		}
 	}
 
@@ -83,7 +83,7 @@ public class VariableHolder : MonoBehaviour {
 
 			AddPlayerToScoreList( player );
 		} else {
-			print(player.name + " is in score collection, adding points");
+			//print(player.name + " is in score collection, adding points");
 		}
 
 		switch ( type ) {
