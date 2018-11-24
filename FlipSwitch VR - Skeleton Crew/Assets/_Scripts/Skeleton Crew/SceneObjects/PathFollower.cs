@@ -34,6 +34,7 @@ public class PathFollower : NetworkBehaviour {
 
 	bool canMove = false;
 	bool firstMove = true;
+
 	[Header("Spawning stuff")]
 	public float spawnDistFromRock = 2;
 	public float spawnRadiusMin, spawnRadiusMax;
@@ -44,6 +45,18 @@ public class PathFollower : NetworkBehaviour {
 
 	public GameObject[] ratkinSpawnPositions;
 	public Transform crystalRoot;
+
+	[Header("New Spawning Stuff")]
+	// Publics
+	public GameObject[] portPortalSpawnPositions;
+	public GameObject[] starboardPortalSpawnPositions;
+	public GameObject shipToSpawn;
+	public float minDistanceToMove = 10, maxDistanceToMove = 25;
+
+	// Privates
+	private bool portIsOccupied;
+	private bool starboardIsOccupied;
+	private bool spawnOnPortSide = true;
 
 	[Header("Ratkin Rebellion Swap")]
 	// publics
@@ -253,8 +266,8 @@ public class PathFollower : NetworkBehaviour {
 			Captain.instance.PlayDialogue(mutinyClip.name);
 		}
 		CancelInvoke("SpawnMeteors");
-		InitialRebellion();
-
+		//InitialRebellion();
+		SpawnEncounter(EncounterStage.Third);
 		Invoke( "SpawnBossCave", encounterthreeTotalTime );
 
 	}
@@ -525,11 +538,91 @@ public class PathFollower : NetworkBehaviour {
 	public float distanceBehindPortal = 4;
 	public int maxEnemies = 16;
 
+	public void SpawnShip(bool portSide) {
+		if (portSide) {
+			GameObject p = portPortalSpawnPositions[Random.Range(0, portPortalSpawnPositions.Length)];
+			spawnVector = p.transform.position;
+			lookPos = spawnVector + (-Vector3.forward * Random.Range(minDistanceToMove, maxDistanceToMove));
+
+			p = Instantiate(portal, spawnVector, Quaternion.LookRotation(-Vector3.forward, Vector3.up));
+
+			GameObject s = Instantiate(shipToSpawn, spawnVector, Quaternion.LookRotation(-Vector3.forward, Vector3.up));
+			s.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("TargetPosition", lookPos);
+			s.GetComponent<BoardingPartySpawner>().portSideShip = true;
+			s.GetComponent<BoardingPartySpawner>().pathFollowerRef = this;
+			if (s.GetComponent<ImpactReticuleSpawner>()) {
+				foreach (var v in s.GetComponents<ImpactReticuleSpawner>()) {
+					v.deckMesh = shipDeck;
+				}
+			}
+
+			NetworkServer.Spawn(p);
+			NetworkServer.Spawn(s);
+		} else {
+			GameObject p = starboardPortalSpawnPositions[Random.Range(0, starboardPortalSpawnPositions.Length)];
+			spawnVector = p.transform.position;
+			lookPos = spawnVector + (-Vector3.forward * Random.Range(minDistanceToMove, maxDistanceToMove));
+
+			p = Instantiate(portal, spawnVector, Quaternion.LookRotation(-Vector3.forward, Vector3.up));
+
+			GameObject s = Instantiate(shipToSpawn, spawnVector, Quaternion.LookRotation(-Vector3.forward, Vector3.up));
+			s.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("TargetPosition", lookPos);
+			s.GetComponent<BoardingPartySpawner>().portSideShip = false;
+			s.GetComponent<BoardingPartySpawner>().pathFollowerRef = this;
+
+			if (s.GetComponent<ImpactReticuleSpawner>()) {
+				foreach (var v in s.GetComponents<ImpactReticuleSpawner>()) {
+					v.deckMesh = shipDeck;
+				}
+			}
+
+			NetworkServer.Spawn(p);
+			NetworkServer.Spawn(s);
+		}
+	}
+
+	public void ShipDestroyed(bool isPort) {
+		if (isPort) {
+			portIsOccupied = false;
+		} else {
+			starboardIsOccupied = false;
+		}
+	}
+
 	public void SpawnWithPortal(GameObject[] toSpawnList, int specifiedIndex = -1) {
 		if (!isServer) {
 			return;
 		}
 
+		if (spawnOnPortSide) {
+			if (portIsOccupied) { // Port is already spawned so don't do it, see if starboard side is available
+				if (starboardIsOccupied) { // Cannot spawn on starboard side. So break out.
+					return;
+				} else { // Can spawn one on starboard side so do it, don't toggle since this side will most likely be destroyed first.
+					SpawnShip(false);
+					starboardIsOccupied = true;
+				}
+			} else { // Ports turn to spawn and it can spawn one so do it. Toggle.
+				SpawnShip(true);
+				portIsOccupied = true;
+				spawnOnPortSide = !spawnOnPortSide;
+			}
+		} else if(!spawnOnPortSide) {
+			if (starboardIsOccupied) { // Starboard is already spawned so don't do it, see if port side is available
+				if (portIsOccupied) { // Cannot spawn on port side. So break out.
+					return;
+				} else { // Can spawn one on port side so do it, don't toggle since this side will most likely be destroyed first.
+					SpawnShip(true);
+					portIsOccupied = true;
+				}
+			} else { // Starboards turn to spawn and it can so do it. Toggle.
+				SpawnShip(false);
+				starboardIsOccupied = true;
+				spawnOnPortSide = !spawnOnPortSide;
+			}
+		}
+
+		/* --- OLD STUFF ---
 		int spawnIndex = (specifiedIndex != -1) ? specifiedIndex : Random.Range(0, toSpawnList.Length);
 		prefabToSpawn = toSpawnList[spawnIndex];
 
@@ -560,6 +653,9 @@ public class PathFollower : NetworkBehaviour {
 
 		NetworkServer.Spawn(g);
 		NetworkServer.Spawn(p);
+		--- END OF OLD STUFF ---*/
+
+
 	}
 	public Vector3 lookPos, facingVector, spawnVector;
 	private void OnDrawGizmosSelected() {

@@ -28,13 +28,12 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	// Privates
 	private readonly int INTRO_CLIP = 0;
-	private readonly int TELEPORT1_CLIP = 1;		// now unused
-	private readonly int TELEPORT2_CLIP = 2;
-	private readonly int CANNON_CLIP = 3;
-	private readonly int START_OF_DRAIN_CLIP = 4;
-	private readonly int SECOND_DRAIN_CLIP = 5;
-	private readonly int THIRD_DRAIN_CLIP = 6;
-	private readonly int END_OF_INTRO_CLIP = 7;
+	private readonly int TELEPORT2_CLIP = 1;
+	private readonly int CANNON_CLIP = 2;
+	private readonly int START_OF_DRAIN_CLIP = 3;
+	private readonly int SECOND_DRAIN_CLIP = 4;
+	private readonly int THIRD_DRAIN_CLIP = 5;
+	private readonly int END_OF_INTRO_CLIP = 6;
 
 	private bool playersHaveTeleported;
 	private bool firstTimeDrain = true;
@@ -147,6 +146,27 @@ public class EnemyCaptain : NetworkBehaviour {
 	private AudioSource source;
 	private int numberOfTimesHit;
 
+	[Header("Subtitles")]
+	// Publics
+	public string[] subtitles;
+
+	// Privates
+	private readonly int INTRO_SUBTITLE_INDEX = 0;
+	private readonly int TELEPORT_SUBTITLE_INDEX = 1;
+	private readonly int CANNON_SUBTITLE_INDEX = 2;
+	private readonly int START_OF_DRAIN_SUBTITLE_INDEX = 3;
+	private readonly int SECOND_DRAIN_SUBTITLE_INDEX = 4;
+	private readonly int THIRD_DRAIN_SUBTITLE_INDEX = 5;
+	private readonly int END_OF_INTRO_SUBTITLE_INDEX = 6;
+	private readonly int DRAGONKIN_SUMMON1_SUBTITLE_INDEX = 7;
+	private readonly int DRAGONKIN_SUMMON2_SUBTITLE_INDEX = 8;
+	private readonly int DRAGONKIN_SUMMON3_SUBTITLE_INDEX = 9;
+	private readonly int METEOR_SUMMON1_SUBTITLE_INDEX = 10;
+	private readonly int METEOR_SUMMON2_SUBTITLE_INDEX = 11;
+	private readonly int DRAIN_START_SUBTITLE_INDEX = 12;
+	private readonly int DRAIN_WARNING_SUBTITLE_INDEX = 13;
+	private readonly int DEFEAT_SUBTITLE_INDEX = 14;
+	private readonly int VICTORY_SUBTITLE_INDEX = 15;
 	#endregion
 
 	#region Initialization
@@ -286,6 +306,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
+		PlayerHud.instance.UpdateSubtitles( subtitles[index] );
 		source.clip = introAudioClips[index];
 		source.Play();
 	}
@@ -624,7 +645,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		if (isServer) {
 			return;
 		}
-
+		PlayerHud.instance.UpdateSubtitles( subtitles[DRAIN_WARNING_SUBTITLE_INDEX] );
 		source.clip = drainTimeWarning;
 		source.Play();
 	}
@@ -652,6 +673,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
+		PlayerHud.instance.UpdateSubtitles( subtitles[DRAIN_START_SUBTITLE_INDEX] );
 		source.clip = drainAudioClips[index];
 		source.Play();
 
@@ -961,6 +983,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
+		PlayerHud.instance.UpdateSubtitles( subtitles[index + 10] );
 		source.clip = meteorAudioClips[index];
 		source.Play();
 	}
@@ -1081,6 +1104,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
+		PlayerHud.instance.UpdateSubtitles( subtitles[index + 7] );
 		source.clip = summonAudioClips[index];
 		source.Play();
 	}
@@ -1328,6 +1352,8 @@ public class EnemyCaptain : NetworkBehaviour {
 		if (isServer) {
 			return;
 		}
+
+		PlayerHud.instance.UpdateSubtitles( subtitles[playerVictory ? DEFEAT_SUBTITLE_INDEX : VICTORY_SUBTITLE_INDEX] );
 
 		ambientSoundRef.PlayAmbientSound();
 		source.clip = playerVictory ? defeatAudio : victoryAudio; // backwards because variables are flipped
