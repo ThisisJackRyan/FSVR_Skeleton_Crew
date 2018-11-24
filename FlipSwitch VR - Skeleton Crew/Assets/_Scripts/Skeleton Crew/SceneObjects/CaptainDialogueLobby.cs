@@ -25,7 +25,10 @@ public class CaptainDialogueLobby : MonoBehaviour {
             yield return new WaitForSecondsRealtime(item.delay);
             source.clip = item.clip;
             source.Play();
+			if (!string.IsNullOrEmpty(subtitles[i])) {
+
 			PlayerHud.instance.UpdateSubtitles(subtitles[i]);
+			}
 
 			i++;
         }

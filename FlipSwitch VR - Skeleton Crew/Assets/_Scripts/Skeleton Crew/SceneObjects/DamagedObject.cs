@@ -133,7 +133,7 @@ public class DamagedObject : NetworkBehaviour {
 		}
 	}
 
-	RepairPattern repairPattern;
+	public RepairPattern repairPattern;
 
 	internal RepairPattern SelectPattern() {
 		if ( !isServer ) {
@@ -184,15 +184,19 @@ public class DamagedObject : NetworkBehaviour {
 		if ( !isServer ) {
 			return;
 		}
-
+		print("Enable Pattern on clients called");
 		RpcEnablePattern();
 	}
 
 	[ClientRpc]
 	private void RpcEnablePattern() {
+		print("rpc enable pattern called, pre server check, server states " + isServer + " ");
+
 		if (isServer) {
 			return;
 		}
+
+		print("rpc enable pattern called");
 		repairPattern.gameObject.SetActive( true ); // turns on the pattern gameobject
 		repairSphere.transform.GetChild(0).gameObject.SetActive(false); //  disables the particles
 	}
@@ -219,7 +223,11 @@ public class DamagedObject : NetworkBehaviour {
 
 		////print( "pattern name: " + repairPattern.name );
 		////print( "index received: " + index );
-		repairPattern.transform.GetChild( index ).gameObject.SetActive( false );
+		repairPattern.
+			transform.
+			GetChild( index ).
+			gameObject.
+			SetActive( false );
 	}
 
 	internal void EnableRepairNode( int index ) {
