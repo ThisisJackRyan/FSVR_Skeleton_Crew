@@ -24,7 +24,7 @@ public class SCProjectile : NetworkBehaviour {
             return;
         }
 
-		print("invoking");
+		//print("invoking");
 		Invoke("KillProjectile", 5);
     }
 
@@ -51,7 +51,7 @@ public class SCProjectile : NetworkBehaviour {
             return;
         }
 
-		print("collision enter on " + name + " with " + other.collider.name);
+		//print("collision enter on " + name + " with " + other.collider.name);
 		KillProjectile();
     }
 
@@ -65,7 +65,7 @@ public class SCProjectile : NetworkBehaviour {
 
     [ClientRpc]
     public void RpcDestroy() {
-        print("rpc destroy called");
+        //print("rpc destroy called");
         Destroy(gameObject);
     }
 }

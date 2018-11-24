@@ -30,12 +30,12 @@ public class MastInteraction : NetworkBehaviour {
         }
 
         //closest hasnt been found, grabbing is allowed  //are we changing the -1 sentinel?
-        if (!leftHandInteracting && emptyLeftHand && Controller.LeftController.GetPressDown(Controller.TrackPad)) {
+        if (!leftHandInteracting  && Controller.LeftController.GetPressDown(Controller.TrackPad)) {
             CmdHandleAiming(true);
             ////print("inside button down left");
         }
 
-        if (!rightHandInteracting && emptyRightHand && Controller.RightController.GetPressDown(Controller.TrackPad)) {
+        if (!rightHandInteracting  && Controller.RightController.GetPressDown(Controller.TrackPad)) {
             CmdHandleAiming(false);
         }
 

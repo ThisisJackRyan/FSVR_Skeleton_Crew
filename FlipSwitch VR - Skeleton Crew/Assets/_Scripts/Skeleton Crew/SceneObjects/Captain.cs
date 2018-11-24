@@ -780,7 +780,9 @@ public class Captain : SerializedNetworkBehaviour {
 		for (int i = 0; i < tutorialSounds.Length; i++) {
 			if (tutorialSounds[i].name == clip) {
 				mySource.PlayOneShot(tutorialSounds[i]);
-				PlayerHud.instance.UpdateSubtitles(tutorialSubtitles[i]);
+				if (i < tutorialSubtitles.Length) {
+					PlayerHud.instance.UpdateSubtitles(tutorialSubtitles[i]);
+				}
 				break;
 			}
 		}
