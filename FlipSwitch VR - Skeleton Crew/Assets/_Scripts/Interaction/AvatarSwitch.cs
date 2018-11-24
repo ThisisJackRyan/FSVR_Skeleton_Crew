@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AvatarSwitch : MonoBehaviour {
+public class AvatarSwitch : MonoBehaviour, IInteractible {
 
 	public enum ChangeType {
 		Color, Armor
@@ -26,26 +26,32 @@ public class AvatarSwitch : MonoBehaviour {
 		}
 	}
 
-	private void OnTriggerEnter( Collider other ) {
-		//print("trigger entered");
-		timer = 0;
-		active = true;
-	}
+	//private void OnTriggerEnter( Collider other ) {
+	//	//print("trigger entered");
+	//	timer = 0;
+	//	active = true;
+	//}
 
-	private void OnTriggerStay( Collider other ) {
-		if ( other.gameObject.GetComponentInParent<ChangeAvatar>() && active ) {
-            activator = other.gameObject.GetComponentInParent<ChangeAvatar>().gameObject;
+	//private void OnTriggerStay( Collider other ) {
+	//	if ( other.gameObject.GetComponentInParent<ChangeAvatar>() && active ) {
+ //           activator = other.gameObject.GetComponentInParent<ChangeAvatar>().gameObject;
 
-            timer += Time.deltaTime;
+ //           timer += Time.deltaTime;
 
-			if ( timer >= 0.5f ) {
-				OnActivate();
-				active = false;
-			}
-		}
-	}
+	//		if ( timer >= 0.5f ) {
+	//			OnActivate();
+	//			active = false;
+	//		}
+	//	}
+	//}
 
-	private void OnTriggerExit( Collider other ) {
-        active = false;
+	//private void OnTriggerExit( Collider other ) {
+ //       active = false;
+	//}
+
+	public bool Interact(GameObject interactingObject, bool isLeft) {
+		activator = interactingObject.GetComponentInParent<ChangeAvatar>().gameObject;
+		OnActivate();
+		return true;
 	}
 }

@@ -55,24 +55,24 @@ public class CannonInteraction : NetworkBehaviour {
 		}
 
 		//closest hasnt been found, grabbing is allowed  //are we changing the -1 sentinel?
-		if ( !leftHandInteracting && mastInteraction.emptyLeftHand && Controller.LeftController.GetPressDown( Controller.Grip ) ) {
+		if ( !leftHandInteracting && mastInteraction.emptyLeftHand && Controller.LeftController.GetPressDown( Controller.TrackPad) ) {
 			CmdHandleAiming( true );
 			////print("inside button down left");
 		}
 
-		if (!rightHandInteracting && mastInteraction.emptyRightHand && Controller.RightController.GetPressDown( Controller.Grip ) ) {
+		if (!rightHandInteracting && mastInteraction.emptyRightHand && Controller.RightController.GetPressDown( Controller.TrackPad) ) {
 			CmdHandleAiming( false );
 		}
 
 		//player has grabbed wheel
-		if (leftHandInteracting && Controller.LeftController.GetPress( Controller.Grip ) ) {
+		if (leftHandInteracting && Controller.LeftController.GetPress( Controller.TrackPad) ) {
 			if ( Vector3.Distance( mastInteraction.leftHand.position, cannonCurrentlyAiming.aimingNodes[indexOfClosest].position ) > maxReachToCannonWheel ) {
 				leftHandInteracting = false;
 				CmdStopInteracting(true, false);
 			}
 		}
 
-		if (rightHandInteracting && Controller.RightController.GetPress( Controller.Grip ) ) {
+		if (rightHandInteracting && Controller.RightController.GetPress( Controller.TrackPad) ) {
 			if ( Vector3.Distance( mastInteraction.rightHand.position, cannonCurrentlyAiming.aimingNodes[indexOfClosest].position ) > maxReachToCannonWheel ) {
 				rightHandInteracting = false;
 				CmdStopInteracting(false, false);
@@ -80,13 +80,13 @@ public class CannonInteraction : NetworkBehaviour {
 		}
 
 		//player let go
-		if ( leftHandInteracting && Controller.LeftController.GetPressUp( Controller.Grip ) ) {
+		if ( leftHandInteracting && Controller.LeftController.GetPressUp( Controller.TrackPad) ) {
 			////print( "inside up left" );
 			leftHandInteracting = false;
 			CmdStopInteracting(true, true);
 		}
 
-		if ( rightHandInteracting && Controller.RightController.GetPressUp( Controller.Grip ) ) {
+		if ( rightHandInteracting && Controller.RightController.GetPressUp( Controller.TrackPad) ) {
 			////print( "inside up right" );
 			rightHandInteracting = false;
 			CmdStopInteracting(false, true);

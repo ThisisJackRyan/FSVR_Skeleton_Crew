@@ -5,7 +5,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-public class RepairDeckTrigger : MonoBehaviour {
+public class RepairDeckTrigger : MonoBehaviour, IInteractible {
 
 	public GameObject particles;
 	[HideInInspector]
@@ -101,6 +101,7 @@ public class RepairDeckTrigger : MonoBehaviour {
 		}
 	}
 
-
-
+	public bool Interact(GameObject interactingObject, bool isLeft) {
+		throw new NotImplementedException();
+	}
 }

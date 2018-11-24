@@ -15,10 +15,7 @@ public class MastInteraction : NetworkBehaviour {
 	public bool leftHandInteracting;
 	public bool rightHandInteracting;
 	public MastSwitch mast;
-    public int indexOfClosest = -1;
-
-
-
+    public int indexOfClosest = -1; 
     //internal GameObject selected;
 
     private void Start() {
@@ -33,17 +30,17 @@ public class MastInteraction : NetworkBehaviour {
         }
 
         //closest hasnt been found, grabbing is allowed  //are we changing the -1 sentinel?
-        if (!leftHandInteracting && emptyLeftHand && Controller.LeftController.GetPressDown(Controller.Grip)) {
+        if (!leftHandInteracting && emptyLeftHand && Controller.LeftController.GetPressDown(Controller.TrackPad)) {
             CmdHandleAiming(true);
             ////print("inside button down left");
         }
 
-        if (!rightHandInteracting && emptyRightHand && Controller.RightController.GetPressDown(Controller.Grip)) {
+        if (!rightHandInteracting && emptyRightHand && Controller.RightController.GetPressDown(Controller.TrackPad)) {
             CmdHandleAiming(false);
         }
 
         //player has grabbed wheel
-        if (leftHandInteracting && Controller.LeftController.GetPress(Controller.Grip)) {
+        if (leftHandInteracting && Controller.LeftController.GetPress(Controller.TrackPad)) {
             //print("Index closest " + indexOfClosest);
             if (Vector3.Distance(leftHand.position, mast.aimingNodes[indexOfClosest].transform.position) > maxReachToMastWheel) {
                 leftHandInteracting = false;
@@ -51,7 +48,7 @@ public class MastInteraction : NetworkBehaviour {
             }
         }
 
-        if (rightHandInteracting && Controller.RightController.GetPress(Controller.Grip)) {
+        if (rightHandInteracting && Controller.RightController.GetPress(Controller.TrackPad)) {
             if (Vector3.Distance(rightHand.position, mast.aimingNodes[indexOfClosest].transform.position) > maxReachToMastWheel) {
                 rightHandInteracting = false;
                 CmdStopInteracting(false, false);
@@ -59,13 +56,13 @@ public class MastInteraction : NetworkBehaviour {
         }
 
         //player let go
-        if (leftHandInteracting && Controller.LeftController.GetPressUp(Controller.Grip)) {
+        if (leftHandInteracting && Controller.LeftController.GetPressUp(Controller.TrackPad)) {
             ////print( "inside up left" );
             leftHandInteracting = false;
             CmdStopInteracting(true, true);
         }
 
-        if (rightHandInteracting && Controller.RightController.GetPressUp(Controller.Grip)) {
+        if (rightHandInteracting && Controller.RightController.GetPressUp(Controller.TrackPad)) {
             ////print( "inside up right" );
             rightHandInteracting = false;
             CmdStopInteracting(false, true);

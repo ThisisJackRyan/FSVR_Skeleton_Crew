@@ -88,13 +88,13 @@ public class WeaponInteraction : NetworkBehaviour {
 			}
 		}
 
-		if (leftHandIsInteractable && Controller.LeftController.GetPressDown(Controller.TouchPad)) {
+		if (leftHandIsInteractable && Controller.LeftController.GetPressDown(Controller.TrackPad)) {
 			if (leftWeaponScript.data.type == WeaponData.WeaponType.Gun) {
 				CmdReloadWeapon("left");
 			}
 		}
 
-		if (rightHandIsInteractable && Controller.RightController.GetPressDown(Controller.TouchPad)) {
+		if (rightHandIsInteractable && Controller.RightController.GetPressDown(Controller.TrackPad)) {
 			if (rightWeaponScript.data.type == WeaponData.WeaponType.Gun) {
 				CmdReloadWeapon("right");
 			}

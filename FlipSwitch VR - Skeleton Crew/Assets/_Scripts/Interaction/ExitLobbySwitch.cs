@@ -5,45 +5,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public class ExitLobbySwitch : NetworkBehaviour {
+public class ExitLobbySwitch : NetworkBehaviour, IInteractible {
 
 	float timer = 0, timeToTrans = 2;
 	bool active = false;
 	public Transform spawnPos;
 	public CaptainDialogueLobby captain;
-
-	private void OnTriggerStay(Collider other) {
-		if ( !isServer ) {
-			return;
-		}
-
-		if (other.gameObject.GetComponentInParent<ChangeAvatar>() && active) {
-			timer += Time.deltaTime;
-
-			if (timer >= timeToTrans) {
-				//if (ExitLobbyPlayerTrigger.playerDict.ContainsValue(false)) {
-				//	//print("not enough players in the lobby trigger");
-				//	foreach (var obj in ExitLobbyPlayerTrigger.playerDict) {
-				//		//print(obj.Key.name + " has a value of " + obj.Value);
-				//	}
-				//	timeToTrans++;
-				//} else {
-
-					//if ( NumberOfPlayerHolder.instance.numberOfPlayers != ExitLobbyPlayerTrigger.playerDict.Count ) {
-					//	//print( "all connected players are in place, but not all players are connected." );
-					//	return;
-					//}
-					//transition
-					//print("should be teleporting player");
-
-					//StartCoroutine("FadeAndTeleport");
-					StartFade();
-					other.GetComponentInParent<Player>().TellCaptainToStartTutorial();
-					
-				//}
-			}
-		}
-	}
 
 	[Button]
 	public void TeleportWorkAround() {
@@ -90,25 +57,63 @@ public class ExitLobbySwitch : NetworkBehaviour {
 		SteamVR_Fade.Start(Color.clear, 2f);
 	}
 
-	private void OnTriggerEnter(Collider other) {
-		if ( !isServer ) {
-			return;
-		}
+	//private void OnTriggerEnter(Collider other) {
+	//	if ( !isServer ) {
+	//		return;
+	//	}
 
-		//print(other.name);
-		if (other.gameObject.GetComponentInParent<ChangeAvatar>() && !active) {
-			timer = 0;
-			active = true;
-		}
-	}
+	//	//print(other.name);
+	//	if (other.gameObject.GetComponentInParent<ChangeAvatar>() && !active) {
+	//		timer = 0;
+	//		active = true;
+	//	}
+	//}
 
-	private void OnTriggerExit(Collider other) {
-		if ( !isServer ) {
-			return;
-		}
+	//private void OnTriggerExit(Collider other) {
+	//	if ( !isServer ) {
+	//		return;
+	//	}
 
-		if (other.gameObject.GetComponentInParent<ChangeAvatar>() && active) {
-			active = false;
-		}
+	//	if (other.gameObject.GetComponentInParent<ChangeAvatar>() && active) {
+	//		active = false;
+	//	}
+	//}
+
+	//private void OnTriggerStay(Collider other) {
+	//	if ( !isServer ) {
+	//		return;
+	//	}
+
+	//	if (other.gameObject.GetComponentInParent<ChangeAvatar>() && active) {
+	//		timer += Time.deltaTime;
+
+	//		if (timer >= timeToTrans) {
+	//			//if (ExitLobbyPlayerTrigger.playerDict.ContainsValue(false)) {
+	//			//	//print("not enough players in the lobby trigger");
+	//			//	foreach (var obj in ExitLobbyPlayerTrigger.playerDict) {
+	//			//		//print(obj.Key.name + " has a value of " + obj.Value);
+	//			//	}
+	//			//	timeToTrans++;
+	//			//} else {
+
+	//				//if ( NumberOfPlayerHolder.instance.numberOfPlayers != ExitLobbyPlayerTrigger.playerDict.Count ) {
+	//				//	//print( "all connected players are in place, but not all players are connected." );
+	//				//	return;
+	//				//}
+	//				//transition
+	//				//print("should be teleporting player");
+
+	//				//StartCoroutine("FadeAndTeleport");
+
+
+	//			//}
+	//		}
+	//	}
+	//}
+
+	public bool Interact(GameObject interactingObject, bool isLeft) {
+		StartFade();
+		interactingObject.GetComponentInParent<Player>().TellCaptainToStartTutorial();
+		return true;
 	}
 }

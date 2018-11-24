@@ -86,9 +86,11 @@ public static class Controller {
 
     static bool leftInit, rightInit;
 
-	public static Valve.VR.EVRButtonId TouchPad = Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad;
+	public static Valve.VR.EVRButtonId TrackPad = Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad;
 	public static Valve.VR.EVRButtonId Trigger = Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger;
 	public static Valve.VR.EVRButtonId Grip = Valve.VR.EVRButtonId.k_EButton_Grip;
+	//public static Valve.VR.EVRButtonId Grip = Valve.VR.EVRButtonId.k_EButton_Grip;
+
 
 }
 
