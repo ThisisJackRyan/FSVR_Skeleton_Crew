@@ -19,7 +19,7 @@ public class BoardingPartySpawner : NetworkBehaviour {
 
 	// Privates
 	private int timesHit = 0;
-	
+	private BehaviorTree myTree;
 	// public GameObject[] crewBosses, crewMembers, rangedMembers;
     // public bool useRanged;
 	// Use this for initialization
@@ -34,6 +34,8 @@ public class BoardingPartySpawner : NetworkBehaviour {
 			enemy.transform.parent = transform;
 			NetworkServer.Spawn(enemy);
 		}
+
+		myTree = GetComponent<BehaviorTree>();
 
    //     else{
 			//////print("im the server");
@@ -106,13 +108,22 @@ public class BoardingPartySpawner : NetworkBehaviour {
 		--- END OF OLD STUFF --- */
     }
 
-    private void OnCollisionEnter(Collision other) {
-		if (other.gameObject.GetComponent<SCProjectile>()) {
-			if (other.gameObject.GetComponent<SCProjectile>().isCannonball) {
-				Instantiate(cannonHitParticles, other.transform.position, Quaternion.identity);
-			}
+	bool kinCheck = true;
+
+	private void Update() {
+		if (!isServer) {
+			return;
 		}
 
+		if (kinCheck) {
+			if ((bool)myTree.GetVariable("ShipHasArrived").GetValue()) {
+				GetComponent<Rigidbody>().isKinematic = true;
+				kinCheck = false;
+			}
+		}
+	}
+
+	private void OnCollisionEnter(Collision other) {
         if (!isServer) {
             return;
         }
@@ -126,6 +137,7 @@ public class BoardingPartySpawner : NetworkBehaviour {
 				NetworkServer.Spawn(g);
 				if (timesHit >= health) {
 					EnableSmokeTrail();
+					GetComponent<Rigidbody>().isKinematic = false;
 					foreach(var v in GetComponentsInChildren<Rigidbody>()) {
 						v.useGravity = true;
 					}
