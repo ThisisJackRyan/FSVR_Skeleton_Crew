@@ -129,6 +129,23 @@ public class Weapon : NetworkBehaviour {
 
 	}
 
+	public void TurnOnFire() {
+		if (!fire) {
+			return;
+		}
+
+		if (!fire.gameObject.activeInHierarchy) {
+			fire.gameObject.SetActive(true);
+
+			if (data.firesound) {
+				GetComponent<AudioSource>().clip = data.firesound;
+			}
+
+			GetComponent<AudioSource>().Play();
+		}
+
+	}
+
 	private void OnDrawGizmos() {
 		if (projectileSpawnPos) {
 			Gizmos.DrawLine(projectileSpawnPos.transform.position,

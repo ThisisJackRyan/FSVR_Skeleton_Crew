@@ -446,6 +446,7 @@ public class GrabWeapon : NetworkBehaviour {
 		weapon.GetComponent<Rigidbody>().isKinematic = true;
 
 		weaponInteraction.AssignWeapon( side, weapon );
+		weapon.GetComponent<Weapon>().TurnOnFire();
 
 		PlayDrawSound();
 	}

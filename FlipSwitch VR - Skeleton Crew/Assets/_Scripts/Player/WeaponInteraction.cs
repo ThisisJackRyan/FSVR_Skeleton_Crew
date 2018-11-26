@@ -81,10 +81,8 @@ public class WeaponInteraction : NetworkBehaviour {
 		if ( rightHandIsInteractable && Controller.RightController.GetPressDown( Controller.Trigger ) ) {
 			if ( rightWeaponScript.data.type == WeaponData.WeaponType.Punt ) {
 				CmdToggleFire( "right" );
-
 			} else if ( rightWeaponScript.data.type == WeaponData.WeaponType.Gun ) {
 				CmdFireWeapon( "right" );
-
 			}
 		}
 
@@ -98,6 +96,19 @@ public class WeaponInteraction : NetworkBehaviour {
 			if (rightWeaponScript.data.type == WeaponData.WeaponType.Gun) {
 				CmdReloadWeapon("right");
 			}
+		}
+
+		if (leftWeaponScript == null && Controller.LeftController.GetPressDown(Controller.Trigger)) {
+			networkAnim.animator.SetBool("leftFist", true);
+		}else if (leftWeaponScript == null && Controller.LeftController.GetPressUp(Controller.Trigger)) {
+			networkAnim.animator.SetBool("leftFist", false);
+		}
+
+		if (rightWeaponScript == null && Controller.RightController.GetPressDown(Controller.Trigger)) {
+			networkAnim.animator.SetBool("rightFist", true);
+		} else if (rightWeaponScript == null && Controller.RightController.GetPressUp(Controller.Trigger)) {
+			networkAnim.animator.SetBool("rightFist", false);
+
 		}
 	}
 
