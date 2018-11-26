@@ -64,9 +64,9 @@ public class PlayerRespawn : NetworkBehaviour {
 
 	private void StartRespawnAnimation() {
 		isRespawning = true;
-		animInstance = Instantiate( animObject, playerBeingRevived.GetComponentInChildren<HipMarker>().gameObject.transform.position, Quaternion.identity );
 		//animInstance.GetComponent<ObjectPositionLock>().posPoint =
 		//	playerBeingRevived.GetComponentInChildren<HipMarker>().gameObject;
+		animInstance = Instantiate( animObject, playerBeingRevived.GetComponentInChildren<HipMarker>().gameObject.transform.position, Quaternion.identity );
 		RpcStartRespawnAnimation( playerBeingRevived);
 		Invoke( "RespawnPlayer", animObject.GetComponentInChildren<Animation>().clip.length );
 	}
