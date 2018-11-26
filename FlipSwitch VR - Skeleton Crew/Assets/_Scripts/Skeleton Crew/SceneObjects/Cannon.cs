@@ -86,11 +86,15 @@ public class Cannon : NetworkBehaviour {
 
 		isFiring = true;
 		isReloaded = false;
+
 		GameObject bullet = Instantiate( projectile, spawnPos.position, Quaternion.identity );
-		Instantiate( smoke, spawnPos.position, spawnPos.rotation );
 		bullet.GetComponent<Rigidbody>().velocity = spawnPos.forward * power;
 		bullet.GetComponent<SCProjectile>().playerWhoFired = shooter;
 
+		NetworkServer.Spawn(bullet);
+
+		GameObject s = Instantiate( smoke, spawnPos.position, spawnPos.rotation );
+		NetworkServer.Spawn(s);
         if (isMagicCannon) {
             Invoke("ReloadCannon", 3f);
         }
