@@ -13,12 +13,12 @@ public class BoardingPartySpawner : NetworkBehaviour {
 	public int health = 4;
 	public GameObject smokeTrailOnDeath;
 	public GameObject cannonHitParticles;
+	public GameObject finalCannonHitParticles;
 	public bool portSideShip;
 	public PathFollower pathFollowerRef;
 
 	// Privates
 	private int timesHit = 0;
-	private Rigidbody rb;
 	
 	// public GameObject[] crewBosses, crewMembers, rangedMembers;
     // public bool useRanged;
@@ -28,8 +28,6 @@ public class BoardingPartySpawner : NetworkBehaviour {
             ////print("not the server");
             return;
         }
-
-		rb = GetComponent<Rigidbody>();
 
 		for (int i = 0; i < (int) Mathf.Floor((float) (NumberOfPlayerHolder.instance.numberOfPlayers ) * modifier); i++) {
 			GameObject enemy = Instantiate(spawnableEnemies[Random.Range(0, spawnableEnemies.Length)], enemySpawnPositions[i].transform.position, Quaternion.identity);
@@ -124,16 +122,21 @@ public class BoardingPartySpawner : NetworkBehaviour {
 				//todo PLAYER SCORE INTEGRATION FOR PROJECTILE
 				VariableHolder.instance.IncreasePlayerScore(other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.BoatsDestroyed, transform.position);
 				timesHit++;
+				GameObject g = Instantiate(timesHit >= health ? finalCannonHitParticles : cannonHitParticles, other.transform.position, Quaternion.identity);
+				NetworkServer.Spawn(g);
 				if (timesHit >= health) {
 					EnableSmokeTrail();
-					rb.useGravity = true;
+					foreach(var v in GetComponentsInChildren<Rigidbody>()) {
+						v.useGravity = true;
+					}
 					pathFollowerRef.ShipDestroyed(portSideShip);
 				}
-				//todo add point stuff here
 			} else {
 				print("shot by player fire, but not cannonball");
 			}
 		}
+
+		NetworkServer.Destroy(other.gameObject);
     }
 
 	private void EnableSmokeTrail() {

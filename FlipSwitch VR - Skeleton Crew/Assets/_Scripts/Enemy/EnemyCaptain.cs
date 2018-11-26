@@ -223,9 +223,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		EnableTeleportPads();
 
 		yield return new WaitUntil(() => playersHaveTeleported == true );
-		for (int i = 0; i < NumberOfPlayerHolder.instance.numberOfPlayers; i++) {
-			playerTeleportAreas[i].SetActive(false);
-		}
+		DisableTeleportPads();
 
 		yield return new WaitForSeconds(2f);
 		StartCoroutine( "CaptainTeleport" );
@@ -274,6 +272,28 @@ public class EnemyCaptain : NetworkBehaviour {
 		print( "drain clip" );
 		myTree.SetVariableValue( "introFinished", true );
 
+	}
+
+	private void DisableTeleportPads() {
+		if (!isServer) {
+			return;
+		}
+		RpcDisableTeleportPads();
+
+		for (int i = 0; i < NumberOfPlayerHolder.instance.numberOfPlayers; i++) {
+			playerTeleportAreas[i].SetActive(false);
+		}
+	}
+
+	[ClientRpc]
+	private void RpcDisableTeleportPads() {
+		if (isServer) {
+			return;
+		}
+
+		for (int i = 0; i < NumberOfPlayerHolder.instance.numberOfPlayers; i++) {
+			playerTeleportAreas[i].SetActive(false);
+		}
 	}
 
 	private void StartBossMusic() {
@@ -360,9 +380,11 @@ public class EnemyCaptain : NetworkBehaviour {
 			if (v.isLocalPlayer) {
 				shipTrackingSpace.SetActive(false);
 				bossTrackingSpace.SetActive(true);
-				v.transform.position = new Vector3(25, 0, 0);
-				v.transform.Rotate(v.transform.up, 90);
 			}
+
+			v.transform.position = new Vector3(25, 0, 0);
+			v.transform.Rotate(v.transform.up, 90);
+			
 		}
 	}
 
