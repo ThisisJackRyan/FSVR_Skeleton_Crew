@@ -24,6 +24,8 @@ public class SCProjectile : NetworkBehaviour {
             return;
         }
 
+		print(name + " spawned");
+
 		//print("invoking");
 		Invoke("KillProjectile", 5);
     }
@@ -51,7 +53,7 @@ public class SCProjectile : NetworkBehaviour {
             return;
         }
 
-		//print("collision enter on " + name + " with " + other.collider.name);
+		print("collision enter on " + name + " with " + other.collider.name);
 		KillProjectile();
     }
 

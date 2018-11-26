@@ -78,7 +78,40 @@ public class Cannon : NetworkBehaviour {
 		return isFiring;
 	}
 
-    [Button]
+	[Button]
+	public void CreateCannonBallTest() {
+		if (!isReloaded) {
+			return;
+		}
+
+		isFiring = true;
+		isReloaded = false;
+
+		GameObject bullet = Instantiate(projectile, spawnPos.position, Quaternion.identity);
+		bullet.GetComponent<Rigidbody>().velocity = spawnPos.forward * power;
+		//bullet.GetComponent<SCProjectile>().playerWhoFired = shooter;
+
+		NetworkServer.Spawn(bullet);
+
+		GameObject s = Instantiate(smoke, spawnPos.position, spawnPos.rotation);
+		NetworkServer.Spawn(s);
+		if (isMagicCannon) {
+			Invoke("ReloadCannon", 3f);
+		}
+
+		GetComponent<AudioSource>().clip = fireSound;
+		GetComponent<AudioSource>().Play();
+
+		//cannonBarrelAnimator.SetTrigger("Fire");
+
+		GetComponent<NetworkAnimator>().SetTrigger("Fire");
+
+		if (isServer) {
+			StartCoroutine("FireProp");
+		}
+
+	}
+
 	public void CreateCannonBall(GameObject shooter) {
 		if ( !isReloaded ) {
 			return;
