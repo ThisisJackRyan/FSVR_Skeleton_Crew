@@ -301,9 +301,9 @@ public class GrabWeapon : NetworkBehaviour {
 			weaponInteraction.AssignWeapon( side, temp );
 
 			RpcChangeanimatorState(side + temp.GetComponent<Weapon>().data.gripType.ToString(), true);
-
-
+			
 			RpcGrabWeapon( side, temp );
+			temp.GetComponent<Weapon>().TurnOnFire();
 		}
 	}
 
