@@ -151,20 +151,20 @@ public class PathFollower : NetworkBehaviour {
 	}
 
 	void InvokeWind() {
-		print("speed is " + speed);
+		//print("speed is " + speed);
 		if (speed == 0) {
-			print("wind off");
+			//print("wind off");
 			PropController.Instance.ActivateProp(Prop.WindOff);
 		} else if (speed >= .3f && speed <= .7f) {
-			print("wind low");
+			//print("wind low");
 
 			PropController.Instance.ActivateProp(Prop.WindLow);
 		} else if (speed >= .9f && speed <= 1.3f) {
-			print("wind med");
+			//print("wind med");
 
 			PropController.Instance.ActivateProp(Prop.WindMed);
 		} else if (speed >= 1.5f) {
-			print("wind high");
+			//print("wind high");
 
 			PropController.Instance.ActivateProp(Prop.WindHigh);
 		}
@@ -173,7 +173,7 @@ public class PathFollower : NetworkBehaviour {
 	internal void DestroyCrystal(int i) {
 		if (isServer) {
 			//NetworkServer.Destroy( g );
-			//print("i am the server, destroy crystal was called, should have spawned fragments");
+			////print("i am the server, destroy crystal was called, should have spawned fragments");
 
 			GameObject go = Instantiate(crystalDeathParticles, crystalRoot.GetChild(i).position, Quaternion.identity);
 			NetworkServer.Spawn(go);
@@ -182,7 +182,7 @@ public class PathFollower : NetworkBehaviour {
             RpcDestroyCrystalOnClient(i);
 
 		} //else {
-		//	//print("im not the server, but destroy crystal was called, should have spawned fragments");
+		//	////print("im not the server, but destroy crystal was called, should have spawned fragments");
 		//}
 	}
 
@@ -224,7 +224,7 @@ public class PathFollower : NetworkBehaviour {
 		foreach(var t in tutorialPanels ) {
 			t.SetActive( false );
 		}
-		print("should be turned off on server");
+		//print("should be turned off on server");
 	}
 
 	[ClientRpc]
@@ -236,14 +236,14 @@ public class PathFollower : NetworkBehaviour {
 		foreach (var t in tutorialPanels) {
 			t.SetActive(false);
 		}
-		print("should be turned off on client");
+		//print("should be turned off on client");
 	}
 
 	public void StartSecondPhase() {
 		CancelInvoke("StartSecondPhase");
 
 		if (isServer) {
-			//print("called turn off panels on server");
+			////print("called turn off panels on server");
 			TurnOffTutorialPanels();
 		}
 
@@ -311,7 +311,7 @@ public class PathFollower : NetworkBehaviour {
 		if (nextNode < path.Nodes.Length) {
 			MovePosition();
 		} else {
-			//print("next node too high " + nextNode + " " + path.Nodes.Length);
+			////print("next node too high " + nextNode + " " + path.Nodes.Length);
 		}
 	}
 
@@ -353,7 +353,7 @@ public class PathFollower : NetworkBehaviour {
 		transform.position = Vector3.Lerp(path.Nodes[currentNode].position, path.Nodes[nextNode].position, perc);
 
 		//lerp rotation
-		////print("curr " + currRot + " next " + nextRot);
+		//////print("curr " + currRot + " next " + nextRot);
 		transform.rotation = Quaternion.Lerp(currRot, nextRot, perc);
 
 		if (perc >= 1) {
@@ -396,7 +396,7 @@ public class PathFollower : NetworkBehaviour {
 	void SpawnEncounter(EncounterStage stage) {
 		switch (stage) {
 			case EncounterStage.First:
-				////print( "hit node during first" );
+				//////print( "hit node during first" );
 				//test enemy count
 				if (FindObjectsOfType<Enemy>().Length >= maxEnemies) {
                     ChangeSpeed(false);
@@ -418,7 +418,7 @@ public class PathFollower : NetworkBehaviour {
                 }
 				break;
 			case EncounterStage.Second:
-				////print( "hit node during second" );
+				//////print( "hit node during second" );
 
 				Spawn(secondEncounters);
 				break;
@@ -433,7 +433,7 @@ public class PathFollower : NetworkBehaviour {
 				//}
 				break;
 			case EncounterStage.Tutorial:
-				////print("calling spawn with index " + ( currentNode - 1 ) );
+				//////print("calling spawn with index " + ( currentNode - 1 ) );
 				///
 				if ( FindObjectsOfType<Enemy>().Length >= maxEnemies ) {
 					ChangeSpeed( false );
@@ -442,13 +442,13 @@ public class PathFollower : NetworkBehaviour {
 
 				SpawnWithPortal(tutorialSpawns, currentNode - 1);
 				if (tutorialSpawns.Length == currentNode) {
-					////print("hit last node in tutorial, moving to first encounter");
+					//////print("hit last node in tutorial, moving to first encounter");
 					currentStage = EncounterStage.First;
 				}
 
 				break;
 			default:
-				////print("hit node during break or tutorial: " + currentStage.ToString());
+				//////print("hit node during break or tutorial: " + currentStage.ToString());
 				break;
 		}
 	}
@@ -496,19 +496,19 @@ public class PathFollower : NetworkBehaviour {
 		int spawnIndex = (specifiedIndex != -1) ? specifiedIndex : Random.Range(0, toSpawnList.Length);
 		prefabToSpawn = toSpawnList[spawnIndex];
 
-		////print( name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name  );
+		//////print( name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name  );
 		//find rock
 		List<GameObject> rocks = new List<GameObject>();
 
 		foreach (GameObject go in Floaters) {
 			float dist = Vector3.Distance(shipTransform.position, go.transform.position);
-			////print( "distance to " + go.name + " is " + dist );
+			//////print( "distance to " + go.name + " is " + dist );
 			if (dist > spawnRadiusMin && dist < spawnRadiusMax) {
 				rocks.Add(go);
 			}
 		}
-		////print( "number of floaters " + Floaters.Length );
-		////print( "rocks in range " + rocks.Count );
+		//////print( "number of floaters " + Floaters.Length );
+		//////print( "rocks in range " + rocks.Count );
 
 		if (rocks.Count > 0) {
 			int chosenOne = Random.Range(0, rocks.Count);
@@ -527,7 +527,7 @@ public class PathFollower : NetworkBehaviour {
 				}
 			}
 
-			////print( g.name + " spawned, calling rpc" );
+			//////print( g.name + " spawned, calling rpc" );
 			//RpcSpawnEnemy( g, spawnVector );
 			NetworkServer.Spawn(g);
 		}

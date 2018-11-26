@@ -26,7 +26,13 @@ public class CaptainDialogueLobby : MonoBehaviour {
             source.clip = item.clip;
             source.Play();
 			if (i < subtitles.Length) {
+
+				if (PlayerHud.instance) {
+
 				PlayerHud.instance.UpdateSubtitles(subtitles[i]);
+				} else {
+					print("hud instance is null");
+				}
 			}
 
 			i++;
