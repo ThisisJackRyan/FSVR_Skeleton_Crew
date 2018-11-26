@@ -71,6 +71,11 @@ ModelImporter:
     100130: yeard_04
     100132: yeard_05
     100134: yeard_06
+    100136: ANI_Sail_6
+    100138: sail_open_9
+    100140: Ship_ropes2
+    100142: Ship_ropes3
+    100144: yeard_07
     400000: ANI_Sail_1
     400002: ANI_Sail_2
     400004: ANI_Sail_3
@@ -139,6 +144,11 @@ ModelImporter:
     400130: yeard_04
     400132: yeard_05
     400134: yeard_06
+    400136: ANI_Sail_6
+    400138: sail_open_9
+    400140: Ship_ropes2
+    400142: Ship_ropes3
+    400144: yeard_07
     2100000: rope
     2100002: sail1
     2100004: rope1
@@ -213,6 +223,11 @@ ModelImporter:
     2300126: yeard_04
     2300128: yeard_05
     2300130: yeard_06
+    2300132: ANI_Sail_6
+    2300134: sail_open_9
+    2300136: Ship_ropes2
+    2300138: Ship_ropes3
+    2300140: yeard_07
     3300000: ANI_Sail_1
     3300002: ANI_Sail_2
     3300004: ANI_Sail_3
@@ -279,6 +294,11 @@ ModelImporter:
     3300126: yeard_04
     3300128: yeard_05
     3300130: yeard_06
+    3300132: ANI_Sail_6
+    3300134: sail_open_9
+    3300136: Ship_ropes2
+    3300138: Ship_ropes3
+    3300140: yeard_07
     4300000: Sail_Ropes
     4300002: yeard_01
     4300004: yeard_00
@@ -345,6 +365,11 @@ ModelImporter:
     4300126: rope_stairs11
     4300128: Ship_ropes1
     4300130: yeard_06
+    4300132: Ship_ropes2
+    4300134: Ship_ropes3
+    4300136: sail_open_9
+    4300138: ANI_Sail_6
+    4300140: yeard_07
     7400000: Sails Open
     7400002: Sails Closing
     7400004: Sails Closed
