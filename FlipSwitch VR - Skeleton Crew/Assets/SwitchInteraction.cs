@@ -20,14 +20,14 @@ public class SwitchInteraction : NetworkBehaviour {
 
 		//closest hasnt been found, grabbing is allowed  //are we changing the -1 sentinel?
 		if (Controller.LeftController.GetPressDown(Controller.TrackPad)) {
-			print( "left track pad" );
+			//print( "left track pad" );
 
 			CmdSphereCast( true);
 		}
 
 		if (Controller.RightController.GetPressDown(Controller.TrackPad)) {
-			print("right track pad");
-			CmdSphereCast(true);
+			//print("right track pad");
+			CmdSphereCast(false);
 		}
 	}
 
