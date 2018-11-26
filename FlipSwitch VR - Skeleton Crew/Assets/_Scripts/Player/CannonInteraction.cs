@@ -21,7 +21,7 @@ public class CannonInteraction : NetworkBehaviour {
 			Captain.instance.CheckPlayersCannonFiring();
 		}
 
-		RpcFireCannon( cannon );
+		//RpcFireCannon( cannon );
 	}
 
 	[ClientRpc]
