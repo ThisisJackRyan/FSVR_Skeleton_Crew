@@ -34,7 +34,7 @@ public class EnemyDragonkin : NetworkBehaviour {
 					playerWhoLastHitMe = other.gameObject.GetComponent<Weapon>().playerWhoIsHolding;
 
 					canBeDamaged = false;
-					GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime), other.gameObject.GetComponent<Weapon>().playerWhoIsHolding.transform.root.gameObject);
+					GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
 					Invoke("AllowDamage", 1f);
 				}
 			}

@@ -36,6 +36,8 @@ public class BoardingPartySpawner : NetworkBehaviour {
 		}
 
 		myTree = GetComponent<BehaviorTree>();
+		print("myTree name: " + myTree.name);
+		print("accessing the ship has arrived bool" + myTree.GetVariable("ShipHasArrived").Name);
 
    //     else{
 			//////print("im the server");
@@ -116,7 +118,7 @@ public class BoardingPartySpawner : NetworkBehaviour {
 		}
 
 		if (kinCheck) {
-			if ((bool)myTree.GetVariable("ShipHasArrived").GetValue()) {
+			if ((bool) myTree.GetVariable("ShipHasArrived").GetValue()) {
 				GetComponent<Rigidbody>().isKinematic = true;
 				kinCheck = false;
 			}

@@ -63,14 +63,18 @@ namespace Opsive.ThirdPersonController
         protected virtual void Collide(GameObject originator, Transform collisionTransform, Vector3 collisionPoint, Vector3 collisionNormal, bool destroy)
         {
 #if ENABLE_MULTIPLAYER
-            if (!isServer) {
+            if (isServer) {
 				// Add the collision effects on the client.
-				print("adding collision effects to client");
-                AddCollisionEffects(collisionTransform, collisionPoint, collisionNormal);
-                return;
+				//print("adding collision effects to client");
+				if (collisionTransform){
+					if (collisionTransform.root.gameObject.GetComponent<NetworkIdentity>()) {
+						RpcAddCollisionEffects(collisionTransform.root.gameObject, collisionPoint, collisionNormal);
+					}
+				}
+				return;
             }
 #endif
-			print("collide in base called, is server. collided with " + collisionTransform.name);
+			//print("collide in base called, is server. collided with " + collisionTransform.name);
 
             // Spawn the explosion. The explosion will apply the damage and impact force. If there is no explosion then just apply the damage and impact force now.
             if (m_Explosion != null) {
@@ -85,12 +89,12 @@ namespace Opsive.ThirdPersonController
                 // Do not take any damage if the collision hits an item.
                 if (Utility.GetComponentForType<Item>(collisionTransform.gameObject) == null) {
 					// If the Health component exists it will apply a force to the rigidbody in addition to deducting the health. Otherwise just apply the force to the rigidbody. 
-					print("hit a non item thing");
+					//print("hit a non item thing");
 					if (collisionTransform.GetComponentInParent<FSVRPlayer>()) { 
 					var hitHealth = collisionTransform.root.GetComponentInChildren<EnemyTargetInit>();
 
 						if (hitHealth != null) {
-							print("should be applying damage to " + hitHealth.name);
+							//print("should be applying damage to " + hitHealth.name);
 							hitHealth.ApplyMeleeDamage((int)m_DamageAmount);
 						} else {
 							var m_CollisionRigidbody = collisionTransform.GetComponent<Rigidbody>();
@@ -102,14 +106,9 @@ namespace Opsive.ThirdPersonController
                 }
             }
 
-			// Add any collision effects. These effects do not need to be added on the server.
-			print("root of hit object is " + collisionTransform.root.name);
-#if ENABLE_MULTIPLAYER
-			RpcAddCollisionEffects(collisionTransform.root.gameObject, collisionPoint, collisionNormal);
-
-#endif
 			if (destroy) {
 				// Place back in the ObjectPool.
+				//print("destroyed object on server at " + Time.time);
 				ObjectPool.Destroy(m_GameObject);
 			} else {
 				// Let the ObjectManager manage the project. It will remove the projectile when too many of the same projectiles have been instantiated.
@@ -131,6 +130,11 @@ namespace Opsive.ThirdPersonController
         [ClientRpc]
         private void RpcAddCollisionEffects(GameObject collisionGameObject, Vector3 collisionPoint, Vector3 collisionNormal)
         {
+			if (isServer) {
+				return;
+			}
+			
+			//print("rpc add collision effects called at " + Time.time);
             AddCollisionEffects(collisionGameObject != null ? collisionGameObject.transform : null, collisionPoint, collisionNormal);
         }
 #endif
