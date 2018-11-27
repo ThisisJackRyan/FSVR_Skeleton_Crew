@@ -222,7 +222,10 @@ public class PathFollower : NetworkBehaviour {
 
 		RpcTurnOffTutorialPanels();
 		foreach(var t in tutorialPanels ) {
+			if (t) {
+
 			t.SetActive( false );
+			}
 		}
 		//print("should be turned off on server");
 	}
