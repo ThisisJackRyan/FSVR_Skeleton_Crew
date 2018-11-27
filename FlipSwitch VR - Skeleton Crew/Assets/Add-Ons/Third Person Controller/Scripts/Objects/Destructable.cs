@@ -63,6 +63,10 @@ namespace Opsive.ThirdPersonController
         protected virtual void Collide(GameObject originator, Transform collisionTransform, Vector3 collisionPoint, Vector3 collisionNormal, bool destroy)
         {
 #if ENABLE_MULTIPLAYER
+			if ( !isServer ) {
+				return;
+			}
+
             if (isServer) {
 				// Add the collision effects on the client.
 				//print("adding collision effects to client");
@@ -71,7 +75,6 @@ namespace Opsive.ThirdPersonController
 						RpcAddCollisionEffects(collisionTransform.root.gameObject, collisionPoint, collisionNormal);
 					}
 				}
-				return;
             }
 #endif
 			//print("collide in base called, is server. collided with " + collisionTransform.name);
