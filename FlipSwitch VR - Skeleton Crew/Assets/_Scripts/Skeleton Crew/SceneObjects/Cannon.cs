@@ -99,6 +99,7 @@ public class Cannon : NetworkBehaviour {
 			Invoke("ReloadCannon", 3f);
 		}
 
+		RpcPlayFireSound();
 		GetComponent<AudioSource>().clip = fireSound;
 		GetComponent<AudioSource>().Play();
 
@@ -132,6 +133,7 @@ public class Cannon : NetworkBehaviour {
             Invoke("ReloadCannon", 3f);
         }
 
+		RpcPlayFireSound();
         GetComponent<AudioSource>().clip = fireSound;
 		GetComponent<AudioSource>().Play();
 
@@ -143,6 +145,16 @@ public class Cannon : NetworkBehaviour {
 			StartCoroutine("FireProp");
 		}
 
+	}
+
+	[ClientRpc]
+	private void RpcPlayFireSound() {
+		if (isServer) {
+			return;
+		}
+
+		GetComponent<AudioSource>().clip = fireSound;
+		GetComponent<AudioSource>().Play();
 	}
 
 	public float cannonPropWait = 0.5f;
