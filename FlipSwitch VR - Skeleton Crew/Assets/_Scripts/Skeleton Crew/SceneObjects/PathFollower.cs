@@ -222,7 +222,10 @@ public class PathFollower : NetworkBehaviour {
 
 		RpcTurnOffTutorialPanels();
 		foreach(var t in tutorialPanels ) {
+			if (t) {
+
 			t.SetActive( false );
+			}
 		}
 		//print("should be turned off on server");
 	}
@@ -234,7 +237,9 @@ public class PathFollower : NetworkBehaviour {
 		}
 
 		foreach (var t in tutorialPanels) {
-			t.SetActive(false);
+			if (t) {
+				t.SetActive(false);
+			}
 		}
 		//print("should be turned off on client");
 	}
@@ -380,7 +385,7 @@ public class PathFollower : NetworkBehaviour {
 
 		currentLerpTime = 0f;
 
-		if (currentStage != EncounterStage.FirstBreak || currentStage != EncounterStage.SecondBreak) {
+		if (currentStage != EncounterStage.FirstBreak && currentStage != EncounterStage.SecondBreak) {
 			if (path.Nodes[currentNode].GetComponent<EncounterNode>()) {
 				path.Nodes[currentNode].GetComponent<EncounterNode>().SpawnEncounter();
 			} else {
@@ -496,33 +501,34 @@ public class PathFollower : NetworkBehaviour {
 		int spawnIndex = (specifiedIndex != -1) ? specifiedIndex : Random.Range(0, toSpawnList.Length);
 		prefabToSpawn = toSpawnList[spawnIndex];
 
-		//////print( name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name  );
+		print(name + " called spawn " + Time.time + " prefabToSpawn " + prefabToSpawn.name);
 		//find rock
-		List<GameObject> rocks = new List<GameObject>();
+		//List<GameObject> rocks = new List<GameObject>();
 
-		foreach (GameObject go in Floaters) {
-			float dist = Vector3.Distance(shipTransform.position, go.transform.position);
-			//////print( "distance to " + go.name + " is " + dist );
-			if (dist > spawnRadiusMin && dist < spawnRadiusMax) {
-				rocks.Add(go);
-			}
-		}
-		//////print( "number of floaters " + Floaters.Length );
-		//////print( "rocks in range " + rocks.Count );
+		//foreach (GameObject go in Floaters) {
+		//	float dist = Vector3.Distance(shipTransform.position, go.transform.position);
+		//	//////print( "distance to " + go.name + " is " + dist );
+		//	if (dist > spawnRadiusMin && dist < spawnRadiusMax) {
+		//		rocks.Add(go);
+		//	}
+		//}
+		////////print( "number of floaters " + Floaters.Length );
+		////////print( "rocks in range " + rocks.Count );
 
-		if (rocks.Count > 0) {
-			int chosenOne = Random.Range(0, rocks.Count);
-			//calc other side
-			Vector3 spawnVector = rocks[chosenOne].transform.position - shipTransform.position;
-			spawnVector = rocks[chosenOne].transform.position + (spawnVector.normalized * spawnDistFromRock);
+		//if (rocks.Count > 0) {
+		//	int chosenOne = Random.Range(0, rocks.Count);
+		//	//calc other side
+		//	Vector3 spawnVector = rocks[chosenOne].transform.position - shipTransform.position;
 
-			float rng = Random.Range(yLimiter.x, yLimiter.y);
-			spawnVector.y = rng;
-			//spawn
+		//	float rng = Random.Range(yLimiter.x, yLimiter.y);
+		//	spawnVector.y = rng;
+		//	//spawn
+			spawnVector = transform.position;
 			GameObject g = Instantiate(prefabToSpawn, spawnVector, Quaternion.identity);
 
 			if (g.GetComponent<ImpactReticuleSpawner>()) {
-				foreach (var v in g.GetComponents<ImpactReticuleSpawner>()) {
+				foreach (var v in g.GetComponentsInChildren<ImpactReticuleSpawner>()) {
+					print("setting deck on spawner");
 					v.deckMesh = shipDeck;
 				}
 			}
@@ -530,7 +536,7 @@ public class PathFollower : NetworkBehaviour {
 			//////print( g.name + " spawned, calling rpc" );
 			//RpcSpawnEnemy( g, spawnVector );
 			NetworkServer.Spawn(g);
-		}
+		//}
 	}
 
 	public List<Transform> portalPosPoints;
