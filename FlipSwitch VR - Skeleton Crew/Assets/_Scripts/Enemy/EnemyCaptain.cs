@@ -140,7 +140,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	public int difficultyModifier = 0;
 	public int timesToDeath = 4;
 	public BossAmbientSound ambientSoundRef;
-
+	public float degreesToRotate = 90f;
 	// Privates
 	private int incrementSize;
 	private AudioSource source;
@@ -383,7 +383,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			}
 
 			v.transform.position = new Vector3(25, 0, 0);
-			v.transform.Rotate(v.transform.up, 90);
+			v.transform.Rotate(v.transform.up, degreesToRotate);
 			
 		}
 	}

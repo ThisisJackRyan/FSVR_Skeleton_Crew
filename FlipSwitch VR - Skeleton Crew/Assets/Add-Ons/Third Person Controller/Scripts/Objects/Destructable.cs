@@ -52,49 +52,31 @@ namespace Opsive.ThirdPersonController
             LayerManager.RevertCollision(m_Collider);
         }
 
-        /// <summary>
-        /// The object has collided. Apply damage to the object hit and spawn various effects (explosion, decal, etc).
-        /// </summary>
-        /// <param name="originator">The originator of the object.</param>
-        /// <param name="collisionTransform">The collision object that the destructable collided with. Can be null.</param>
-        /// <param name="collisionPoint">The point of destruction.</param>
-        /// <param name="collisionNormal">The normal at the destruction point.</param>
-        /// <param name="destroy">Should the projectile be destroyed and placed back in the ObjectPool?</param>
-        protected virtual void Collide(GameObject originator, Transform collisionTransform, Vector3 collisionPoint, Vector3 collisionNormal, bool destroy)
-        {
+		/// <summary>
+		/// The object has collided. Apply damage to the object hit and spawn various effects (explosion, decal, etc).
+		/// </summary>
+		/// <param name="originator">The originator of the object.</param>
+		/// <param name="collisionTransform">The collision object that the destructable collided with. Can be null.</param>
+		/// <param name="collisionPoint">The point of destruction.</param>
+		/// <param name="collisionNormal">The normal at the destruction point.</param>
+		/// <param name="destroy">Should the projectile be destroyed and placed back in the ObjectPool?</param>
+		protected virtual void Collide(GameObject originator, Transform collisionTransform, Vector3 collisionPoint, Vector3 collisionNormal, bool destroy) {
 #if ENABLE_MULTIPLAYER
-			if ( !isServer ) {
+			if (!isServer) {
 				return;
 			}
 
-            if (isServer) {
+			if (isServer) {
 				// Add the collision effects on the client.
 				//print("adding collision effects to client");
-				if (collisionTransform){
-					if (collisionTransform.root.gameObject.GetComponent<NetworkIdentity>()) {
-						RpcAddCollisionEffects(collisionTransform.root.gameObject, collisionPoint, collisionNormal);
-					}
-				}
-            }
-#endif
-			//print("collide in base called, is server. collided with " + collisionTransform.name);
+				if (collisionTransform) {
+					//RpcAddCollisionEffects(collisionTransform.root.gameObject, collisionPoint, collisionNormal);
+					var hitRotation = Quaternion.LookRotation(collisionNormal);
+					GameObject g = Instantiate(m_DefaultDust, collisionPoint, m_DefaultDust.transform.rotation * hitRotation);
+					NetworkServer.Spawn(g);
 
-            // Spawn the explosion. The explosion will apply the damage and impact force. If there is no explosion then just apply the damage and impact force now.
-            if (m_Explosion != null) {
-                var explosion = Utility.GetComponentForType<Explosion>(ObjectPool.Spawn(m_Explosion, m_Transform.position, m_Transform.rotation));
-                explosion.Explode(originator);
-            } else if (collisionTransform != null) {
-                // Execute any custom events.
-                if (!string.IsNullOrEmpty(m_DamageEvent)) {
-                    EventHandler.ExecuteEvent(collisionTransform.gameObject, m_DamageEvent, m_DamageAmount, m_Transform.position, m_Transform.forward * -m_ImpactForce, originator);
-                }
-
-                // Do not take any damage if the collision hits an item.
-                if (Utility.GetComponentForType<Item>(collisionTransform.gameObject) == null) {
-					// If the Health component exists it will apply a force to the rigidbody in addition to deducting the health. Otherwise just apply the force to the rigidbody. 
-					//print("hit a non item thing");
-					if (collisionTransform.GetComponentInParent<FSVRPlayer>()) { 
-					var hitHealth = collisionTransform.root.GetComponentInChildren<EnemyTargetInit>();
+					if (collisionTransform.GetComponentInParent<FSVRPlayer>()) {
+						var hitHealth = collisionTransform.root.GetComponentInChildren<EnemyTargetInit>();
 
 						if (hitHealth != null) {
 							//print("should be applying damage to " + hitHealth.name);
@@ -106,21 +88,53 @@ namespace Opsive.ThirdPersonController
 							}
 						}
 					}
-                }
-            }
+				}
+#endif
+				//print("collide in base called, is server. collided with " + collisionTransform.name);
 
-			if (destroy) {
-				// Place back in the ObjectPool.
-				//print("destroyed object on server at " + Time.time);
-				ObjectPool.Destroy(m_GameObject);
-			} else {
-				// Let the ObjectManager manage the project. It will remove the projectile when too many of the same projectiles have been instantiated.
-				ObjectManager.AddObject(m_GameObject);
-			}
+				// Spawn the explosion. The explosion will apply the damage and impact force. If there is no explosion then just apply the damage and impact force now.
+				//         if (m_Explosion != null) {
+				//             var explosion = Utility.GetComponentForType<Explosion>(ObjectPool.Spawn(m_Explosion, m_Transform.position, m_Transform.rotation));
+				//             explosion.Explode(originator);
+				//         } else if (collisionTransform != null) {
+				//             // Execute any custom events.
+				//             if (!string.IsNullOrEmpty(m_DamageEvent)) {
+				//                 EventHandler.ExecuteEvent(collisionTransform.gameObject, m_DamageEvent, m_DamageAmount, m_Transform.position, m_Transform.forward * -m_ImpactForce, originator);
+				//             }
+
+				//             // Do not take any damage if the collision hits an item.
+				//             if (Utility.GetComponentForType<Item>(collisionTransform.gameObject) == null) {
+				//		// If the Health component exists it will apply a force to the rigidbody in addition to deducting the health. Otherwise just apply the force to the rigidbody. 
+				//		//print("hit a non item thing");
+				//		if (collisionTransform.GetComponentInParent<FSVRPlayer>()) { 
+				//			var hitHealth = collisionTransform.root.GetComponentInChildren<EnemyTargetInit>();
+
+				//			if (hitHealth != null) {
+				//				//print("should be applying damage to " + hitHealth.name);
+				//				hitHealth.ApplyMeleeDamage((int)m_DamageAmount);
+				//			} else {
+				//				var m_CollisionRigidbody = collisionTransform.GetComponent<Rigidbody>();
+				//				if (m_ImpactForce > 0 && m_CollisionRigidbody != null && !m_CollisionRigidbody.isKinematic) {
+				//					m_CollisionRigidbody.AddForceAtPosition(m_Transform.forward * -m_ImpactForce, collisionPoint);
+				//				}
+				//			}
+				//		}
+				//             }
+				//         }
+
+				//if (destroy) {
+				//	// Place back in the ObjectPool.
+				//	//print("destroyed object on server at " + Time.time);
+				//	ObjectPool.Destroy(m_GameObject);
+				//} else {
+				//	// Let the ObjectManager manage the project. It will remove the projectile when too many of the same projectiles have been instantiated.
+				//	ObjectManager.AddObject(m_GameObject);
+				//}
 
 #if !ENABLE_MULTIPLAYER
             AddCollisionEffects(collisionTransform, collisionPoint, collisionNormal);
 #endif
+			}
 		}
 
 #if ENABLE_MULTIPLAYER
