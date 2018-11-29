@@ -11,7 +11,7 @@ public class ConstantSize : MonoBehaviour {
 	}
 
 	void MyPreRender(Camera cam) {
-		print("test");
+		//print("test");
 		float size = (Camera.main.transform.position - transform.position).magnitude;
 		transform.localScale = new Vector3( size, size, size ) * sizeMod;
 	}
