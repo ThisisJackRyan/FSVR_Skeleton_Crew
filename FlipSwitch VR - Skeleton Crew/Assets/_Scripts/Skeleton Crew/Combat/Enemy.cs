@@ -167,29 +167,13 @@ public class Enemy : NetworkBehaviour {
 			if (other.gameObject.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
 				if (other.gameObject.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
 					playerWhoLastHitMe = other.gameObject.GetComponent<Weapon>().playerWhoIsHolding;
-					if (!ratkin) {
-						canBeDamaged = false;
-						GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
-						Invoke("AllowDamage", 1f);
-					} else {
-						DestroyMe();
-					}
+					DestroyMe();
 				}
 			}
 		} else if (other.gameObject.tag == "BulletPlayer" || other.gameObject.tag == "CannonBallPlayer") {
 			//print("collision with bullet");
 			playerWhoLastHitMe = other.gameObject.GetComponent<SCProjectile>().playerWhoFired;
-
-			if (!ratkin) {
-				canBeDamaged = false;
-				GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
-				//todo PLAYER SCORE INTEGRATION FOR PROJECTILE
-				//VariableHolder.instance.IncreasePlayerScore( other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.SkeletonKills, transform.position );
-
-				Invoke( "AllowDamage", 1f);
-			} else {
-				DestroyMe();
-			}
+			DestroyMe();
         }
 
 		if(other.gameObject.GetComponent<NavMeshAgent>() && GetComponent<NavMeshAgent>()) {

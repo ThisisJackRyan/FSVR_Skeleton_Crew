@@ -75,7 +75,7 @@ namespace Opsive.ThirdPersonController
 					GameObject g = Instantiate(m_DefaultDust, collisionPoint, m_DefaultDust.transform.rotation * hitRotation);
 					NetworkServer.Spawn(g);
 
-					if (collisionTransform.GetComponentInParent<FSVRPlayer>()) {
+					if (collisionTransform.GetComponentInParent<FSVRPlayer>() || collisionTransform.GetComponentInParent<DamagedObject>()) {
 						var hitHealth = collisionTransform.root.GetComponentInChildren<EnemyTargetInit>();
 
 						if (hitHealth != null) {
