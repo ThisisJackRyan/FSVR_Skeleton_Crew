@@ -77,6 +77,9 @@ public class FSVRPlayer : NetworkBehaviour {
 				
 			}
             StartCoroutine("FadeIn");
+
+			print("finding switch to start timer invoke");
+			GameObject.FindObjectOfType<ExitLobbySwitch>().StartInvoke();
 		}
 
 	}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RepairTrigger : MonoBehaviour, IInteractible {
+public class RepairTrigger : MonoBehaviour {
 
 	public DamagedObject dmgObj;
 	public GameObject particles;
@@ -93,7 +93,7 @@ public class RepairTrigger : MonoBehaviour, IInteractible {
         }
     }
 
-	public bool Interact(GameObject interactingObject, bool isLeft) {
-		throw new System.NotImplementedException();
-	}
+	//public bool Interact(GameObject interactingObject, bool isLeft) {
+	//	throw new System.NotImplementedException();
+	//}
 }

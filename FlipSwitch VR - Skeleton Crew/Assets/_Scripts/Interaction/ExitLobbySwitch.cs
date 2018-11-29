@@ -10,8 +10,9 @@ public class ExitLobbySwitch : NetworkBehaviour, IInteractible {
 	public Transform spawnPos;
 	public CaptainDialogueLobby captain;
 
-	void Start() {
+	public void StartInvoke() {
 		if (isServer) {
+			print("invoke called on server");
 			Invoke("TeleportWorkAround", VariableHolder.instance.lobbyTimer);
 		}
 	}
