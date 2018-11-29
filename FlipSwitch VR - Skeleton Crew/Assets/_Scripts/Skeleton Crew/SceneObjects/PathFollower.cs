@@ -49,7 +49,9 @@ public class PathFollower : NetworkBehaviour {
 	[Header("New Spawning Stuff")]
 	// Publics
 	public GameObject[] portPortalSpawnPositions;
+	public List<GameObject> portShipMovePositions;
 	public GameObject[] starboardPortalSpawnPositions;
+	public List<GameObject> starboardShipMovePositions;
 	public GameObject shipToSpawn;
 	public float minDistanceToMove = 10, maxDistanceToMove = 25;
 
@@ -554,6 +556,7 @@ public class PathFollower : NetworkBehaviour {
 
 			GameObject s = Instantiate(shipToSpawn, spawnVector, Quaternion.LookRotation(-Vector3.forward, Vector3.up));
 			s.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("TargetPosition", lookPos);
+			s.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("MovePositions", portShipMovePositions);
 			s.GetComponent<BoardingPartySpawner>().portSideShip = true;
 			s.GetComponent<BoardingPartySpawner>().pathFollowerRef = this;
 			if (s.GetComponent<ImpactReticuleSpawner>()) {
@@ -573,6 +576,7 @@ public class PathFollower : NetworkBehaviour {
 
 			GameObject s = Instantiate(shipToSpawn, spawnVector, Quaternion.LookRotation(-Vector3.forward, Vector3.up));
 			s.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("TargetPosition", lookPos);
+			s.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("MovePositions", starboardShipMovePositions);
 			s.GetComponent<BoardingPartySpawner>().portSideShip = false;
 			s.GetComponent<BoardingPartySpawner>().pathFollowerRef = this;
 
