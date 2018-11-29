@@ -30,7 +30,10 @@ public class PathFollower : NetworkBehaviour {
 	Quaternion currRot, nextRot;
 	GameObject prefabToSpawn;
 
-	public int encounterOneTotalTime = 180, encounterTwoTotalTime = 180, encounterthreeTotalTime = 180, breakTimer = 60;
+	public int encounterOneTotalTime = 180,
+		encounterTwoTotalTime = 180,
+		encounterthreeTotalTime = 180,
+		breakTimer = 60;
 
 	bool canMove = false;
 	bool firstMove = true;
@@ -90,6 +93,12 @@ public class PathFollower : NetworkBehaviour {
 		nextNode = 1;
 		currRot = transform.rotation;
 		nextRot = CalcRotation(path.Nodes[nextNode]);
+
+		//update phase timers
+		encounterOneTotalTime = VariableHolder.instance.phaseOneTimer;
+		encounterTwoTotalTime = VariableHolder.instance.phaseTwoTimer;
+		encounterthreeTotalTime = VariableHolder.instance.phaseThreeTimer;
+		breakTimer = VariableHolder.instance.breakTimer;
 	}
 
 	[Button]
