@@ -1,9 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 
 public class ExitLobbySwitch : NetworkBehaviour, IInteractible {
 
@@ -11,6 +9,12 @@ public class ExitLobbySwitch : NetworkBehaviour, IInteractible {
 	bool active = false;
 	public Transform spawnPos;
 	public CaptainDialogueLobby captain;
+
+	void Start() {
+		if (isServer) {
+			Invoke("TeleportWorkAround", VariableHolder.instance.lobbyTimer);
+		}
+	}
 
 	[Button]
 	public void TeleportWorkAround() {

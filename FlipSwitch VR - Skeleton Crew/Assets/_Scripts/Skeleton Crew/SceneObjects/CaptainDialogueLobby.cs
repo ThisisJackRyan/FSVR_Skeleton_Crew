@@ -10,14 +10,16 @@ public class CaptainDialogueLobby : MonoBehaviour {
 	public string[] subtitles;
     AudioSource source;
 
+
     public float finaleDelay;
     public UnityEvent finale; 
 	// Use this for initialization
 	void Start () {
         StartCoroutine("CaptainsSpeech");
         source = GetComponent<AudioSource>();
+
 	}
-	
+
 	// Update is called once per frame
 	IEnumerator CaptainsSpeech() {
 		int i = 0;
@@ -37,8 +39,8 @@ public class CaptainDialogueLobby : MonoBehaviour {
 
 			i++;
         }
-        yield return new WaitForSecondsRealtime(finaleDelay);
-        finale.Invoke();
+        //yield return new WaitForSecondsRealtime(finaleDelay);
+        //finale.Invoke();
     }
 }
 

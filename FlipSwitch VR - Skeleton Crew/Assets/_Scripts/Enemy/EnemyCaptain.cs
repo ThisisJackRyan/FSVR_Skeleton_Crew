@@ -185,6 +185,8 @@ public class EnemyCaptain : NetworkBehaviour {
 		VariableHolder.instance.enemyRangedPositions.Clear();
 		VariableHolder.instance.enemyMeleePositions.Clear();
 
+		timeToCaptainWinningInSeconds = VariableHolder.instance.bossTimer;
+
 		foreach(var r in rangedSpawnPositions ) {
 			VariableHolder.instance.enemyRangedPositions.Add( r, false );
 		}

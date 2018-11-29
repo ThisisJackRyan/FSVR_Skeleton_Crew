@@ -55,6 +55,8 @@ public class PathFollower : NetworkBehaviour {
 	public List<GameObject> portShipMovePositions;
 	public GameObject[] starboardPortalSpawnPositions;
 	public List<GameObject> starboardShipMovePositions;
+	public List<GameObject> ShipsToSpawn;
+	[Tooltip("Gets overridden with each spawn, do not assign to")]
 	public GameObject shipToSpawn;
 	public float minDistanceToMove = 10, maxDistanceToMove = 25;
 
@@ -556,6 +558,8 @@ public class PathFollower : NetworkBehaviour {
 	public int maxEnemies = 16;
 
 	public void SpawnShip(bool portSide) {
+		shipToSpawn = ShipsToSpawn[Random.Range(0, ShipsToSpawn.Capacity)];
+
 		if (portSide) {
 			GameObject p = portPortalSpawnPositions[Random.Range(0, portPortalSpawnPositions.Length)];
 			spawnVector = p.transform.position;
