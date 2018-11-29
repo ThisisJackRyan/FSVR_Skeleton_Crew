@@ -36,7 +36,7 @@ public static class Controller {
 					HapticController.instance.StartHapticVibration(con,haptics.vibrationLength, haptics.strength);
 				}
 			} else {
-				Debug.LogError("There is no hapticController in the scene when haptics were called.");
+				Debug.LogWarning("There is no hapticController in the scene when haptics were called.");
 			}	
 		}
 	}	
