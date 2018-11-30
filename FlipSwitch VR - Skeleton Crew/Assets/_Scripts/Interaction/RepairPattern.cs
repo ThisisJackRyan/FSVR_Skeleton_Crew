@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class RepairPattern : MonoBehaviour {
@@ -7,16 +8,48 @@ public class RepairPattern : MonoBehaviour {
    	internal int index = 0;
 	public DamagedObject dmgObj;
 	public GameObject repairerInstance;
+	LineRenderer lr;
+
+	[Button]
 	public void Init() {
 		//print( name + " init called" );
 
 		index = 0;
-		for(int i = index + 1; i < transform.childCount; i++ ) {
+		for (int i = index + 1; i < transform.childCount; i++ ) {
 			transform.GetChild( i ).gameObject.SetActive( false );
 		}
 
 		Increment(null, null);
 		//print("awerrrrrrrrrrrrrrrrrrrrrrrgwer");
+	}
+
+	Vector3[] nodePoints;
+	void OnEnable() {
+		lr = GetComponent<LineRenderer>();
+		nodePoints = new Vector3[transform.childCount];
+
+		for (int i = 0; i < transform.childCount; i++) {
+			if (i == 0) {
+				continue;
+
+			}
+
+			nodePoints[i - 1] = transform.GetChild(i).transform.localPosition;
+		}
+
+		lr.positionCount = transform.childCount - 1;
+		lr.SetPositions(nodePoints);
+	}
+
+	[Button]
+	void IncrementButton() {
+		Increment(null, null);
+
+	}
+
+	void IncrementLineRenderer() {
+		lr.positionCount = index;
+		lr.SetPositions( nodePoints );
 	}
 
 	// Use this for initialization
@@ -25,13 +58,15 @@ public class RepairPattern : MonoBehaviour {
 
 		dmgObj.DisableRepairNode( index );
 		index++;
+		IncrementLineRenderer();
 
-		if (repairer) {
+		if ( repairer) {
 			repairerInstance = repairer;
 			//VariableHolder.instance.IncreasePlayerScore(repairer, VariableHolder.PlayerScore.ScoreType.Repairs, transform.position);
 			//print("increment with repairer, about to call start trail, is left hand is " + isLefthand);
 			repairer.GetComponent<Player>().StartTrail(isLefthand);
 		}
+
 		if (index < transform.childCount) {
 			//print("index in range");
 			transform.GetChild( index ).gameObject.SetActive(true);
