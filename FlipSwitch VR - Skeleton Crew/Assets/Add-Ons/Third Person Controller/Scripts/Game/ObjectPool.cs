@@ -210,13 +210,16 @@ namespace Opsive.ThirdPersonController
             if (m_GameObjectPool.TryGetValue(originalInstanceID, out pool)) {
                 if (pool.Count > 0) {
                     var instantiatedObject = pool.Pop();
-                    instantiatedObject.transform.position = position;
-                    instantiatedObject.transform.rotation = rotation;
-                    instantiatedObject.transform.parent = parent;
-                    instantiatedObject.SetActive(true);
+
+					if (instantiatedObject) {
+						instantiatedObject.transform.position = position;
+						instantiatedObject.transform.rotation = rotation;
+						instantiatedObject.transform.parent = parent;
+						instantiatedObject.SetActive(true);
                     // Map the newly instantiated instance ID to the original instance ID so when the object is returned it knows what pool to go to.
-                    m_InstantiatedGameObjects.Add(instantiatedObject.GetInstanceID(), originalInstanceID);
-                    return instantiatedObject;
+						m_InstantiatedGameObjects.Add(instantiatedObject.GetInstanceID(), originalInstanceID);
+						return instantiatedObject;
+					}
                 }
             }
             return null;

@@ -9,54 +9,85 @@ public class Host : NetworkBehaviour {
 
 	public GameObject tagResetterPrefab;
 	List<GameObject> players;
-	private HostUiManager scriptHostUi;
+	private HostUiManager hostUI;
 
 	private GameObject selectedPlayer;
 
 	#region Getters & Setters
-	public void SetSelectedPlayer(GameObject p)
-	{
+	public GameObject SetSelectedPlayer(GameObject p) {
 		selectedPlayer = p;
+		return p;
 	}
 
-	public List<GameObject> GetPlayerList()
-	{
+	public List<GameObject> GetPlayerList() {
 		return players;
 	}
 	#endregion
 
 	#region Initialization
-	void Start()
-	{
+	void Start() {
 
-		if (!isLocalPlayer && !isServer)
-		{
+		if (!isLocalPlayer && !isServer) {
 			GetComponent<AudioListener>().enabled = false;
 			return;
 		}
 
-        //var comms = FindObjectOfType<VoiceBroadcastTrigger>();
-        //comms.BroadcastPosition = false;
+		//var comms = FindObjectOfType<VoiceBroadcastTrigger>();
+		//comms.BroadcastPosition = false;
 		GetComponent<Camera>().enabled = true;
 		GetComponent<AudioListener>().enabled = true;
+		hostUI = GetComponent<HostUiManager>();
 		//Resources.FindObjectsOfTypeAll<HostCanvas>()[0].gameObject.SetActive(true);
 		//GameObject uiManager = GameObject.Find( "HostUIManager" );
 		//uiManager.SetActive( true );
-
-
-
 		//scriptHostUi = uiManager.GetComponent<HostUiManager>();
 		//scriptHostUi.SetHost( this );
+
+		if (isServer) {
+			InitSecondaryDisplays();
+		}
+
+	}
+
+	void OnLevelWasLoaded(int level) {
+		if (isServer) {
+			if (level == 2) {
+				transform.position = Vector3.zero;
+			}
+		}
 	}
 
 	public void AddPlayerToHostList(GameObject playerToAdd) {
 		//print("pre rpc " + playerToAdd.name);
 		RpcAddPlayerToHost(playerToAdd);
+
+		//needs player index
+		hostUI.EnablePlayerView((players != null)? players.Count : 0);
+		hostUI.UpdateUI();
+	}
+
+	PathFollower pathFollower;
+	public void ChangeSpeed(bool faster) {
+		if (!isServer) {
+			return;
+		}
+
+		if (!pathFollower) {
+			if (FindObjectOfType<PathFollower>()) {
+				pathFollower = FindObjectOfType<PathFollower>();
+			}
+		}
+
+		if (pathFollower) {
+			pathFollower.ChangeSpeed((faster) ? 1 : -1);
+		} else {
+			Debug.LogWarning("pathfollower was not able to be found.");
+		}
 	}
 
 	[ClientRpc]
 	private void RpcAddPlayerToHost(GameObject playerToAdd) {
-		if ( !isLocalPlayer) {
+		if (!isLocalPlayer) {
 			return;
 		}
 
@@ -67,27 +98,34 @@ public class Host : NetworkBehaviour {
 		}
 
 		players.Add(playerToAdd);
-		playerToAdd.GetComponent<FSVRPlayer>().SetCameraSettings(players.Count);
+		playerToAdd.GetComponent<FSVRPlayer>().SetCameraSettings( hostUI.mirrorViews[players.Count - 1]);
 		playerToAdd.name = "Player " + players.Count;
-	  //  scriptHostUi.UpdateUI();
+		//  scriptHostUi.UpdateUI();
 	}
 
 	#endregion
 
-	#region Handle Pausing
+	#region Handle Pausing  ----- done
 	public void TogglePause() {
-		if (isLocalPlayer) {
-			CmdTogglePause();
+		if (!isServer) {
+			return;
 		}
-	}
 
-	[Command]
-	private void CmdTogglePause() {
+		if (Time.timeScale == 0f) {
+			Time.timeScale = 1f;
+		} else {
+			Time.timeScale = 0f;
+		}
+
 		RpcTogglePause();
 	}
 
 	[ClientRpc]
 	private void RpcTogglePause() {
+		if (isServer) {
+			return;
+		}
+
 		if (Time.timeScale == 0f) {
 			Time.timeScale = 1f;
 		} else {
@@ -98,27 +136,27 @@ public class Host : NetworkBehaviour {
 
 	#region Handle Calibrations
 
-	public void PerformCalibration() {
-		if (!selectedPlayer) {
-			return;
-		}
+	//public void PerformCalibration() {
+	//	if (!selectedPlayer) {
+	//		return;
+	//	}
 
-		CmdCalibratePlayer(selectedPlayer);
-	}
+	//	CmdCalibratePlayer(selectedPlayer);
+	//}
 
-	[Command]
-	private void CmdCalibratePlayer(GameObject g) {
-		RpcCalibratePlayer(g);
-	}
+	//[Command]
+	//private void CmdCalibratePlayer(GameObject g) {
+	//	RpcCalibratePlayer(g);
+	//}
 
-	[ClientRpc]
-	private void RpcCalibratePlayer(GameObject g) {
-		if (isServer) {
-			return;
-		}
+	//[ClientRpc]
+	//private void RpcCalibratePlayer(GameObject g) {
+	//	if (isServer) {
+	//		return;
+	//	}
 
-		g.GetComponentInChildren<VRIKCalibrationController>().Calibrate();
-	}
+	//	g.GetComponentInChildren<VRIKCalibrationController>().Calibrate();
+	//}
 
 	#endregion
 
@@ -131,6 +169,42 @@ public class Host : NetworkBehaviour {
 	#endregion
 
 	#region Handle Player Returning
+
+	#endregion
+
+	#region Mirror Views
+
+	public void ShowView(int player) {
+		//turn on players camera -- should be rendering to mirrored display
+		print("show view " + player);
+		if (!isServer) {
+			return;
+		}
+
+		foreach (var g in players) {
+			print(g.name);
+			if (g.name == "Player " + player) {
+				g.GetComponent<FSVRPlayer>().MirrorView();
+			} else {
+				g.GetComponent<FSVRPlayer>().DisableMirrorView(hostUI.mirrorViews[int.Parse(g.name[7].ToString()) - 1]);
+			}
+		}
+	}
+
+	void InitSecondaryDisplays() {
+		//get player cameras, set their display to 2
+		//activate display 2
+		//turn them all back off
+
+		for (int i = 0; i < Display.displays.Length; i++) {
+			if (i == 0) {
+				continue;
+			}
+
+			Debug.Log("Activating display " + i);
+			Display.displays[i].Activate();
+		}
+	}
 
 	#endregion
 }

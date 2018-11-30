@@ -25,8 +25,10 @@ public class Enemy : NetworkBehaviour {
 	public bool tutorialGuard = false;
     public bool rangedUnit = false;
 	public bool ratkin = false;
+	public bool isAttacking;
     public GameObject rangedTeleTarget;
 	public PrimaryItemType primaryItemType;
+	public Collider weaponCollider;
 	[Tooltip( "The hit particles to play when hit" )] public GameObject[] hitParticles;
     [SyncVar] public GameObject boardingPartyShip;
 	private GameObject playerWhoLastHitMe;
@@ -59,19 +61,21 @@ public class Enemy : NetworkBehaviour {
         transform.parent = null;
     }
 
-    public void DestroyMe() {
-        if (!isServer) {
-            return;
-        }
-        if (tutorialGuard) {
-            //print( "tut guard killed" );
-            Captain.enemiesKilled[this] = true;
-            Captain.instance.CheckEnemiesKilled();
-        }
+	public void DestroyMe() {
+		if (!isServer) {
+			return;
+		}
+		if (tutorialGuard) {
+			////print( "tut guard killed" );
+			Captain.enemiesKilled[this] = true;
+			Captain.instance.CheckEnemiesKilled();
+		}
 
 		// Put score death stuff here using playerWhoLastHitMe
-		VariableHolder.PlayerScore.ScoreType scoreType = (ratkin) ? VariableHolder.PlayerScore.ScoreType.RatkinKills: VariableHolder.PlayerScore.ScoreType.SkeletonKills;
-		VariableHolder.instance.IncreasePlayerScore( playerWhoLastHitMe.transform.root.gameObject, scoreType, transform.position );
+		VariableHolder.PlayerScore.ScoreType scoreType = (ratkin) ? VariableHolder.PlayerScore.ScoreType.RatkinKills : VariableHolder.PlayerScore.ScoreType.SkeletonKills;
+		if (playerWhoLastHitMe) {
+			VariableHolder.instance.IncreasePlayerScore(playerWhoLastHitMe.transform.root.gameObject, scoreType, transform.position);
+		}
 
 
 		var g = Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
@@ -96,7 +100,7 @@ public class Enemy : NetworkBehaviour {
 	}
 
 	public void PlayHitParticles() {
-        //print("play hit particles called");
+        ////print("play hit particles called");
 
         foreach(var p in hitParticles) {
             p.SetActive(true);
@@ -107,6 +111,25 @@ public class Enemy : NetworkBehaviour {
 
         Invoke("TurnOffHit", 1.0f);
     }
+
+	public void OnMeleeAttackStart() {
+		if (!isServer) {
+			return;
+		}
+
+		weaponCollider.enabled = true;
+		isAttacking = true;
+	}
+
+	public void OnMeleeAttackEnd() {
+		if (!isServer) {
+			return;
+		}
+
+		weaponCollider.enabled = false;
+		isAttacking = false;
+	}
+
 
 	private void Start() {
 
@@ -120,9 +143,10 @@ public class Enemy : NetworkBehaviour {
 				return;
 			}
 			//GetComponent<Inventory>().EquipItem(primaryItemTypes[temp]);
-			GetComponent<BehaviorTree>().SetVariableValue("weaponType", primaryItemType);
 			//RpcEquipItem(itemToEquip);
 		}
+
+		GetComponent<BehaviorTree>().SetVariableValue("weaponType", primaryItemType);
     }
 
     [ClientRpc]          
@@ -143,28 +167,13 @@ public class Enemy : NetworkBehaviour {
 			if (other.gameObject.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
 				if (other.gameObject.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
 					playerWhoLastHitMe = other.gameObject.GetComponent<Weapon>().playerWhoIsHolding;
-					if (!ratkin) {
-						canBeDamaged = false;
-						GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime), other.gameObject.GetComponent<Weapon>().playerWhoIsHolding.transform.root.gameObject);
-						Invoke("AllowDamage", 1f);
-					} else {
-						DestroyMe();
-					}
+					DestroyMe();
 				}
 			}
 		} else if (other.gameObject.tag == "BulletPlayer" || other.gameObject.tag == "CannonBallPlayer") {
+			//print("collision with bullet");
 			playerWhoLastHitMe = other.gameObject.GetComponent<SCProjectile>().playerWhoFired;
-
-			if (!ratkin) {
-				canBeDamaged = false;
-				GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
-				//todo PLAYER SCORE INTEGRATION FOR PROJECTILE
-				//VariableHolder.instance.IncreasePlayerScore( other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.SkeletonKills, transform.position );
-
-				Invoke( "AllowDamage", 1f);
-			} else {
-				DestroyMe();
-			}
+			DestroyMe();
         }
 
 		if(other.gameObject.GetComponent<NavMeshAgent>() && GetComponent<NavMeshAgent>()) {

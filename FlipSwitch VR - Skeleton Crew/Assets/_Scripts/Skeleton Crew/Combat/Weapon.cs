@@ -12,6 +12,10 @@ public class Weapon : NetworkBehaviour {
 	public bool isBeingHeldByPlayer = false;
 	public GameObject playerWhoIsHolding;
 	public GameObject playerWhoHolstered = null;
+
+	public Transform reloadParticlePosition;
+	public GameObject reloadParticles;
+
 	[SyncVar(hook = "OnAmmoNumChange")] int ammo = -1;
 	float lastShottime = 0;
 	
@@ -43,6 +47,8 @@ public class Weapon : NetworkBehaviour {
 	public void Reload() {
 		ammo = data.ammo;
         GetComponent<AudioSource>().PlayOneShot(data.reloadClip);
+		GameObject g = Instantiate(reloadParticles, reloadParticlePosition.position, Quaternion.identity);
+		NetworkServer.Spawn(g);
     }
 
     public void SpawnBullet(bool isLeft, ushort hapticSize) {
@@ -63,27 +69,28 @@ public class Weapon : NetworkBehaviour {
 			}
 
 			lastShottime = Time.time;
-            Vector3 rot = Quaternion.identity.eulerAngles;
-            if (data.spread > 0) {
-                var variance = Quaternion.AngleAxis(Random.Range(0, 360), rot) * Vector3.up * Random.Range(0, data.spread);
-                rot += variance;
-            }
 
 			GetComponent<AudioSource>().clip = data.firesound;
 
             if (isServer) {
-                var bullet = Instantiate(data.projectile, projectileSpawnPos.position, Quaternion.Euler(rot));
-			    bullet.GetComponent<Rigidbody>().AddForce(projectileSpawnPos.forward * data.power, ForceMode.Impulse);
+				Vector3 rot = Quaternion.identity.eulerAngles;
+				if (data.spread > 0) {
+					var variance = Quaternion.AngleAxis(Random.Range(0, 360), rot) * Vector3.up * Random.Range(0, data.spread);
+					rot += variance;
+				}
+
+	            var bullet = Instantiate(data.projectile, projectileSpawnPos.position, Quaternion.Euler(rot));
+
+				bullet.GetComponent<Rigidbody>().AddForce(projectileSpawnPos.forward * data.power, ForceMode.Impulse);
 			    bullet.GetComponent<SCProjectile>().damage = data.damage;
 				bullet.GetComponent<SCProjectile>().playerWhoFired = playerWhoIsHolding.transform.root.gameObject;
 
-                //NetworkServer.Spawn(smoke);
-                NetworkServer.Spawn(bullet);
+				NetworkServer.Spawn(bullet);
             }
 
-			Instantiate(data.particles, projectileSpawnPos.position, projectileSpawnPos.rotation);
+			Instantiate( data.particles, projectileSpawnPos.position, projectileSpawnPos.rotation );
 
-        }
+		}
 
 		GetComponent<AudioSource>().Play();
 	}
@@ -112,6 +119,23 @@ public class Weapon : NetworkBehaviour {
 
 		if (fire.gameObject.activeInHierarchy) {
 			fire.gameObject.SetActive(false);
+
+			if (data.firesound) {
+				GetComponent<AudioSource>().clip = data.firesound;
+			}
+
+			GetComponent<AudioSource>().Play();
+		}
+
+	}
+
+	public void TurnOnFire() {
+		if (!fire) {
+			return;
+		}
+
+		if (!fire.gameObject.activeInHierarchy) {
+			fire.gameObject.SetActive(true);
 
 			if (data.firesound) {
 				GetComponent<AudioSource>().clip = data.firesound;

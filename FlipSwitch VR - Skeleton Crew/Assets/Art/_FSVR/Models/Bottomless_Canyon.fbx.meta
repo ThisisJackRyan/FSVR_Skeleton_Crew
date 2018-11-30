@@ -5,16 +5,29 @@ ModelImporter:
   fileIDToRecycleName:
     100000: //RootNode
     100002: Low_Poly_Ground
+    100004: Canyon_Left
+    100006: Canyon_Right
+    100008: transform1
     400000: //RootNode
     400002: Low_Poly_Ground
+    400004: Canyon_Left
+    400006: Canyon_Right
+    400008: transform1
     2100000: Bottomless_Canyon
     2100002: Bottomless_Canyon1
+    2100004: MAT_bottomlesscanyon
     2300000: //RootNode
     2300002: Low_Poly_Ground
+    2300004: Canyon_Left
+    2300006: Canyon_Right
     3300000: //RootNode
     3300002: Low_Poly_Ground
+    3300004: Canyon_Left
+    3300006: Canyon_Right
     4300000: Bottemless_Canyon
     4300002: Low_Poly_Ground
+    4300004: Canyon_Right
+    4300006: Canyon_Left
   externalObjects:
   - first:
       type: UnityEngine:Material

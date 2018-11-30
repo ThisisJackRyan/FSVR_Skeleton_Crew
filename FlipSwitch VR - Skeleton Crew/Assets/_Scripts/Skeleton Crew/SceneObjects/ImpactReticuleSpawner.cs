@@ -49,6 +49,7 @@ public class ImpactReticuleSpawner : NetworkBehaviour {
 	}
 
 	private void Start() {
+		print("impact spawner spawned");
 		InvokeRepeating( "SpawnReticle", timeBeforeStart, timeBetweenSpawns );
 	}
 

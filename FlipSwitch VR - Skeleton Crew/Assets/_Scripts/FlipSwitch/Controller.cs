@@ -36,7 +36,7 @@ public static class Controller {
 					HapticController.instance.StartHapticVibration(con,haptics.vibrationLength, haptics.strength);
 				}
 			} else {
-				Debug.LogError("There is no hapticController in the scene when haptics were called.");
+				Debug.LogWarning("There is no hapticController in the scene when haptics were called.");
 			}	
 		}
 	}	
@@ -86,9 +86,11 @@ public static class Controller {
 
     static bool leftInit, rightInit;
 
-	public static Valve.VR.EVRButtonId TouchPad = Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad;
+	public static Valve.VR.EVRButtonId TrackPad = Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad;
 	public static Valve.VR.EVRButtonId Trigger = Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger;
 	public static Valve.VR.EVRButtonId Grip = Valve.VR.EVRButtonId.k_EButton_Grip;
+	//public static Valve.VR.EVRButtonId Grip = Valve.VR.EVRButtonId.k_EButton_Grip;
+
 
 }
 

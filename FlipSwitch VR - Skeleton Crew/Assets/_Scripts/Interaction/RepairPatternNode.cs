@@ -17,6 +17,10 @@ public class RepairPatternNode : MonoBehaviour {
 
 	void Timer() {
 		//print(name + " timer ran out");
+		if (pattern.repairerInstance != null) {
+			pattern.repairerInstance.GetComponent<Player>().DisableTrailRenderer();
+		}
+
 		pattern.gameObject.SetActive( false );
 		if ( repairSphere ) {
 			//repairSphere.GetComponent<Renderer>().enabled = true;
@@ -26,13 +30,14 @@ public class RepairPatternNode : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter( Collider other ) {
-		if ( !other.GetComponentInParent<MastInteraction>() ) {
+		if ( !other.GetComponent<GrabWeaponHand>() ) {
+			//print("returning because " + other.gameObject.name+" does not have grabWeaponHand");
 			return;
 		}
 
 		//Controller.PlayHaptics(other.gameObject.GetComponent<GrabWeaponHand>().isLeftHand, HapticController.BurstHaptics);
-
-		pattern.Increment(other.transform.root.gameObject);
+		//print("should be calling increment");
+		pattern.Increment(other.transform.root.gameObject, other.GetComponent<GrabWeaponHand>().isLeftHand);
 		CancelInvoke();
 		gameObject.SetActive( false );
 	}

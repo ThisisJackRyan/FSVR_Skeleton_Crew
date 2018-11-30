@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using Sirenix.OdinInspector;
-using HTC.UnityPlugin.Vive;
+using Valve.VR;
 
 //[RequireComponent(typeof(LoadSceneOnStart))]
 public class ConnectWithPress : MonoBehaviour {
@@ -13,6 +13,7 @@ public class ConnectWithPress : MonoBehaviour {
     public TrackerIdSetter[] setters;
 
 	public GameObject standStill;
+	//public GameObject vrLoadLevel;
 
     // Use this for initialization
     public void EnableInput() {
@@ -30,21 +31,32 @@ public class ConnectWithPress : MonoBehaviour {
 
         if (canInput) {
             //print("input enabled");
-            if (Controller.RightController.GetPressDown(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger)) {
-                foreach (var item in setters) {
-                    if (item) {
-                        item.SetTrackerId();
-                    } else {
-                        continue;
-                    }
-                }
+            if (Controller.RightController.GetPress(Controller.Trigger)) {
+				timer += Time.deltaTime;
+            }else if (Controller.RightController.GetPressUp(Controller.Trigger) || Controller.RightController.GetPressDown(Controller.Trigger)) {
+				timer = 0;
+			}
 
-                StartCoroutine("FadeAndLoad");
-            }
+			if(timer >= timeToHold) {
+				foreach (var item in setters) {
+					if (item) {
+						item.SetTrackerId();
+					} else {
+						continue;
+					}
+				}
+				//FindObjectOfType<SteamVR_LoadLevel>().Trigger();
+
+				StartCoroutine("FadeAndLoad");
+			}
         }
     }
 
+	float timer, timeToHold = 3;
+
     bool canInput = false;
+
+
 
     //void InitController() {
     //    canInput = true;
@@ -54,18 +66,23 @@ public class ConnectWithPress : MonoBehaviour {
 
     [Button("loopholes")]
     void Ha() {
+		//FindObjectOfType<SteamVR_LoadLevel>().Trigger();  //("Master_Online_new");
+
         StartCoroutine("FadeAndLoad");
     }
 
     IEnumerator FadeAndLoad() {
+		canInput = false;
+		//SteamVR_Overlay.instance.UpdateOverlay();
+		//var compositor = OpenVR.Compositor;
         SteamVR_Fade.Start(Color.black, 1, true);
+		//compositor.FadeToColor(1f, 255f, 255f, 255f, 1.0f, false);
 		standStill.SetActive(true);
         yield return new WaitForSecondsRealtime(1f);
         //NetworkManager.singleton.networkAddress = NetworkManager.singleton.serverBindAddress;
         NetworkManager.singleton.StartClient();
 
-        yield return new WaitForSecondsRealtime(1f);
-        SteamVR_Fade.Start(Color.clear, 1, true);
+        //yield return new WaitForSecondsRealtime(1f);
     }
 }
 

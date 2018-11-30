@@ -17,47 +17,6 @@ public enum Side {
 public class Captain : SerializedNetworkBehaviour {
 	#region Sounds
 
-	[ToggleGroup("FirstToggle", order: -1, groupTitle: "Captain Speech")]
-	public bool FirstToggle;
-
-	// Low priority audio clips (reminders everything 30s if needed)
-	[ToggleGroup("FirstToggle")]
-	public AudioClip leftCannonsDown;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip leftCannonsAndRatmen;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip rightCannonsDown;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip rightCannonsAndRatmen;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip leftAndRightCannons;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip leftAndRightCannonsAndRatmen;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip ratmenOnly;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip shouldNeverGetHere;
-
-	// High priority audio clips
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemiesAtMast;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip cannonDestroyedLeftSide;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip cannonDestroyedRightSide;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip cannonDestroyedBothSides;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemyIncomingLeft;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemyIncomingRight;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemyIncomingBoth;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemyBoardingLeft;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemyBoardingRight;
-
 	bool firstBoard = true;
 	public AudioClip firstBoardClip;
 	internal void CrewmanHaveBoarded() {
@@ -67,19 +26,6 @@ public class Captain : SerializedNetworkBehaviour {
 			PlayDialogue(firstBoardClip.name);
 		}
 	}
-
-	[ToggleGroup("FirstToggle")]
-	public AudioClip enemyBoardingBoth;
-
-	// End of encounter audio clips
-	[ToggleGroup("FirstToggle")]
-	public AudioClip endOfEncounterRatmen;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip endOfEncounterCannons;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip endOfEncounterBoth;
-	[ToggleGroup("FirstToggle")]
-	public AudioClip endOfEncounterAllIsWell;
 
 	#endregion
 
@@ -104,15 +50,15 @@ public class Captain : SerializedNetworkBehaviour {
 	void Start() {
 		if (isServer) {
 			if (instance == null) {
-				////print("is server, setting as instance");
+				//////print("is server, setting as instance");
 				instance = this;
 			} else {
-				////print("is server with instance, destroying");
+				//////print("is server with instance, destroying");
 
 				Destroy(gameObject);
 			}
 		} else {
-			////print("not server");
+			//////print("not server");
 		}
 
 		foreach (var g in mastRopes) {
@@ -123,25 +69,27 @@ public class Captain : SerializedNetworkBehaviour {
 	}
 
 	bool hasInitialized = false;
+	[Button]
 	public void Init() {
 		hasInitialized = true;
 		AssignClipsToDictionary();
 
 		priorityAudioQueue = new Queue<AudioClip>();
 		reminderQueue = new Queue<AudioClip>();
-
+		prioritySubtitleQueue = new Queue<string>();
+		reminderSubtitleQueue = new Queue<string>();
 
 		if (!isServer) {
 			return;
 		}
 
-		print("init called server section");
+		//print("init called server section");
 		DisableCannons();
 		DisableFirePrompt();
 		DisableRatHatches();
 		DisableRopes();
-		SpawnGuards();
-		print("post spawn guards method call");
+		//SpawnGuards();
+		//print("post spawn guards method call");
 		eventTimes = new Dictionary<AudioEventType, float>();
 		eventTimes.Add(AudioEventType.Cannon, Time.timeSinceLevelLoad);
 		eventTimes.Add(AudioEventType.Ratmen, Time.timeSinceLevelLoad);
@@ -163,27 +111,32 @@ public class Captain : SerializedNetworkBehaviour {
 
 	Dictionary<AudioEventType, float> eventTimes;
 	Dictionary<string, AudioClip> clipNames;
+	Dictionary<string, string> clipSubtitles;
+
 	//Dictionary<AudioClip, string> clipNamesLookup;
 
 	Queue<AudioClip> priorityAudioQueue, reminderQueue;
+#pragma warning disable 0414
+
+	Queue<string> prioritySubtitleQueue, reminderSubtitleQueue;
 	public float timeBetweenReminders = 10, timeBetweenPriorityClips = 3, lastPlayedTime;
 
 	public AudioClip repairCannonClip, ratmenDeadClip, playerRespawnClip, repairDeckClip;
 
 	private void Update() {
 		if (!isServer || !hasInitialized) {
-			//print("returning");
+			////print("returning");
 			return;
 		}
 
 		if (mySource.isPlaying) {
-			//print("source is playing");
+			////print("source is playing");
 
 			return;
 		}
 
 		if (priorityAudioQueue.Count > 0 && lastPlayedTime + timeBetweenPriorityClips <= Time.timeSinceLevelLoad) {
-			//print("priority needs to play");
+			////print("priority needs to play");
 
 			//need to check severity still
 			mySource.PlayOneShot(priorityAudioQueue.First());
@@ -193,10 +146,10 @@ public class Captain : SerializedNetworkBehaviour {
 		}
 
 		if (lastPlayedTime + timeBetweenReminders <= Time.timeSinceLevelLoad) { //its been atleast aslong as the remindertimer
-																				//print("time for reminder");
+																				////print("time for reminder");
 
 			if (reminderQueue.Count > 0) {
-				//print("reminder needs to play");
+				////print("reminder needs to play");
 
 				mySource.PlayOneShot(reminderQueue.First());
 				RpcPlayDialogue(reminderQueue.Dequeue().name);
@@ -220,17 +173,23 @@ public class Captain : SerializedNetworkBehaviour {
 		}
 
 		//print("rpc called with " + clipName);
-
+		//print("clipNames returned value of clipNames with passed string " + clipNames[clipName]);
 		mySource.PlayOneShot(clipNames[clipName]);
 	}
 
 	void AssignClipsToDictionary() {
+		//print("assign clips to dictionary called");
 		clipNames = new Dictionary<string, AudioClip>();
 		clipNames.Add(repairCannonClip.name, repairCannonClip);
 		clipNames.Add(ratmenDeadClip.name, ratmenDeadClip);
 		clipNames.Add(repairDeckClip.name, repairDeckClip);
 		clipNames.Add(playerRespawnClip.name, playerRespawnClip);
 
+		//clipSubtitles = new Dictionary<string, string>();
+		//clipSubtitles.Add(repairCannonClip.name, repairCannonSubtitle);
+		//clipSubtitles.Add(ratmenDeadClip.name, ratmenDeadSubtitle);
+		//clipSubtitles.Add(repairDeckClip.name, repairDeckClip);
+		//clipSubtitles.Add(playerRespawnClip.name, playerRespawnClip);
 		//clipNamesLookup = new Dictionary<AudioClip, string>();
 		//clipNamesLookup.Add( repairCannonClip, "Cannon");
 		//clipNamesLookup.Add( ratmenDeadClip,"Ratmen");
@@ -249,7 +208,7 @@ public class Captain : SerializedNetworkBehaviour {
 			case AudioEventType.Cannon:
 
 				if (!priorityAudioQueue.Contains(repairCannonClip)) {
-					//print("adding clip[ to queue");
+					////print("adding clip[ to queue");
 					eventTimes[AudioEventType.Cannon] = Time.timeSinceLevelLoad;
 					priorityAudioQueue.Enqueue(repairCannonClip);
 				}
@@ -368,7 +327,7 @@ public class Captain : SerializedNetworkBehaviour {
 		if (!isServer) {
 			return;
 		}
-
+		////print("full whipe attack on server");
 		var g = Instantiate(burstEffect, transform.position, Quaternion.identity);
 		NetworkServer.Spawn(g);
 
@@ -424,32 +383,35 @@ public class Captain : SerializedNetworkBehaviour {
 	public bool mastHasBeenPulled = false;
 	public Collider[] mastRopes;
 	public AudioClip[] tutorialSounds;
+	public string[] tutorialSubtitles;
 	bool guardsComplete, damagedComplete, ratmenComplete, cannonsComplete;
 
 	public List<GameObject> tutorialCannons, actualCannons, cannonFirePrompts, tutorialRatHatch, ratHatch, tutorialGuards, mastPrompts; //todo disable mast prompt etc
 
 	public Transform[] guardPositions;
+	public GameObject[] guardBonePiles;
+	public GameObject guardParticleSpawn;
 	public GameObject guardPrefab;
 	public float timeForGuardsToStartAttacking = 4f;
 
 	public void SpawnGuards() {
-		print("spawn guards called");
+		//print("spawn guards called");
 		for (int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++) {
-			GameObject g = Instantiate(guardPrefab, guardPositions[i].position, guardPositions[i].rotation);
+			GameObject g = Instantiate(guardPrefab, guardPositions[i].position, Quaternion.identity);
 			g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("target", VariableHolder.instance.players[i]);
 			enemiesKilled.Add(g.GetComponent<Enemy>(), false);
 			NetworkServer.Spawn(g);
-			print("looping through and should have spawned a guard");
+			//print("looping through and should have spawned a guard");
 		}
 
-		print("end of spawn guards method");
+		//print("end of spawn guards method");
 	}
 
 	public void StartTutorial() {
 		if (!isServer) {
 			return;
 		}
-		////print("start tutorial");
+		//////print("start tutorial");
 
 
 		ambientSource.enabled = true;
@@ -460,7 +422,71 @@ public class Captain : SerializedNetworkBehaviour {
 	}
 
 	private void EnableGuardBehaviors() {
+		for (int i = 0; i < FindObjectOfType<NumberOfPlayerHolder>().numberOfPlayers; i++) {
+			StartCoroutine(SpawnGuard(i));
+			DestroyPile(i);
+			NetworkServer.Destroy( guardBonePiles[i] );
+			GameObject g = Instantiate(guardParticleSpawn, guardPositions[i].position, Quaternion.identity);
+			NetworkServer.Spawn(g);
+
+			////print("looping through and should have spawned guard particles");
+		}
 		BehaviorDesigner.Runtime.GlobalVariables.Instance.SetVariableValue("playersOnDeck", true);
+
+		CleanupRemainingBonePiles();
+	}
+
+	private void DestroyPile(int index) {
+		if (!isServer) {
+			return;
+		}
+
+		RpcDestroyPile(index);
+		Destroy(guardBonePiles[index]);
+
+	}
+
+	[ClientRpc]
+	private void RpcDestroyPile(int index) {
+		if (isServer) {
+			return;
+		}
+
+		Destroy(guardBonePiles[index]);
+	}
+
+	private void CleanupRemainingBonePiles() {
+		if (!isServer) {
+			return;
+		}
+		RpcCleanupBonePiles();
+
+		foreach(var v in guardBonePiles ) {
+			if ( v ) {
+				NetworkServer.Destroy( v );
+			}
+		}
+	}
+
+	[ClientRpc]
+	private void RpcCleanupBonePiles() {
+		if (isServer) {
+			return;
+		}
+
+		foreach (var v in guardBonePiles) {
+			if (v) {
+				NetworkServer.Destroy(v);
+			}
+		}
+	}
+
+	IEnumerator SpawnGuard(int num) {
+		yield return new WaitForSeconds(2f);
+		GameObject g = Instantiate(guardPrefab, guardPositions[num].position, guardPositions[num].rotation);
+		NetworkServer.Spawn(g);
+		g.GetComponent<BehaviorDesigner.Runtime.BehaviorTree>().SetVariableValue("target", VariableHolder.instance.players[num]);
+		enemiesKilled.Add(g.GetComponent<Enemy>(), false);
 	}
 
 	[ClientRpc]
@@ -494,7 +520,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckEnemiesKilled() {
 		//foreach (var obj in enemiesKilled) {
-		//	////print(obj.Key.name + " has a value of " + obj.Value);
+		//	//////print(obj.Key.name + " has a value of " + obj.Value);
 		//}
 		if (!enemiesKilled.ContainsValue(false) && !guardsComplete) {
 			guardsComplete = true;
@@ -551,7 +577,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckDamagedObjects() {
 		//foreach (var obj in damagedObjectsRepaired) {
-		//	//print(obj.Key.name + " has a value of " + obj.Value);
+		//	////print(obj.Key.name + " has a value of " + obj.Value);
 		//}
 		if (!damagedObjectsRepaired.ContainsValue(false) && !damagedComplete) {
 			damagedComplete = true;
@@ -563,9 +589,9 @@ public class Captain : SerializedNetworkBehaviour {
 	#region fire prompts 
 
 	void EnableFirePrompt() {
-		//print("enable fire prompts");
+		////print("enable fire prompts");
 		for (int i = 0; i < cannonFirePrompts.Count; i++) {
-			//print( cannonFirePrompts[i].name +  " being enabled" );
+			////print( cannonFirePrompts[i].name +  " being enabled" );
 
 			cannonFirePrompts[i].SetActive(true);
 		}
@@ -605,13 +631,17 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckPlayersCannonFiring() {
 		//foreach (var obj in playersFiredCannons) {
-		//	//print(obj.Key.name + " has a value of " + obj.Value);
+		//	////print(obj.Key.name + " has a value of " + obj.Value);
 		//}
 		if (!playersFiredCannons.ContainsValue(false) && !cannonsComplete) {
 			cannonsComplete = true;
-			RpcPlaySoundClip("PrepTut_Rat");
-			EnableRatHatches();
+			//RpcPlaySoundClip("PrepTut_Rat");
+			//EnableRatHatches();
 			DisableFirePrompt();
+
+			RpcPlaySoundClip("PrepTut_Mast");
+
+			EnableRopes();
 		}
 	}
 
@@ -636,6 +666,8 @@ public class Captain : SerializedNetworkBehaviour {
 			return;
 		}
 		for (int i = 0; i < ratHatch.Count; i++) {
+			//print(i);
+
 			ratHatch[i].SetActive(true);
 			tutorialRatHatch[i].SetActive(false);
 		}
@@ -646,6 +678,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	void DisableRatHatches() {
 		for (int i = 0; i < ratHatch.Count; i++) {
+			//print(i);
 			ratHatch[i].SetActive(false);
 			tutorialRatHatch[i].SetActive(true);
 		}
@@ -658,7 +691,7 @@ public class Captain : SerializedNetworkBehaviour {
 		if (isServer) {
 			return;
 		}
-		for (int i = 0; i < tutorialCannons.Count; i++) {
+		for (int i = 0; i < ratHatch.Count; i++) {
 			ratHatch[i].SetActive(false);
 			tutorialRatHatch[i].SetActive(true);
 		}
@@ -668,7 +701,7 @@ public class Captain : SerializedNetworkBehaviour {
 
 	public void CheckRatmenRespawns() {
 		//foreach (var obj in ratmenRespawned) {
-		//	//print(obj.Key.name + " has a value of " + obj.Value);
+		//	////print(obj.Key.name + " has a value of " + obj.Value);
 		//}
 		if (!ratmenRespawned.ContainsValue(false) && !ratmenComplete) {
 			ratmenComplete = true;
@@ -744,11 +777,14 @@ public class Captain : SerializedNetworkBehaviour {
 		if (isServer)
 			return;
 
-		////print("playing sound clip " + clip);
+		//////print("playing sound clip " + clip);
 
 		for (int i = 0; i < tutorialSounds.Length; i++) {
 			if (tutorialSounds[i].name == clip) {
 				mySource.PlayOneShot(tutorialSounds[i]);
+				if (i < tutorialSubtitles.Length) {
+					PlayerHud.instance.UpdateSubtitles(tutorialSubtitles[i]);
+				}
 				break;
 			}
 		}
@@ -783,6 +819,13 @@ public class Captain : SerializedNetworkBehaviour {
 	IEnumerator LoadBossLevel() {
 		PlayDialogue("Snd_CaptainBoss_Intro_Arrived");
 		LoadBossScene.instance.RpcFadePlayerCameras();
+
+#if PROP_ENABLED
+		if (isServer) {
+			PropController.Instance.ActivateProp(Prop.WindOff);
+		}
+#endif
+
 		yield return new WaitForSeconds(3.5f);
 		LoadBossScene.instance.NetworkLoadBossScene();
 	}

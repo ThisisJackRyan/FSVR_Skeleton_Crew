@@ -123,7 +123,9 @@ namespace Opsive.ThirdPersonController
                 m_NavMeshAgent.Warp(m_Transform.position);
                 // Warp can change the destination so make sure that doesn't happen.
                 if (m_NavMeshAgent.destination != destination) {
-                    m_NavMeshAgent.SetDestination(destination);
+					if (m_NavMeshAgent.isActiveAndEnabled) {
+						m_NavMeshAgent.SetDestination(destination);
+					}
                 }
             }
         }

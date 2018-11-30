@@ -18,6 +18,8 @@ public class WeaponInteraction : NetworkBehaviour {
 	public GameObject playerColliderForEnemyAttacker;
 	NetworkAnimator networkAnim;
 
+
+
 	public void AssignWeapon(string side, GameObject weapon ) {
 		if ( side.Equals( "left" ) ) {
 			leftHandWeapon = weapon;
@@ -79,25 +81,36 @@ public class WeaponInteraction : NetworkBehaviour {
 		if ( rightHandIsInteractable && Controller.RightController.GetPressDown( Controller.Trigger ) ) {
 			if ( rightWeaponScript.data.type == WeaponData.WeaponType.Punt ) {
 				CmdToggleFire( "right" );
-
 			} else if ( rightWeaponScript.data.type == WeaponData.WeaponType.Gun ) {
 				CmdFireWeapon( "right" );
-
 			}
 		}
 
-        //if (leftHandIsInteractable && Controller.LeftController.GetPressDown(Controller.TouchPad)) {
-        //     if (leftWeaponScript.data.type == WeaponData.WeaponType.Gun) {
-        //        CmdReloadWeapon("left");
-        //    }
-        //}
+		if (leftHandIsInteractable && Controller.LeftController.GetPressDown(Controller.TrackPad)) {
+			if (leftWeaponScript.data.type == WeaponData.WeaponType.Gun) {
+				CmdReloadWeapon("left");
+			}
+		}
 
-        //if (rightHandIsInteractable && Controller.RightController.GetPressDown(Controller.TouchPad)) {
-        //    if (rightWeaponScript.data.type == WeaponData.WeaponType.Gun) {
-        //        CmdReloadWeapon("right");
-        //    }
-        //}
-    }
+		if (rightHandIsInteractable && Controller.RightController.GetPressDown(Controller.TrackPad)) {
+			if (rightWeaponScript.data.type == WeaponData.WeaponType.Gun) {
+				CmdReloadWeapon("right");
+			}
+		}
+
+		if (leftWeaponScript == null && Controller.LeftController.GetPressDown(Controller.Trigger)) {
+			networkAnim.animator.SetBool("leftFist", true);
+		}else if (leftWeaponScript == null && Controller.LeftController.GetPressUp(Controller.Trigger)) {
+			networkAnim.animator.SetBool("leftFist", false);
+		}
+
+		if (rightWeaponScript == null && Controller.RightController.GetPressDown(Controller.Trigger)) {
+			networkAnim.animator.SetBool("rightFist", true);
+		} else if (rightWeaponScript == null && Controller.RightController.GetPressUp(Controller.Trigger)) {
+			networkAnim.animator.SetBool("rightFist", false);
+
+		}
+	}
 
     [Command]
     private void CmdReloadWeapon(string side) {
@@ -122,19 +135,19 @@ public class WeaponInteraction : NetworkBehaviour {
 		}
 
 		RpcAnimTrigger(side + "Shoot");
-			RpcFireWeapon( side );
+		RpcFireWeapon( side );
 	}
 
 	[ClientRpc]
 	void RpcAnimTrigger(string trigger) {
 		networkAnim.SetTrigger(trigger);
-
 	}
 
 	[ClientRpc]
 	private void RpcFireWeapon(string side ) {
 		if (isServer)
 			return;
+
 		if ( side.Equals( "left" ) )
 			leftWeaponScript.SpawnBullet( true, hapticSizeShoot );
 		else

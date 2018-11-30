@@ -36,7 +36,7 @@ public class Crystal : MonoBehaviour {
 	void HitByCannon(GameObject bullet) {
 		//print("called rpc cannon");
 		transform.root.GetComponent<PathFollower>().DestroyCrystal( transform.GetSiblingIndex() );
-		VariableHolder.instance.IncreasePlayerScore(bullet.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.crystalsDetroyed, transform.position);
+		VariableHolder.instance.IncreasePlayerScore(bullet.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.CrystalsDetroyed, transform.position);
 		Destroy(bullet);
 
 		//foreach (var t in otherCrystals) {

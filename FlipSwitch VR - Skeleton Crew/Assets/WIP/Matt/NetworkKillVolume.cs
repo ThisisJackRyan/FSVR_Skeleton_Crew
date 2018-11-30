@@ -16,7 +16,6 @@ public class NetworkKillVolume : NetworkBehaviour {
                 Destroy(other.gameObject);
             }
             return;
-
         }
 
         //print("killing " + other.name + " with networkkillvolume");

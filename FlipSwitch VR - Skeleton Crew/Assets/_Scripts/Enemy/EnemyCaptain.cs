@@ -19,20 +19,21 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject[] colorChangeParticles;
 	public GameObject initialTeleportTargetPositionParticle;
 	public GameObject initialTeleportCurrentPositionParticle;
-	public Color targetColor;
 	public GameObject captainTeleportTarget;
+	public Color targetColor;
+	public GameObject shipTrackingSpace;
+	public GameObject bossTrackingSpace;
 	public float timeBetweenSecondTeleportClipAndCannon = 4.5f;
 	public float timeFromCannonToInitialDrain = 5f;
 
 	// Privates
 	private readonly int INTRO_CLIP = 0;
-	private readonly int TELEPORT1_CLIP = 1;		// now unused
-	private readonly int TELEPORT2_CLIP = 2;
-	private readonly int CANNON_CLIP = 3;
-	private readonly int START_OF_DRAIN_CLIP = 4;
-	private readonly int SECOND_DRAIN_CLIP = 5;
-	private readonly int THIRD_DRAIN_CLIP = 6;
-	private readonly int END_OF_INTRO_CLIP = 7;
+	private readonly int TELEPORT2_CLIP = 1;
+	private readonly int CANNON_CLIP = 2;
+	private readonly int START_OF_DRAIN_CLIP = 3;
+	private readonly int SECOND_DRAIN_CLIP = 4;
+	private readonly int THIRD_DRAIN_CLIP = 5;
+	private readonly int END_OF_INTRO_CLIP = 6;
 
 	private bool playersHaveTeleported;
 	private bool firstTimeDrain = true;
@@ -88,6 +89,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	public GameObject dragon;
 	public float timeToCaptainWinningInSeconds;
 	public AudioClip[] drainAudioClips;
+	public AudioClip drainTimeWarning;
 
 	// Privates
 	private float curTime = 0f;
@@ -95,6 +97,7 @@ public class EnemyCaptain : NetworkBehaviour {
 	private GameObject particlesOnDragonInstance;
 	private bool isDraining, canDrain = true;
 	private int drainClipToPlay;
+	private bool warningTriggered;
 
 	[Header("End Game")]
 	// Publics
@@ -135,14 +138,37 @@ public class EnemyCaptain : NetworkBehaviour {
 	public int difficulty = 1;
 	public int maxDifficulty = 10;
 	public int difficultyModifier = 0;
-	public int timesToDeath = 6;
+	public int timesToDeath = 4;
 	public BossAmbientSound ambientSoundRef;
-
+	public float degreesToRotate = 90f;
 	// Privates
 	private int incrementSize;
 	private AudioSource source;
 	private int numberOfTimesHit;
 
+	[Header("Subtitles")]
+	// Publics
+	public string[] subtitles;
+
+#pragma warning disable 0414
+
+	// Privates
+	private readonly int INTRO_SUBTITLE_INDEX = 0;
+	private readonly int TELEPORT_SUBTITLE_INDEX = 1;
+	private readonly int CANNON_SUBTITLE_INDEX = 2;
+	private readonly int START_OF_DRAIN_SUBTITLE_INDEX = 3;
+	private readonly int SECOND_DRAIN_SUBTITLE_INDEX = 4;
+	private readonly int THIRD_DRAIN_SUBTITLE_INDEX = 5;
+	private readonly int END_OF_INTRO_SUBTITLE_INDEX = 6;
+	private readonly int DRAGONKIN_SUMMON1_SUBTITLE_INDEX = 7;
+	private readonly int DRAGONKIN_SUMMON2_SUBTITLE_INDEX = 8;
+	private readonly int DRAGONKIN_SUMMON3_SUBTITLE_INDEX = 9;
+	private readonly int METEOR_SUMMON1_SUBTITLE_INDEX = 10;
+	private readonly int METEOR_SUMMON2_SUBTITLE_INDEX = 11;
+	private readonly int DRAIN_START_SUBTITLE_INDEX = 12;
+	private readonly int DRAIN_WARNING_SUBTITLE_INDEX = 13;
+	private readonly int DEFEAT_SUBTITLE_INDEX = 14;
+	private readonly int VICTORY_SUBTITLE_INDEX = 15;
 	#endregion
 
 	#region Initialization
@@ -161,6 +187,8 @@ public class EnemyCaptain : NetworkBehaviour {
 		VariableHolder.instance.enemyRangedPositions.Clear();
 		VariableHolder.instance.enemyMeleePositions.Clear();
 
+		timeToCaptainWinningInSeconds = VariableHolder.instance.bossTimer;
+
 		foreach(var r in rangedSpawnPositions ) {
 			VariableHolder.instance.enemyRangedPositions.Add( r, false );
 		}
@@ -170,7 +198,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		}
 
 		incrementSize = (int) Mathf.Ceil((float)(VariableHolder.instance.numPlayers) / 2) + difficultyModifier;
-		
+
 		myTree = GetComponent<BehaviorTree>();
 		
 		myTree.SetVariableValue( "dragon", dragon );
@@ -199,9 +227,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		EnableTeleportPads();
 
 		yield return new WaitUntil(() => playersHaveTeleported == true );
-		for (int i = 0; i < NumberOfPlayerHolder.instance.numberOfPlayers; i++) {
-			playerTeleportAreas[i].SetActive(false);
-		}
+		DisableTeleportPads();
 
 		yield return new WaitForSeconds(2f);
 		StartCoroutine( "CaptainTeleport" );
@@ -252,6 +278,28 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	}
 
+	private void DisableTeleportPads() {
+		if (!isServer) {
+			return;
+		}
+		RpcDisableTeleportPads();
+
+		for (int i = 0; i < NumberOfPlayerHolder.instance.numberOfPlayers; i++) {
+			playerTeleportAreas[i].SetActive(false);
+		}
+	}
+
+	[ClientRpc]
+	private void RpcDisableTeleportPads() {
+		if (isServer) {
+			return;
+		}
+
+		for (int i = 0; i < NumberOfPlayerHolder.instance.numberOfPlayers; i++) {
+			playerTeleportAreas[i].SetActive(false);
+		}
+	}
+
 	private void StartBossMusic() {
 		ambientSoundRef.PlayBossMusic();
 		RpcStartBossMusic();
@@ -282,6 +330,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
+		PlayerHud.instance.UpdateSubtitles( subtitles[index] );
 		source.clip = introAudioClips[index];
 		source.Play();
 	}
@@ -333,8 +382,13 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		foreach (var v in FindObjectsOfType<FSVRPlayer>()) {
 			if (v.isLocalPlayer) {
-				v.transform.position = new Vector3(25, 0, 0);
+				shipTrackingSpace.SetActive(false);
+				bossTrackingSpace.SetActive(true);
 			}
+
+			v.transform.position = new Vector3(25, 0, 0);
+			v.transform.Rotate(v.transform.up, degreesToRotate);
+			
 		}
 	}
 
@@ -468,7 +522,8 @@ public class EnemyCaptain : NetworkBehaviour {
 
 	public IEnumerator StartTheDrain() {
 		particlesOnDragonInstance = Instantiate( particlesToSpawnOnDragon, dragon.transform.position, Quaternion.identity );
-
+		particlesOnDragonInstance.transform.LookAt(skullTransform.position);
+		particlesOnDragonInstance.transform.Rotate(transform.up, 180f);
 		yield return new WaitForSecondsRealtime( 2.5f );
 
 		energyTrailInstance = Instantiate( energyTrail, transform.position, Quaternion.identity );
@@ -571,7 +626,13 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		if ( isDraining ) {
 			curTime += Time.deltaTime;
-			print( "is draining. Current Elapsed Time: " + curTime );
+			//print( "is draining. Current Elapsed Time: " + curTime );
+
+			if(timeToCaptainWinningInSeconds - curTime <= 60 && !warningTriggered) {
+				warningTriggered = true;
+				PlayWarningAudio();
+			}
+
 			if(curTime >= timeToCaptainWinningInSeconds ) {				// Player defeat / Captain victory check
 				StopDrainingAbility();                                  // Stop draining
 				skullParticles.SetActive(false);
@@ -594,6 +655,25 @@ public class EnemyCaptain : NetworkBehaviour {
 
 		GetComponent<ControllerHandler>().TryStopAbility( ab );
 		myTree.SetVariableValue("isDraining", false);
+	}
+
+	private void PlayWarningAudio() {
+		if (!isServer) {
+			return;
+		}
+		RpcPlayWarningAudio();
+		source.clip = drainTimeWarning;
+		source.Play();
+	}
+
+	[ClientRpc]
+	private void RpcPlayWarningAudio() {
+		if (isServer) {
+			return;
+		}
+		PlayerHud.instance.UpdateSubtitles( subtitles[DRAIN_WARNING_SUBTITLE_INDEX] );
+		source.clip = drainTimeWarning;
+		source.Play();
 	}
 
 	[ClientRpc]
@@ -619,6 +699,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
+		PlayerHud.instance.UpdateSubtitles( subtitles[DRAIN_START_SUBTITLE_INDEX] );
 		source.clip = drainAudioClips[index];
 		source.Play();
 
@@ -928,6 +1009,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
+		PlayerHud.instance.UpdateSubtitles( subtitles[index + 10] );
 		source.clip = meteorAudioClips[index];
 		source.Play();
 	}
@@ -1048,6 +1130,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			return;
 		}
 
+		PlayerHud.instance.UpdateSubtitles( subtitles[index + 7] );
 		source.clip = summonAudioClips[index];
 		source.Play();
 	}
@@ -1057,12 +1140,13 @@ public class EnemyCaptain : NetworkBehaviour {
 	#region End Game
 
 	IEnumerator PlayerVictory() {
+		foreach (var v in FindObjectsOfType<EnemyDragonkin>()) {
+			v.TeleportToDeath();
+		}
 		StartDeathAbility();
 		PlayEndGameAudio(true);
 		yield return new WaitForSeconds(defeatAudio.length);
-		foreach(var v in FindObjectsOfType<EnemyDragonkin>()) {
-			v.TeleportToDeath();
-		}
+
 		SpawnDeathObjects(true);
 
 		//yield return new WaitForSeconds(0.5f);
@@ -1072,6 +1156,9 @@ public class EnemyCaptain : NetworkBehaviour {
 	}
 
 	IEnumerator PlayerDefeat() {
+		foreach (var v in FindObjectsOfType<EnemyDragonkin>()) {
+			v.TeleportToDeath();
+		}
 		isDraining = false;
 		print("player defeat called");
 		PlayEndGameAudio(false);
@@ -1218,7 +1305,7 @@ public class EnemyCaptain : NetworkBehaviour {
 		print("drain energy ability tried start");
 		GetComponent<ControllerHandler>().TryStartAbility(ab);
 		print("after try start drain ability");
-		yield return new WaitForSecondsRealtime(15f);
+		yield return new WaitForSecondsRealtime(10f);
 		GetComponent<ControllerHandler>().TryStopAbility(ab);
 		if (trail1) {
 			// disable player 1 particles here
@@ -1235,7 +1322,7 @@ public class EnemyCaptain : NetworkBehaviour {
 			RpcDrainCleanup(2);
 			Destroy(trail3);
 		}
-
+		print("after trail cleanup in finaldrainenergy coroutine");
 		foreach(var v in FindObjectsOfType<Player>()) {
 			v.TurnOffAllParticles();
 		}
@@ -1244,10 +1331,6 @@ public class EnemyCaptain : NetworkBehaviour {
 		tpCurPos.transform.position = new Vector3(tpCurPos.transform.position.x, tpCurPos.transform.position.y + 1.5f, tpCurPos.transform.position.z);
 		NetworkServer.Spawn(tpCurPos);
 		transform.position = defeatPosition.transform.position;
-
-		foreach (var v in FindObjectsOfType<EnemyDragonkin>()) {
-			v.TeleportToDeath();
-		}
 	}
 
 	[ClientRpc]
@@ -1273,17 +1356,13 @@ public class EnemyCaptain : NetworkBehaviour {
 	}
 
 	private void EnableScoreboard() {
-		highScoreTable.SetActive(true);
-		RpcEnableScoreboard();
-	}
-
-	[ClientRpc]
-	private void RpcEnableScoreboard() {
-		if (isServer) {
+		if (!isServer) {
 			return;
 		}
 
 		highScoreTable.SetActive(true);
+		NetworkServer.Spawn(highScoreTable);
+		highScoreTable.GetComponent<HighScoreTable>().DisplayScores();
 	}
 
 	private void PlayEndGameAudio(bool playerVictory) {
@@ -1299,6 +1378,8 @@ public class EnemyCaptain : NetworkBehaviour {
 		if (isServer) {
 			return;
 		}
+
+		PlayerHud.instance.UpdateSubtitles( subtitles[playerVictory ? DEFEAT_SUBTITLE_INDEX : VICTORY_SUBTITLE_INDEX] );
 
 		ambientSoundRef.PlayAmbientSound();
 		source.clip = playerVictory ? defeatAudio : victoryAudio; // backwards because variables are flipped

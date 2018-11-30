@@ -1391,9 +1391,9 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.46796322
-        functionName: ItemUsed
-        data: 
+      - time: 0.8322489
+        functionName: ExecuteEvent
+        data: OnAnimatorItemEndUse
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
@@ -1426,9 +1426,9 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.43883282
-        functionName: ItemUsed
-        data: 
+      - time: 0.8245471
+        functionName: ExecuteEvent
+        data: OnAnimatorItemEndUse
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0

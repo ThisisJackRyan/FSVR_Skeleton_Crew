@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -78,7 +78,41 @@ public class Cannon : NetworkBehaviour {
 		return isFiring;
 	}
 
-    [Button]
+	[Button]
+	public void CreateCannonBallTest() {
+		if (!isReloaded) {
+			return;
+		}
+
+		isFiring = true;
+		isReloaded = false;
+
+		GameObject bullet = Instantiate(projectile, spawnPos.position, Quaternion.identity);
+		bullet.GetComponent<Rigidbody>().velocity = spawnPos.forward * power;
+		//bullet.GetComponent<SCProjectile>().playerWhoFired = shooter;
+
+		NetworkServer.Spawn(bullet);
+
+		GameObject s = Instantiate(smoke, spawnPos.position, spawnPos.rotation);
+		NetworkServer.Spawn(s);
+		if (isMagicCannon) {
+			Invoke("ReloadCannon", 3f);
+		}
+
+		RpcPlayFireSound();
+		GetComponent<AudioSource>().clip = fireSound;
+		GetComponent<AudioSource>().Play();
+
+		//cannonBarrelAnimator.SetTrigger("Fire");
+
+		GetComponent<NetworkAnimator>().SetTrigger("Fire");
+
+		if (isServer) {
+			StartCoroutine("FireProp");
+		}
+
+	}
+
 	public void CreateCannonBall(GameObject shooter) {
 		if ( !isReloaded ) {
 			return;
@@ -86,15 +120,20 @@ public class Cannon : NetworkBehaviour {
 
 		isFiring = true;
 		isReloaded = false;
+
 		GameObject bullet = Instantiate( projectile, spawnPos.position, Quaternion.identity );
-		Instantiate( smoke, spawnPos.position, spawnPos.rotation );
 		bullet.GetComponent<Rigidbody>().velocity = spawnPos.forward * power;
 		bullet.GetComponent<SCProjectile>().playerWhoFired = shooter;
 
+		NetworkServer.Spawn(bullet);
+
+		GameObject s = Instantiate( smoke, spawnPos.position, spawnPos.rotation );
+		NetworkServer.Spawn(s);
         if (isMagicCannon) {
             Invoke("ReloadCannon", 3f);
         }
 
+		RpcPlayFireSound();
         GetComponent<AudioSource>().clip = fireSound;
 		GetComponent<AudioSource>().Play();
 
@@ -102,8 +141,34 @@ public class Cannon : NetworkBehaviour {
 
         GetComponent<NetworkAnimator>().SetTrigger("Fire");
 
+		if (isServer) {
+			StartCoroutine("FireProp");
+		}
+
 	}
-    public bool isMagicCannon = false;
+
+	[ClientRpc]
+	private void RpcPlayFireSound() {
+		if (isServer) {
+			return;
+		}
+
+		GetComponent<AudioSource>().clip = fireSound;
+		GetComponent<AudioSource>().Play();
+	}
+
+	public float cannonPropWait = 0.5f;
+
+	IEnumerator FireProp() {
+#if PROP_ENABLED
+		yield return new WaitForSeconds(cannonPropWait);
+		PropController.Instance.ActivateProp(cannonProp);
+#endif
+	}
+
+	public bool isMagicCannon = false;
+
+	public Prop cannonProp;
 
     public void TriggerReload() {
         if (!isServer || isMagicCannon) {

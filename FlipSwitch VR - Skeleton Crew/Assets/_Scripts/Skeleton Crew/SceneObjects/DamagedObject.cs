@@ -66,19 +66,25 @@ public class DamagedObject : NetworkBehaviour {
 
 		if (rng != -1) {
 			repairPattern = repairPatterns[rng];
-			//print("repair patter is now " + repairPattern.name + " on the client damaged object");
+			//////print("repair patter is now " + repairPattern.name + " on the client damaged object");
 		}
 	}
+
+	bool firstDamage = true;
 
 	private void OnHealthChange( int n ) {
 		if ( !isServer ) {
             //return;
-            //print("health change");
-			if ( health > n && n >= 0) {               
-                GetComponent<AudioSource>().PlayOneShot( damageClip );
+            //////print("health change");
+			if ( health > n && n >= 0) {
+				if (!firstDamage) {
+					GetComponent<AudioSource>().PlayOneShot( damageClip );
+				}
 				//Instantiate( dmgParticles, transform.position, Quaternion.identity );   
 			} else if (health < n) {
-				GetComponent<AudioSource>().PlayOneShot( healClip );
+				if ( !firstDamage ) {
+					GetComponent<AudioSource>().PlayOneShot( healClip );
+				}
 				//Instantiate( healParticles, transform.position, Quaternion.identity );
 			}
 		}
@@ -98,7 +104,12 @@ public class DamagedObject : NetworkBehaviour {
 
             if (isServer) {
                 if (Captain.instance) {
-                    Captain.instance.AddEventToQueue(Captain.AudioEventType.Cannon);
+					////print(name + " has firstDamage at " + firstDamage);
+					if (!firstDamage) {
+						Captain.instance.AddEventToQueue(Captain.AudioEventType.Cannon);
+					} else {
+						firstDamage = false;
+					}
                 }
             }
 		}
@@ -122,7 +133,7 @@ public class DamagedObject : NetworkBehaviour {
 		}
 	}
 
-	RepairPattern repairPattern;
+	public RepairPattern repairPattern;
 
 	internal RepairPattern SelectPattern() {
 		if ( !isServer ) {
@@ -131,7 +142,7 @@ public class DamagedObject : NetworkBehaviour {
 
 		rng = Random.Range( 0, repairPatterns.Length );
 		repairPattern = repairPatterns[rng];
-		//print( "setting repairPattern to " + repairPattern.name );
+		//////print( "setting repairPattern to " + repairPattern.name );
 		foreach ( var pat in repairPatterns ) {
 			pat.gameObject.SetActive( false );
 		}
@@ -173,15 +184,19 @@ public class DamagedObject : NetworkBehaviour {
 		if ( !isServer ) {
 			return;
 		}
-
+		//print("Enable Pattern on clients called");
 		RpcEnablePattern();
 	}
 
 	[ClientRpc]
 	private void RpcEnablePattern() {
+		//print("rpc enable pattern called, pre server check, server states " + isServer + " ");
+
 		if (isServer) {
 			return;
 		}
+
+		//print("rpc enable pattern called");
 		repairPattern.gameObject.SetActive( true ); // turns on the pattern gameobject
 		repairSphere.transform.GetChild(0).gameObject.SetActive(false); //  disables the particles
 	}
@@ -206,9 +221,13 @@ public class DamagedObject : NetworkBehaviour {
 		}
 
 
-		//print( "pattern name: " + repairPattern.name );
-		//print( "index received: " + index );
-		repairPattern.transform.GetChild( index ).gameObject.SetActive( false );
+		//////print( "pattern name: " + repairPattern.name );
+		//////print( "index received: " + index );
+		repairPattern.
+			transform.
+			GetChild( index ).
+			gameObject.
+			SetActive( false );
 	}
 
 	internal void EnableRepairNode( int index ) {
@@ -273,17 +292,17 @@ public class DamagedObject : NetworkBehaviour {
 	}
 
 	public int ChangeHealth( int amount, bool damage = true ) {
-		//print(name+"change health called");
+		//////print(name+"change health called");
 		if ( !isServer )
 			return health;
 
 		if (damage) {
-			health -= Mathf.Abs(amount);
-			health = (health < 0) ? 0 : health;
-			//print(health);
+			//health -= Mathf.Abs(amount);
+			health = (health - Mathf.Abs( amount ) < 0) ? 0 : health - Mathf.Abs( amount );
+			//////print(health);
 			if (health > 0) {
 				if (Time.timeSinceLevelLoad > 2) {
-					//print("time since level loaded is " + Time.timeSinceLevelLoad);
+					//////print("time since level loaded is " + Time.timeSinceLevelLoad);
 					GetComponent<AudioSource>().PlayOneShot(damageClip);
 					var g = Instantiate(dmgParticles, transform.position, Quaternion.identity);
 					NetworkServer.Spawn(g);

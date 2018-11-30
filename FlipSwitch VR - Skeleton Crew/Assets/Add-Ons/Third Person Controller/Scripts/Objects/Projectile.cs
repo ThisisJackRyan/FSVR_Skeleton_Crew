@@ -152,7 +152,7 @@ namespace Opsive.ThirdPersonController
         {
             base.Collide(originator, collisionTransform, collisionPoint, collisionNormal, destroy);
             enabled = false;
-			print("after base.collide call");
+			// print("after base.collide call");
             if (!destroy) {
                 // If the projectile isn't being destroyed then set the parent, make it kinematic, and deactivate the collider to prevent it from interfering with other objects.
                 m_Transform.parent = collisionTransform;

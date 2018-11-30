@@ -32,22 +32,21 @@ public class EnemyDragonkin : NetworkBehaviour {
 			if (other.gameObject.GetComponent<Weapon>().data.type == WeaponData.WeaponType.Melee) {
 				if (other.gameObject.GetComponent<Weapon>().isBeingHeldByPlayer && canBeDamaged) {
 					playerWhoLastHitMe = other.gameObject.GetComponent<Weapon>().playerWhoIsHolding;
-
-					canBeDamaged = false;
-					GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime), other.gameObject.GetComponent<Weapon>().playerWhoIsHolding.transform.root.gameObject);
-					Invoke("AllowDamage", 1f);
+					DestroyMe();
+					//canBeDamaged = false;
+					//GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<Weapon>().data.damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
+					//Invoke("AllowDamage", 1f);
 				}
 			}
 		} else if (other.gameObject.tag == "BulletPlayer" || other.gameObject.tag == "CannonBallPlayer") {
 			playerWhoLastHitMe = other.gameObject.GetComponent<SCProjectile>().playerWhoFired;
-
-
 			canBeDamaged = false;
-			GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
+			DestroyMe();
+			// GetComponent<CharacterHealth>().Damage(other.gameObject.GetComponent<SCProjectile>().damage, other.contacts[0].point, (other.impulse / Time.fixedDeltaTime));
 			//todo PLAYER SCORE INTEGRATION FOR PROJECTILE
-			VariableHolder.instance.IncreasePlayerScore( other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.DragonkinKills, transform.position );
+			//VariableHolder.instance.IncreasePlayerScore( other.gameObject.GetComponent<SCProjectile>().playerWhoFired, VariableHolder.PlayerScore.ScoreType.DragonkinKills, transform.position );
 
-			Invoke( "AllowDamage", 1f);
+			//Invoke( "AllowDamage", 1f);
 		}
 	}
 

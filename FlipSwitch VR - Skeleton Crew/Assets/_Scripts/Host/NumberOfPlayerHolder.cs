@@ -12,21 +12,31 @@ public class NumberOfPlayerHolder : NetworkBehaviour {
 	}
 
 
-	private void Awake() {
-		if ( instance != null )
-			Destroy( gameObject );
-		else
+	private void Start() {
+		if (instance != null) {
+			Destroy(gameObject);
+		} else {
 			instance = this;
+		}
+
+		if (isServer) {
+			//print("start isServwer numPlayerHolder");
+			numberOfPlayers = VariableHolder.instance.numPlayers;
+		} else if (isClient) {
+			//print("on start client numPlayerHolder");
+			OnNumPlayerChanged(numberOfPlayers);
+		}
 	}
 
 	// Use this for initialization
-	public override void OnStartServer () {
-		base.OnStartServer();
-		numberOfPlayers = VariableHolder.instance.numPlayers;
-	}
+	//public override void OnStartServer () {
+	//	base.OnStartServer();
+	//	numberOfPlayers = VariableHolder.instance.numPlayers;
+	//}
 
-	public override void OnStartClient() {
-		base.OnStartClient();
-		OnNumPlayerChanged( numberOfPlayers );
-	}
+	//public override void OnStartClient() {
+	//	base.OnStartClient();
+	//	print("on start client");
+	//	OnNumPlayerChanged( numberOfPlayers );
+	//}
 }
