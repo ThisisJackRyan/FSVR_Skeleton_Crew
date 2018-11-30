@@ -116,6 +116,8 @@ public class Captain : SerializedNetworkBehaviour {
 	//Dictionary<AudioClip, string> clipNamesLookup;
 
 	Queue<AudioClip> priorityAudioQueue, reminderQueue;
+#pragma warning disable 0414
+
 	Queue<string> prioritySubtitleQueue, reminderSubtitleQueue;
 	public float timeBetweenReminders = 10, timeBetweenPriorityClips = 3, lastPlayedTime;
 

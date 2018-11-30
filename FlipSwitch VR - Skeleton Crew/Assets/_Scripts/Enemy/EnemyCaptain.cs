@@ -150,6 +150,8 @@ public class EnemyCaptain : NetworkBehaviour {
 	// Publics
 	public string[] subtitles;
 
+#pragma warning disable 0414
+
 	// Privates
 	private readonly int INTRO_SUBTITLE_INDEX = 0;
 	private readonly int TELEPORT_SUBTITLE_INDEX = 1;

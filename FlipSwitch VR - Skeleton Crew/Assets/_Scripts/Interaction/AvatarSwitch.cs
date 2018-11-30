@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+#pragma warning disable 0414
 public class AvatarSwitch : MonoBehaviour, IInteractible {
 
 	public enum ChangeType {

@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
+#pragma warning disable 0414
+
 public class ExitLobbySwitch : NetworkBehaviour, IInteractible {
 
 	float timer = 0, timeToTrans = 2;
