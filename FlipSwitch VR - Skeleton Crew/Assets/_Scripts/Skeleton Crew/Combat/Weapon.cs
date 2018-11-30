@@ -79,18 +79,18 @@ public class Weapon : NetworkBehaviour {
 					rot += variance;
 				}
 
-                var bullet = Instantiate(data.projectile, projectileSpawnPos.position, Quaternion.Euler(rot));
-			    bullet.GetComponent<Rigidbody>().AddForce(projectileSpawnPos.forward * data.power, ForceMode.Impulse);
+	            var bullet = Instantiate(data.projectile, projectileSpawnPos.position, Quaternion.Euler(rot));
+
+				bullet.GetComponent<Rigidbody>().AddForce(projectileSpawnPos.forward * data.power, ForceMode.Impulse);
 			    bullet.GetComponent<SCProjectile>().damage = data.damage;
 				bullet.GetComponent<SCProjectile>().playerWhoFired = playerWhoIsHolding.transform.root.gameObject;
 
-                //NetworkServer.Spawn(smoke);
-                NetworkServer.Spawn(bullet);
+				NetworkServer.Spawn(bullet);
             }
 
-			//Instantiate(data.particles, projectileSpawnPos.position, projectileSpawnPos.rotation);
+			Instantiate( data.particles, projectileSpawnPos.position, projectileSpawnPos.rotation );
 
-        }
+		}
 
 		GetComponent<AudioSource>().Play();
 	}
